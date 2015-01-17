@@ -141,8 +141,11 @@ template <typename T> T SwigValueInit() {
 
 
 
-#include "foo.i"
+#include "foo.hh"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 SWIGEXPORT void _wrap_set_something() {
   int arg1 ;
   double arg2 ;
@@ -160,6 +163,6 @@ SWIGEXPORT double _wrap_get_something() {
 
 
 #ifdef __cplusplus
-extern "C" {
+}
 #endif
 
