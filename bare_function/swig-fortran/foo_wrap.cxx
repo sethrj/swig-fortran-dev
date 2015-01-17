@@ -146,7 +146,7 @@ template <typename T> T SwigValueInit() {
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void _wrap_set_something(, int farg1, double farg2) {
+SWIGEXPORT void _wrap_set_something(int farg1, double farg2) {
   int arg1 ;
   double arg2 ;
   
@@ -156,7 +156,7 @@ SWIGEXPORT void _wrap_set_something(, int farg1, double farg2) {
 }
 
 
-SWIGEXPORT double _wrap_get_something(, int farg1) {
+SWIGEXPORT double _wrap_get_something(int farg1) {
   double fresult = 0 ;
   int arg1 ;
   double result;
