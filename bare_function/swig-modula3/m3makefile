@@ -1,0 +1,7 @@
+% automatically generated quake file for foomod
+
+import("libm3")
+module("foomodRaw")
+module("foomod")
+
+library("m3foomod")
