@@ -10,7 +10,10 @@
 #include "vector.hh"
 %}
 
+%module vec
+
 %include "vector.hh"
+%template(Vec_Dbl) vector<double>;
 
 //---------------------------------------------------------------------------//
 // end of swig-dev/hypothetical_vec/vector.i

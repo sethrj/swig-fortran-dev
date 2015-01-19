@@ -7,7 +7,7 @@
 
 swig=/Users/s3j/_code/_build/swig-debug/swig
 
-for lang in fortran python
+for lang in python fortran
 do
   dirname=swig-${lang}
   mkdir "${dirname}" 2>/dev/null
@@ -17,7 +17,7 @@ do
   for n in 3 4
   do
     flags="-debug-module ${n}"
-    ${swig} ${flags} -c++ -${lang} vector > "debug-module-${n}.out" || exit $?
+    ${swig} ${flags} -c++ -${lang} vector.i > "debug-module-${n}.out" || exit $?
   done
   cd ..
 done

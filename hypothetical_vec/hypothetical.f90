@@ -42,7 +42,6 @@ module vecmod
  use, intrinsic :: ISO_C_BINDING
  use vecmod_I
  implicit none
- private
 
  type Vec_Dbl
   type(C_PTR),private :: ptr = C_NULL_PTR
