@@ -42,6 +42,7 @@ module vecmod
  use, intrinsic :: ISO_C_BINDING
  use vecmod_I
  implicit none
+ private
 
  type Vec_Dbl
   type(C_PTR),private :: ptr = C_NULL_PTR
@@ -109,9 +110,11 @@ contains
 end module
 
 program foo
+ use vecmod
+ type(Vec_Dbl) :: bar
+
  write(*,*) "Hello cruel world!"
- !use vecmod
- !type(Vec_Dbl) :: bar
+ write(*,*) Vec_Dbl_at(bar, 5)
 
  !bar = Vec_Dbl(5)
 

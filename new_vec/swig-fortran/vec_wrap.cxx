@@ -145,19 +145,19 @@ template <typename T> T SwigValueInit() {
 #include <stdexcept>
 
 SWIGINTERN void std_vector_Sl_T_Sg__set(std::vector< T > *self,std::vector< T >::size_type i,std::vector< T >::value_type const &val){
-                if (i < self->size())
-                {
-                    (*self)[i] = val;
-                }
-                else
-                {
-                    throw std::out_of_range("vector index out of range");
-                }
-            }
+    if (i < self->size())
+    {
+        (*self)[i] = val;
+    }
+    else
+    {
+        throw std::out_of_range("vector index out of range");
+    }
+}
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT  _wrap_() {
+SWIGEXPORT  _wrap_new_Vec_Dbl__SWIG_0() {
   fresult = 0 ;
   std::vector< T > *result = 0 ;
   

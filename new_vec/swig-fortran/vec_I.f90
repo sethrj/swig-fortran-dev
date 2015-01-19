@@ -5,78 +5,79 @@
 ! the SWIG interface file instead.
 module vec_I
  use, intrinsic :: ISO_C_BINDING
+ implicit none
  interface
-  function  &
- () &
- BIND(C,name="_wrap_")
-  use,intrinsic :: ISO_C_BINDING
-  implicit none
- end function
-  function Vec_Dbl_size &
- () &
- BIND(C,name="_wrap_Vec_Dbl_size")
-  use,intrinsic :: ISO_C_BINDING
-  implicit none
- end function
-  function Vec_Dbl_capacity &
- () &
- BIND(C,name="_wrap_Vec_Dbl_capacity")
-  use,intrinsic :: ISO_C_BINDING
-  implicit none
- end function
- subroutine Vec_Dbl_reserve &
- () &
- BIND(C,name="_wrap_Vec_Dbl_reserve")
-  use,intrinsic :: ISO_C_BINDING
-  implicit none
- end subroutine
- logical(C_BOOL) function Vec_Dbl_empty &
- () &
- BIND(C,name="_wrap_Vec_Dbl_empty")
-  use,intrinsic :: ISO_C_BINDING
-  implicit none
- end function
- subroutine Vec_Dbl_clear &
- () &
- BIND(C,name="_wrap_Vec_Dbl_clear")
-  use,intrinsic :: ISO_C_BINDING
-  implicit none
- end subroutine
- subroutine Vec_Dbl_push_back &
- () &
- BIND(C,name="_wrap_Vec_Dbl_push_back")
-  use,intrinsic :: ISO_C_BINDING
-  implicit none
- end subroutine
-  function Vec_Dbl_front &
- () &
- BIND(C,name="_wrap_Vec_Dbl_front")
-  use,intrinsic :: ISO_C_BINDING
-  implicit none
- end function
-  function Vec_Dbl_back &
- () &
- BIND(C,name="_wrap_Vec_Dbl_back")
-  use,intrinsic :: ISO_C_BINDING
-  implicit none
- end function
- subroutine Vec_Dbl_at &
- () &
- BIND(C,name="_wrap_Vec_Dbl_at")
-  use,intrinsic :: ISO_C_BINDING
-  implicit none
- end subroutine
- subroutine Vec_Dbl_set &
- () &
- BIND(C,name="_wrap_Vec_Dbl_set")
-  use,intrinsic :: ISO_C_BINDING
-  implicit none
- end subroutine
- subroutine delete_Vec_Dbl &
- () &
- BIND(C,name="_wrap_delete_Vec_Dbl")
-  use,intrinsic :: ISO_C_BINDING
-  implicit none
- end subroutine
+  function _wrap_new_Vec_Dbl__SWIG_0() &
+    result(fresult) &
+    bind(C, name="_wrap_new_Vec_Dbl__SWIG_0")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+    :: fresult
+  end function
+  function _wrap_Vec_Dbl_size() &
+    result(fresult) &
+    bind(C, name="_wrap_Vec_Dbl_size")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+    :: fresult
+  end function
+  function _wrap_Vec_Dbl_capacity() &
+    result(fresult) &
+    bind(C, name="_wrap_Vec_Dbl_capacity")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+    :: fresult
+  end function
+  subroutine _wrap_Vec_Dbl_reserve() &
+    bind(C, name="_wrap_Vec_Dbl_reserve")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+  end subroutine
+  function _wrap_Vec_Dbl_empty() &
+    result(fresult) &
+    bind(C, name="_wrap_Vec_Dbl_empty")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   logical(C_BOOL) :: fresult
+  end function
+  subroutine _wrap_Vec_Dbl_clear() &
+    bind(C, name="_wrap_Vec_Dbl_clear")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+  end subroutine
+  subroutine _wrap_Vec_Dbl_push_back() &
+    bind(C, name="_wrap_Vec_Dbl_push_back")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+  end subroutine
+  function _wrap_Vec_Dbl_front() &
+    result(fresult) &
+    bind(C, name="_wrap_Vec_Dbl_front")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+    :: fresult
+  end function
+  function _wrap_Vec_Dbl_back() &
+    result(fresult) &
+    bind(C, name="_wrap_Vec_Dbl_back")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+    :: fresult
+  end function
+  subroutine _wrap_Vec_Dbl_at() &
+    bind(C, name="_wrap_Vec_Dbl_at")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+  end subroutine
+  subroutine _wrap_Vec_Dbl_set() &
+    bind(C, name="_wrap_Vec_Dbl_set")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+  end subroutine
+  subroutine _wrap_delete_Vec_Dbl() &
+    bind(C, name="_wrap_delete_Vec_Dbl")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+  end subroutine
  end interface
 end module vec_I

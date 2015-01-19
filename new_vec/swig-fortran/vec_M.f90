@@ -6,4 +6,12 @@
 module vec_M
  use, intrinsic :: ISO_C_BINDING
  use vec_I
+ implicit none
+ ! TYPES
+ type Vec_Dbl
+  type(C_PTR), private :: ptr = C_NULL_PTR
+ contains
+ end type
+ ! INTERFACES
+contains
 end module vec_M
