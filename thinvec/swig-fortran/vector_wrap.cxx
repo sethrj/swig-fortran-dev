@@ -170,8 +170,8 @@ SWIGEXPORT void* _wrap_new_Vec_Dbl(long farg1, double farg2) {
   vector< double >::value_type arg2 ;
   vector< double > *result = 0 ;
   
-  arg1 = ($*1_ltype)farg1; 
-  arg2 = ($*1_ltype)farg2; 
+  arg1 = *farg1; 
+  arg2 = *farg2; 
   result = (vector< double > *)new vector< double >(arg1,arg2);
   *(vector< double > **)&fresult = result; 
   return fresult;
@@ -183,7 +183,7 @@ SWIGEXPORT void* _wrap_new_construct_count(long farg1) {
   vector< double >::size_type arg1 ;
   vector< double > *result = 0 ;
   
-  arg1 = ($*1_ltype)farg1; 
+  arg1 = *farg1; 
   result = (vector< double > *)new vector< double >(arg1);
   *(vector< double > **)&fresult = result; 
   return fresult;
@@ -221,7 +221,7 @@ SWIGEXPORT double _wrap_Vec_Dbl_get(void* farg1, long farg2) {
   vector< double >::value_type *result = 0 ;
   
   arg1 = (vector< double > *)farg1; 
-  arg2 = ($*1_ltype)farg2; 
+  arg2 = *farg2; 
   result = (vector< double >::value_type *) &(arg1)->get(arg2);
   fresult = result; 
   return fresult;
@@ -234,8 +234,8 @@ SWIGEXPORT void _wrap_Vec_Dbl_set(void* farg1, long farg2, double farg3) {
   vector< double >::value_type *arg3 = 0 ;
   
   arg1 = (vector< double > *)farg1; 
-  arg2 = ($*1_ltype)farg2; 
-  arg3 = (vector< double >::value_type)farg3; 
+  arg2 = *farg2; 
+  arg3 = *farg3; 
   (arg1)->set(arg2,(vector< double >::value_type const &)*arg3);
 }
 
@@ -246,8 +246,8 @@ SWIGEXPORT void _wrap_Vec_Dbl_resize_fill(void* farg1, long farg2, double farg3)
   vector< double >::value_type *arg3 = 0 ;
   
   arg1 = (vector< double > *)farg1; 
-  arg2 = ($*1_ltype)farg2; 
-  arg3 = (vector< double >::value_type)farg3; 
+  arg2 = *farg2; 
+  arg3 = *farg3; 
   (arg1)->resize(arg2,(vector< double >::value_type const &)*arg3);
 }
 
@@ -257,7 +257,7 @@ SWIGEXPORT void _wrap_Vec_Dbl_resize(void* farg1, long farg2) {
   vector< double >::size_type arg2 ;
   
   arg1 = (vector< double > *)farg1; 
-  arg2 = ($*1_ltype)farg2; 
+  arg2 = *farg2; 
   (arg1)->resize(arg2);
 }
 

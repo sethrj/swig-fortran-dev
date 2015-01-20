@@ -15,9 +15,9 @@ do
   cd ${dirname} || exit $?
   echo "Calling swig with ${lang}"
   ln -s ../vector.* . 2>/dev/null
-  for n in 3 4
+  for n in 4
   do
-    flags="-debug-module ${n}"
+    flags="-debug-module ${n} -debug-typemap -debug-tmsearch -debug-tmused"
     ${swig} ${flags} -c++ -${lang} vector.i > "debug-module-${n}.out" || exit $?
   done
   cd ..

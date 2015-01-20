@@ -30,12 +30,14 @@ contains
     use, intrinsic :: ISO_C_BINDING
     implicit none
     type(C_PTR) :: farg1
+    call _wrap_do_something(arg1%ptr)
    end subroutine
    function new_construct_empty() &
       result(fresult)
     use, intrinsic :: ISO_C_BINDING
     implicit none
     type(C_PTR) :: fresult
+    fresult = _wrap_new_construct_empty()
    end function
    function new_Vec_Dbl(farg1, farg2) &
       result(fresult)
@@ -44,6 +46,7 @@ contains
     type(C_PTR) :: fresult
     integer(C_LONG) :: farg1
     real(C_DOUBLE) :: farg2
+    fresult = _wrap_new_Vec_Dbl(arg1, arg2)
    end function
    function new_construct_count(farg1) &
       result(fresult)
@@ -51,6 +54,7 @@ contains
     implicit none
     type(C_PTR) :: fresult
     integer(C_LONG) :: farg1
+    fresult = _wrap_new_construct_count(arg1)
    end function
    function Vec_Dbl_empty(farg1) &
       result(fresult)
@@ -58,6 +62,7 @@ contains
     implicit none
     logical(C_BOOL) :: fresult
     type(C_PTR) :: farg1
+    fresult = _wrap_Vec_Dbl_empty(arg1%ptr)
    end function
    function Vec_Dbl_size(farg1) &
       result(fresult)
@@ -65,6 +70,7 @@ contains
     implicit none
     integer(C_LONG) :: fresult
     type(C_PTR) :: farg1
+    fresult = _wrap_Vec_Dbl_size(arg1%ptr)
    end function
    function Vec_Dbl_get(farg1, farg2) &
       result(fresult)
@@ -73,6 +79,7 @@ contains
     real(C_DOUBLE) :: fresult
     type(C_PTR) :: farg1
     integer(C_LONG) :: farg2
+    fresult = _wrap_Vec_Dbl_get(arg1%ptr, arg2)
    end function
    subroutine Vec_Dbl_set(farg1, farg2, farg3)
     use, intrinsic :: ISO_C_BINDING
@@ -80,6 +87,7 @@ contains
     type(C_PTR) :: farg1
     integer(C_LONG) :: farg2
     real(C_DOUBLE) :: farg3
+    call _wrap_Vec_Dbl_set(arg1%ptr, arg2, arg3)
    end subroutine
    subroutine Vec_Dbl_resize_fill(farg1, farg2, farg3)
     use, intrinsic :: ISO_C_BINDING
@@ -87,16 +95,19 @@ contains
     type(C_PTR) :: farg1
     integer(C_LONG) :: farg2
     real(C_DOUBLE) :: farg3
+    call _wrap_Vec_Dbl_resize_fill(arg1%ptr, arg2, arg3)
    end subroutine
    subroutine Vec_Dbl_resize(farg1, farg2)
     use, intrinsic :: ISO_C_BINDING
     implicit none
     type(C_PTR) :: farg1
     integer(C_LONG) :: farg2
+    call _wrap_Vec_Dbl_resize(arg1%ptr, arg2)
    end subroutine
    subroutine delete_Vec_Dbl(farg1)
     use, intrinsic :: ISO_C_BINDING
     implicit none
     type(C_PTR) :: farg1
+    call _wrap_delete_Vec_Dbl(%ptr)
    end subroutine
 end module vec_M
