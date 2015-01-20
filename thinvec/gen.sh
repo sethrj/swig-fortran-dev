@@ -7,7 +7,8 @@
 
 swig=/Users/s3j/_code/_build/swig-debug/swig
 
-for lang in python fortran
+#for lang in python fortran java
+for lang in fortran
 do
   dirname=swig-${lang}
   mkdir "${dirname}" 2>/dev/null

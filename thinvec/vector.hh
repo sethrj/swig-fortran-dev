@@ -16,7 +16,7 @@ class vector
 {
   public:
     typedef unsigned int size_type;
-    typedef T value_type;
+    typedef T       value_type;
 
   public:
     // Constructors
@@ -29,9 +29,11 @@ class vector
     const value_type& get(size_type index);
     void set(size_type index, const value_type& value);
 
+    void resize(size_type index, const value_type &fillval = T());
 };
 
-void do_something(vector<double> v);
+void do_something(const vector<double>& v);
+//void do_something(const vector& v);
 
 #endif // thinvec_vector_hh
 

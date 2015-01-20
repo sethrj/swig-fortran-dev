@@ -2937,7 +2937,7 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 #define SWIGTYPE_p_char swig_types[0]
 #define SWIGTYPE_p_size_type swig_types[1]
 #define SWIGTYPE_p_value_type swig_types[2]
-#define SWIGTYPE_p_vectorT_double_t swig_types[3]
+#define SWIGTYPE_p_vector swig_types[3]
 static swig_type_info *swig_types[5];
 static swig_module_info swig_module = {swig_types, 4, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
@@ -3231,102 +3231,73 @@ SWIGINTERNINLINE PyObject*
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGINTERN PyObject *_wrap_do_something(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_new_vector__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  vector< double > arg1 ;
-  void *argp1 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
+  vector *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:do_something",&obj0)) SWIG_fail;
-  {
-    res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_vectorT_double_t,  0  | 0);
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "do_something" "', argument " "1"" of type '" "vector< double >""'"); 
-    }  
-    if (!argp1) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "do_something" "', argument " "1"" of type '" "vector< double >""'");
-    } else {
-      vector< double > * temp = reinterpret_cast< vector< double > * >(argp1);
-      arg1 = *temp;
-      if (SWIG_IsNewObj(res1)) delete temp;
-    }
-  }
-  do_something(arg1);
-  resultobj = SWIG_Py_Void();
+  if (!PyArg_ParseTuple(args,(char *)":new_vector")) SWIG_fail;
+  result = (vector *)new vector();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_vector, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_new_Vec_Dbl__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_new_vector__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  vector< double > *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)":new_Vec_Dbl")) SWIG_fail;
-  result = (vector< double > *)new vector< double >();
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_vectorT_double_t, SWIG_POINTER_NEW |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_new_Vec_Dbl__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  vector< double >::size_type arg1 ;
-  vector< double >::value_type arg2 ;
+  vector::size_type arg1 ;
+  vector::value_type arg2 ;
   unsigned int val1 ;
   int ecode1 = 0 ;
   double val2 ;
   int ecode2 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
-  vector< double > *result = 0 ;
+  vector *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:new_Vec_Dbl",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OO:new_vector",&obj0,&obj1)) SWIG_fail;
   ecode1 = SWIG_AsVal_unsigned_SS_int(obj0, &val1);
   if (!SWIG_IsOK(ecode1)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_Vec_Dbl" "', argument " "1"" of type '" "vector< double >::size_type""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_vector" "', argument " "1"" of type '" "vector::size_type""'");
   } 
-  arg1 = static_cast< vector< double >::size_type >(val1);
+  arg1 = static_cast< vector::size_type >(val1);
   ecode2 = SWIG_AsVal_double(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_Vec_Dbl" "', argument " "2"" of type '" "vector< double >::value_type""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_vector" "', argument " "2"" of type '" "vector::value_type""'");
   } 
-  arg2 = static_cast< vector< double >::value_type >(val2);
-  result = (vector< double > *)new vector< double >(arg1,arg2);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_vectorT_double_t, SWIG_POINTER_NEW |  0 );
+  arg2 = static_cast< vector::value_type >(val2);
+  result = (vector *)new vector(arg1,arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_vector, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_new_Vec_Dbl__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_new_vector__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  vector< double >::size_type arg1 ;
+  vector::size_type arg1 ;
   unsigned int val1 ;
   int ecode1 = 0 ;
   PyObject * obj0 = 0 ;
-  vector< double > *result = 0 ;
+  vector *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:new_Vec_Dbl",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:new_vector",&obj0)) SWIG_fail;
   ecode1 = SWIG_AsVal_unsigned_SS_int(obj0, &val1);
   if (!SWIG_IsOK(ecode1)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_Vec_Dbl" "', argument " "1"" of type '" "vector< double >::size_type""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_vector" "', argument " "1"" of type '" "vector::size_type""'");
   } 
-  arg1 = static_cast< vector< double >::size_type >(val1);
-  result = (vector< double > *)new vector< double >(arg1);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_vectorT_double_t, SWIG_POINTER_NEW |  0 );
+  arg1 = static_cast< vector::size_type >(val1);
+  result = (vector *)new vector(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_vector, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_new_Vec_Dbl(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_new_vector(PyObject *self, PyObject *args) {
   int argc;
   PyObject *argv[3];
   int ii;
@@ -3337,7 +3308,7 @@ SWIGINTERN PyObject *_wrap_new_Vec_Dbl(PyObject *self, PyObject *args) {
     argv[ii] = PyTuple_GET_ITEM(args,ii);
   }
   if (argc == 0) {
-    return _wrap_new_Vec_Dbl__SWIG_0(self, args);
+    return _wrap_new_vector__SWIG_0(self, args);
   }
   if (argc == 1) {
     int _v;
@@ -3346,7 +3317,7 @@ SWIGINTERN PyObject *_wrap_new_Vec_Dbl(PyObject *self, PyObject *args) {
       _v = SWIG_CheckState(res);
     }
     if (_v) {
-      return _wrap_new_Vec_Dbl__SWIG_2(self, args);
+      return _wrap_new_vector__SWIG_2(self, args);
     }
   }
   if (argc == 2) {
@@ -3361,35 +3332,35 @@ SWIGINTERN PyObject *_wrap_new_Vec_Dbl(PyObject *self, PyObject *args) {
         _v = SWIG_CheckState(res);
       }
       if (_v) {
-        return _wrap_new_Vec_Dbl__SWIG_1(self, args);
+        return _wrap_new_vector__SWIG_1(self, args);
       }
     }
   }
   
 fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'new_Vec_Dbl'.\n"
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'new_vector'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    vector< double >::vector()\n"
-    "    vector< double >::vector(vector< double >::size_type,vector< double >::value_type)\n"
-    "    vector< double >::vector(vector< double >::size_type)\n");
+    "    vector::vector()\n"
+    "    vector::vector(vector::size_type,vector::value_type)\n"
+    "    vector::vector(vector::size_type)\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Vec_Dbl_empty(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_vector_empty(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  vector< double > *arg1 = (vector< double > *) 0 ;
+  vector *arg1 = (vector *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   bool result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:Vec_Dbl_empty",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_vectorT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:vector_empty",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_vector, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Vec_Dbl_empty" "', argument " "1"" of type '" "vector< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "vector_empty" "', argument " "1"" of type '" "vector *""'"); 
   }
-  arg1 = reinterpret_cast< vector< double > * >(argp1);
+  arg1 = reinterpret_cast< vector * >(argp1);
   result = (bool)(arg1)->empty();
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
@@ -3398,21 +3369,21 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Vec_Dbl_size(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_vector_size(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  vector< double > *arg1 = (vector< double > *) 0 ;
+  vector *arg1 = (vector *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
-  vector< double >::size_type result;
+  vector::size_type result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:Vec_Dbl_size",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_vectorT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:vector_size",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_vector, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Vec_Dbl_size" "', argument " "1"" of type '" "vector< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "vector_size" "', argument " "1"" of type '" "vector *""'"); 
   }
-  arg1 = reinterpret_cast< vector< double > * >(argp1);
-  result = (vector< double >::size_type)(arg1)->size();
+  arg1 = reinterpret_cast< vector * >(argp1);
+  result = (vector::size_type)(arg1)->size();
   resultobj = SWIG_From_unsigned_SS_int(static_cast< unsigned int >(result));
   return resultobj;
 fail:
@@ -3420,30 +3391,30 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Vec_Dbl_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_vector_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  vector< double > *arg1 = (vector< double > *) 0 ;
-  vector< double >::size_type arg2 ;
+  vector *arg1 = (vector *) 0 ;
+  vector::size_type arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   unsigned int val2 ;
   int ecode2 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
-  vector< double >::value_type *result = 0 ;
+  vector::value_type *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:Vec_Dbl_get",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_vectorT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:vector_get",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_vector, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Vec_Dbl_get" "', argument " "1"" of type '" "vector< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "vector_get" "', argument " "1"" of type '" "vector *""'"); 
   }
-  arg1 = reinterpret_cast< vector< double > * >(argp1);
+  arg1 = reinterpret_cast< vector * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Vec_Dbl_get" "', argument " "2"" of type '" "vector< double >::size_type""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "vector_get" "', argument " "2"" of type '" "vector::size_type""'");
   } 
-  arg2 = static_cast< vector< double >::size_type >(val2);
-  result = (vector< double >::value_type *) &(arg1)->get(arg2);
+  arg2 = static_cast< vector::size_type >(val2);
+  result = (vector::value_type *) &(arg1)->get(arg2);
   resultobj = SWIG_From_double(static_cast< double >(*result));
   return resultobj;
 fail:
@@ -3451,40 +3422,40 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Vec_Dbl_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_vector_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  vector< double > *arg1 = (vector< double > *) 0 ;
-  vector< double >::size_type arg2 ;
-  vector< double >::value_type *arg3 = 0 ;
+  vector *arg1 = (vector *) 0 ;
+  vector::size_type arg2 ;
+  vector::value_type *arg3 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   unsigned int val2 ;
   int ecode2 = 0 ;
-  vector< double >::value_type temp3 ;
+  vector::value_type temp3 ;
   double val3 ;
   int ecode3 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOO:Vec_Dbl_set",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_vectorT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OOO:vector_set",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_vector, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Vec_Dbl_set" "', argument " "1"" of type '" "vector< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "vector_set" "', argument " "1"" of type '" "vector *""'"); 
   }
-  arg1 = reinterpret_cast< vector< double > * >(argp1);
+  arg1 = reinterpret_cast< vector * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Vec_Dbl_set" "', argument " "2"" of type '" "vector< double >::size_type""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "vector_set" "', argument " "2"" of type '" "vector::size_type""'");
   } 
-  arg2 = static_cast< vector< double >::size_type >(val2);
+  arg2 = static_cast< vector::size_type >(val2);
   ecode3 = SWIG_AsVal_double(obj2, &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Vec_Dbl_set" "', argument " "3"" of type '" "vector< double >::value_type""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "vector_set" "', argument " "3"" of type '" "vector::value_type""'");
   } 
-  temp3 = static_cast< vector< double >::value_type >(val3);
+  temp3 = static_cast< vector::value_type >(val3);
   arg3 = &temp3;
-  (arg1)->set(arg2,(vector< double >::value_type const &)*arg3);
+  (arg1)->set(arg2,(vector::value_type const &)*arg3);
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -3492,19 +3463,19 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_delete_Vec_Dbl(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_delete_vector(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  vector< double > *arg1 = (vector< double > *) 0 ;
+  vector *arg1 = (vector *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:delete_Vec_Dbl",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_vectorT_double_t, SWIG_POINTER_DISOWN |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_vector",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_vector, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Vec_Dbl" "', argument " "1"" of type '" "vector< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_vector" "', argument " "1"" of type '" "vector *""'"); 
   }
-  arg1 = reinterpret_cast< vector< double > * >(argp1);
+  arg1 = reinterpret_cast< vector * >(argp1);
   delete arg1;
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -3513,23 +3484,47 @@ fail:
 }
 
 
-SWIGINTERN PyObject *Vec_Dbl_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *vector_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_vectorT_double_t, SWIG_NewClientData(obj));
+  SWIG_TypeNewClientData(SWIGTYPE_p_vector, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
+SWIGINTERN PyObject *_wrap_do_something(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  vector *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:do_something",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_vector,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "do_something" "', argument " "1"" of type '" "vector const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "do_something" "', argument " "1"" of type '" "vector const &""'"); 
+  }
+  arg1 = reinterpret_cast< vector * >(argp1);
+  do_something((vector const &)*arg1);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 static PyMethodDef SwigMethods[] = {
 	 { (char *)"SWIG_PyInstanceMethod_New", (PyCFunction)SWIG_PyInstanceMethod_New, METH_O, NULL},
+	 { (char *)"new_vector", _wrap_new_vector, METH_VARARGS, NULL},
+	 { (char *)"vector_empty", _wrap_vector_empty, METH_VARARGS, NULL},
+	 { (char *)"vector_size", _wrap_vector_size, METH_VARARGS, NULL},
+	 { (char *)"vector_get", _wrap_vector_get, METH_VARARGS, NULL},
+	 { (char *)"vector_set", _wrap_vector_set, METH_VARARGS, NULL},
+	 { (char *)"delete_vector", _wrap_delete_vector, METH_VARARGS, NULL},
+	 { (char *)"vector_swigregister", vector_swigregister, METH_VARARGS, NULL},
 	 { (char *)"do_something", _wrap_do_something, METH_VARARGS, NULL},
-	 { (char *)"new_Vec_Dbl", _wrap_new_Vec_Dbl, METH_VARARGS, NULL},
-	 { (char *)"Vec_Dbl_empty", _wrap_Vec_Dbl_empty, METH_VARARGS, NULL},
-	 { (char *)"Vec_Dbl_size", _wrap_Vec_Dbl_size, METH_VARARGS, NULL},
-	 { (char *)"Vec_Dbl_get", _wrap_Vec_Dbl_get, METH_VARARGS, NULL},
-	 { (char *)"Vec_Dbl_set", _wrap_Vec_Dbl_set, METH_VARARGS, NULL},
-	 { (char *)"delete_Vec_Dbl", _wrap_delete_Vec_Dbl, METH_VARARGS, NULL},
-	 { (char *)"Vec_Dbl_swigregister", Vec_Dbl_swigregister, METH_VARARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 
@@ -3539,25 +3534,25 @@ static PyMethodDef SwigMethods[] = {
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_size_type = {"_p_size_type", "size_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_value_type = {"_p_value_type", "value_type *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_vectorT_double_t = {"_p_vectorT_double_t", "vector< double > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_vector = {"_p_vector", "vector *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_char,
   &_swigt__p_size_type,
   &_swigt__p_value_type,
-  &_swigt__p_vectorT_double_t,
+  &_swigt__p_vector,
 };
 
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_size_type[] = {  {&_swigt__p_size_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_value_type[] = {  {&_swigt__p_value_type, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_vectorT_double_t[] = {  {&_swigt__p_vectorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_vector[] = {  {&_swigt__p_vector, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_char,
   _swigc__p_size_type,
   _swigc__p_value_type,
-  _swigc__p_vectorT_double_t,
+  _swigc__p_vector,
 };
 
 

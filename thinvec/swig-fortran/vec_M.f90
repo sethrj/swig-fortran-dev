@@ -11,45 +11,92 @@ module vec_M
  type Vec_Dbl
   type(C_PTR), private :: ptr = C_NULL_PTR
  contains
+  procedure :: Vec_Dbl_empty => Vec_Dbl_empty
+  procedure :: Vec_Dbl_size => Vec_Dbl_size
+  procedure :: Vec_Dbl_get => Vec_Dbl_get
+  procedure :: Vec_Dbl_set => Vec_Dbl_set
+  procedure :: Vec_Dbl_resize_fill => Vec_Dbl_resize_fill
+  procedure :: Vec_Dbl_resize => Vec_Dbl_resize
+  procedure :: delete_Vec_Dbl => delete_Vec_Dbl
  end type
+ interface Vec_Dbl
+  procedure :: new_construct_empty
+  procedure :: new_Vec_Dbl
+  procedure :: new_construct_count
+ end interface
  ! INTERFACES
 contains
-   subroutine do_something()
+   subroutine do_something(farg1)
     use, intrinsic :: ISO_C_BINDING
     implicit none
+    type(C_PTR) :: farg1
    end subroutine
-   function new_Vec_Dbl__SWIG_0() &
+   function new_construct_empty() &
       result(fresult)
     use, intrinsic :: ISO_C_BINDING
     implicit none
-     :: fresult
+    type(C_PTR) :: fresult
    end function
-   function Vec_Dbl_empty() &
+   function new_Vec_Dbl(farg1, farg2) &
+      result(fresult)
+    use, intrinsic :: ISO_C_BINDING
+    implicit none
+    type(C_PTR) :: fresult
+    integer(C_LONG) :: farg1
+    real(C_DOUBLE) :: farg2
+   end function
+   function new_construct_count(farg1) &
+      result(fresult)
+    use, intrinsic :: ISO_C_BINDING
+    implicit none
+    type(C_PTR) :: fresult
+    integer(C_LONG) :: farg1
+   end function
+   function Vec_Dbl_empty(farg1) &
       result(fresult)
     use, intrinsic :: ISO_C_BINDING
     implicit none
     logical(C_BOOL) :: fresult
+    type(C_PTR) :: farg1
    end function
-   function Vec_Dbl_size() &
+   function Vec_Dbl_size(farg1) &
       result(fresult)
     use, intrinsic :: ISO_C_BINDING
     implicit none
     integer(C_LONG) :: fresult
+    type(C_PTR) :: farg1
    end function
-   function Vec_Dbl_get(farg1farg1) &
+   function Vec_Dbl_get(farg1, farg2) &
       result(fresult)
     use, intrinsic :: ISO_C_BINDING
     implicit none
     real(C_DOUBLE) :: fresult
-     :: farg1
+    type(C_PTR) :: farg1
+    integer(C_LONG) :: farg2
    end function
-   subroutine Vec_Dbl_set(farg1farg1)
+   subroutine Vec_Dbl_set(farg1, farg2, farg3)
     use, intrinsic :: ISO_C_BINDING
     implicit none
-     :: farg1
+    type(C_PTR) :: farg1
+    integer(C_LONG) :: farg2
+    real(C_DOUBLE) :: farg3
    end subroutine
-   subroutine delete_Vec_Dbl()
+   subroutine Vec_Dbl_resize_fill(farg1, farg2, farg3)
     use, intrinsic :: ISO_C_BINDING
     implicit none
+    type(C_PTR) :: farg1
+    integer(C_LONG) :: farg2
+    real(C_DOUBLE) :: farg3
+   end subroutine
+   subroutine Vec_Dbl_resize(farg1, farg2)
+    use, intrinsic :: ISO_C_BINDING
+    implicit none
+    type(C_PTR) :: farg1
+    integer(C_LONG) :: farg2
+   end subroutine
+   subroutine delete_Vec_Dbl(farg1)
+    use, intrinsic :: ISO_C_BINDING
+    implicit none
+    type(C_PTR) :: farg1
    end subroutine
 end module vec_M

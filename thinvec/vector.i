@@ -12,7 +12,16 @@
 
 %module vec
 
+// Handle the case of operator overloading
+%rename(resize_fill) vector::resize(size_type, const value_type &);
+%rename(construct_empty) vector::vector();
+%rename(construct_count) vector::vector(size_type);
+%rename(construct_fill) vector::vector(size_type, const value_type &);
+
+// Load the vector class definition
 %include "vector.hh"
+
+// Instantiate
 %template(Vec_Dbl) vector<double>;
 
 //---------------------------------------------------------------------------//

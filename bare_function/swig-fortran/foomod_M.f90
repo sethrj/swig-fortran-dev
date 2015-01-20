@@ -6,4 +6,21 @@
 module foomod_M
  use, intrinsic :: ISO_C_BINDING
  use foomod_I
+ implicit none
+ ! TYPES
+ ! INTERFACES
+contains
+   subroutine set_something(farg1, farg2)
+    use, intrinsic :: ISO_C_BINDING
+    implicit none
+    integer(C_INT) :: farg1
+    real(C_DOUBLE) :: farg2
+   end subroutine
+   function get_something(farg1) &
+      result(fresult)
+    use, intrinsic :: ISO_C_BINDING
+    implicit none
+    real(C_DOUBLE) :: fresult
+    integer(C_INT) :: farg1
+   end function
 end module foomod_M

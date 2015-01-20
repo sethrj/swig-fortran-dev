@@ -87,40 +87,40 @@ except AttributeError:
     _newclass = 0
 
 
-
-def do_something(v):
-    return _vec.do_something(v)
-do_something = _vec.do_something
-class Vec_Dbl(_object):
+class vector(_object):
     __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, Vec_Dbl, name, value)
+    __setattr__ = lambda self, name, value: _swig_setattr(self, vector, name, value)
     __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, Vec_Dbl, name)
+    __getattr__ = lambda self, name: _swig_getattr(self, vector, name)
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        this = _vec.new_Vec_Dbl(*args)
+        this = _vec.new_vector(*args)
         try:
             self.this.append(this)
         except:
             self.this = this
 
     def empty(self):
-        return _vec.Vec_Dbl_empty(self)
+        return _vec.vector_empty(self)
 
     def size(self):
-        return _vec.Vec_Dbl_size(self)
+        return _vec.vector_size(self)
 
     def get(self, index):
-        return _vec.Vec_Dbl_get(self, index)
+        return _vec.vector_get(self, index)
 
     def set(self, index, value):
-        return _vec.Vec_Dbl_set(self, index, value)
-    __swig_destroy__ = _vec.delete_Vec_Dbl
+        return _vec.vector_set(self, index, value)
+    __swig_destroy__ = _vec.delete_vector
     __del__ = lambda self: None
-Vec_Dbl_swigregister = _vec.Vec_Dbl_swigregister
-Vec_Dbl_swigregister(Vec_Dbl)
+vector_swigregister = _vec.vector_swigregister
+vector_swigregister(vector)
 
+
+def do_something(v):
+    return _vec.do_something(v)
+do_something = _vec.do_something
 # This file is compatible with both classic and new-style classes.
 
 

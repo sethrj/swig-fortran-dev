@@ -5,21 +5,22 @@
 ! the SWIG interface file instead.
 module foomod_I
  use, intrinsic :: ISO_C_BINDING
+ implicit none
  interface
- subroutine set_something &
- (farg1, farg2) &
- BIND(C,name="_wrap_set_something")
-  use,intrinsic :: ISO_C_BINDING
-  implicit none
-  integer(C_INT) :: farg1;
-  real(C_DOUBLE) :: farg2;
- end subroutine
- real(C_DOUBLE) function get_something &
- (farg1) &
- BIND(C,name="_wrap_get_something")
-  use,intrinsic :: ISO_C_BINDING
-  implicit none
-  integer(C_INT) :: farg1;
- end function
+   subroutine _wrap_set_something(farg1, farg2) &
+      bind(C, name="_wrap_set_something")
+    use, intrinsic :: ISO_C_BINDING
+    implicit none
+    integer(C_INT) :: farg1
+    real(C_DOUBLE) :: farg2
+   end subroutine
+   function _wrap_get_something(farg1) &
+      result(fresult) &
+      bind(C, name="_wrap_get_something")
+    use, intrinsic :: ISO_C_BINDING
+    implicit none
+    real(C_DOUBLE) :: fresult
+    integer(C_INT) :: farg1
+   end function
  end interface
 end module foomod_I
