@@ -13,7 +13,7 @@ type ScaleSTL_Vec_Dbl
     type(C_PTR) :: instance_ptr=C_NULL_PTR
     contains
     procedure, pass(this) :: initialize_size => ScaleSTL_Vec_Dbl_initialize_size
-    procedure, pass(this) :: initialize_from => ScaleSTL_Vec_Dbl_initialize_from
+    procedure, pass(this) :: initialize_copy => ScaleSTL_Vec_Dbl_initialize_copy
     procedure, pass(this) :: size => ScaleSTL_Vec_Dbl_size
     procedure, pass(this) :: element_length => ScaleSTL_Vec_Dbl_element_length
     procedure, pass(this) :: total_element_length => ScaleSTL_Vec_Dbl_total_element_length
@@ -39,56 +39,56 @@ contains
 subroutine ScaleSTL_Vec_Dbl_initialize_size(this, size)
     implicit none
     class(ScaleSTL_Vec_Dbl) :: this
-    integer(C_INT)::size
+    integer(C_SIZE_T)::size
     this%instance_ptr = f_ScaleSTL_Vec_Dbl_initialize_size( size)
 end subroutine
-subroutine ScaleSTL_Vec_Dbl_initialize_from(this, orig)
+subroutine ScaleSTL_Vec_Dbl_initialize_copy(this, orig)
     implicit none
     class(ScaleSTL_Vec_Dbl) :: this
     class(ScaleSTL_Vec_Dbl)::orig
-    this%instance_ptr = f_ScaleSTL_Vec_Dbl_initialize_from( orig%instance_ptr)
+    this%instance_ptr = f_ScaleSTL_Vec_Dbl_initialize_copy( orig%instance_ptr)
 end subroutine
 function ScaleSTL_Vec_Dbl_size(this) result(result2Return)
     implicit none
     class(ScaleSTL_Vec_Dbl)::this
-    integer(C_INT):: result2Return
+    integer(C_SIZE_T):: result2Return
     result2Return=f_ScaleSTL_Vec_Dbl_size(this%instance_ptr)
 end function
 function ScaleSTL_Vec_Dbl_element_length(this, index) result(result2Return)
     implicit none
     class(ScaleSTL_Vec_Dbl)::this
-    integer(C_INT)::index
-    integer(C_INT):: result2Return
+    integer(C_SIZE_T)::index
+    integer(C_SIZE_T):: result2Return
     result2Return=f_ScaleSTL_Vec_Dbl_element_length(this%instance_ptr, index-1)
 end function
 function ScaleSTL_Vec_Dbl_total_element_length(this) result(result2Return)
     implicit none
     class(ScaleSTL_Vec_Dbl)::this
-    integer(C_INT):: result2Return
+    integer(C_SIZE_T):: result2Return
     result2Return=f_ScaleSTL_Vec_Dbl_total_element_length(this%instance_ptr)
 end function
 function ScaleSTL_Vec_Dbl_max_element_length(this) result(result2Return)
     implicit none
     class(ScaleSTL_Vec_Dbl)::this
-    integer(C_INT):: result2Return
+    integer(C_SIZE_T):: result2Return
     result2Return=f_ScaleSTL_Vec_Dbl_max_element_length(this%instance_ptr)
 end function
 subroutine ScaleSTL_Vec_Dbl_resize(this, newSize)
     implicit none
     class(ScaleSTL_Vec_Dbl)::this
-    integer(C_INT)::newSize
+    integer(C_SIZE_T)::newSize
     call f_ScaleSTL_Vec_Dbl_resize(this%instance_ptr, newSize)
 end subroutine
 subroutine ScaleSTL_Vec_Dbl_reserve(this, maxSize)
     implicit none
     class(ScaleSTL_Vec_Dbl)::this
-    integer(C_INT)::maxSize
+    integer(C_SIZE_T)::maxSize
     call f_ScaleSTL_Vec_Dbl_reserve(this%instance_ptr, maxSize)
 end subroutine
 subroutine ScaleSTL_Vec_Dbl_resize_fill(this, newSize, fill)
     implicit none
     class(ScaleSTL_Vec_Dbl)::this
-    integer(C_INT)::newSize
+    integer(C_SIZE_T)::newSize
     real(C_DOUBLE)::fill
     call f_ScaleSTL_Vec_Dbl_resize_fill(this%instance_ptr, newSize,fill)
 end subroutine
@@ -101,14 +101,14 @@ end function
 function ScaleSTL_Vec_Dbl_at(this, index) result(result2Return)
     implicit none
     class(ScaleSTL_Vec_Dbl)::this
-    integer(C_INT)::index
+    integer(C_SIZE_T)::index
     real(C_DOUBLE):: result2Return
     result2Return=f_ScaleSTL_Vec_Dbl_at(this%instance_ptr, index-1)
 end function
 subroutine ScaleSTL_Vec_Dbl_set(this, index, value)
     implicit none
     class(ScaleSTL_Vec_Dbl)::this
-    integer(C_INT)::index
+    integer(C_SIZE_T)::index
     real(C_DOUBLE)::value
     call f_ScaleSTL_Vec_Dbl_set(this%instance_ptr, index-1,value)
 end subroutine
@@ -138,14 +138,14 @@ end subroutine
 subroutine ScaleSTL_Vec_Dbl_insert(this, index, item)
     implicit none
     class(ScaleSTL_Vec_Dbl)::this
-    integer(C_INT)::index
+    integer(C_SIZE_T)::index
     real(C_DOUBLE)::item
     call f_ScaleSTL_Vec_Dbl_insert(this%instance_ptr, index-1,item)
 end subroutine
 subroutine ScaleSTL_Vec_Dbl_erase(this, index)
     implicit none
     class(ScaleSTL_Vec_Dbl)::this
-    integer(C_INT)::index
+    integer(C_SIZE_T)::index
     call f_ScaleSTL_Vec_Dbl_erase(this%instance_ptr, index-1)
 end subroutine
 function ScaleSTL_Vec_Dbl_contains(this, item) result(result2Return)

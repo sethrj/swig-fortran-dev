@@ -1,0 +1,79 @@
+<generate name="Vec_Dbl">
+
+    <include_relative name="ScaleSTL/Vec.h"/>
+
+    <type_define name="ScaleSTL_Dbl"
+                 type="double"/>
+
+    <type_define name="ScaleSTL_Vec_Dbl"
+                 type="ScaleSTL::Vec&lt;double&gt;"/>
+
+    <class name="ScaleSTL_Vec_Dbl">
+
+        <constructor name="initialize_size">
+            <param name="size" type="size_t"/>
+        </constructor>
+        <constructor name="initialize_copy">
+            <param name="orig" type="ScaleSTL_Vec_Dbl"/>
+        </constructor>
+
+        <method name="size" return_type="size_t"/>
+
+        <method name="element_length" return_type="size_t">
+            <param name="index" type="size_t" offset="-1" />
+        </method>
+
+        <method name="total_element_length" return_type="size_t"/>
+        <method name="max_element_length" return_type="size_t"/>
+
+        <method name="resize" >
+            <param name="newSize" type="size_t"/>
+        </method>
+
+        <method name="reserve" >
+            <param name="maxSize" type="size_t"/>
+        </method>
+
+        <method name="resize_fill" cname="resize">
+            <param name="newSize" type="size_t"/>
+            <param name="fill" type="double"/>
+        </method>
+
+        <method name="empty" return_type="bool"/>
+
+        <method name="at" return_type="double">
+            <param name="index" type="size_t" offset="-1"/>
+        </method>
+        <method name="set">
+            <param name="index" type="size_t" offset="-1"/>
+            <param name="value" type="double" />
+        </method>
+
+        <method name="front" return_type="double"/>
+
+        <method name="back" return_type="double"/>
+
+        <method name="push_back" >
+            <param name="newValue" type="double"/>
+        </method>
+
+        <method name="pop_back" />
+
+        <method name="insert">
+            <param name="index" type="size_t" offset="-1"/>
+            <param name="item" type="double"/>
+        </method>
+
+        <method name="erase" >
+            <param name="index" type="size_t" offset="-1"/>
+        </method>
+
+        <method name="contains" return_type="bool">
+            <param name="item" type="double"/>
+        </method>
+
+        <method name="clear" />
+
+    </class>
+
+</generate>

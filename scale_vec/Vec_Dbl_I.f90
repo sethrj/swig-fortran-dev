@@ -15,39 +15,39 @@ BIND(C,name="ScaleSTL_Vec_Dbl_initialize_size")
     use,intrinsic :: ISO_C_BINDING
     implicit none
     type(C_PTR) :: ScaleSTL_Vec_Dbl_ptr;
-    integer(C_INT) :: size;
+    integer(C_SIZE_T) :: size;
 end function
-type(C_PTR) function f_ScaleSTL_Vec_Dbl_initialize_from&
+type(C_PTR) function f_ScaleSTL_Vec_Dbl_initialize_copy&
 ( orig )&
-BIND(C,name="ScaleSTL_Vec_Dbl_initialize_from")
+BIND(C,name="ScaleSTL_Vec_Dbl_initialize_copy")
     use,intrinsic :: ISO_C_BINDING
     implicit none
     type(C_PTR) :: ScaleSTL_Vec_Dbl_ptr;
     type(C_PTR), value :: orig;
 end function
-integer(C_INT) function f_ScaleSTL_Vec_Dbl_size&
+integer(C_SIZE_T) function f_ScaleSTL_Vec_Dbl_size&
 (ScaleSTL_Vec_Dbl_ptr ) &
 BIND(C,name="ScaleSTL_Vec_Dbl_size")
     use,intrinsic :: ISO_C_BINDING
     implicit none
     type(C_PTR), value :: ScaleSTL_Vec_Dbl_ptr;
 end function
-integer(C_INT) function f_ScaleSTL_Vec_Dbl_element_length&
+integer(C_SIZE_T) function f_ScaleSTL_Vec_Dbl_element_length&
 (ScaleSTL_Vec_Dbl_ptr, index ) &
 BIND(C,name="ScaleSTL_Vec_Dbl_element_length")
     use,intrinsic :: ISO_C_BINDING
     implicit none
     type(C_PTR), value :: ScaleSTL_Vec_Dbl_ptr;
-    integer(C_INT) :: index;
+    integer(C_SIZE_T) :: index;
 end function
-integer(C_INT) function f_ScaleSTL_Vec_Dbl_total_element_length&
+integer(C_SIZE_T) function f_ScaleSTL_Vec_Dbl_total_element_length&
 (ScaleSTL_Vec_Dbl_ptr ) &
 BIND(C,name="ScaleSTL_Vec_Dbl_total_element_length")
     use,intrinsic :: ISO_C_BINDING
     implicit none
     type(C_PTR), value :: ScaleSTL_Vec_Dbl_ptr;
 end function
-integer(C_INT) function f_ScaleSTL_Vec_Dbl_max_element_length&
+integer(C_SIZE_T) function f_ScaleSTL_Vec_Dbl_max_element_length&
 (ScaleSTL_Vec_Dbl_ptr ) &
 BIND(C,name="ScaleSTL_Vec_Dbl_max_element_length")
     use,intrinsic :: ISO_C_BINDING
@@ -60,7 +60,7 @@ BIND(C,name="ScaleSTL_Vec_Dbl_resize")
     use,intrinsic :: ISO_C_BINDING
     implicit none
     type(C_PTR), value :: ScaleSTL_Vec_Dbl_ptr;
-    integer(C_INT) :: newSize;
+    integer(C_SIZE_T) :: newSize;
 end subroutine
 subroutine f_ScaleSTL_Vec_Dbl_reserve&
 (ScaleSTL_Vec_Dbl_ptr, maxSize ) &
@@ -68,7 +68,7 @@ BIND(C,name="ScaleSTL_Vec_Dbl_reserve")
     use,intrinsic :: ISO_C_BINDING
     implicit none
     type(C_PTR), value :: ScaleSTL_Vec_Dbl_ptr;
-    integer(C_INT) :: maxSize;
+    integer(C_SIZE_T) :: maxSize;
 end subroutine
 subroutine f_ScaleSTL_Vec_Dbl_resize_fill&
 (ScaleSTL_Vec_Dbl_ptr, newSize,fill ) &
@@ -76,7 +76,7 @@ BIND(C,name="ScaleSTL_Vec_Dbl_resize_fill")
     use,intrinsic :: ISO_C_BINDING
     implicit none
     type(C_PTR), value :: ScaleSTL_Vec_Dbl_ptr;
-    integer(C_INT) :: newSize;
+    integer(C_SIZE_T) :: newSize;
     real(C_DOUBLE) :: fill;
 end subroutine
 logical(C_BOOL) function f_ScaleSTL_Vec_Dbl_empty&
@@ -92,7 +92,7 @@ BIND(C,name="ScaleSTL_Vec_Dbl_at")
     use,intrinsic :: ISO_C_BINDING
     implicit none
     type(C_PTR), value :: ScaleSTL_Vec_Dbl_ptr;
-    integer(C_INT) :: index;
+    integer(C_SIZE_T) :: index;
 end function
 subroutine f_ScaleSTL_Vec_Dbl_set&
 (ScaleSTL_Vec_Dbl_ptr, index,value ) &
@@ -100,7 +100,7 @@ BIND(C,name="ScaleSTL_Vec_Dbl_set")
     use,intrinsic :: ISO_C_BINDING
     implicit none
     type(C_PTR), value :: ScaleSTL_Vec_Dbl_ptr;
-    integer(C_INT) :: index;
+    integer(C_SIZE_T) :: index;
     real(C_DOUBLE) :: value;
 end subroutine
 real(C_DOUBLE) function f_ScaleSTL_Vec_Dbl_front&
@@ -138,7 +138,7 @@ BIND(C,name="ScaleSTL_Vec_Dbl_insert")
     use,intrinsic :: ISO_C_BINDING
     implicit none
     type(C_PTR), value :: ScaleSTL_Vec_Dbl_ptr;
-    integer(C_INT) :: index;
+    integer(C_SIZE_T) :: index;
     real(C_DOUBLE) :: item;
 end subroutine
 subroutine f_ScaleSTL_Vec_Dbl_erase&
@@ -147,7 +147,7 @@ BIND(C,name="ScaleSTL_Vec_Dbl_erase")
     use,intrinsic :: ISO_C_BINDING
     implicit none
     type(C_PTR), value :: ScaleSTL_Vec_Dbl_ptr;
-    integer(C_INT) :: index;
+    integer(C_SIZE_T) :: index;
 end subroutine
 logical(C_BOOL) function f_ScaleSTL_Vec_Dbl_contains&
 (ScaleSTL_Vec_Dbl_ptr, item ) &
