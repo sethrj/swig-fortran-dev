@@ -9,14 +9,14 @@ swig=/Users/s3j/_code/_build/swig-debug/swig
 #args=-debug-tags
 args=
 
-lang=fortran
-
-dirname=swig-${lang}
-mkdir "${dirname}" 2>/dev/null
-cd ${dirname} || exit $?
-echo "Calling swig with ${lang}"
+dirname=swig-lang
 ln -s ../foo.* . 2>/dev/null
-${swig} ${args} -c++ -${lang} foo.i || exit $?
+g++ foo.cc -c -o foo.o
+${swig} ${args} -c++ -fortran foo.i || exit $?
+g++ foo_wrap.cxx -c -o foo_wrap.o
+gfortran -c foomod_I.f90
+gfortran -c foomod_M.f90
+gfortran  foo.o foo_wrap.o foomod_I.o foomod_M.o test.f90 -o test.exe
 
 ###############################################################################
 # end of swig-dev/bare_function/fortran.sh
