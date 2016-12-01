@@ -156,6 +156,9 @@ template <typename T> T SwigValueInit() {
 #endif
 
 
+#include <cassert>
+
+
 #include "foo.hh"
 
 #ifdef __cplusplus
@@ -180,6 +183,26 @@ SWIGEXPORT double swigc_get_something(int* farg1) {
   result = (double)get_something(arg1);
   fresult = result; 
   return fresult;
+}
+
+
+SWIGEXPORT void swigc_get_something_ref(int* farg1, void* farg2) {
+  int arg1 ;
+  double *arg2 = 0 ;
+  
+  arg1 = *farg1; 
+  arg2 = *(double **)&farg2; assert(arg2); 
+  get_something_ref(arg1,*arg2);
+}
+
+
+SWIGEXPORT void swigc_get_something_ptr(int* farg1, void* farg2) {
+  int arg1 ;
+  double *arg2 = (double *) 0 ;
+  
+  arg1 = *farg1; 
+  arg2 = (double *)farg2; 
+  get_something_ptr(arg1,arg2);
 }
 
 

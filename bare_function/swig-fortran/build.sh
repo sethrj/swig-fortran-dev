@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -ex
 ###############################################################################
 # File  : swig-dev/bare_function/fortran.sh
 # Author: Seth R Johnson
@@ -10,12 +10,12 @@ swig=/Users/s3j/_code/_build/swig-debug/swig
 args=
 
 dirname=swig-lang
-ln -s ../foo.* . 2>/dev/null
+#ln -s ../foo.* . 2>/dev/null || true
 g++ foo.cc -c -o foo.o
-# ${swig} ${args} -c++ -fortran foo.i || exit $?
+#${swig} ${args} -c++ -fortran foo.i
 g++ foo_wrap.cxx -c -o foo_wrap.o
-gfortran -c foomod.f90
-gfortran  foo.o foo_wrap.o foomod.o test.f90 -o test.exe
+gfortran -Wall -Wextra -c foomod.f90
+gfortran -Wall -Wextra  foo.o foo_wrap.o foomod.o test.f90 -o test.exe
 
 ###############################################################################
 # end of swig-dev/bare_function/fortran.sh

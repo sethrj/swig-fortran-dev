@@ -7,16 +7,21 @@
 !-----------------------------------------------------------------------------!
 
 program main
-
     use ISO_FORTRAN_ENV
     use foomod
     implicit none
+    real(kind=8) :: temp
 
+    call set_something(2, 200.0d0)
     call set_something(1, 10.0d0)
     call set_something(0, 1.0d0)
     write(0, *) "Got ", get_something(0)
     write(0, *) "Got ", get_something(1)
 
+    call get_something_ptr(2, temp)
+    write(0, *) "Got ", temp
+    call get_something_ref(1, temp)
+    write(0, *) "Got ", temp
 end program
 
 !-----------------------------------------------------------------------------!

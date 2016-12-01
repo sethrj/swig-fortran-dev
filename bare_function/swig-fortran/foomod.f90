@@ -6,9 +6,11 @@
 module foomod
  use, intrinsic :: ISO_C_BINDING
  implicit none
- ! List of public interface functions
+ ! PUBLIC METHODS AND TYPES
  public :: set_something
  public :: get_something
+ public :: get_something_ref
+ public :: get_something_ptr
  ! TYPES
  ! INTERFACES
  private
@@ -28,5 +30,20 @@ module foomod
     real(C_DOUBLE) :: fresult
     integer(C_INT) :: farg1
    end function
+   subroutine get_something_ref(farg1, farg2) &
+      bind(C, name="swigc_get_something_ref")
+    use, intrinsic :: ISO_C_BINDING
+    implicit none
+    integer(C_INT) :: farg1
+    real(C_DOUBLE) :: farg2
+   end subroutine
+   subroutine get_something_ptr(farg1, farg2) &
+      bind(C, name="swigc_get_something_ptr")
+    use, intrinsic :: ISO_C_BINDING
+    implicit none
+    integer(C_INT) :: farg1
+    real(C_DOUBLE) :: farg2
+   end subroutine
  end interface
+contains
 end module foomod
