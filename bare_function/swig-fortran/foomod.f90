@@ -3,7 +3,7 @@
 !
 ! Do not make changes to this file unless you know what you are doing--modify
 ! the SWIG interface file instead.
-module foomod_M
+module foomod
  use, intrinsic :: ISO_C_BINDING
  implicit none
  ! List of public interface functions
@@ -29,4 +29,4 @@ module foomod_M
     integer(C_INT) :: farg1
    end function
  end interface
-end module foomod_M
+end module foomod

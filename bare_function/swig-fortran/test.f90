@@ -9,7 +9,7 @@
 program main
 
     use ISO_FORTRAN_ENV
-    use foomod_M
+    use foomod
     implicit none
 
     call set_something(1, 10.0d0)
