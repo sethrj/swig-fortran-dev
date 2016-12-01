@@ -5,24 +5,28 @@
 ! the SWIG interface file instead.
 module foomod_M
  use, intrinsic :: ISO_C_BINDING
- use foomod_I
  implicit none
+ ! List of public interface functions
+ public :: set_something
+ public :: get_something
  ! TYPES
  ! INTERFACES
-contains
-   subroutine set_something(farg1, farg2)
+ private
+ interface
+   subroutine set_something(farg1, farg2) &
+      bind(C, name="swigc_set_something")
     use, intrinsic :: ISO_C_BINDING
     implicit none
     integer(C_INT) :: farg1
     real(C_DOUBLE) :: farg2
-    call swigc_set_something(farg1, farg2)
    end subroutine
    function get_something(farg1) &
-      result(fresult)
+      result(fresult) &
+      bind(C, name="swigc_get_something")
     use, intrinsic :: ISO_C_BINDING
     implicit none
     real(C_DOUBLE) :: fresult
     integer(C_INT) :: farg1
-    fresult = swigc_get_something(farg1)
    end function
+ end interface
 end module foomod_M
