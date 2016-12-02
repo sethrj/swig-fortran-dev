@@ -36,7 +36,6 @@ class SimpleClass
     // Destructor
     ~SimpleClass();
 
-#ifndef SWIG
     // Set the value
     void set(double val);
 
@@ -48,7 +47,6 @@ class SimpleClass
 
     // Access the value, multiplied by some parameter
     double get_multiplied(int multiple) const;
-#endif
 };
 
 //---------------------------------------------------------------------------//

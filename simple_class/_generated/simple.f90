@@ -14,6 +14,10 @@ module simple
  contains
   procedure :: ctor => swigf_new_SimpleClass
   procedure :: dtor => swigf_delete_SimpleClass
+  procedure :: set => swigf_SimpleClass_set
+  procedure :: double_it => swigf_SimpleClass_double_it
+  procedure :: get => swigf_SimpleClass_get
+  procedure :: get_multiplied => swigf_SimpleClass_get_multiplied
  end type
  ! INTERFACES
  private
@@ -31,6 +35,36 @@ module simple
    implicit none
    type(C_PTR), value :: farg1
    end subroutine
+   subroutine swigc_SimpleClass_set(farg1, farg2) &
+     bind(C, name="swigc_SimpleClass_set")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   type(C_PTR), value :: farg1
+   real(C_DOUBLE) :: farg2
+   end subroutine
+   subroutine swigc_SimpleClass_double_it(farg1) &
+     bind(C, name="swigc_SimpleClass_double_it")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   type(C_PTR), value :: farg1
+   end subroutine
+   function swigc_SimpleClass_get(farg1) &
+     bind(C, name="swigc_SimpleClass_get") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   real(C_DOUBLE) :: fresult
+   type(C_PTR), value :: farg1
+   end function
+   function swigc_SimpleClass_get_multiplied(farg1, farg2) &
+     bind(C, name="swigc_SimpleClass_get_multiplied") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   real(C_DOUBLE) :: fresult
+   type(C_PTR), value :: farg1
+   integer(C_INT) :: farg2
+   end function
  end interface
 contains
  ! FORTRAN PROXY CODE
@@ -50,4 +84,34 @@ contains
     write(0, "(a, z16)") "Destroying at ", farg1%ptr
   call swigc_delete_SimpleClass(farg1%ptr)
  end subroutine
+ subroutine swigf_SimpleClass_set(farg1, farg2)
+  use, intrinsic :: ISO_C_BINDING
+  implicit none
+   class(SimpleClass) :: farg1
+   real(C_DOUBLE) :: farg2
+  call swigc_SimpleClass_set(farg1%ptr, farg2)
+ end subroutine
+ subroutine swigf_SimpleClass_double_it(farg1)
+  use, intrinsic :: ISO_C_BINDING
+  implicit none
+   class(SimpleClass) :: farg1
+  call swigc_SimpleClass_double_it(farg1%ptr)
+ end subroutine
+ function swigf_SimpleClass_get(farg1) &
+     result(fresult)
+  use, intrinsic :: ISO_C_BINDING
+  implicit none
+  real(C_DOUBLE) :: fresult
+   class(SimpleClass) :: farg1
+  fresult = swigc_SimpleClass_get(farg1%ptr)
+ end function
+ function swigf_SimpleClass_get_multiplied(farg1, farg2) &
+     result(fresult)
+  use, intrinsic :: ISO_C_BINDING
+  implicit none
+  real(C_DOUBLE) :: fresult
+   class(SimpleClass) :: farg1
+   integer(C_INT) :: farg2
+  fresult = swigc_SimpleClass_get_multiplied(farg1%ptr, farg2)
+ end function
 end module simple
