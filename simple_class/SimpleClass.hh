@@ -20,10 +20,14 @@
 
 class SimpleClass
 {
+  public:
+    typedef double storage_type;
+    typedef int    multiple_type;
+
   private:
     // >>> DATA
 
-    double d_storage;
+    storage_type d_storage;
 
   public:
 
@@ -37,17 +41,20 @@ class SimpleClass
     ~SimpleClass();
 
     // Set the value
-    void set(double val);
+    void set(storage_type val);
 
     // Multiply the value by 2
     void double_it();
 
     // Access the value
-    double get() const;
+    storage_type get() const;
 
     // Access the value, multiplied by some parameter
-    double get_multiplied(int multiple) const;
+    storage_type get_multiplied(multiple_type multiple) const;
 };
+
+// Free function
+void print_value(const SimpleClass& c);
 
 //---------------------------------------------------------------------------//
 #endif // simple_class_SimpleClass_hh

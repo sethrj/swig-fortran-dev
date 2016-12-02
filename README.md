@@ -24,7 +24,7 @@ Basic language features
 
 - DONE: class constructor and destructor
 - DONE: class methods with primitive arguments and return values
-- methods/functions with class arguments
+- DONE: methods/functions with class arguments
 - template instantiation (SWIG should already handle this)
 - inheritance
 - multiple constructors

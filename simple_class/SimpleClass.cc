@@ -55,5 +55,11 @@ double SimpleClass::get_multiplied(int multiple) const
 }
 
 //---------------------------------------------------------------------------//
+void print_value(const SimpleClass& c)
+{
+    cout << "Simpleclass at " << &c << " has value " << c.get() << endl;
+}
+
+//---------------------------------------------------------------------------//
 // end of simple_class/SimpleClass.cc
 //---------------------------------------------------------------------------//

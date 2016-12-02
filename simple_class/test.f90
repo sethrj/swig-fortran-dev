@@ -20,6 +20,7 @@ program main
     call c%double_it()
     write(0, *) "Current value ", c%get()
     write(0, *) "Quadrupled: ", c%get_multiplied(4)
+    call print_value(c)
     write(0, *) "Destroying..."
     call c%dtor()
 end program

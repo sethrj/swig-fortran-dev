@@ -8,6 +8,7 @@ module simple
  implicit none
  ! PUBLIC METHODS AND TYPES
  public :: SimpleClass
+ public :: print_value
  ! TYPES
  type SimpleClass
   type(C_PTR), private :: ptr = C_NULL_PTR
@@ -65,6 +66,12 @@ module simple
    type(C_PTR), value :: farg1
    integer(C_INT) :: farg2
    end function
+   subroutine swigc_print_value(farg1) &
+     bind(C, name="swigc_print_value")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   type(C_PTR), value :: farg1
+   end subroutine
  end interface
 contains
  ! FORTRAN PROXY CODE
@@ -114,4 +121,10 @@ contains
    integer(C_INT) :: farg2
   fresult = swigc_SimpleClass_get_multiplied(farg1%ptr, farg2)
  end function
+ subroutine print_value(farg1)
+  use, intrinsic :: ISO_C_BINDING
+  implicit none
+   class(SimpleClass) :: farg1
+  call swigc_print_value(farg1%ptr)
+ end subroutine
 end module simple
