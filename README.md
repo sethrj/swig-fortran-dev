@@ -22,15 +22,17 @@ javadestruct
 Basic language features
 =======================
 
-- class constructor and destructor
-- class methods with primitive arguments and return values
+- DONE: class constructor and destructor
+- DONE: class methods with primitive arguments and return values
 - methods/functions with class arguments
+- template instantiation (SWIG should already handle this)
 - inheritance
 - multiple constructors
 - `RCP/shared_ptr` wrapping (SWIG should already handle this)
 - function overloading
-- template instantiation (SWIG should already handle this)
 - templated class method instantiation (needed for plist)
+- string wrapping
+- passing entire arrays of data in a single call
 - [type checking in SWIG C wrappers]
 - Fortran callback functions?
 

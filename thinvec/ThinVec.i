@@ -1,29 +1,29 @@
 //---------------------------------*-SWIG-*----------------------------------//
 /*!
- * \file   thinvec/vector.i
+ * \file   thinvec/ThinVec.i
  * \author Seth R Johnson
  * \date   Mon Jan 19 08:59:42 2015
  * \note   Copyright (c) 2015 Oak Ridge National Laboratory, UT-Battelle, LLC.
  */
 //---------------------------------------------------------------------------//
 %{
-#include "vector.hh"
+#include "ThinVec.hh"
 %}
 
-%module vec
+%module thinvec
 
 // Handle the case of operator overloading
-%rename(resize_fill) vector::resize(size_type, const value_type &);
-%rename(construct_empty) vector::vector();
-%rename(construct_count) vector::vector(size_type);
-%rename(construct_fill) vector::vector(size_type, const value_type &);
+%rename(resize_fill) ThinVec::ThinVec(size_type, value_type);
+%rename(ctor_count) ThinVec::ThinVec(size_type);
+%rename(ctor_fill) ThinVec::ThinVec(size_type, value_type);
 
-// Load the vector class definition
-%include "vector.hh"
+// Load the thinvec class definition
+%include "ThinVec.hh"
 
 // Instantiate
-%template(Vec_Dbl) vector<double>;
+%template(ThinVecDbl) ThinVec<double>;
+//%template(Vec_Int) thinvec<int>;
 
 //---------------------------------------------------------------------------//
-// end of swig-dev/hypothetical_vec/vector.i
+// end of swig-dev/thinvec/ThinVec.i
 //---------------------------------------------------------------------------//
