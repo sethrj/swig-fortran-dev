@@ -21,6 +21,14 @@ SimpleClass::SimpleClass()
     cout << "Constructing" << endl;
 }
 
+#if 0
+SimpleClass::SimpleClass(double d)
+    : d_storage(d)
+{
+    cout << "Constructing with" << d << endl;
+}
+#endif
+
 SimpleClass::~SimpleClass()
 {
     cout << "Destroying" << endl;

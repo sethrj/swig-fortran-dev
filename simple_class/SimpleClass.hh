@@ -30,6 +30,9 @@ class SimpleClass
     // Constructor
     SimpleClass();
 
+    // Other constructor
+    //explicit SimpleClass(double d);
+
     // Destructor
     ~SimpleClass();
 

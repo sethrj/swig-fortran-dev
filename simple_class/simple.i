@@ -12,6 +12,8 @@
 
 %module simple
 
+//%rename(ctor_dbl) SimpleClass(double);
+
 %include "SimpleClass.hh"
 
 //---------------------------------------------------------------------------//

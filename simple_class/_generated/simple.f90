@@ -20,31 +20,30 @@ module simple
  interface
    function swigc_new_SimpleClass() &
      bind(C, name="swigc_new_SimpleClass") &
-      result(fresult)
-    use, intrinsic :: ISO_C_BINDING
-    implicit none
-    type(C_PTR) :: fresult
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   type(C_PTR) :: fresult
    end function
    subroutine swigc_delete_SimpleClass(farg1) &
      bind(C, name="swigc_delete_SimpleClass")
-    use, intrinsic :: ISO_C_BINDING
-    implicit none
-    type(C_PTR) :: farg1
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   type(C_PTR) :: farg1
    end subroutine
  end interface
 contains
- ! FORTRAN WRAPPER FUNCTIONS
-   function swigf_new_SimpleClass() &
-      result(fresult)
-    use, intrinsic :: ISO_C_BINDING
-    implicit none
-    type(C_PTR) :: fresult
-    fresult = swigc_new_SimpleClass()
-   end function
-   subroutine swigf_delete_SimpleClass(farg1)
-    use, intrinsic :: ISO_C_BINDING
-    implicit none
-    type(C_PTR) :: farg1
-    call swigc_delete_SimpleClass(%ptr)
-   end subroutine
+   ! FORTRAN WRAPPER FUNCTIONS
+ subroutine swigf_new_SimpleClass(fresult)
+  use, intrinsic :: ISO_C_BINDING
+  implicit none
+  class(SimpleClass) :: fresult
+  fresult%ptr = swigc_new_SimpleClass()
+ end subroutine
+ subroutine swigf_delete_SimpleClass(farg1)
+  use, intrinsic :: ISO_C_BINDING
+  implicit none
+   class(SimpleClass) :: farg1
+ call swigc_delete_SimpleClass(farg1%ptr)
+ end subroutine
 end module simple
