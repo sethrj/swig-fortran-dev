@@ -29,21 +29,25 @@ module simple
      bind(C, name="swigc_delete_SimpleClass")
    use, intrinsic :: ISO_C_BINDING
    implicit none
-   type(C_PTR) :: farg1
+   type(C_PTR), value :: farg1
    end subroutine
  end interface
 contains
-   ! FORTRAN WRAPPER FUNCTIONS
+ ! FORTRAN PROXY CODE
  subroutine swigf_new_SimpleClass(fresult)
   use, intrinsic :: ISO_C_BINDING
   implicit none
   class(SimpleClass) :: fresult
   fresult%ptr = swigc_new_SimpleClass()
+
+    write(0, "(a, z16)") "Constructed at ", fresult%ptr
  end subroutine
  subroutine swigf_delete_SimpleClass(farg1)
   use, intrinsic :: ISO_C_BINDING
   implicit none
    class(SimpleClass) :: farg1
- call swigc_delete_SimpleClass(farg1%ptr)
+
+    write(0, "(a, z16)") "Destroying at ", farg1%ptr
+  call swigc_delete_SimpleClass(farg1%ptr)
  end subroutine
 end module simple

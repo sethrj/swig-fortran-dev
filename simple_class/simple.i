@@ -14,6 +14,14 @@
 
 //%rename(ctor_dbl) SimpleClass(double);
 
+%fortranappend SimpleClass::SimpleClass %{
+    write(0, "(a, z16)") "Constructed at ", fresult%ptr
+%}
+%fortranprepend SimpleClass::~SimpleClass %{
+    write(0, "(a, z16)") "Destroying at ", farg1%ptr
+%}
+
+
 %include "SimpleClass.hh"
 
 //---------------------------------------------------------------------------//

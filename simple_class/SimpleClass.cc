@@ -18,7 +18,7 @@ using std::endl;
 SimpleClass::SimpleClass()
     : d_storage(-1)
 {
-    cout << "Constructing" << endl;
+    cout << "Constructing at " << this << endl;
 }
 
 #if 0
@@ -31,7 +31,7 @@ SimpleClass::SimpleClass(double d)
 
 SimpleClass::~SimpleClass()
 {
-    cout << "Destroying" << endl;
+    cout << "Destroying at " << this << endl;
 }
 
 void SimpleClass::set(double val)
