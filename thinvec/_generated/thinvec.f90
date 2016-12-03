@@ -9,13 +9,14 @@ module thinvec
  ! PUBLIC METHODS AND TYPES
  public :: print_vec
  public :: ThinVecDbl
+ public :: ThinVecInt
  ! TYPES
  type ThinVecDbl
   type(C_PTR), private :: ptr = C_NULL_PTR
  contains
   procedure :: ctor => swigf_new_ThinVecDbl
-  procedure :: ctor_fill => swigf_new_ctor_fill
-  procedure :: ctor_count => swigf_new_ctor_count
+  procedure :: ctor_fill => swigf_new_ThinVecDbl_ctor_fill
+  procedure :: ctor_count => swigf_new_ThinVecDbl_ctor_count
   procedure :: empty => swigf_ThinVecDbl_empty
   procedure :: size => swigf_ThinVecDbl_size
   procedure :: get => swigf_ThinVecDbl_get
@@ -23,6 +24,20 @@ module thinvec
   procedure :: resize_fill => swigf_ThinVecDbl_resize_fill
   procedure :: resize => swigf_ThinVecDbl_resize
   procedure :: dtor => swigf_delete_ThinVecDbl
+ end type
+ type ThinVecInt
+  type(C_PTR), private :: ptr = C_NULL_PTR
+ contains
+  procedure :: ctor => swigf_new_ThinVecInt
+  procedure :: ctor_fill => swigf_new_ThinVecInt_ctor_fill
+  procedure :: ctor_count => swigf_new_ThinVecInt_ctor_count
+  procedure :: empty => swigf_ThinVecInt_empty
+  procedure :: size => swigf_ThinVecInt_size
+  procedure :: get => swigf_ThinVecInt_get
+  procedure :: set => swigf_ThinVecInt_set
+  procedure :: resize_fill => swigf_ThinVecInt_resize_fill
+  procedure :: resize => swigf_ThinVecInt_resize
+  procedure :: dtor => swigf_delete_ThinVecInt
  end type
  ! INTERFACES
  private
@@ -40,8 +55,8 @@ module thinvec
    implicit none
    type(C_PTR) :: fresult
   end function
-  function swigc_new_ctor_fill(farg1, farg2) &
-     bind(C, name="swigc_new_ctor_fill") &
+  function swigc_new_ThinVecDbl_ctor_fill(farg1, farg2) &
+     bind(C, name="swigc_new_ThinVecDbl_ctor_fill") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    implicit none
@@ -49,8 +64,8 @@ module thinvec
    integer(C_INT) :: farg1
    real(C_DOUBLE) :: farg2
   end function
-  function swigc_new_ctor_count(farg1) &
-     bind(C, name="swigc_new_ctor_count") &
+  function swigc_new_ThinVecDbl_ctor_count(farg1) &
+     bind(C, name="swigc_new_ThinVecDbl_ctor_count") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    implicit none
@@ -111,6 +126,84 @@ module thinvec
    implicit none
    type(C_PTR), value :: farg1
   end subroutine
+  function swigc_new_ThinVecInt() &
+     bind(C, name="swigc_new_ThinVecInt") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   type(C_PTR) :: fresult
+  end function
+  function swigc_new_ThinVecInt_ctor_fill(farg1, farg2) &
+     bind(C, name="swigc_new_ThinVecInt_ctor_fill") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   type(C_PTR) :: fresult
+   integer(C_INT) :: farg1
+   integer(C_INT) :: farg2
+  end function
+  function swigc_new_ThinVecInt_ctor_count(farg1) &
+     bind(C, name="swigc_new_ThinVecInt_ctor_count") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   type(C_PTR) :: fresult
+   integer(C_INT) :: farg1
+  end function
+  function swigc_ThinVecInt_empty(farg1) &
+     bind(C, name="swigc_ThinVecInt_empty") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   logical(C_BOOL) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_ThinVecInt_size(farg1) &
+     bind(C, name="swigc_ThinVecInt_size") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   integer(C_INT) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_ThinVecInt_get(farg1, farg2) &
+     bind(C, name="swigc_ThinVecInt_get") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   integer(C_INT) :: fresult
+   type(C_PTR), value :: farg1
+   integer(C_INT) :: farg2
+  end function
+  subroutine swigc_ThinVecInt_set(farg1, farg2, farg3) &
+     bind(C, name="swigc_ThinVecInt_set")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   type(C_PTR), value :: farg1
+   integer(C_INT) :: farg2
+   integer(C_INT) :: farg3
+  end subroutine
+  subroutine swigc_ThinVecInt_resize_fill(farg1, farg2, farg3) &
+     bind(C, name="swigc_ThinVecInt_resize_fill")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   type(C_PTR), value :: farg1
+   integer(C_INT) :: farg2
+   integer(C_INT) :: farg3
+  end subroutine
+  subroutine swigc_ThinVecInt_resize(farg1, farg2) &
+     bind(C, name="swigc_ThinVecInt_resize")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   type(C_PTR), value :: farg1
+   integer(C_INT) :: farg2
+  end subroutine
+  subroutine swigc_delete_ThinVecInt(farg1) &
+     bind(C, name="swigc_delete_ThinVecInt")
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   type(C_PTR), value :: farg1
+  end subroutine
  end interface
 contains
   ! FORTRAN PROXY CODE
@@ -126,20 +219,20 @@ contains
    class(ThinVecDbl) :: fresult
    fresult%ptr = swigc_new_ThinVecDbl()
   end subroutine
-  subroutine swigf_new_ctor_fill(fresult, farg1, farg2)
+  subroutine swigf_new_ThinVecDbl_ctor_fill(fresult, farg1, farg2)
    use, intrinsic :: ISO_C_BINDING
    implicit none
    class(ThinVecDbl) :: fresult
    integer(C_INT) :: farg1
    real(C_DOUBLE) :: farg2
-   fresult%ptr = swigc_new_ctor_fill(farg1, farg2)
+   fresult%ptr = swigc_new_ThinVecDbl_ctor_fill(farg1, farg2)
   end subroutine
-  subroutine swigf_new_ctor_count(fresult, farg1)
+  subroutine swigf_new_ThinVecDbl_ctor_count(fresult, farg1)
    use, intrinsic :: ISO_C_BINDING
    implicit none
    class(ThinVecDbl) :: fresult
    integer(C_INT) :: farg1
-   fresult%ptr = swigc_new_ctor_count(farg1)
+   fresult%ptr = swigc_new_ThinVecDbl_ctor_count(farg1)
   end subroutine
   function swigf_ThinVecDbl_empty(farg1) &
      result(fresult)
@@ -194,5 +287,80 @@ contains
    implicit none
    class(ThinVecDbl) :: farg1
    call swigc_delete_ThinVecDbl(farg1%ptr)
+  end subroutine
+  subroutine swigf_new_ThinVecInt(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   class(ThinVecInt) :: fresult
+   fresult%ptr = swigc_new_ThinVecInt()
+  end subroutine
+  subroutine swigf_new_ThinVecInt_ctor_fill(fresult, farg1, farg2)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   class(ThinVecInt) :: fresult
+   integer(C_INT) :: farg1
+   integer(C_INT) :: farg2
+   fresult%ptr = swigc_new_ThinVecInt_ctor_fill(farg1, farg2)
+  end subroutine
+  subroutine swigf_new_ThinVecInt_ctor_count(fresult, farg1)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   class(ThinVecInt) :: fresult
+   integer(C_INT) :: farg1
+   fresult%ptr = swigc_new_ThinVecInt_ctor_count(farg1)
+  end subroutine
+  function swigf_ThinVecInt_empty(farg1) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   logical(C_BOOL) :: fresult
+   class(ThinVecInt) :: farg1
+   fresult = swigc_ThinVecInt_empty(farg1%ptr)
+  end function
+  function swigf_ThinVecInt_size(farg1) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   integer(C_INT) :: fresult
+   class(ThinVecInt) :: farg1
+   fresult = swigc_ThinVecInt_size(farg1%ptr)
+  end function
+  function swigf_ThinVecInt_get(farg1, farg2) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   integer(C_INT) :: fresult
+   class(ThinVecInt) :: farg1
+   integer(C_INT) :: farg2
+   fresult = swigc_ThinVecInt_get(farg1%ptr, farg2)
+  end function
+  subroutine swigf_ThinVecInt_set(farg1, farg2, farg3)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   class(ThinVecInt) :: farg1
+   integer(C_INT) :: farg2
+   integer(C_INT) :: farg3
+   call swigc_ThinVecInt_set(farg1%ptr, farg2, farg3)
+  end subroutine
+  subroutine swigf_ThinVecInt_resize_fill(farg1, farg2, farg3)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   class(ThinVecInt) :: farg1
+   integer(C_INT) :: farg2
+   integer(C_INT) :: farg3
+   call swigc_ThinVecInt_resize_fill(farg1%ptr, farg2, farg3)
+  end subroutine
+  subroutine swigf_ThinVecInt_resize(farg1, farg2)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   class(ThinVecInt) :: farg1
+   integer(C_INT) :: farg2
+   call swigc_ThinVecInt_resize(farg1%ptr, farg2)
+  end subroutine
+  subroutine swigf_delete_ThinVecInt(farg1)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   class(ThinVecInt) :: farg1
+   call swigc_delete_ThinVecInt(farg1%ptr)
   end subroutine
 end module thinvec

@@ -14,6 +14,7 @@
 
 // Handle constructor overloading
 %rename(ctor_count)  ThinVec::ThinVec(size_type);
+//%ignore   ThinVec::ThinVec(size_type, value_type);
 %rename(ctor_fill)   ThinVec::ThinVec(size_type, value_type);
 
 // Handle the case of operator overloading
@@ -27,7 +28,7 @@
 
 // Instantiate
 %template(ThinVecDbl) ThinVec<double>;
-//%template(Vec_Int) thinvec<int>;
+%template(ThinVecInt) ThinVec<int>;
 
 //---------------------------------------------------------------------------//
 // end of swig-dev/thinvec/ThinVec.i
