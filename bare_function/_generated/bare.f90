@@ -11,6 +11,7 @@ module bare
  public :: get_something
  public :: get_something_ref
  public :: get_something_ptr
+ public :: get_something_rcref
  ! TYPES
  ! INTERFACES
  private
@@ -44,6 +45,14 @@ module bare
    integer(C_INT) :: farg1
    real(C_DOUBLE) :: farg2
   end subroutine
+  function swigc_get_something_rcref(farg1) &
+     bind(C, name="swigc_get_something_rcref") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   real(C_DOUBLE) :: fresult
+   integer(C_INT) :: farg1
+  end function
  end interface
 contains
   ! FORTRAN PROXY CODE
@@ -76,4 +85,12 @@ contains
    real(C_DOUBLE) :: farg2
    call swigc_get_something_ptr(farg1, farg2)
   end subroutine
+  function get_something_rcref(farg1) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   real(C_DOUBLE) :: fresult
+   integer(C_INT) :: farg1
+   fresult = swigc_get_something_rcref(farg1)
+  end function
 end module bare

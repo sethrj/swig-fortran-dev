@@ -27,6 +27,16 @@ double get_something(int x)
     return data[x];
 }
 
+const double& get_something_rcref(int x)
+{
+    return data[x];
+}
+
+double& get_something_rref(int x)
+{
+    return data[x];
+}
+
 void get_something_ref(int x, double& y)
 {
     y = get_something(x);

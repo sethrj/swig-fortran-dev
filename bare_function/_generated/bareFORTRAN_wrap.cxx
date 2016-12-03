@@ -168,8 +168,8 @@ SWIGEXPORT void swigc_set_something(int* farg1, double* farg2) {
   int arg1 ;
   double arg2 ;
   
-  arg1 = *farg1; /*tmin*/ 
-  arg2 = *farg2; /*tmin*/ 
+  arg1 = *farg1;
+  arg2 = *farg2;
   set_something(arg1,arg2);
 }
 
@@ -179,30 +179,42 @@ SWIGEXPORT double swigc_get_something(int* farg1) {
   int arg1 ;
   double result;
   
-  arg1 = *farg1; /*tmin*/ 
+  arg1 = *farg1;
   result = (double)get_something(arg1);
-  fresult = result; /*tmout*/ 
+  fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_get_something_ref(int* farg1, void* farg2) {
+SWIGEXPORT void swigc_get_something_ref(int* farg1, double* farg2) {
   int arg1 ;
   double *arg2 = 0 ;
   
-  arg1 = *farg1; /*tmin*/ 
-  arg2 = *(double **)&farg2; assert(arg2); 
+  arg1 = *farg1;
+  arg2 = farg2;
   get_something_ref(arg1,*arg2);
 }
 
 
-SWIGEXPORT void swigc_get_something_ptr(int* farg1, void* farg2) {
+SWIGEXPORT void swigc_get_something_ptr(int* farg1, double* farg2) {
   int arg1 ;
   double *arg2 = (double *) 0 ;
   
-  arg1 = *farg1; /*tmin*/ 
-  arg2 = (double *)farg2; 
+  arg1 = *farg1;
+  arg2 = farg2;
   get_something_ptr(arg1,arg2);
+}
+
+
+SWIGEXPORT double swigc_get_something_rcref(int* farg1) {
+  double fresult = 0 ;
+  int arg1 ;
+  double *result = 0 ;
+  
+  arg1 = *farg1;
+  result = (double *) &get_something_rcref(arg1);
+  fresult = *result;
+  return fresult;
 }
 
 

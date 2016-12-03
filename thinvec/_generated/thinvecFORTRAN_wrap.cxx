@@ -167,7 +167,7 @@ extern "C" {
 SWIGEXPORT void swigc_print_vec(void* farg1) {
   ThinVec< double > *arg1 = 0 ;
   
-  arg1 = *(ThinVec< double > **)&farg1; assert(arg1); 
+  arg1 = (ThinVec< double > *)(farg1); assert(arg1); 
   print_vec((ThinVec< double > const &)*arg1);
 }
 
@@ -177,7 +177,7 @@ SWIGEXPORT void* swigc_new_ThinVecDbl() {
   ThinVec< double > *result = 0 ;
   
   result = (ThinVec< double > *)new ThinVec< double >();
-  *(ThinVec< double > **)&fresult = result; 
+  fresult = result; 
   return fresult;
 }
 
@@ -189,74 +189,56 @@ SWIGEXPORT bool swigc_ThinVecDbl_empty(void* farg1) {
   
   arg1 = (ThinVec< double > *)farg1; 
   result = (bool)(arg1)->empty();
-  fresult = result; /*tmout*/ 
+  fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT long swigc_ThinVecDbl_size(void* farg1) {
-  long fresult = 0 ;
+SWIGEXPORT int swigc_ThinVecDbl_size(void* farg1) {
+  int fresult = 0 ;
   ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
   ThinVec< double >::size_type result;
   
   arg1 = (ThinVec< double > *)farg1; 
   result = (ThinVec< double >::size_type)(arg1)->size();
-  fresult = result; /*tmout*/ 
+  fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT double swigc_ThinVecDbl_get(void* farg1, long* farg2) {
+SWIGEXPORT double swigc_ThinVecDbl_get(void* farg1, int* farg2) {
   double fresult = 0 ;
   ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
   ThinVec< double >::size_type arg2 ;
   ThinVec< double >::value_type *result = 0 ;
   
   arg1 = (ThinVec< double > *)farg1; 
-  arg2 = *farg2; /*tmin*/ 
+  arg2 = *farg2;
   result = (ThinVec< double >::value_type *) &(arg1)->get(arg2);
-  
-  // Return object passed by value
-  *(ThinVec< double >::value_type ***)&fresult = new ThinVec< double >::value_type *((const ThinVec< double >::value_type * &)result); /* pass-by-value */
-  
+  fresult = *result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_ThinVecDbl_set(void* farg1, long* farg2, void* farg3) {
+SWIGEXPORT void swigc_ThinVecDbl_set(void* farg1, int* farg2, double* farg3) {
   ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
   ThinVec< double >::size_type arg2 ;
   ThinVec< double >::value_type *arg3 = 0 ;
   
   arg1 = (ThinVec< double > *)farg1; 
-  arg2 = *farg2; /*tmin*/ 
-  arg3 = *(ThinVec< double >::value_type **)&farg3; assert(arg3); 
+  arg2 = *farg2;
+  arg3 = farg3;
   (arg1)->set(arg2,(ThinVec< double >::value_type const &)*arg3);
 }
 
 
-SWIGEXPORT void swigc_ThinVecDbl_resize(void* farg1, long* farg2) {
+SWIGEXPORT void swigc_ThinVecDbl_resize(void* farg1, int* farg2) {
   ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
   ThinVec< double >::size_type arg2 ;
   
   arg1 = (ThinVec< double > *)farg1; 
-  arg2 = *farg2; /*tmin*/ 
+  arg2 = *farg2;
   (arg1)->resize(arg2);
-}
-
-
-SWIGEXPORT SWIGTYPE_p_std__vectorT_double_t swigc_ThinVecDbl_data(void* farg1) {
-  SWIGTYPE_p_std__vectorT_double_t fresult = 0 ;
-  ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
-  std::vector< double > *result = 0 ;
-  
-  arg1 = (ThinVec< double > *)farg1; 
-  result = (std::vector< double > *) &((ThinVec< double > const *)arg1)->data();
-  
-  // Return object passed by value
-  *(std::vector< double > ***)&fresult = new std::vector< double > *((const std::vector< double > * &)result); /* pass-by-value */
-  
-  return fresult;
 }
 
 

@@ -12,6 +12,9 @@
 
 %module bare
 
+// Ignore function incompatible with Fortran language (return-by-nonconst-ref)
+%ignore get_something_rref;
+
 %include "bare.hh"
 
 //---------------------------------------------------------------------------//

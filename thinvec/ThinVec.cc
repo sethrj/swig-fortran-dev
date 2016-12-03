@@ -24,10 +24,10 @@ void print_vec(const ThinVec<double>& v)
     const char* sep = "";
     for (const double& val : v.data())
     {
-        cout << val << sep;
+        cout << sep << val;
         sep = ", ";
     }
-    cout << "}";
+    cout << "}\n";
 }
 
 //---------------------------------------------------------------------------//
