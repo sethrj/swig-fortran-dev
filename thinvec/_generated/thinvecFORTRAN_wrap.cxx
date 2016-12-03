@@ -182,6 +182,32 @@ SWIGEXPORT void* swigc_new_ThinVecDbl() {
 }
 
 
+SWIGEXPORT void* swigc_new_ctor_fill(int* farg1, double* farg2) {
+  void* fresult = 0 ;
+  ThinVec< double >::size_type arg1 ;
+  ThinVec< double >::value_type arg2 ;
+  ThinVec< double > *result = 0 ;
+  
+  arg1 = *farg1;
+  arg2 = *farg2;
+  result = (ThinVec< double > *)new ThinVec< double >(arg1,arg2);
+  fresult = result; 
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_ctor_count(int* farg1) {
+  void* fresult = 0 ;
+  ThinVec< double >::size_type arg1 ;
+  ThinVec< double > *result = 0 ;
+  
+  arg1 = *farg1;
+  result = (ThinVec< double > *)new ThinVec< double >(arg1);
+  fresult = result; 
+  return fresult;
+}
+
+
 SWIGEXPORT bool swigc_ThinVecDbl_empty(void* farg1) {
   bool fresult = 0 ;
   ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
@@ -229,6 +255,18 @@ SWIGEXPORT void swigc_ThinVecDbl_set(void* farg1, int* farg2, double* farg3) {
   arg2 = *farg2;
   arg3 = farg3;
   (arg1)->set(arg2,(ThinVec< double >::value_type const &)*arg3);
+}
+
+
+SWIGEXPORT void swigc_ThinVecDbl_resize_fill(void* farg1, int* farg2, double* farg3) {
+  ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
+  ThinVec< double >::size_type arg2 ;
+  ThinVec< double >::value_type arg3 ;
+  
+  arg1 = (ThinVec< double > *)farg1; 
+  arg2 = *farg2;
+  arg3 = *farg3;
+  (arg1)->resize(arg2,arg3);
 }
 
 

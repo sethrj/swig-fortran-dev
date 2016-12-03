@@ -25,19 +25,19 @@ Basic language features
 - DONE: class constructor and destructor
 - DONE: class methods with primitive arguments and return values
 - DONE: methods/functions with class arguments
-- template instantiation (SWIG should already handle this)
+- DONE: template instantiation (SWIG should already handle this)
 - inheritance
-- multiple constructors
+- DONE: multiple constructors
 - `RCP/shared_ptr` wrapping (SWIG should already handle this)
-- function overloading
+- "generic" function overloading
 - templated class method instantiation (needed for plist)
 - string wrapping
 - passing entire arrays of data in a single call
-- [type checking in SWIG C wrappers]
+- type checking in SWIG C wrappers?
 - Fortran callback functions?
 
 Trilinos classes to wrap
 ========================
-- `Teuchos::RCP` (`shared_ptr` replacaement)
+- `Teuchos::RCP` (`shared_ptr` replacement)
 - `Teuchos::Arrays`
 - `ParameterList`
