@@ -159,78 +159,112 @@ template <typename T> T SwigValueInit() {
 #include <cassert>
 
 
-#include "SimpleClass.hh"
+#include "ThinVec.hh"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void* swigc_new_SimpleClassDerp() {
+SWIGEXPORT void swigc_print_vec(void* farg1) {
+  ThinVec< double > *arg1 = 0 ;
+  
+  arg1 = *(ThinVec< double > **)&farg1; assert(arg1); 
+  print_vec((ThinVec< double > const &)*arg1);
+}
+
+
+SWIGEXPORT void* swigc_new_ThinVecDbl() {
   void* fresult = 0 ;
-  SimpleClass *result = 0 ;
+  ThinVec< double > *result = 0 ;
   
-  result = (SimpleClass *)new SimpleClass();
-  *(SimpleClass **)&fresult = result; 
+  result = (ThinVec< double > *)new ThinVec< double >();
+  *(ThinVec< double > **)&fresult = result; 
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_delete_SimpleClassDerp(void* farg1) {
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
+SWIGEXPORT bool swigc_ThinVecDbl_empty(void* farg1) {
+  bool fresult = 0 ;
+  ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
+  bool result;
   
-  arg1 = (SimpleClass *)farg1; 
+  arg1 = (ThinVec< double > *)farg1; 
+  result = (bool)(arg1)->empty();
+  fresult = result; /*tmout*/ 
+  return fresult;
+}
+
+
+SWIGEXPORT long swigc_ThinVecDbl_size(void* farg1) {
+  long fresult = 0 ;
+  ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
+  ThinVec< double >::size_type result;
+  
+  arg1 = (ThinVec< double > *)farg1; 
+  result = (ThinVec< double >::size_type)(arg1)->size();
+  fresult = result; /*tmout*/ 
+  return fresult;
+}
+
+
+SWIGEXPORT double swigc_ThinVecDbl_get(void* farg1, long* farg2) {
+  double fresult = 0 ;
+  ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
+  ThinVec< double >::size_type arg2 ;
+  ThinVec< double >::value_type *result = 0 ;
+  
+  arg1 = (ThinVec< double > *)farg1; 
+  arg2 = *farg2; /*tmin*/ 
+  result = (ThinVec< double >::value_type *) &(arg1)->get(arg2);
+  
+  // Return object passed by value
+  *(ThinVec< double >::value_type ***)&fresult = new ThinVec< double >::value_type *((const ThinVec< double >::value_type * &)result); /* pass-by-value */
+  
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_ThinVecDbl_set(void* farg1, long* farg2, void* farg3) {
+  ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
+  ThinVec< double >::size_type arg2 ;
+  ThinVec< double >::value_type *arg3 = 0 ;
+  
+  arg1 = (ThinVec< double > *)farg1; 
+  arg2 = *farg2; /*tmin*/ 
+  arg3 = *(ThinVec< double >::value_type **)&farg3; assert(arg3); 
+  (arg1)->set(arg2,(ThinVec< double >::value_type const &)*arg3);
+}
+
+
+SWIGEXPORT void swigc_ThinVecDbl_resize(void* farg1, long* farg2) {
+  ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
+  ThinVec< double >::size_type arg2 ;
+  
+  arg1 = (ThinVec< double > *)farg1; 
+  arg2 = *farg2; /*tmin*/ 
+  (arg1)->resize(arg2);
+}
+
+
+SWIGEXPORT SWIGTYPE_p_std__vectorT_double_t swigc_ThinVecDbl_data(void* farg1) {
+  SWIGTYPE_p_std__vectorT_double_t fresult = 0 ;
+  ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (ThinVec< double > *)farg1; 
+  result = (std::vector< double > *) &((ThinVec< double > const *)arg1)->data();
+  
+  // Return object passed by value
+  *(std::vector< double > ***)&fresult = new std::vector< double > *((const std::vector< double > * &)result); /* pass-by-value */
+  
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_ThinVecDbl(void* farg1) {
+  ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
+  
+  arg1 = (ThinVec< double > *)farg1; 
   delete arg1;
-}
-
-
-SWIGEXPORT void swigc_SimpleClassDerp_set(void* farg1, double* farg2) {
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
-  SimpleClass::storage_type arg2 ;
-  
-  arg1 = (SimpleClass *)farg1; 
-  arg2 = *farg2; /*tmin*/ 
-  (arg1)->set(arg2);
-}
-
-
-SWIGEXPORT void swigc_SimpleClassDerp_double_it(void* farg1) {
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
-  
-  arg1 = (SimpleClass *)farg1; 
-  (arg1)->double_it();
-}
-
-
-SWIGEXPORT double swigc_SimpleClassDerp_get(void* farg1) {
-  double fresult = 0 ;
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
-  SimpleClass::storage_type result;
-  
-  arg1 = (SimpleClass *)farg1; 
-  result = (SimpleClass::storage_type)((SimpleClass const *)arg1)->get();
-  fresult = result; /*tmout*/ 
-  return fresult;
-}
-
-
-SWIGEXPORT double swigc_SimpleClassDerp_get_multiplied(void* farg1, int* farg2) {
-  double fresult = 0 ;
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
-  SimpleClass::multiple_type arg2 ;
-  SimpleClass::storage_type result;
-  
-  arg1 = (SimpleClass *)farg1; 
-  arg2 = *farg2; /*tmin*/ 
-  result = (SimpleClass::storage_type)((SimpleClass const *)arg1)->get_multiplied(arg2);
-  fresult = result; /*tmout*/ 
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_print_value(void* farg1) {
-  SimpleClass *arg1 = 0 ;
-  
-  arg1 = *(SimpleClass **)&farg1; assert(arg1); 
-  print_value((SimpleClass const &)*arg1);
 }
 
 

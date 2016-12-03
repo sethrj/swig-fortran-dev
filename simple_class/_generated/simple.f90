@@ -7,124 +7,124 @@ module simple
  use, intrinsic :: ISO_C_BINDING
  implicit none
  ! PUBLIC METHODS AND TYPES
- public :: SimpleClass
+ public :: SimpleClassDerp
  public :: print_value
  ! TYPES
- type SimpleClass
+ type SimpleClassDerp
   type(C_PTR), private :: ptr = C_NULL_PTR
  contains
-  procedure :: ctor => swigf_new_SimpleClass
-  procedure :: dtor => swigf_delete_SimpleClass
-  procedure :: set => swigf_SimpleClass_set
-  procedure :: double_it => swigf_SimpleClass_double_it
-  procedure :: get => swigf_SimpleClass_get
-  procedure :: get_multiplied => swigf_SimpleClass_get_multiplied
+  procedure :: ctor => swigf_new_SimpleClassDerp
+  procedure :: dtor => swigf_delete_SimpleClassDerp
+  procedure :: set => swigf_SimpleClassDerp_set
+  procedure :: double_it => swigf_SimpleClassDerp_double_it
+  procedure :: get => swigf_SimpleClassDerp_get
+  procedure :: get_multiplied => swigf_SimpleClassDerp_get_multiplied
  end type
  ! INTERFACES
  private
  interface
-   function swigc_new_SimpleClass() &
-     bind(C, name="swigc_new_SimpleClass") &
+  function swigc_new_SimpleClassDerp() &
+     bind(C, name="swigc_new_SimpleClassDerp") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    implicit none
    type(C_PTR) :: fresult
-   end function
-   subroutine swigc_delete_SimpleClass(farg1) &
-     bind(C, name="swigc_delete_SimpleClass")
+  end function
+  subroutine swigc_delete_SimpleClassDerp(farg1) &
+     bind(C, name="swigc_delete_SimpleClassDerp")
    use, intrinsic :: ISO_C_BINDING
    implicit none
    type(C_PTR), value :: farg1
-   end subroutine
-   subroutine swigc_SimpleClass_set(farg1, farg2) &
-     bind(C, name="swigc_SimpleClass_set")
+  end subroutine
+  subroutine swigc_SimpleClassDerp_set(farg1, farg2) &
+     bind(C, name="swigc_SimpleClassDerp_set")
    use, intrinsic :: ISO_C_BINDING
    implicit none
    type(C_PTR), value :: farg1
    real(C_DOUBLE) :: farg2
-   end subroutine
-   subroutine swigc_SimpleClass_double_it(farg1) &
-     bind(C, name="swigc_SimpleClass_double_it")
+  end subroutine
+  subroutine swigc_SimpleClassDerp_double_it(farg1) &
+     bind(C, name="swigc_SimpleClassDerp_double_it")
    use, intrinsic :: ISO_C_BINDING
    implicit none
    type(C_PTR), value :: farg1
-   end subroutine
-   function swigc_SimpleClass_get(farg1) &
-     bind(C, name="swigc_SimpleClass_get") &
+  end subroutine
+  function swigc_SimpleClassDerp_get(farg1) &
+     bind(C, name="swigc_SimpleClassDerp_get") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    implicit none
    real(C_DOUBLE) :: fresult
    type(C_PTR), value :: farg1
-   end function
-   function swigc_SimpleClass_get_multiplied(farg1, farg2) &
-     bind(C, name="swigc_SimpleClass_get_multiplied") &
+  end function
+  function swigc_SimpleClassDerp_get_multiplied(farg1, farg2) &
+     bind(C, name="swigc_SimpleClassDerp_get_multiplied") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    implicit none
    real(C_DOUBLE) :: fresult
    type(C_PTR), value :: farg1
    integer(C_INT) :: farg2
-   end function
-   subroutine swigc_print_value(farg1) &
+  end function
+  subroutine swigc_print_value(farg1) &
      bind(C, name="swigc_print_value")
    use, intrinsic :: ISO_C_BINDING
    implicit none
    type(C_PTR), value :: farg1
-   end subroutine
+  end subroutine
  end interface
 contains
- ! FORTRAN PROXY CODE
- subroutine swigf_new_SimpleClass(fresult)
-  use, intrinsic :: ISO_C_BINDING
-  implicit none
-  class(SimpleClass) :: fresult
-  fresult%ptr = swigc_new_SimpleClass()
+  ! FORTRAN PROXY CODE
+  subroutine swigf_new_SimpleClassDerp(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   class(SimpleClassDerp) :: fresult
+   fresult%ptr = swigc_new_SimpleClassDerp()
 
     write(0, "(a, z16)") "Constructed at ", fresult%ptr
- end subroutine
- subroutine swigf_delete_SimpleClass(farg1)
-  use, intrinsic :: ISO_C_BINDING
-  implicit none
-   class(SimpleClass) :: farg1
+  end subroutine
+  subroutine swigf_delete_SimpleClassDerp(farg1)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   class(SimpleClassDerp) :: farg1
 
     write(0, "(a, z16)") "Destroying at ", farg1%ptr
-  call swigc_delete_SimpleClass(farg1%ptr)
- end subroutine
- subroutine swigf_SimpleClass_set(farg1, farg2)
-  use, intrinsic :: ISO_C_BINDING
-  implicit none
-   class(SimpleClass) :: farg1
+   call swigc_delete_SimpleClassDerp(farg1%ptr)
+  end subroutine
+  subroutine swigf_SimpleClassDerp_set(farg1, farg2)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   class(SimpleClassDerp) :: farg1
    real(C_DOUBLE) :: farg2
-  call swigc_SimpleClass_set(farg1%ptr, farg2)
- end subroutine
- subroutine swigf_SimpleClass_double_it(farg1)
-  use, intrinsic :: ISO_C_BINDING
-  implicit none
-   class(SimpleClass) :: farg1
-  call swigc_SimpleClass_double_it(farg1%ptr)
- end subroutine
- function swigf_SimpleClass_get(farg1) &
+   call swigc_SimpleClassDerp_set(farg1%ptr, farg2)
+  end subroutine
+  subroutine swigf_SimpleClassDerp_double_it(farg1)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   class(SimpleClassDerp) :: farg1
+   call swigc_SimpleClassDerp_double_it(farg1%ptr)
+  end subroutine
+  function swigf_SimpleClassDerp_get(farg1) &
      result(fresult)
-  use, intrinsic :: ISO_C_BINDING
-  implicit none
-  real(C_DOUBLE) :: fresult
-   class(SimpleClass) :: farg1
-  fresult = swigc_SimpleClass_get(farg1%ptr)
- end function
- function swigf_SimpleClass_get_multiplied(farg1, farg2) &
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   real(C_DOUBLE) :: fresult
+   class(SimpleClassDerp) :: farg1
+   fresult = swigc_SimpleClassDerp_get(farg1%ptr)
+  end function
+  function swigf_SimpleClassDerp_get_multiplied(farg1, farg2) &
      result(fresult)
-  use, intrinsic :: ISO_C_BINDING
-  implicit none
-  real(C_DOUBLE) :: fresult
-   class(SimpleClass) :: farg1
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   real(C_DOUBLE) :: fresult
+   class(SimpleClassDerp) :: farg1
    integer(C_INT) :: farg2
-  fresult = swigc_SimpleClass_get_multiplied(farg1%ptr, farg2)
- end function
- subroutine print_value(farg1)
-  use, intrinsic :: ISO_C_BINDING
-  implicit none
-   class(SimpleClass) :: farg1
-  call swigc_print_value(farg1%ptr)
- end subroutine
+   fresult = swigc_SimpleClassDerp_get_multiplied(farg1%ptr, farg2)
+  end function
+  subroutine print_value(farg1)
+   use, intrinsic :: ISO_C_BINDING
+   implicit none
+   class(SimpleClassDerp) :: farg1
+   call swigc_print_value(farg1%ptr)
+  end subroutine
 end module simple

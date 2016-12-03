@@ -8,7 +8,7 @@
 
 program main
     use ISO_FORTRAN_ENV
-    use simple, SimpleClass => SimpleClass
+    use simple, SimpleClass => SimpleClassDerp
     implicit none
 
     type(SimpleClass) :: c

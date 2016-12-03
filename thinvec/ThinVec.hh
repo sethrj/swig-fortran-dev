@@ -29,9 +29,11 @@ class ThinVec
         : d_data()
     { /* * */ }
 
+#if 0
     ThinVec(size_type count, value_type fillval = 0)
         : d_data(count, fillval)
     { /* * */ }
+#endif
 
     // Accessors
     bool empty()
@@ -46,8 +48,9 @@ class ThinVec
     void set(size_type index, const value_type& value)
     { d_data.at(index) = value; }
 
-    void resize(size_type newsize, const value_type &fillval = T())
-    { d_data.resize(newsize, fillval); }
+    //void resize(size_type newsize, value_type fillval = T())
+    void resize(size_type newsize)
+    { d_data.resize(newsize, 0); }
 
     const std::vector<T>& data() const { return d_data; }
 };
