@@ -17,8 +17,6 @@ SWIG notes
 
 - The `%rename` directive changes the `sym:name` property
 
-javadestruct
-
 Basic language features
 =======================
 
@@ -32,8 +30,10 @@ Basic language features
 - "generic" function overloading
 - templated class method instantiation (needed for plist)
 - string wrapping
-- passing entire arrays of data in a single call
+- DONE: passing entire arrays of data in a single call
+- DONE: Add 'intent' qualifiers to arguments?
 - type checking in SWIG C wrappers?
+- passing classes by value?
 - Fortran callback functions?
 
 Trilinos classes to wrap
@@ -41,3 +41,7 @@ Trilinos classes to wrap
 - `Teuchos::RCP` (`shared_ptr` replacement)
 - `Teuchos::Arrays`
 - `ParameterList`
+
+Vision:
+- One `.f90/.mod` for each package?
+- Or collections of alternative modules for different template instantiations?

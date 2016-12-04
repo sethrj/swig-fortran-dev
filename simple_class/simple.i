@@ -16,10 +16,10 @@
 
 #ifdef SWIGFORTRAN
 %fortranappend SimpleClass::SimpleClass %{
-    write(0, "(a, z16)") "Constructed at ", fresult%ptr
+   write(0, "(a, z16)") "Constructed at ", self%ptr
 %}
 %fortranprepend SimpleClass::~SimpleClass %{
-    write(0, "(a, z16)") "Destroying at ", farg1%ptr
+   write(0, "(a, z16)") "Destroying at ", self%ptr
 %}
 #endif
 

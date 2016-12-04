@@ -21,7 +21,9 @@ class ThinVec
 
   public:
     typedef unsigned int size_type;
-    typedef T value_type;
+    typedef T            value_type;
+    typedef T*           pointer;
+    typedef const T*     const_pointer;
 
   public:
     // Constructors
@@ -43,11 +45,15 @@ class ThinVec
     const value_type& get(size_type index)
     { return d_data.at(index); }
 
-    void set(size_type index, const value_type& value)
-    { d_data.at(index) = value; }
+    void set(size_type index, const value_type& val)
+    { d_data.at(index) = val; }
 
     void resize(size_type newsize, value_type fillval = T())
     { d_data.resize(newsize, fillval); }
+
+    void assign(const_pointer p, size_type count);
+
+    void obtain(pointer p, size_type count);
 
     const std::vector<T>& data() const { return d_data; }
 };

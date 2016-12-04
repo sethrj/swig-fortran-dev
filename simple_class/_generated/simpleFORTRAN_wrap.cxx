@@ -177,7 +177,7 @@ SWIGEXPORT void* swigc_new_SimpleClassDerp() {
 SWIGEXPORT void swigc_delete_SimpleClassDerp(void* farg1) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   
-  arg1 = (SimpleClass *)farg1; 
+  arg1 = (SimpleClass *)(farg1); 
   delete arg1;
 }
 
@@ -186,7 +186,7 @@ SWIGEXPORT void swigc_SimpleClassDerp_set(void* farg1, double* farg2) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   SimpleClass::storage_type arg2 ;
   
-  arg1 = (SimpleClass *)farg1; 
+  arg1 = (SimpleClass *)(farg1); 
   arg2 = *farg2;
   (arg1)->set(arg2);
 }
@@ -195,7 +195,7 @@ SWIGEXPORT void swigc_SimpleClassDerp_set(void* farg1, double* farg2) {
 SWIGEXPORT void swigc_SimpleClassDerp_double_it(void* farg1) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   
-  arg1 = (SimpleClass *)farg1; 
+  arg1 = (SimpleClass *)(farg1); 
   (arg1)->double_it();
 }
 
@@ -205,7 +205,7 @@ SWIGEXPORT double swigc_SimpleClassDerp_get(void* farg1) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   SimpleClass::storage_type result;
   
-  arg1 = (SimpleClass *)farg1; 
+  arg1 = (SimpleClass *)(farg1); 
   result = (SimpleClass::storage_type)((SimpleClass const *)arg1)->get();
   fresult = result;
   return fresult;
@@ -218,7 +218,7 @@ SWIGEXPORT double swigc_SimpleClassDerp_get_multiplied(void* farg1, int* farg2) 
   SimpleClass::multiple_type arg2 ;
   SimpleClass::storage_type result;
   
-  arg1 = (SimpleClass *)farg1; 
+  arg1 = (SimpleClass *)(farg1); 
   arg2 = *farg2;
   result = (SimpleClass::storage_type)((SimpleClass const *)arg1)->get_multiplied(arg2);
   fresult = result;

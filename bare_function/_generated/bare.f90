@@ -19,78 +19,68 @@ module bare
   subroutine swigc_set_something(farg1, farg2) &
      bind(C, name="swigc_set_something")
    use, intrinsic :: ISO_C_BINDING
-   implicit none
-   integer(C_INT) :: farg1
-   real(C_DOUBLE) :: farg2
+   integer(C_INT), intent(in) :: farg1
+   real(C_DOUBLE), intent(in) :: farg2
   end subroutine
   function swigc_get_something(farg1) &
      bind(C, name="swigc_get_something") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   implicit none
    real(C_DOUBLE) :: fresult
-   integer(C_INT) :: farg1
+   integer(C_INT), intent(in) :: farg1
   end function
   subroutine swigc_get_something_ref(farg1, farg2) &
      bind(C, name="swigc_get_something_ref")
    use, intrinsic :: ISO_C_BINDING
-   implicit none
-   integer(C_INT) :: farg1
-   real(C_DOUBLE) :: farg2
+   integer(C_INT), intent(in) :: farg1
+   real(C_DOUBLE), intent(inout) :: farg2
   end subroutine
   subroutine swigc_get_something_ptr(farg1, farg2) &
      bind(C, name="swigc_get_something_ptr")
    use, intrinsic :: ISO_C_BINDING
-   implicit none
-   integer(C_INT) :: farg1
-   real(C_DOUBLE) :: farg2
+   integer(C_INT), intent(in) :: farg1
+   real(C_DOUBLE), dimension(*), intent(inout) :: farg2
   end subroutine
   function swigc_get_something_rcref(farg1) &
      bind(C, name="swigc_get_something_rcref") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   implicit none
    real(C_DOUBLE) :: fresult
-   integer(C_INT) :: farg1
+   integer(C_INT), intent(in) :: farg1
   end function
  end interface
 contains
   ! FORTRAN PROXY CODE
-  subroutine set_something(farg1, farg2)
+  subroutine set_something(x, y)
    use, intrinsic :: ISO_C_BINDING
-   implicit none
-   integer(C_INT) :: farg1
-   real(C_DOUBLE) :: farg2
-   call swigc_set_something(farg1, farg2)
+   integer(C_INT), intent(in) :: x
+   real(C_DOUBLE), intent(in) :: y
+   call swigc_set_something(x, y)
   end subroutine
-  function get_something(farg1) &
-     result(fresult)
+  function get_something(x) &
+     result(output)
    use, intrinsic :: ISO_C_BINDING
-   implicit none
-   real(C_DOUBLE) :: fresult
-   integer(C_INT) :: farg1
-   fresult = swigc_get_something(farg1)
+   real(C_DOUBLE) :: output
+   integer(C_INT), intent(in) :: x
+   output = swigc_get_something(x)
   end function
-  subroutine get_something_ref(farg1, farg2)
+  subroutine get_something_ref(x, y)
    use, intrinsic :: ISO_C_BINDING
-   implicit none
-   integer(C_INT) :: farg1
-   real(C_DOUBLE) :: farg2
-   call swigc_get_something_ref(farg1, farg2)
+   integer(C_INT), intent(in) :: x
+   real(C_DOUBLE), intent(inout) :: y
+   call swigc_get_something_ref(x, y)
   end subroutine
-  subroutine get_something_ptr(farg1, farg2)
+  subroutine get_something_ptr(x, y)
    use, intrinsic :: ISO_C_BINDING
-   implicit none
-   integer(C_INT) :: farg1
-   real(C_DOUBLE) :: farg2
-   call swigc_get_something_ptr(farg1, farg2)
+   integer(C_INT), intent(in) :: x
+   real(C_DOUBLE), dimension(*), intent(inout) :: y
+   call swigc_get_something_ptr(x, y)
   end subroutine
-  function get_something_rcref(farg1) &
-     result(fresult)
+  function get_something_rcref(x) &
+     result(output)
    use, intrinsic :: ISO_C_BINDING
-   implicit none
-   real(C_DOUBLE) :: fresult
-   integer(C_INT) :: farg1
-   fresult = swigc_get_something_rcref(farg1)
+   real(C_DOUBLE) :: output
+   integer(C_INT), intent(in) :: x
+   output = swigc_get_something_rcref(x)
   end function
 end module bare
