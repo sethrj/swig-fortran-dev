@@ -45,3 +45,11 @@ Trilinos classes to wrap
 Vision:
 - One `.f90/.mod` for each package?
 - Or collections of alternative modules for different template instantiations?
+
+
+Discussion points
+=================
+- What to name constructor/destructor
+- How to handle shared pointer wrapping: treat it just like the regular
+  pointer, except other objects can hold a reference to it?
+- 

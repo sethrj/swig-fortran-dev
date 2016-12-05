@@ -15,6 +15,10 @@ program main
     real(kind=8), dimension(3) :: dummy_data
     real(kind=8), allocatable, dimension(:) :: obtained
 
+    ! This should be a null-op since the underlying pointer is initialized to
+    ! null
+    call v%dtor()
+    
     write(0, *) "Constructing..."
     call v%ctor()
     write(0, *) "Sizing..."
