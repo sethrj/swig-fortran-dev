@@ -8,7 +8,6 @@ module code
  implicit none
  ! PUBLIC METHODS AND TYPES
  public :: print_array
- public :: print_array_ref
  ! TYPES
  ! INTERFACES
  private
@@ -19,25 +18,12 @@ module code
    real(C_DOUBLE), dimension(*), intent(in) :: farg1
    integer(C_INT), intent(in) :: farg2
   end subroutine
-  subroutine swigc_print_array_ref(farg1, farg2) &
-     bind(C, name="swigc_print_array_ref")
-   use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE), intent(in) :: farg1
-   integer(C_INT), intent(in) :: farg2
-  end subroutine
  end interface
 contains
   ! FORTRAN PROXY CODE
-  subroutine print_array(arr, count)
+  subroutine print_array(arr)
    use, intrinsic :: ISO_C_BINDING
    real(C_DOUBLE), dimension(*), intent(in) :: arr
-   integer(C_INT), intent(in) :: count
-   call swigc_print_array(arr, count)
-  end subroutine
-  subroutine print_array_ref(arr, count)
-   use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE), intent(in) :: arr
-   integer(C_INT), intent(in) :: count
-   call swigc_print_array_ref(arr, count)
+   call swigc_print_array(arg1, size(arg1))
   end subroutine
 end module code

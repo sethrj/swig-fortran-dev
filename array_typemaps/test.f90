@@ -17,7 +17,7 @@ program main
     end do
 
     write(0, *) "Printing array..."
-    call print_array(arr, size(arr))
+    call print_array(arr)
     write(0, *) "... printed"
 end program
 
