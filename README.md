@@ -7,9 +7,13 @@ The directories are:
  - `cmake`: CMake macro script files (and personal configuration setup) for SWIG
    Fortran generation. I have to use a patched version of UseSWIG (literally
    like a one-line difference).
- - `bare_function`: simple function interfaces (100% working)
  - `other_interfaces`: existing Fortran interface files for comparison purposes
+ - `bare_function`: simple function interfaces
+ - `simple_class`: simple class interface
+ - `array_typemaps`: automatic conversion of Fortran arrays into pointer/size
+   pair
  - `thinvec`: basic templated vector class
+ - `std_vector`: wrapper for `std::vector`
 
 
 SWIG notes
@@ -34,7 +38,8 @@ Basic language features
 - DONE: passing entire arrays of data in a single call
 - DONE: Add 'intent' qualifiers to arguments?
 - passing classes by value?
-- Fortran callback functions?
+- Fortran callback functions
+- "director" capability to subclass a c++ class using a Fortran class
 - Multiple interacting modules
 - Iterators?
 - Optional generation of `finally` statement for auto-destruction
@@ -62,3 +67,5 @@ Discussion points
 - Is f90 the right extension for Fortran2003 code?
 - Fortran assertions
 - Unit tests
+- Try to keep compatible with C++ types (namely `size_t` in array sizes) or
+  replace with more fortran-friendly `int` type?
