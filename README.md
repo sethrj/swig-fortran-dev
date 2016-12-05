@@ -24,7 +24,8 @@ Basic language features
 - DONE: class methods with primitive arguments and return values
 - DONE: methods/functions with class arguments
 - DONE: template instantiation (SWIG should already handle this)
-- inheritance
+- inheritance (only base class holds pointer)
+- dynamic-cast type checking for inheritance upcasts
 - DONE: multiple constructors
 - `RCP/shared_ptr` wrapping (SWIG should already handle this)
 - "generic" function overloading
@@ -32,9 +33,15 @@ Basic language features
 - string wrapping
 - DONE: passing entire arrays of data in a single call
 - DONE: Add 'intent' qualifiers to arguments?
-- type checking in SWIG C wrappers?
 - passing classes by value?
 - Fortran callback functions?
+- Multiple interacting modules
+- Iterators?
+- Optional generation of `finally` statement for auto-destruction
+- Optional typemap for checking validity of pointers (class must be
+  constructed)
+- Find out about quirks of C++ static object initialization when executed by a
+  Fortran `main` function
 
 Trilinos classes to wrap
 ========================
@@ -49,7 +56,9 @@ Vision:
 
 Discussion points
 =================
-- What to name constructor/destructor
+- What to name constructor/destructor, especially in context of shared pointers
 - How to handle shared pointer wrapping: treat it just like the regular
   pointer, except other objects can hold a reference to it?
-- 
+- Is f90 the right extension for Fortran2003 code?
+- Fortran assertions
+- Unit tests

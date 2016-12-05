@@ -171,16 +171,6 @@ SWIGEXPORT void swigc_print_array(double* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT void swigc_print_array_ref(double* farg1, int* farg2) {
-  double *arg1 = 0 ;
-  std::size_t arg2 ;
-  
-  arg1 = farg1;
-  arg2 = *farg2;
-  print_array_ref((double const &)*arg1,arg2);
-}
-
-
 #ifdef __cplusplus
 }
 #endif

@@ -8,8 +8,11 @@ module thinvec
  implicit none
  ! PUBLIC METHODS AND TYPES
  public :: print_vec
+ public :: obtain_free
  public :: ThinVecDbl
+ public :: obtain_free_d
  public :: ThinVecInt
+ public :: obtain_free_i
  ! TYPES
  type ThinVecDbl
   type(C_PTR), private :: ptr = C_NULL_PTR
@@ -50,6 +53,13 @@ module thinvec
      bind(C, name="swigc_print_vec")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
+  end subroutine
+  subroutine swigc_obtain_free(farg1, farg2, farg3) &
+     bind(C, name="swigc_obtain_free")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   real(C_DOUBLE), dimension(*), intent(inout) :: farg2
+   integer(C_INT), intent(in) :: farg3
   end subroutine
   function swigc_new_ThinVecDbl() &
      bind(C, name="swigc_new_ThinVecDbl") &
@@ -133,6 +143,13 @@ module thinvec
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
   end subroutine
+  subroutine swigc_obtain_free_d(farg1, farg2, farg3) &
+     bind(C, name="swigc_obtain_free_d")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   real(C_DOUBLE), dimension(*), intent(inout) :: farg2
+   integer(C_INT), intent(in) :: farg3
+  end subroutine
   function swigc_new_ThinVecInt() &
      bind(C, name="swigc_new_ThinVecInt") &
      result(fresult)
@@ -215,6 +232,13 @@ module thinvec
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
   end subroutine
+  subroutine swigc_obtain_free_i(farg1, farg2, farg3) &
+     bind(C, name="swigc_obtain_free_i")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), dimension(*), intent(inout) :: farg2
+   integer(C_INT), intent(in) :: farg3
+  end subroutine
  end interface
 contains
   ! FORTRAN PROXY CODE
@@ -222,6 +246,12 @@ contains
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: v
    call swigc_print_vec(v%ptr)
+  end subroutine
+  subroutine obtain_free(v, p)
+   use, intrinsic :: ISO_C_BINDING
+   class(ThinVecDbl) :: v
+   real(C_DOUBLE), dimension(:), intent(inout) :: p
+   call swigc_obtain_free(v%ptr, p, size(p))
   end subroutine
   subroutine swigf_new_ThinVecDbl(self)
    use, intrinsic :: ISO_C_BINDING
@@ -283,24 +313,28 @@ contains
    integer(C_INT), intent(in) :: newsize
    call swigc_ThinVecDbl_resize(self%ptr, newsize)
   end subroutine
-  subroutine swigf_ThinVecDbl_ass(self, p, count)
+  subroutine swigf_ThinVecDbl_ass(self, p)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: self
-   real(C_DOUBLE), dimension(*), intent(in) :: p
-   integer(C_INT), intent(in) :: count
-   call swigc_ThinVecDbl_ass(self%ptr, p, count)
+   real(C_DOUBLE), dimension(:), intent(in) :: p
+   call swigc_ThinVecDbl_ass(self%ptr, p, size(p))
   end subroutine
-  subroutine swigf_ThinVecDbl_obtain(self, p, count)
+  subroutine swigf_ThinVecDbl_obtain(self, p)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: self
-   real(C_DOUBLE), dimension(*), intent(inout) :: p
-   integer(C_INT), intent(in) :: count
-   call swigc_ThinVecDbl_obtain(self%ptr, p, count)
+   real(C_DOUBLE), dimension(:), intent(inout) :: p
+   call swigc_ThinVecDbl_obtain(self%ptr, p, size(p))
   end subroutine
   subroutine swigf_delete_ThinVecDbl(self)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: self
    call swigc_delete_ThinVecDbl(self%ptr)
+  end subroutine
+  subroutine obtain_free_d(v, p)
+   use, intrinsic :: ISO_C_BINDING
+   class(ThinVecDbl) :: v
+   real(C_DOUBLE), dimension(:), intent(inout) :: p
+   call swigc_obtain_free_d(v%ptr, p, size(p))
   end subroutine
   subroutine swigf_new_ThinVecInt(self)
    use, intrinsic :: ISO_C_BINDING
@@ -362,23 +396,27 @@ contains
    integer(C_INT), intent(in) :: newsize
    call swigc_ThinVecInt_resize(self%ptr, newsize)
   end subroutine
-  subroutine swigf_ThinVecInt_ass(self, p, count)
+  subroutine swigf_ThinVecInt_ass(self, p)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecInt) :: self
-   integer(C_INT), dimension(*), intent(in) :: p
-   integer(C_INT), intent(in) :: count
-   call swigc_ThinVecInt_ass(self%ptr, p, count)
+   integer(C_INT), dimension(:), intent(in) :: p
+   call swigc_ThinVecInt_ass(self%ptr, p, size(p))
   end subroutine
-  subroutine swigf_ThinVecInt_obtain(self, p, count)
+  subroutine swigf_ThinVecInt_obtain(self, p)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecInt) :: self
-   integer(C_INT), dimension(*), intent(inout) :: p
-   integer(C_INT), intent(in) :: count
-   call swigc_ThinVecInt_obtain(self%ptr, p, count)
+   integer(C_INT), dimension(:), intent(inout) :: p
+   call swigc_ThinVecInt_obtain(self%ptr, p, size(p))
   end subroutine
   subroutine swigf_delete_ThinVecInt(self)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecInt) :: self
    call swigc_delete_ThinVecInt(self%ptr)
+  end subroutine
+  subroutine obtain_free_i(v, p)
+   use, intrinsic :: ISO_C_BINDING
+   class(ThinVecInt) :: v
+   integer(C_INT), dimension(:), intent(inout) :: p
+   call swigc_obtain_free_i(v%ptr, p, size(p))
   end subroutine
 end module thinvec

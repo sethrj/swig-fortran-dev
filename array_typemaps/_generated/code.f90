@@ -23,7 +23,7 @@ contains
   ! FORTRAN PROXY CODE
   subroutine print_array(arr)
    use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE), dimension(*), intent(in) :: arr
-   call swigc_print_array(arg1, size(arg1))
+   real(C_DOUBLE), dimension(:), intent(in) :: arr
+   call swigc_print_array(arr, size(arr))
   end subroutine
 end module code

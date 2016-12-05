@@ -36,7 +36,7 @@ program main
     ! Pull data from the vector
     allocate(obtained(v%size()))
     obtained = -1.0d0
-    call v%obtain(obtained, size(obtained))
+    call v%obtain(obtained)
     write(0, *) "Obtained ", size(obtained), "els:", obtained
     deallocate(obtained)
 
@@ -45,7 +45,7 @@ program main
         dummy_data(i) = real(i) + 1.5d0
     end do
     write(0, *) "Assigning vector", dummy_data
-    call v%ass(dummy_data, size(dummy_data))
+    call v%ass(dummy_data)
     call print_vec(v)
 
     write(0, *) "Destroying..."

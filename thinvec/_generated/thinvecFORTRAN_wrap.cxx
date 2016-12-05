@@ -156,9 +156,6 @@ template <typename T> T SwigValueInit() {
 #endif
 
 
-#include <cassert>
-
-
 #include "ThinVec.hh"
 
 #ifdef __cplusplus
@@ -167,8 +164,20 @@ extern "C" {
 SWIGEXPORT void swigc_print_vec(void* farg1) {
   ThinVec< double > *arg1 = 0 ;
   
-  arg1 = (ThinVec< double > *)(farg1); assert(arg1); 
+  arg1 = (ThinVec< double > *)(farg1); 
   print_vec((ThinVec< double > const &)*arg1);
+}
+
+
+SWIGEXPORT void swigc_obtain_free(void* farg1, double* farg2, int* farg3) {
+  ThinVec< double > *arg1 = 0 ;
+  double *arg2 = (double *) 0 ;
+  unsigned int arg3 ;
+  
+  arg1 = (ThinVec< double > *)(farg1); 
+  arg2 = farg2;
+  arg3 = *farg3;
+  obtain_free((ThinVec< double > const &)*arg1,arg2,arg3);
 }
 
 
@@ -214,7 +223,7 @@ SWIGEXPORT bool swigc_ThinVecDbl_empty(void* farg1) {
   bool result;
   
   arg1 = (ThinVec< double > *)(farg1); 
-  result = (bool)(arg1)->empty();
+  result = (bool)((ThinVec< double > const *)arg1)->empty();
   fresult = result;
   return fresult;
 }
@@ -226,7 +235,7 @@ SWIGEXPORT int swigc_ThinVecDbl_size(void* farg1) {
   ThinVec< double >::size_type result;
   
   arg1 = (ThinVec< double > *)(farg1); 
-  result = (ThinVec< double >::size_type)(arg1)->size();
+  result = (ThinVec< double >::size_type)((ThinVec< double > const *)arg1)->size();
   fresult = result;
   return fresult;
 }
@@ -240,7 +249,7 @@ SWIGEXPORT double swigc_ThinVecDbl_get(void* farg1, int* farg2) {
   
   arg1 = (ThinVec< double > *)(farg1); 
   arg2 = *farg2;
-  result = (ThinVec< double >::value_type *) &(arg1)->get(arg2);
+  result = (ThinVec< double >::value_type *) &((ThinVec< double > const *)arg1)->get(arg2);
   fresult = *result;
   return fresult;
 }
@@ -282,25 +291,25 @@ SWIGEXPORT void swigc_ThinVecDbl_resize(void* farg1, int* farg2) {
 
 SWIGEXPORT void swigc_ThinVecDbl_ass(void* farg1, double* farg2, int* farg3) {
   ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
-  ThinVec< double >::const_pointer arg2 = (ThinVec< double >::const_pointer) 0 ;
+  double *arg2 = (double *) 0 ;
   ThinVec< double >::size_type arg3 ;
   
   arg1 = (ThinVec< double > *)(farg1); 
   arg2 = farg2;
   arg3 = *farg3;
-  (arg1)->assign(arg2,arg3);
+  (arg1)->assign((double const *)arg2,arg3);
 }
 
 
 SWIGEXPORT void swigc_ThinVecDbl_obtain(void* farg1, double* farg2, int* farg3) {
   ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
-  ThinVec< double >::pointer arg2 = (ThinVec< double >::pointer) 0 ;
+  double *arg2 = (double *) 0 ;
   ThinVec< double >::size_type arg3 ;
   
   arg1 = (ThinVec< double > *)(farg1); 
   arg2 = farg2;
   arg3 = *farg3;
-  (arg1)->obtain(arg2,arg3);
+  ((ThinVec< double > const *)arg1)->obtain(arg2,arg3);
 }
 
 
@@ -309,6 +318,18 @@ SWIGEXPORT void swigc_delete_ThinVecDbl(void* farg1) {
   
   arg1 = (ThinVec< double > *)(farg1); 
   delete arg1;
+}
+
+
+SWIGEXPORT void swigc_obtain_free_d(void* farg1, double* farg2, int* farg3) {
+  ThinVec< double > *arg1 = 0 ;
+  double *arg2 = (double *) 0 ;
+  unsigned int arg3 ;
+  
+  arg1 = (ThinVec< double > *)(farg1); 
+  arg2 = farg2;
+  arg3 = *farg3;
+  obtain_free_t< double >((ThinVec< double > const &)*arg1,arg2,arg3);
 }
 
 
@@ -354,7 +375,7 @@ SWIGEXPORT bool swigc_ThinVecInt_empty(void* farg1) {
   bool result;
   
   arg1 = (ThinVec< int > *)(farg1); 
-  result = (bool)(arg1)->empty();
+  result = (bool)((ThinVec< int > const *)arg1)->empty();
   fresult = result;
   return fresult;
 }
@@ -366,7 +387,7 @@ SWIGEXPORT int swigc_ThinVecInt_size(void* farg1) {
   ThinVec< int >::size_type result;
   
   arg1 = (ThinVec< int > *)(farg1); 
-  result = (ThinVec< int >::size_type)(arg1)->size();
+  result = (ThinVec< int >::size_type)((ThinVec< int > const *)arg1)->size();
   fresult = result;
   return fresult;
 }
@@ -380,7 +401,7 @@ SWIGEXPORT int swigc_ThinVecInt_get(void* farg1, int* farg2) {
   
   arg1 = (ThinVec< int > *)(farg1); 
   arg2 = *farg2;
-  result = (ThinVec< int >::value_type *) &(arg1)->get(arg2);
+  result = (ThinVec< int >::value_type *) &((ThinVec< int > const *)arg1)->get(arg2);
   fresult = *result;
   return fresult;
 }
@@ -422,25 +443,25 @@ SWIGEXPORT void swigc_ThinVecInt_resize(void* farg1, int* farg2) {
 
 SWIGEXPORT void swigc_ThinVecInt_ass(void* farg1, int* farg2, int* farg3) {
   ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
-  ThinVec< int >::const_pointer arg2 = (ThinVec< int >::const_pointer) 0 ;
+  int *arg2 = (int *) 0 ;
   ThinVec< int >::size_type arg3 ;
   
   arg1 = (ThinVec< int > *)(farg1); 
   arg2 = farg2;
   arg3 = *farg3;
-  (arg1)->assign(arg2,arg3);
+  (arg1)->assign((int const *)arg2,arg3);
 }
 
 
 SWIGEXPORT void swigc_ThinVecInt_obtain(void* farg1, int* farg2, int* farg3) {
   ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
-  ThinVec< int >::pointer arg2 = (ThinVec< int >::pointer) 0 ;
+  int *arg2 = (int *) 0 ;
   ThinVec< int >::size_type arg3 ;
   
   arg1 = (ThinVec< int > *)(farg1); 
   arg2 = farg2;
   arg3 = *farg3;
-  (arg1)->obtain(arg2,arg3);
+  ((ThinVec< int > const *)arg1)->obtain(arg2,arg3);
 }
 
 
@@ -449,6 +470,18 @@ SWIGEXPORT void swigc_delete_ThinVecInt(void* farg1) {
   
   arg1 = (ThinVec< int > *)(farg1); 
   delete arg1;
+}
+
+
+SWIGEXPORT void swigc_obtain_free_i(void* farg1, int* farg2, int* farg3) {
+  ThinVec< int > *arg1 = 0 ;
+  int *arg2 = (int *) 0 ;
+  unsigned int arg3 ;
+  
+  arg1 = (ThinVec< int > *)(farg1); 
+  arg2 = farg2;
+  arg3 = *farg3;
+  obtain_free_t< int >((ThinVec< int > const &)*arg1,arg2,arg3);
 }
 
 

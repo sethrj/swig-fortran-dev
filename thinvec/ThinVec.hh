@@ -36,13 +36,13 @@ class ThinVec
     { /* * */ }
 
     // Accessors
-    bool empty()
+    bool empty() const
     { return d_data.empty(); }
 
-    size_type size()
+    size_type size() const
     { return d_data.size(); }
 
-    const value_type& get(size_type index)
+    const value_type& get(size_type index) const
     { return d_data.at(index); }
 
     void set(size_type index, const value_type& val)
@@ -51,14 +51,25 @@ class ThinVec
     void resize(size_type newsize, value_type fillval = T())
     { d_data.resize(newsize, fillval); }
 
-    void assign(const_pointer p, size_type count);
+    void assign(const T* p, size_type count);
 
-    void obtain(pointer p, size_type count);
+    // XXX: for some reason, this has to be T* instead of pointer_type for the
+    // multi-argument resolution to work
+    void obtain(T* p, size_type count) const;
 
     const std::vector<T>& data() const { return d_data; }
 };
 
 void print_vec(const ThinVec<double>& v);
+
+// Free functions that user the ARRAY/SIZE typemap
+
+template<class T>
+void obtain_free_t(const ThinVec<T>& v, T* p, unsigned int count)
+{ v.obtain(p, count); }
+
+inline void obtain_free(const ThinVec<double>& v, double* p, unsigned int count)
+{ v.obtain(p, count); }
 
 #endif // thinvec_ThinVec_hh
 

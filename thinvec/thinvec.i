@@ -26,6 +26,15 @@
 %rename(ass) ThinVec<double>::assign;
 %rename(ass) ThinVec<int>::assign;
 
+// Works with void obtain(double* p, size_type count)
+// and (T* p, size_type count)
+// but not (pointer p, size_type count)
+%apply (SWIGTYPE* ARRAY, std::size_t SIZE) {
+       (double* p, unsigned int count),
+       (const double* p, unsigned int count),
+       (int* p, unsigned int count),
+       (const int* p, unsigned int count) };
+
 #endif
 
 // Handle the case of operator overloading
@@ -40,7 +49,10 @@
 
 // Instantiate
 %template(ThinVecDbl) ThinVec<double>;
+%template(obtain_free_d) obtain_free_t<double>;
+
 %template(ThinVecInt) ThinVec<int>;
+%template(obtain_free_i) obtain_free_t<int>;
 
 //---------------------------------------------------------------------------//
 // end of swig-dev/thinvec/ThinVec.i

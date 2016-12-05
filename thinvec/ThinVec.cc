@@ -27,7 +27,7 @@ void ThinVec<T>::assign(const_pointer p, size_type count)
 }
 
 template<class T>
-void ThinVec<T>::obtain(pointer p, size_type count)
+void ThinVec<T>::obtain(pointer p, size_type count) const
 {
     cout << "copying " << count << " from " << this << " to " << p
         << endl;
