@@ -73,7 +73,7 @@ contains
   subroutine get_something_ptr(x, y)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT), intent(in) :: x
-   real(C_DOUBLE), dimension(*), intent(inout) :: y
+   real(C_DOUBLE), dimension(:), intent(inout) :: y
    call swigc_get_something_ptr(x, y)
   end subroutine
   function get_something_rcref(x) &

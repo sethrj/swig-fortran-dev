@@ -19,6 +19,8 @@ module simple
   procedure :: double_it => swigf_SimpleClassDerp_double_it
   procedure :: get => swigf_SimpleClassDerp_get
   procedure :: get_multiplied => swigf_SimpleClassDerp_get_multiplied
+  procedure :: action_dbl => swigf_SimpleClassDerp_action_dbl
+  procedure :: action_int => swigf_SimpleClassDerp_action_int
  end type
  ! INTERFACES
  private
@@ -60,6 +62,18 @@ module simple
    type(C_PTR), value :: farg1
    integer(C_INT), intent(in) :: farg2
   end function
+  subroutine swigc_SimpleClassDerp_action_dbl(farg1, farg2) &
+     bind(C, name="swigc_SimpleClassDerp_action_dbl")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   real(C_DOUBLE), intent(inout) :: farg2
+  end subroutine
+  subroutine swigc_SimpleClassDerp_action_int(farg1, farg2) &
+     bind(C, name="swigc_SimpleClassDerp_action_int")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(inout) :: farg2
+  end subroutine
   subroutine swigc_print_value(farg1) &
      bind(C, name="swigc_print_value")
    use, intrinsic :: ISO_C_BINDING
@@ -108,6 +122,18 @@ contains
    integer(C_INT), intent(in) :: multiple
    output = swigc_SimpleClassDerp_get_multiplied(self%ptr, multiple)
   end function
+  subroutine swigf_SimpleClassDerp_action_dbl(self, val)
+   use, intrinsic :: ISO_C_BINDING
+   class(SimpleClassDerp) :: self
+   real(C_DOUBLE), intent(inout) :: val
+   call swigc_SimpleClassDerp_action_dbl(self%ptr, val)
+  end subroutine
+  subroutine swigf_SimpleClassDerp_action_int(self, val)
+   use, intrinsic :: ISO_C_BINDING
+   class(SimpleClassDerp) :: self
+   integer(C_INT), intent(inout) :: val
+   call swigc_SimpleClassDerp_action_int(self%ptr, val)
+  end subroutine
   subroutine print_value(c)
    use, intrinsic :: ISO_C_BINDING
    class(SimpleClassDerp) :: c

@@ -17,8 +17,9 @@
 // Automatically expand a Fortran array into a pointer/size pair with the
 // correct type
 %apply (std::size_t SIZE) { ( std::size_t count) };
-%apply (const SWIGTYPE* ARRAY, std::size_t SIZE) {
+%apply (SWIGTYPE* ARRAY, std::size_t SIZE) {
        (const double* arr, std::size_t count) };
+
 #endif
 
 %include "code.hh"

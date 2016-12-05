@@ -15,6 +15,7 @@
 //%rename(ctor_dbl) SimpleClass(double);
 
 #ifdef SWIGFORTRAN
+
 %fortranappend SimpleClass::SimpleClass %{
    write(0, "(a, z16)") "Constructed at ", self%ptr
 %}
@@ -25,6 +26,9 @@
 
 %rename(SimpleClassDerp) SimpleClass;
 %include "SimpleClass.hh"
+
+%template(action_dbl) SimpleClass::action<double>;
+%template(action_int) SimpleClass::action<int>;
 
 //---------------------------------------------------------------------------//
 // end of simple_class/simple.i

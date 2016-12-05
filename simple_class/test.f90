@@ -11,18 +11,28 @@ program main
     use simple, SimpleClass => SimpleClassDerp
     implicit none
 
-    type(SimpleClass) :: c
+    type(SimpleClass) :: orig
+    type(SimpleClass) :: copy
     write(0, *) "Constructing..."
-    call c%ctor()
+    call orig%ctor()
+    ! write(0, "(a, z16)") "Orig:", orig%ptr, "Copy:", copy%ptr
     write(0, *) "Setting..."
-    call c%set(123.0d0)
-    write(0, *) "Current value ", c%get()
-    call c%double_it()
-    write(0, *) "Current value ", c%get()
-    write(0, *) "Quadrupled: ", c%get_multiplied(4)
-    call print_value(c)
+    call orig%set(123.0d0)
+    write(0, *) "Current value ", orig%get()
+    call orig%double_it()
+    write(0, *) "Current value ", orig%get()
+    write(0, *) "Quadrupled: ", orig%get_multiplied(4)
+    call print_value(orig)
+
+
+    write(0, *) "Copying..."
+    copy = orig
+    ! write(0, "(a, z16)") "Orig:", orig%ptr, "Copy:", copy%ptr
+    call print_value(copy)
     write(0, *) "Destroying..."
-    call c%dtor()
+    call orig%dtor()
+    ! write(0, *) "Double-deleting..."
+    ! call copy%dtor()
 end program
 
 !-----------------------------------------------------------------------------!

@@ -13,6 +13,7 @@
 %module thinvec
 
 #ifdef SWIGFORTRAN
+
 // Handle constructor overloading
 %rename(ctor_count)  ThinVec::ThinVec(size_type);
 //%ignore   ThinVec::ThinVec(size_type, value_type);

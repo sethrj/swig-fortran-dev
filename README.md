@@ -29,24 +29,27 @@ Basic language features
 - DONE: methods/functions with class arguments
 - DONE: template instantiation (SWIG should already handle this)
 - inheritance (only base class holds pointer)
-- dynamic-cast type checking for inheritance upcasts
 - DONE: multiple constructors
 - `RCP/shared_ptr` wrapping (SWIG should already handle this)
 - "generic" function overloading
-- templated class method instantiation (needed for plist)
+- DONE: templated class method instantiation (needed for plist)
+- DONE: namespaces
 - string wrapping
 - DONE: passing entire arrays of data in a single call
 - DONE: Add 'intent' qualifiers to arguments?
-- passing classes by value?
+- passing classes by value? (not done; RCP though)
 - Fortran callback functions
 - "director" capability to subclass a c++ class using a Fortran class
 - Multiple interacting modules
 - Iterators?
-- Optional generation of `finally` statement for auto-destruction
+- Optional generation of `final` statement for auto-destruction
 - Optional typemap for checking validity of pointers (class must be
   constructed)
 - Find out about quirks of C++ static object initialization when executed by a
   Fortran `main` function
+- Exception handling?
+- Error checking (pointers being assigned)
+- dynamic-cast type checking for inheritance upcasts?
 
 Trilinos classes to wrap
 ========================
@@ -62,10 +65,14 @@ Vision:
 Discussion points
 =================
 - What to name constructor/destructor, especially in context of shared pointers
+ - create : allocate C++ memory (new) and call constructor
+ - retain : possible "constructor" that takes existing RCP and increments its
+   reference
+ - release : decrement reference count or call destructor
+
 - How to handle shared pointer wrapping: treat it just like the regular
   pointer, except other objects can hold a reference to it?
-- Is f90 the right extension for Fortran2003 code?
-- Fortran assertions
-- Unit tests
+- Is f90 the right extension for Fortran2003 code? (yes)
+- Unit tests and SWIG autoconf integration
 - Try to keep compatible with C++ types (namely `size_t` in array sizes) or
   replace with more fortran-friendly `int` type?

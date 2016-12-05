@@ -11,6 +11,8 @@
 #ifndef simple_class_SimpleClass_hh
 #define simple_class_SimpleClass_hh
 
+class Foo;
+
 //===========================================================================//
 /*!
  * \class SimpleClass
@@ -48,6 +50,11 @@ class SimpleClass
 
     // Access the value
     storage_type get() const;
+
+    // Access the value
+    //storage_type get_foo(const Foo& a) const;
+    template<class T>
+    void action(T& val) { val *= 2; }
 
     // Access the value, multiplied by some parameter
     storage_type get_multiplied(multiple_type multiple) const;

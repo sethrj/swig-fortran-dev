@@ -156,9 +156,6 @@ template <typename T> T SwigValueInit() {
 #endif
 
 
-#include <cassert>
-
-
 #include "bare.hh"
 
 #ifdef __cplusplus

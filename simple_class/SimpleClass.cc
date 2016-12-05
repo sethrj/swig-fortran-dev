@@ -37,6 +37,7 @@ SimpleClass::~SimpleClass()
 void SimpleClass::set(double val)
 {
     d_storage = val;
+    // throw std::logic_error("why did you set me");
 }
 
 void SimpleClass::double_it()
