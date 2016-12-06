@@ -14,8 +14,8 @@ module stdstr
  type string
   type(C_PTR), private :: ptr = C_NULL_PTR
  contains
-  procedure :: ctor => swigf_new_string
-  procedure :: ctor_char => swigf_new_string_ctor_char
+  procedure :: create => swigf_new_string
+  procedure :: create_char => swigf_new_string_ctor_char
   procedure :: resize => swigf_string_resize
   procedure :: clear => swigf_string_clear
   procedure :: size => swigf_string_size
@@ -24,7 +24,7 @@ module stdstr
   procedure :: get => swigf_string_get
   procedure :: assign_from => swigf_string_assign_from
   procedure :: copy_to => swigf_string_copy_to
-  procedure :: dtor => swigf_delete_string
+  procedure :: release => swigf_delete_string
  end type
  ! INTERFACES
  private

@@ -13,9 +13,9 @@ module stdvec
  type VecDbl
   type(C_PTR), private :: ptr = C_NULL_PTR
  contains
-  procedure :: ctor => swigf_new_VecDbl
-  procedure :: ctor_count => swigf_new_VecDbl_ctor_count
-  procedure :: ctor_fill => swigf_new_VecDbl_ctor_fill
+  procedure :: create => swigf_new_VecDbl
+  procedure :: create_count => swigf_new_VecDbl_ctor_count
+  procedure :: create_fill => swigf_new_VecDbl_ctor_fill
   procedure :: size => swigf_VecDbl_size
   procedure :: capacity => swigf_VecDbl_capacity
   procedure :: empty => swigf_VecDbl_empty
@@ -28,7 +28,7 @@ module stdvec
   procedure :: get => swigf_VecDbl_get
   procedure :: assign_from => swigf_VecDbl_assign_from
   procedure :: copy_to => swigf_VecDbl_copy_to
-  procedure :: dtor => swigf_delete_VecDbl
+  procedure :: release => swigf_delete_VecDbl
  end type
  ! INTERFACES
  private

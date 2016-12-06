@@ -13,8 +13,8 @@ module simple
  type SimpleClassDerp
   type(C_PTR), private :: ptr = C_NULL_PTR
  contains
-  procedure :: ctor => swigf_new_SimpleClassDerp
-  procedure :: dtor => swigf_delete_SimpleClassDerp
+  procedure :: create => swigf_new_SimpleClassDerp
+  procedure :: release => swigf_delete_SimpleClassDerp
   procedure :: set => swigf_SimpleClassDerp_set
   procedure :: double_it => swigf_SimpleClassDerp_double_it
   procedure :: get => swigf_SimpleClassDerp_get

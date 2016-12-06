@@ -17,9 +17,9 @@ module thinvec
  type ThinVecDbl
   type(C_PTR), private :: ptr = C_NULL_PTR
  contains
-  procedure :: ctor => swigf_new_ThinVecDbl
-  procedure :: ctor_fill => swigf_new_ThinVecDbl_ctor_fill
-  procedure :: ctor_count => swigf_new_ThinVecDbl_ctor_count
+  procedure :: create => swigf_new_ThinVecDbl
+  procedure :: create_fill => swigf_new_ThinVecDbl_ctor_fill
+  procedure :: create_count => swigf_new_ThinVecDbl_ctor_count
   procedure :: empty => swigf_ThinVecDbl_empty
   procedure :: size => swigf_ThinVecDbl_size
   procedure :: get => swigf_ThinVecDbl_get
@@ -28,14 +28,14 @@ module thinvec
   procedure :: resize => swigf_ThinVecDbl_resize
   procedure :: ass => swigf_ThinVecDbl_ass
   procedure :: obtain => swigf_ThinVecDbl_obtain
-  procedure :: dtor => swigf_delete_ThinVecDbl
+  procedure :: release => swigf_delete_ThinVecDbl
  end type
  type ThinVecInt
   type(C_PTR), private :: ptr = C_NULL_PTR
  contains
-  procedure :: ctor => swigf_new_ThinVecInt
-  procedure :: ctor_fill => swigf_new_ThinVecInt_ctor_fill
-  procedure :: ctor_count => swigf_new_ThinVecInt_ctor_count
+  procedure :: create => swigf_new_ThinVecInt
+  procedure :: create_fill => swigf_new_ThinVecInt_ctor_fill
+  procedure :: create_count => swigf_new_ThinVecInt_ctor_count
   procedure :: empty => swigf_ThinVecInt_empty
   procedure :: size => swigf_ThinVecInt_size
   procedure :: get => swigf_ThinVecInt_get
@@ -44,7 +44,7 @@ module thinvec
   procedure :: resize => swigf_ThinVecInt_resize
   procedure :: ass => swigf_ThinVecInt_ass
   procedure :: obtain => swigf_ThinVecInt_obtain
-  procedure :: dtor => swigf_delete_ThinVecInt
+  procedure :: release => swigf_delete_ThinVecInt
  end type
  ! INTERFACES
  private

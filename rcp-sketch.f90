@@ -33,19 +33,29 @@ type Foo
     ! This C pointer is actually an RCP<Foo>*
     type(C_PTR), private :: ptr = C_NULL_PTR
 contains
+    ! Create new data
+    subroutine create(self)
+        type(Foo) :: self
+        if (self%ptr)
+            call self%release()
+        self%ptr = wrap_new_foo()
+    end subroutine
+
     ! Move assignment
     subroutine acquire(self, rhs)
         type(Foo) :: self
         type(Foo) :: rhs
-        self%release()
+        if (self%ptr)
+            call self%release()
         self%ptr = rhs%ptr
-        rhs%release()
+        call rhs%release()
     end subroutine
 
-    operator=(self, rhs)
-        self%release()
+    subroutine reference(self, rhs)
+        if (self%ptr)
+            call self%release()
         self%ptr = rhs%ptr
-        inc_rcp(self%ptr)
+        call inc_rcp(self%ptr)
     end operator
 
     subroutine release(self)
@@ -58,13 +68,16 @@ program main
     type(Foo) :: blorp
     type(Foo) :: blorp2
 
-    blorp%create(10)
-    blorp%acquire(get_foo())
+    ! create a new blorp
+    call blorp%create(10)
 
-    blorp2%reference(blorp)
+    ! get a blorp via return-by-rcp
+    call blorp%acquire(get_foo())
 
-    blorp%release()
-    ! blorp2 is 
-    blorp2%release()
+    call blorp2%reference(blorp)
+
+    call blorp%release()
+    ! blorp2 is already null, so this does nothing
+    call blorp2%release()
 end program
     

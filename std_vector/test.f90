@@ -18,10 +18,10 @@ program main
 
     ! This should be a null-op since the underlying pointer is initialized to
     ! null
-    call v%dtor()
+    call v%release()
     
     write(0, *) "Constructing..."
-    call v%ctor()
+    call v%create()
     write(0, *) "Sizing..."
     call v%resize(4)
     call print_vec(v)
@@ -51,7 +51,7 @@ program main
     write(0, *) "Value at 3:", v%get(3)
 
     write(0, *) "Destroying..."
-    call v%dtor()
+    call v%release()
 end program
 
 !-----------------------------------------------------------------------------!

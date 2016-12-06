@@ -14,7 +14,7 @@ program main
     type(SimpleClass) :: orig
     type(SimpleClass) :: copy
     write(0, *) "Constructing..."
-    call orig%ctor()
+    call orig%create()
     ! write(0, "(a, z16)") "Orig:", orig%ptr, "Copy:", copy%ptr
     write(0, *) "Setting..."
     call orig%set(123.0d0)
@@ -30,9 +30,9 @@ program main
     ! write(0, "(a, z16)") "Orig:", orig%ptr, "Copy:", copy%ptr
     call print_value(copy)
     write(0, *) "Destroying..."
-    call orig%dtor()
+    call orig%release()
     ! write(0, *) "Double-deleting..."
-    ! call copy%dtor()
+    ! call copy%release()
 end program
 
 !-----------------------------------------------------------------------------!

@@ -18,7 +18,7 @@ program main
     type(string) :: s
 
     write(0, *) "Constructing..."
-    call s%ctor()
+    call s%create()
     write(0, *) "Size:", s%size()
 
     fixedlen = "fixed"
@@ -60,7 +60,7 @@ program main
     call s%copy_to(fixedlen)
     write(0, *) "Quarter-length string with auto-padding: '"//fixedlen//"'"
     write(0, *) "Destroying..."
-    call s%dtor()
+    call s%release()
 
 end program
 

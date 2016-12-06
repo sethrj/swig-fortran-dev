@@ -15,9 +15,9 @@
 #ifdef SWIGFORTRAN
 
 // Handle constructor overloading
-%rename(ctor_count)  ThinVec::ThinVec(size_type);
+%rename(create_count)  ThinVec::ThinVec(size_type);
 //%ignore   ThinVec::ThinVec(size_type, value_type);
-%rename(ctor_fill)   ThinVec::ThinVec(size_type, value_type);
+%rename(create_fill)   ThinVec::ThinVec(size_type, value_type);
 
 // Rename a function that's the same as a Fortran keyword
 // NOTE: this appears to be broken in SWIG 3.0.11; we have to explicitly rename

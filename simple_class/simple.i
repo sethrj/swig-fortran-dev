@@ -12,7 +12,7 @@
 
 %module simple
 
-//%rename(ctor_dbl) SimpleClass(double);
+//%rename(create_dbl) SimpleClass(double);
 
 #ifdef SWIGFORTRAN
 

@@ -13,7 +13,7 @@ program main
 
     type(SimpleClass) :: c
     write(0, *) "Constructing..."
-    call c%ctor()
+    call c%create()
     write(0, *) "Setting..."
     call c%set(123.0d0)
     write(0, *) "Current value ", c%get()
@@ -21,7 +21,7 @@ program main
     write(0, *) "Current value ", c%get()
     write(0, *) "Quadrupled: ", c%get_multiplied(4)
     write(0, *) "Destroying..."
-    call c%dtor()
+    call c%release()
 end program
 
 !-----------------------------------------------------------------------------!
