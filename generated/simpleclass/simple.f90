@@ -6,6 +6,7 @@
 module simple
  use, intrinsic :: ISO_C_BINDING
  implicit none
+
  ! PUBLIC METHODS AND TYPES
  public :: SimpleClassDerp
  public :: print_value
@@ -23,7 +24,8 @@ module simple
   procedure :: action_dbl => swigf_SimpleClassDerp_action_dbl
   procedure :: action_int => swigf_SimpleClassDerp_action_int
  end type
- ! INTERFACES
+
+ ! WRAPPER DECLARATIONS
  private
  interface
   function swigc_new_SimpleClassDerp() &
@@ -81,6 +83,7 @@ module simple
    type(C_PTR), value :: farg1
   end subroutine
  end interface
+
 contains
   ! FORTRAN PROXY CODE
   subroutine swigf_new_SimpleClassDerp(self)

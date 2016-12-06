@@ -161,7 +161,17 @@ template <typename T> T SwigValueInit() {
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_reverse_integer(int* farg1, int* farg2) {
+SWIGEXPORT void swigc_sort__SWIG_1(int* farg1, int* farg2) {
+  int *arg1 = (int *) 0 ;
+  int arg2 ;
+  
+  arg1 = farg1;
+  arg2 = *farg2;
+  sort< int >(arg1,arg2);
+}
+
+
+SWIGEXPORT void swigc_reverse__SWIG_1(int* farg1, int* farg2) {
   int *arg1 = (int *) 0 ;
   int arg2 ;
   
@@ -171,7 +181,7 @@ SWIGEXPORT void swigc_reverse_integer(int* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT int swigc_find_sorted_integer(int* farg1, int* farg2, int* farg3) {
+SWIGEXPORT int swigc_find_sorted__SWIG_1(int* farg1, int* farg2, int* farg3) {
   int fresult = 0 ;
   int *arg1 = (int *) 0 ;
   int arg2 ;
@@ -187,7 +197,17 @@ SWIGEXPORT int swigc_find_sorted_integer(int* farg1, int* farg2, int* farg3) {
 }
 
 
-SWIGEXPORT void swigc_reverse_real4(float* farg1, int* farg2) {
+SWIGEXPORT void swigc_sort__SWIG_2(float* farg1, int* farg2) {
+  float *arg1 = (float *) 0 ;
+  int arg2 ;
+  
+  arg1 = farg1;
+  arg2 = *farg2;
+  sort< float >(arg1,arg2);
+}
+
+
+SWIGEXPORT void swigc_reverse__SWIG_2(float* farg1, int* farg2) {
   float *arg1 = (float *) 0 ;
   int arg2 ;
   
@@ -197,7 +217,7 @@ SWIGEXPORT void swigc_reverse_real4(float* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT int swigc_find_sorted_real4(float* farg1, int* farg2, float* farg3) {
+SWIGEXPORT int swigc_find_sorted__SWIG_2(float* farg1, int* farg2, float* farg3) {
   int fresult = 0 ;
   float *arg1 = (float *) 0 ;
   int arg2 ;
@@ -213,7 +233,17 @@ SWIGEXPORT int swigc_find_sorted_real4(float* farg1, int* farg2, float* farg3) {
 }
 
 
-SWIGEXPORT void swigc_reverse_real8(double* farg1, int* farg2) {
+SWIGEXPORT void swigc_sort__SWIG_3(double* farg1, int* farg2) {
+  double *arg1 = (double *) 0 ;
+  int arg2 ;
+  
+  arg1 = farg1;
+  arg2 = *farg2;
+  sort< double >(arg1,arg2);
+}
+
+
+SWIGEXPORT void swigc_reverse__SWIG_3(double* farg1, int* farg2) {
   double *arg1 = (double *) 0 ;
   int arg2 ;
   
@@ -223,7 +253,7 @@ SWIGEXPORT void swigc_reverse_real8(double* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT int swigc_find_sorted_real8(double* farg1, int* farg2, double* farg3) {
+SWIGEXPORT int swigc_find_sorted__SWIG_3(double* farg1, int* farg2, double* farg3) {
   int fresult = 0 ;
   double *arg1 = (double *) 0 ;
   int arg2 ;

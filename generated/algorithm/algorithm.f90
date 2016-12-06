@@ -6,25 +6,39 @@
 module algorithm
  use, intrinsic :: ISO_C_BINDING
  implicit none
+
  ! PUBLIC METHODS AND TYPES
- public :: reverse_integer
- public :: find_sorted_integer
- public :: reverse_real4
- public :: find_sorted_real4
- public :: reverse_real8
- public :: find_sorted_real8
+ public :: reverse
+ interface reverse
+  module procedure :: reverse__SWIG_1, reverse__SWIG_2, reverse__SWIG_3
+ end interface
+ public :: find_sorted
+ interface find_sorted
+  module procedure :: find_sorted__SWIG_1, find_sorted__SWIG_2, find_sorted__SWIG_3
+ end interface
+ public :: sort
+ interface sort
+  module procedure :: sort__SWIG_1, sort__SWIG_2, sort__SWIG_3
+ end interface
  ! TYPES
- ! INTERFACES
+
+ ! WRAPPER DECLARATIONS
  private
  interface
-  subroutine swigc_reverse_integer(farg1, farg2) &
-     bind(C, name="swigc_reverse_integer")
+  subroutine swigc_sort__SWIG_1(farg1, farg2) &
+     bind(C, name="swigc_sort__SWIG_1")
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT), dimension(*), intent(inout) :: farg1
    integer(C_INT), intent(in) :: farg2
   end subroutine
-  function swigc_find_sorted_integer(farg1, farg2, farg3) &
-     bind(C, name="swigc_find_sorted_integer") &
+  subroutine swigc_reverse__SWIG_1(farg1, farg2) &
+     bind(C, name="swigc_reverse__SWIG_1")
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT), dimension(*), intent(inout) :: farg1
+   integer(C_INT), intent(in) :: farg2
+  end subroutine
+  function swigc_find_sorted__SWIG_1(farg1, farg2, farg3) &
+     bind(C, name="swigc_find_sorted__SWIG_1") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT) :: fresult
@@ -32,14 +46,20 @@ module algorithm
    integer(C_INT), intent(in) :: farg2
    integer(C_INT), intent(in) :: farg3
   end function
-  subroutine swigc_reverse_real4(farg1, farg2) &
-     bind(C, name="swigc_reverse_real4")
+  subroutine swigc_sort__SWIG_2(farg1, farg2) &
+     bind(C, name="swigc_sort__SWIG_2")
    use, intrinsic :: ISO_C_BINDING
    real(C_FLOAT), dimension(*), intent(inout) :: farg1
    integer(C_INT), intent(in) :: farg2
   end subroutine
-  function swigc_find_sorted_real4(farg1, farg2, farg3) &
-     bind(C, name="swigc_find_sorted_real4") &
+  subroutine swigc_reverse__SWIG_2(farg1, farg2) &
+     bind(C, name="swigc_reverse__SWIG_2")
+   use, intrinsic :: ISO_C_BINDING
+   real(C_FLOAT), dimension(*), intent(inout) :: farg1
+   integer(C_INT), intent(in) :: farg2
+  end subroutine
+  function swigc_find_sorted__SWIG_2(farg1, farg2, farg3) &
+     bind(C, name="swigc_find_sorted__SWIG_2") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT) :: fresult
@@ -47,14 +67,20 @@ module algorithm
    integer(C_INT), intent(in) :: farg2
    real(C_FLOAT), intent(in) :: farg3
   end function
-  subroutine swigc_reverse_real8(farg1, farg2) &
-     bind(C, name="swigc_reverse_real8")
+  subroutine swigc_sort__SWIG_3(farg1, farg2) &
+     bind(C, name="swigc_sort__SWIG_3")
    use, intrinsic :: ISO_C_BINDING
    real(C_DOUBLE), dimension(*), intent(inout) :: farg1
    integer(C_INT), intent(in) :: farg2
   end subroutine
-  function swigc_find_sorted_real8(farg1, farg2, farg3) &
-     bind(C, name="swigc_find_sorted_real8") &
+  subroutine swigc_reverse__SWIG_3(farg1, farg2) &
+     bind(C, name="swigc_reverse__SWIG_3")
+   use, intrinsic :: ISO_C_BINDING
+   real(C_DOUBLE), dimension(*), intent(inout) :: farg1
+   integer(C_INT), intent(in) :: farg2
+  end subroutine
+  function swigc_find_sorted__SWIG_3(farg1, farg2, farg3) &
+     bind(C, name="swigc_find_sorted__SWIG_3") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT) :: fresult
@@ -63,47 +89,61 @@ module algorithm
    real(C_DOUBLE), intent(in) :: farg3
   end function
  end interface
+
 contains
   ! FORTRAN PROXY CODE
-  subroutine reverse_integer(ARRAY)
+  subroutine sort__SWIG_1(arr)
    use, intrinsic :: ISO_C_BINDING
-   integer(C_INT), dimension(:), intent(inout) :: ARRAY
-   call swigc_reverse_integer(ARRAY, size(ARRAY))
+   integer(C_INT), dimension(:), intent(inout) :: arr
+   call swigc_sort__SWIG_1(arr, size(arr))
   end subroutine
-  function find_sorted_integer(ARRAY, val) &
+  subroutine reverse__SWIG_1(arr)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT), dimension(:), intent(inout) :: arr
+   call swigc_reverse__SWIG_1(arr, size(arr))
+  end subroutine
+  function find_sorted__SWIG_1(arr, val) &
      result(output)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT) :: output
-   integer(C_INT), dimension(:), intent(in) :: ARRAY
+   integer(C_INT), dimension(:), intent(in) :: arr
    integer(C_INT), intent(in) :: val
-   output = swigc_find_sorted_integer(ARRAY, size(ARRAY), val)
+   output = swigc_find_sorted__SWIG_1(arr, size(arr), val)
   end function
-  subroutine reverse_real4(ARRAY, SIZE)
+  subroutine sort__SWIG_2(arr)
    use, intrinsic :: ISO_C_BINDING
-   real(C_FLOAT), dimension(:), intent(inout) :: ARRAY
-   integer(C_INT), intent(in) :: SIZE
-   call swigc_reverse_real4(ARRAY, SIZE)
+   real(C_FLOAT), dimension(:), intent(inout) :: arr
+   call swigc_sort__SWIG_2(arr, size(arr))
   end subroutine
-  function find_sorted_real4(ARRAY, val) &
+  subroutine reverse__SWIG_2(arr)
+   use, intrinsic :: ISO_C_BINDING
+   real(C_FLOAT), dimension(:), intent(inout) :: arr
+   call swigc_reverse__SWIG_2(arr, size(arr))
+  end subroutine
+  function find_sorted__SWIG_2(arr, val) &
      result(output)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT) :: output
-   real(C_FLOAT), dimension(:), intent(in) :: ARRAY
+   real(C_FLOAT), dimension(:), intent(in) :: arr
    real(C_FLOAT), intent(in) :: val
-   output = swigc_find_sorted_real4(ARRAY, size(ARRAY), val)
+   output = swigc_find_sorted__SWIG_2(arr, size(arr), val)
   end function
-  subroutine reverse_real8(ARRAY, SIZE)
+  subroutine sort__SWIG_3(arr)
    use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE), dimension(:), intent(inout) :: ARRAY
-   integer(C_INT), intent(in) :: SIZE
-   call swigc_reverse_real8(ARRAY, SIZE)
+   real(C_DOUBLE), dimension(:), intent(inout) :: arr
+   call swigc_sort__SWIG_3(arr, size(arr))
   end subroutine
-  function find_sorted_real8(ARRAY, val) &
+  subroutine reverse__SWIG_3(arr)
+   use, intrinsic :: ISO_C_BINDING
+   real(C_DOUBLE), dimension(:), intent(inout) :: arr
+   call swigc_reverse__SWIG_3(arr, size(arr))
+  end subroutine
+  function find_sorted__SWIG_3(arr, val) &
      result(output)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT) :: output
-   real(C_DOUBLE), dimension(:), intent(in) :: ARRAY
+   real(C_DOUBLE), dimension(:), intent(in) :: arr
    real(C_DOUBLE), intent(in) :: val
-   output = swigc_find_sorted_real8(ARRAY, size(ARRAY), val)
+   output = swigc_find_sorted__SWIG_3(arr, size(arr), val)
   end function
 end module algorithm

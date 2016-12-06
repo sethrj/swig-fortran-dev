@@ -6,6 +6,7 @@
 module stdstr
  use, intrinsic :: ISO_C_BINDING
  implicit none
+
  ! PUBLIC METHODS AND TYPES
  public :: string
  public :: print_str
@@ -26,7 +27,8 @@ module stdstr
   procedure :: copy_to => swigf_string_copy_to
   procedure :: release => swigf_delete_string
  end type
- ! INTERFACES
+
+ ! WRAPPER DECLARATIONS
  private
  interface
   function swigc_new_string() &
@@ -113,6 +115,7 @@ module stdstr
    type(C_PTR), value :: farg1
   end subroutine
  end interface
+
 contains
   ! FORTRAN PROXY CODE
   subroutine swigf_new_string(self)

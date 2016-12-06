@@ -6,6 +6,7 @@
 module thinvec
  use, intrinsic :: ISO_C_BINDING
  implicit none
+
  ! PUBLIC METHODS AND TYPES
  public :: print_vec
  public :: obtain_free
@@ -46,7 +47,8 @@ module thinvec
   procedure :: obtain => swigf_ThinVecInt_obtain
   procedure :: release => swigf_delete_ThinVecInt
  end type
- ! INTERFACES
+
+ ! WRAPPER DECLARATIONS
  private
  interface
   subroutine swigc_print_vec(farg1) &
@@ -240,6 +242,7 @@ module thinvec
    integer(C_INT), intent(in) :: farg3
   end subroutine
  end interface
+
 contains
   ! FORTRAN PROXY CODE
   subroutine print_vec(v)

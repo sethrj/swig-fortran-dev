@@ -6,6 +6,7 @@
 module bare
  use, intrinsic :: ISO_C_BINDING
  implicit none
+
  ! PUBLIC METHODS AND TYPES
  public :: set_something
  public :: get_something
@@ -14,7 +15,8 @@ module bare
  public :: get_something_rcref
  public :: print_array
  ! TYPES
- ! INTERFACES
+
+ ! WRAPPER DECLARATIONS
  private
  interface
   subroutine swigc_set_something(farg1, farg2) &
@@ -56,6 +58,7 @@ module bare
    integer(C_INT), intent(in) :: farg2
   end subroutine
  end interface
+
 contains
   ! FORTRAN PROXY CODE
   subroutine set_something(x, y)
