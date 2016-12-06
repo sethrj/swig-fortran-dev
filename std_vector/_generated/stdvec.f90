@@ -26,8 +26,8 @@ module stdvec
   procedure :: push_back => swigf_VecDbl_push_back
   procedure :: set => swigf_VecDbl_set
   procedure :: get => swigf_VecDbl_get
-  procedure :: set_all => swigf_VecDbl_set_all
-  procedure :: get_all => swigf_VecDbl_get_all
+  procedure :: assign_from => swigf_VecDbl_assign_from
+  procedure :: copy_to => swigf_VecDbl_copy_to
   procedure :: dtor => swigf_delete_VecDbl
  end type
  ! INTERFACES
@@ -120,15 +120,15 @@ module stdvec
    type(C_PTR), value :: farg1
    integer(C_INT), intent(in) :: farg2
   end function
-  subroutine swigc_VecDbl_set_all(farg1, farg2, farg3) &
-     bind(C, name="swigc_VecDbl_set_all")
+  subroutine swigc_VecDbl_assign_from(farg1, farg2, farg3) &
+     bind(C, name="swigc_VecDbl_assign_from")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    real(C_DOUBLE), dimension(*), intent(in) :: farg2
    integer(C_INT), intent(in) :: farg3
   end subroutine
-  subroutine swigc_VecDbl_get_all(farg1, farg2, farg3) &
-     bind(C, name="swigc_VecDbl_get_all")
+  subroutine swigc_VecDbl_copy_to(farg1, farg2, farg3) &
+     bind(C, name="swigc_VecDbl_copy_to")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    real(C_DOUBLE), dimension(*), intent(inout) :: farg2
@@ -231,17 +231,17 @@ contains
    integer(C_INT), intent(in) :: pos
    output = swigc_VecDbl_get(self%ptr, pos)
   end function
-  subroutine swigf_VecDbl_set_all(self, arr)
+  subroutine swigf_VecDbl_assign_from(self, arr)
    use, intrinsic :: ISO_C_BINDING
    class(VecDbl) :: self
    real(C_DOUBLE), dimension(:), intent(in) :: arr
-   call swigc_VecDbl_set_all(self%ptr, arr, size(arr))
+   call swigc_VecDbl_assign_from(self%ptr, arr, size(arr))
   end subroutine
-  subroutine swigf_VecDbl_get_all(self, arr)
+  subroutine swigf_VecDbl_copy_to(self, arr)
    use, intrinsic :: ISO_C_BINDING
    class(VecDbl) :: self
    real(C_DOUBLE), dimension(:), intent(inout) :: arr
-   call swigc_VecDbl_get_all(self%ptr, arr, size(arr))
+   call swigc_VecDbl_copy_to(self%ptr, arr, size(arr))
   end subroutine
   subroutine swigf_delete_VecDbl(self)
    use, intrinsic :: ISO_C_BINDING

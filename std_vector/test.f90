@@ -37,13 +37,13 @@ program main
     ! Pull data from the vector
     allocate(obtained(v%size()))
     obtained = -1.0d0
-    call v%get_all(obtained)
+    call v%copy_to(obtained)
     write(0, *) "Obtained ", size(obtained), "elements:", obtained
 
     ! Modify the data
     obtained = obtained - 5.0d0
     write(0, *) "Setting all"
-    call v%set_all(obtained)
+    call v%assign_from(obtained)
     call print_vec(v)
     deallocate(obtained)
 

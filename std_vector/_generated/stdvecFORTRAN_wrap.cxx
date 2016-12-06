@@ -170,10 +170,10 @@ SWIGINTERN void std_vector_Sl_double_Sg__set(std::vector< double > *self,std::ve
 SWIGINTERN std::vector< double >::value_type std_vector_Sl_double_Sg__get(std::vector< double > *self,std::vector< double >::size_type pos){
         return (*self)[pos];
     }
-SWIGINTERN void std_vector_Sl_double_Sg__set_all(std::vector< double > *self,std::vector< double >::const_pointer arr,std::vector< double >::size_type arrsize){
+SWIGINTERN void std_vector_Sl_double_Sg__assign_from(std::vector< double > *self,std::vector< double >::const_pointer arr,std::vector< double >::size_type arrsize){
         self->assign(arr, arr + arrsize);
     }
-SWIGINTERN void std_vector_Sl_double_Sg__get_all(std::vector< double > *self,std::vector< double >::pointer arr,std::vector< double >::size_type arrsize){
+SWIGINTERN void std_vector_Sl_double_Sg__copy_to(std::vector< double > *self,std::vector< double >::pointer arr,std::vector< double >::size_type arrsize){
         if (self->size() != arrsize)
             throw std::range_error("arr/vector size mismatch");
 
@@ -330,7 +330,7 @@ SWIGEXPORT double swigc_VecDbl_get(void* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT void swigc_VecDbl_set_all(void* farg1, double* farg2, int* farg3) {
+SWIGEXPORT void swigc_VecDbl_assign_from(void* farg1, double* farg2, int* farg3) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::const_pointer arg2 = (std::vector< double >::const_pointer) 0 ;
   std::vector< double >::size_type arg3 ;
@@ -338,11 +338,11 @@ SWIGEXPORT void swigc_VecDbl_set_all(void* farg1, double* farg2, int* farg3) {
   arg1 = (std::vector< double > *)(farg1); 
   arg2 = farg2;
   arg3 = *farg3;
-  std_vector_Sl_double_Sg__set_all(arg1,(double const *)arg2,arg3);
+  std_vector_Sl_double_Sg__assign_from(arg1,(double const *)arg2,arg3);
 }
 
 
-SWIGEXPORT void swigc_VecDbl_get_all(void* farg1, double* farg2, int* farg3) {
+SWIGEXPORT void swigc_VecDbl_copy_to(void* farg1, double* farg2, int* farg3) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::pointer arg2 = (std::vector< double >::pointer) 0 ;
   std::vector< double >::size_type arg3 ;
@@ -350,7 +350,7 @@ SWIGEXPORT void swigc_VecDbl_get_all(void* farg1, double* farg2, int* farg3) {
   arg1 = (std::vector< double > *)(farg1); 
   arg2 = farg2;
   arg3 = *farg3;
-  std_vector_Sl_double_Sg__get_all(arg1,arg2,arg3);
+  std_vector_Sl_double_Sg__copy_to(arg1,arg2,arg3);
 }
 
 
