@@ -11,6 +11,7 @@ GEN=$HOME/_code/swig-fortran-dev/generated
 
 cd $BUILD
 for d in \
+  algorithm \
   barefunctions \
   simpleclass \
   std_string \
@@ -20,7 +21,12 @@ do
   builddir="$BUILD/devswig-$d"
   mkdir $builddir 2>/dev/null || true
   cd $builddir
-  test -f CMakeCache.txt || cmake -C $SOURCE/cmake/config.cmake $SOURCE/$d
+  if [ -f CMakeCache.txt ]
+  then
+    make clean
+  else
+    cmake -C $SOURCE/cmake/config.cmake $SOURCE/$d
+  fi
   make
   ./test.exe
   dstdir="$GEN/$d"

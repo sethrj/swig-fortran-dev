@@ -118,12 +118,14 @@ contains
   subroutine swigf_new_string(self)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
+   if (c_associated(self%ptr)) call self%release()
    self%ptr = swigc_new_string()
   end subroutine
   subroutine swigf_new_string_create_char(self, s)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
    character(len=*) :: s
+   if (c_associated(self%ptr)) call self%release()
    self%ptr = swigc_new_string_create_char(s, len(s))
   end subroutine
   subroutine swigf_string_resize(self, count)
@@ -182,6 +184,7 @@ contains
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
    call swigc_delete_string(self%ptr)
+   self%ptr = C_NULL_PTR
   end subroutine
   subroutine print_str(s)
    use, intrinsic :: ISO_C_BINDING

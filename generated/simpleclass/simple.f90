@@ -15,6 +15,7 @@ module simple
  contains
   procedure :: create => swigf_new_SimpleClassDerp
   procedure :: release => swigf_delete_SimpleClassDerp
+  final     :: swigf_final_SimpleClassDerp
   procedure :: set => swigf_SimpleClassDerp_set
   procedure :: double_it => swigf_SimpleClassDerp_double_it
   procedure :: get => swigf_SimpleClassDerp_get
@@ -85,6 +86,7 @@ contains
   subroutine swigf_new_SimpleClassDerp(self)
    use, intrinsic :: ISO_C_BINDING
    class(SimpleClassDerp) :: self
+   if (c_associated(self%ptr)) call self%release()
    self%ptr = swigc_new_SimpleClassDerp()
 
    write(0, "(a, z16)") "Constructed at ", self%ptr
@@ -95,6 +97,13 @@ contains
 
    write(0, "(a, z16)") "Destroying at ", self%ptr
    call swigc_delete_SimpleClassDerp(self%ptr)
+   self%ptr = C_NULL_PTR
+  end subroutine
+  subroutine swigf_final_SimpleClassDerp(self)
+   use, intrinsic :: ISO_C_BINDING
+   type(SimpleClassDerp) :: self
+   call swigc_delete_SimpleClassDerp(self%ptr)
+   self%ptr = C_NULL_PTR
   end subroutine
   subroutine swigf_SimpleClassDerp_set(self, val)
    use, intrinsic :: ISO_C_BINDING

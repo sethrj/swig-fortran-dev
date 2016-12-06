@@ -150,12 +150,14 @@ contains
   subroutine swigf_new_VecDbl(self)
    use, intrinsic :: ISO_C_BINDING
    class(VecDbl) :: self
+   if (c_associated(self%ptr)) call self%release()
    self%ptr = swigc_new_VecDbl()
   end subroutine
   subroutine swigf_new_VecDbl_create_count(self, count)
    use, intrinsic :: ISO_C_BINDING
    class(VecDbl) :: self
    integer(C_INT), intent(in) :: count
+   if (c_associated(self%ptr)) call self%release()
    self%ptr = swigc_new_VecDbl_create_count(count)
   end subroutine
   subroutine swigf_new_VecDbl_create_fill(self, count, v)
@@ -163,6 +165,7 @@ contains
    class(VecDbl) :: self
    integer(C_INT), intent(in) :: count
    real(C_DOUBLE), intent(in) :: v
+   if (c_associated(self%ptr)) call self%release()
    self%ptr = swigc_new_VecDbl_create_fill(count, v)
   end subroutine
   function swigf_VecDbl_size(self) &
@@ -247,6 +250,7 @@ contains
    use, intrinsic :: ISO_C_BINDING
    class(VecDbl) :: self
    call swigc_delete_VecDbl(self%ptr)
+   self%ptr = C_NULL_PTR
   end subroutine
   subroutine print_vecdbl(v)
    use, intrinsic :: ISO_C_BINDING

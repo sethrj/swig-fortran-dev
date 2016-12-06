@@ -156,72 +156,86 @@ template <typename T> T SwigValueInit() {
 #endif
 
 
-#include "bare.hh"
+#include "algorithm.hh"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_set_something(int* farg1, double* farg2) {
-  int arg1 ;
-  double arg2 ;
+SWIGEXPORT void swigc_reverse_integer(int* farg1, int* farg2) {
+  int *arg1 = (int *) 0 ;
+  int arg2 ;
   
-  arg1 = *farg1;
+  arg1 = farg1;
   arg2 = *farg2;
-  set_something(arg1,arg2);
+  reverse< int >(arg1,arg2);
 }
 
 
-SWIGEXPORT double swigc_get_something(int* farg1) {
-  double fresult = 0 ;
-  int arg1 ;
-  double result;
+SWIGEXPORT int swigc_find_sorted_integer(int* farg1, int* farg2, int* farg3) {
+  int fresult = 0 ;
+  int *arg1 = (int *) 0 ;
+  int arg2 ;
+  int arg3 ;
+  int result;
   
-  arg1 = *farg1;
-  result = (double)get_something(arg1);
+  arg1 = farg1;
+  arg2 = *farg2;
+  arg3 = *farg3;
+  result = (int)find_sorted< int >((int const *)arg1,arg2,arg3);
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_get_something_ref(int* farg1, double* farg2) {
-  int arg1 ;
-  double *arg2 = 0 ;
+SWIGEXPORT void swigc_reverse_real4(float* farg1, int* farg2) {
+  float *arg1 = (float *) 0 ;
+  int arg2 ;
   
-  arg1 = *farg1;
-  arg2 = farg2;
-  get_something_ref(arg1,*arg2);
+  arg1 = farg1;
+  arg2 = *farg2;
+  reverse< float >(arg1,arg2);
 }
 
 
-SWIGEXPORT void swigc_get_something_ptr(int* farg1, double* farg2) {
-  int arg1 ;
-  double *arg2 = (double *) 0 ;
+SWIGEXPORT int swigc_find_sorted_real4(float* farg1, int* farg2, float* farg3) {
+  int fresult = 0 ;
+  float *arg1 = (float *) 0 ;
+  int arg2 ;
+  float arg3 ;
+  int result;
   
-  arg1 = *farg1;
-  arg2 = farg2;
-  get_something_ptr(arg1,arg2);
-}
-
-
-SWIGEXPORT double swigc_get_something_rcref(int* farg1) {
-  double fresult = 0 ;
-  int arg1 ;
-  double *result = 0 ;
-  
-  arg1 = *farg1;
-  result = (double *) &get_something_rcref(arg1);
-  fresult = *result;
+  arg1 = farg1;
+  arg2 = *farg2;
+  arg3 = *farg3;
+  result = (int)find_sorted< float >((float const *)arg1,arg2,arg3);
+  fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_print_array(double* farg1, int* farg2) {
+SWIGEXPORT void swigc_reverse_real8(double* farg1, int* farg2) {
   double *arg1 = (double *) 0 ;
   int arg2 ;
   
   arg1 = farg1;
   arg2 = *farg2;
-  print_array((double const *)arg1,arg2);
+  reverse< double >(arg1,arg2);
+}
+
+
+SWIGEXPORT int swigc_find_sorted_real8(double* farg1, int* farg2, double* farg3) {
+  int fresult = 0 ;
+  double *arg1 = (double *) 0 ;
+  int arg2 ;
+  double arg3 ;
+  int result;
+  
+  arg1 = farg1;
+  arg2 = *farg2;
+  arg3 = *farg3;
+  result = (int)find_sorted< double >((double const *)arg1,arg2,arg3);
+  fresult = result;
+  return fresult;
 }
 
 
