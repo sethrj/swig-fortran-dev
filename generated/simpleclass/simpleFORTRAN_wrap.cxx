@@ -161,11 +161,23 @@ template <typename T> T SwigValueInit() {
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void* swigc_new_SimpleClassDerp() {
+SWIGEXPORT void* swigc_new_SimpleClassDerp__SWIG_0() {
   void* fresult = 0 ;
   SimpleClass *result = 0 ;
   
   result = (SimpleClass *)new SimpleClass();
+  fresult = result; 
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_SimpleClassDerp__SWIG_1(double* farg1) {
+  void* fresult = 0 ;
+  double arg1 ;
+  SimpleClass *result = 0 ;
+  
+  arg1 = *farg1;
+  result = (SimpleClass *)new SimpleClass(arg1);
   fresult = result; 
   return fresult;
 }
@@ -223,7 +235,7 @@ SWIGEXPORT double swigc_SimpleClassDerp_get_multiplied(void* farg1, int* farg2) 
 }
 
 
-SWIGEXPORT void swigc_SimpleClassDerp_action_dbl(void* farg1, double* farg2) {
+SWIGEXPORT void swigc_SimpleClassDerp_action__SWIG_1(void* farg1, double* farg2) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   double *arg2 = 0 ;
   
@@ -233,7 +245,7 @@ SWIGEXPORT void swigc_SimpleClassDerp_action_dbl(void* farg1, double* farg2) {
 }
 
 
-SWIGEXPORT void swigc_SimpleClassDerp_action_int(void* farg1, int* farg2) {
+SWIGEXPORT void swigc_SimpleClassDerp_action__SWIG_2(void* farg1, int* farg2) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   int *arg2 = 0 ;
   

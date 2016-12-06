@@ -31,18 +31,18 @@ Basic language features
 - inheritance (only base class holds pointer)
 - DONE: multiple constructors
 - `RCP/shared_ptr` wrapping (SWIG should already handle this)
-- "generic" function overloading
+- DONE: "generic" function overloading
 - DONE: templated class method instantiation (needed for plist)
 - DONE: namespaces
 - DONE: string wrapping
 - DONE: passing entire arrays of data in a single call
 - DONE: Add 'intent' qualifiers to arguments?
-- passing classes by value? (not done; RCP though)
+- passing classes by value? (atypical fortran usage; RCP though)
 - Fortran callback functions
 - "director" capability to subclass a c++ class using a Fortran class
 - Multiple interacting modules
 - Iterators?
-- Optional generation of `final` statement for auto-destruction
+- DONE: Optional generation of `final` statement for auto-destruction
 - Optional typemap for checking validity of pointers (class must be
   constructed)
 - Find out about quirks of C++ static object initialization when executed by a

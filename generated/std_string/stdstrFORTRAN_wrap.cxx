@@ -184,7 +184,7 @@ SWIGINTERN void std_string_copy_to(std::string *self,std::string::pointer s,std:
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void* swigc_new_string() {
+SWIGEXPORT void* swigc_new_string__SWIG_0() {
   void* fresult = 0 ;
   std::string *result = 0 ;
   
@@ -194,7 +194,7 @@ SWIGEXPORT void* swigc_new_string() {
 }
 
 
-SWIGEXPORT void* swigc_new_string_create_char( char*  farg1, int* farg2) {
+SWIGEXPORT void* swigc_new_string__SWIG_1( char*  farg1, int* farg2) {
   void* fresult = 0 ;
   std::string::const_pointer arg1 = (std::string::const_pointer) 0 ;
   std::string::size_type arg2 ;

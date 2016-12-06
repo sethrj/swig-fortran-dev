@@ -182,7 +182,7 @@ SWIGINTERN void std_vector_Sl_double_Sg__copy_to(std::vector< double > *self,std
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void* swigc_new_VecDbl() {
+SWIGEXPORT void* swigc_new_VecDbl__SWIG_0() {
   void* fresult = 0 ;
   std::vector< double > *result = 0 ;
   
@@ -192,7 +192,7 @@ SWIGEXPORT void* swigc_new_VecDbl() {
 }
 
 
-SWIGEXPORT void* swigc_new_VecDbl_create_count(int* farg1) {
+SWIGEXPORT void* swigc_new_VecDbl__SWIG_1(int* farg1) {
   void* fresult = 0 ;
   std::vector< double >::size_type arg1 ;
   std::vector< double > *result = 0 ;
@@ -204,7 +204,7 @@ SWIGEXPORT void* swigc_new_VecDbl_create_count(int* farg1) {
 }
 
 
-SWIGEXPORT void* swigc_new_VecDbl_create_fill(int* farg1, double* farg2) {
+SWIGEXPORT void* swigc_new_VecDbl__SWIG_2(int* farg1, double* farg2) {
   void* fresult = 0 ;
   std::vector< double >::size_type arg1 ;
   std::vector< double >::value_type *arg2 = 0 ;
@@ -272,7 +272,7 @@ SWIGEXPORT void swigc_VecDbl_reserve(void* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT void swigc_VecDbl_resize(void* farg1, int* farg2) {
+SWIGEXPORT void swigc_VecDbl_resize__SWIG_0(void* farg1, int* farg2) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   
@@ -282,7 +282,7 @@ SWIGEXPORT void swigc_VecDbl_resize(void* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT void swigc_VecDbl_resize_fill(void* farg1, int* farg2, double* farg3) {
+SWIGEXPORT void swigc_VecDbl_resize__SWIG_1(void* farg1, int* farg2, double* farg3) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   std::vector< double >::value_type *arg3 = 0 ;

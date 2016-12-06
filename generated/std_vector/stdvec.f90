@@ -14,42 +14,44 @@ module stdvec
  type VecDbl
   type(C_PTR), private :: ptr = C_NULL_PTR
  contains
-  procedure :: create => swigf_new_VecDbl
-  procedure :: create_count => swigf_new_VecDbl_create_count
-  procedure :: create_fill => swigf_new_VecDbl_create_fill
+  procedure, private :: create__SWIG_0 => swigf_new_VecDbl__SWIG_0
+  procedure, private :: create__SWIG_1 => swigf_new_VecDbl__SWIG_1
+  procedure, private :: create__SWIG_2 => swigf_new_VecDbl__SWIG_2
   procedure :: size => swigf_VecDbl_size
   procedure :: capacity => swigf_VecDbl_capacity
   procedure :: empty => swigf_VecDbl_empty
   procedure :: clear => swigf_VecDbl_clear
   procedure :: reserve => swigf_VecDbl_reserve
-  procedure :: resize => swigf_VecDbl_resize
-  procedure :: resize_fill => swigf_VecDbl_resize_fill
+  procedure, private :: resize__SWIG_0 => swigf_VecDbl_resize__SWIG_0
+  procedure, private :: resize__SWIG_1 => swigf_VecDbl_resize__SWIG_1
   procedure :: push_back => swigf_VecDbl_push_back
   procedure :: set => swigf_VecDbl_set
   procedure :: get => swigf_VecDbl_get
   procedure :: assign_from => swigf_VecDbl_assign_from
   procedure :: copy_to => swigf_VecDbl_copy_to
   procedure :: release => swigf_delete_VecDbl
+  generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2
+  generic :: resize => resize__SWIG_0, resize__SWIG_1
  end type
 
  ! WRAPPER DECLARATIONS
  private
  interface
-  function swigc_new_VecDbl() &
-     bind(C, name="swigc_new_VecDbl") &
+  function swigc_new_VecDbl__SWIG_0() &
+     bind(C, name="swigc_new_VecDbl__SWIG_0") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
   end function
-  function swigc_new_VecDbl_create_count(farg1) &
-     bind(C, name="swigc_new_VecDbl_create_count") &
+  function swigc_new_VecDbl__SWIG_1(farg1) &
+     bind(C, name="swigc_new_VecDbl__SWIG_1") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
    integer(C_INT), intent(in) :: farg1
   end function
-  function swigc_new_VecDbl_create_fill(farg1, farg2) &
-     bind(C, name="swigc_new_VecDbl_create_fill") &
+  function swigc_new_VecDbl__SWIG_2(farg1, farg2) &
+     bind(C, name="swigc_new_VecDbl__SWIG_2") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
@@ -88,14 +90,14 @@ module stdvec
    type(C_PTR), value :: farg1
    integer(C_INT), intent(in) :: farg2
   end subroutine
-  subroutine swigc_VecDbl_resize(farg1, farg2) &
-     bind(C, name="swigc_VecDbl_resize")
+  subroutine swigc_VecDbl_resize__SWIG_0(farg1, farg2) &
+     bind(C, name="swigc_VecDbl_resize__SWIG_0")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    integer(C_INT), intent(in) :: farg2
   end subroutine
-  subroutine swigc_VecDbl_resize_fill(farg1, farg2, farg3) &
-     bind(C, name="swigc_VecDbl_resize_fill")
+  subroutine swigc_VecDbl_resize__SWIG_1(farg1, farg2, farg3) &
+     bind(C, name="swigc_VecDbl_resize__SWIG_1")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    integer(C_INT), intent(in) :: farg2
@@ -150,26 +152,26 @@ module stdvec
 
 contains
   ! FORTRAN PROXY CODE
-  subroutine swigf_new_VecDbl(self)
+  subroutine swigf_new_VecDbl__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
    class(VecDbl) :: self
    if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_VecDbl()
+   self%ptr = swigc_new_VecDbl__SWIG_0()
   end subroutine
-  subroutine swigf_new_VecDbl_create_count(self, count)
+  subroutine swigf_new_VecDbl__SWIG_1(self, count)
    use, intrinsic :: ISO_C_BINDING
    class(VecDbl) :: self
    integer(C_INT), intent(in) :: count
    if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_VecDbl_create_count(count)
+   self%ptr = swigc_new_VecDbl__SWIG_1(count)
   end subroutine
-  subroutine swigf_new_VecDbl_create_fill(self, count, v)
+  subroutine swigf_new_VecDbl__SWIG_2(self, count, v)
    use, intrinsic :: ISO_C_BINDING
    class(VecDbl) :: self
    integer(C_INT), intent(in) :: count
    real(C_DOUBLE), intent(in) :: v
    if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_VecDbl_create_fill(count, v)
+   self%ptr = swigc_new_VecDbl__SWIG_2(count, v)
   end subroutine
   function swigf_VecDbl_size(self) &
      result(output)
@@ -203,18 +205,18 @@ contains
    integer(C_INT), intent(in) :: count
    call swigc_VecDbl_reserve(self%ptr, count)
   end subroutine
-  subroutine swigf_VecDbl_resize(self, count)
+  subroutine swigf_VecDbl_resize__SWIG_0(self, count)
    use, intrinsic :: ISO_C_BINDING
    class(VecDbl) :: self
    integer(C_INT), intent(in) :: count
-   call swigc_VecDbl_resize(self%ptr, count)
+   call swigc_VecDbl_resize__SWIG_0(self%ptr, count)
   end subroutine
-  subroutine swigf_VecDbl_resize_fill(self, count, v)
+  subroutine swigf_VecDbl_resize__SWIG_1(self, count, v)
    use, intrinsic :: ISO_C_BINDING
    class(VecDbl) :: self
    integer(C_INT), intent(in) :: count
    real(C_DOUBLE), intent(in) :: v
-   call swigc_VecDbl_resize_fill(self%ptr, count, v)
+   call swigc_VecDbl_resize__SWIG_1(self%ptr, count, v)
   end subroutine
   subroutine swigf_VecDbl_push_back(self, v)
    use, intrinsic :: ISO_C_BINDING

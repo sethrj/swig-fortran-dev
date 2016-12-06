@@ -15,8 +15,8 @@ module stdstr
  type string
   type(C_PTR), private :: ptr = C_NULL_PTR
  contains
-  procedure :: create => swigf_new_string
-  procedure :: create_char => swigf_new_string_create_char
+  procedure, private :: create__SWIG_0 => swigf_new_string__SWIG_0
+  procedure, private :: create__SWIG_1 => swigf_new_string__SWIG_1
   procedure :: resize => swigf_string_resize
   procedure :: clear => swigf_string_clear
   procedure :: size => swigf_string_size
@@ -26,19 +26,20 @@ module stdstr
   procedure :: assign_from => swigf_string_assign_from
   procedure :: copy_to => swigf_string_copy_to
   procedure :: release => swigf_delete_string
+  generic :: create => create__SWIG_0, create__SWIG_1
  end type
 
  ! WRAPPER DECLARATIONS
  private
  interface
-  function swigc_new_string() &
-     bind(C, name="swigc_new_string") &
+  function swigc_new_string__SWIG_0() &
+     bind(C, name="swigc_new_string__SWIG_0") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
   end function
-  function swigc_new_string_create_char(farg1, farg2) &
-     bind(C, name="swigc_new_string_create_char") &
+  function swigc_new_string__SWIG_1(farg1, farg2) &
+     bind(C, name="swigc_new_string__SWIG_1") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
@@ -118,18 +119,18 @@ module stdstr
 
 contains
   ! FORTRAN PROXY CODE
-  subroutine swigf_new_string(self)
+  subroutine swigf_new_string__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
    if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_string()
+   self%ptr = swigc_new_string__SWIG_0()
   end subroutine
-  subroutine swigf_new_string_create_char(self, s)
+  subroutine swigf_new_string__SWIG_1(self, s)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
    character(len=*) :: s
    if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_string_create_char(s, len(s))
+   self%ptr = swigc_new_string__SWIG_1(s, len(s))
   end subroutine
   subroutine swigf_string_resize(self, count)
    use, intrinsic :: ISO_C_BINDING

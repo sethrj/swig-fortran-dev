@@ -14,25 +14,35 @@ module simple
  type SimpleClassDerp
   type(C_PTR), private :: ptr = C_NULL_PTR
  contains
-  procedure :: create => swigf_new_SimpleClassDerp
+  procedure, private :: create__SWIG_0 => swigf_new_SimpleClassDerp__SWIG_0
+  procedure, private :: create__SWIG_1 => swigf_new_SimpleClassDerp__SWIG_1
   procedure :: release => swigf_delete_SimpleClassDerp
   final     :: swigf_final_SimpleClassDerp
   procedure :: set => swigf_SimpleClassDerp_set
   procedure :: double_it => swigf_SimpleClassDerp_double_it
   procedure :: get => swigf_SimpleClassDerp_get
   procedure :: get_multiplied => swigf_SimpleClassDerp_get_multiplied
-  procedure :: action_dbl => swigf_SimpleClassDerp_action_dbl
-  procedure :: action_int => swigf_SimpleClassDerp_action_int
+  procedure, private :: action__SWIG_1 => swigf_SimpleClassDerp_action__SWIG_1
+  procedure, private :: action__SWIG_2 => swigf_SimpleClassDerp_action__SWIG_2
+  generic :: create => create__SWIG_0, create__SWIG_1
+  generic :: action => action__SWIG_1, action__SWIG_2
  end type
 
  ! WRAPPER DECLARATIONS
  private
  interface
-  function swigc_new_SimpleClassDerp() &
-     bind(C, name="swigc_new_SimpleClassDerp") &
+  function swigc_new_SimpleClassDerp__SWIG_0() &
+     bind(C, name="swigc_new_SimpleClassDerp__SWIG_0") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
+  end function
+  function swigc_new_SimpleClassDerp__SWIG_1(farg1) &
+     bind(C, name="swigc_new_SimpleClassDerp__SWIG_1") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   real(C_DOUBLE), intent(in) :: farg1
   end function
   subroutine swigc_delete_SimpleClassDerp(farg1) &
      bind(C, name="swigc_delete_SimpleClassDerp")
@@ -65,14 +75,14 @@ module simple
    type(C_PTR), value :: farg1
    integer(C_INT), intent(in) :: farg2
   end function
-  subroutine swigc_SimpleClassDerp_action_dbl(farg1, farg2) &
-     bind(C, name="swigc_SimpleClassDerp_action_dbl")
+  subroutine swigc_SimpleClassDerp_action__SWIG_1(farg1, farg2) &
+     bind(C, name="swigc_SimpleClassDerp_action__SWIG_1")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    real(C_DOUBLE), intent(inout) :: farg2
   end subroutine
-  subroutine swigc_SimpleClassDerp_action_int(farg1, farg2) &
-     bind(C, name="swigc_SimpleClassDerp_action_int")
+  subroutine swigc_SimpleClassDerp_action__SWIG_2(farg1, farg2) &
+     bind(C, name="swigc_SimpleClassDerp_action__SWIG_2")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    integer(C_INT), intent(inout) :: farg2
@@ -86,11 +96,20 @@ module simple
 
 contains
   ! FORTRAN PROXY CODE
-  subroutine swigf_new_SimpleClassDerp(self)
+  subroutine swigf_new_SimpleClassDerp__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
    class(SimpleClassDerp) :: self
    if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_SimpleClassDerp()
+   self%ptr = swigc_new_SimpleClassDerp__SWIG_0()
+
+   write(0, "(a, z16)") "Constructed at ", self%ptr
+  end subroutine
+  subroutine swigf_new_SimpleClassDerp__SWIG_1(self, d)
+   use, intrinsic :: ISO_C_BINDING
+   class(SimpleClassDerp) :: self
+   real(C_DOUBLE), intent(in) :: d
+   if (c_associated(self%ptr)) call self%release()
+   self%ptr = swigc_new_SimpleClassDerp__SWIG_1(d)
 
    write(0, "(a, z16)") "Constructed at ", self%ptr
   end subroutine
@@ -134,17 +153,17 @@ contains
    integer(C_INT), intent(in) :: multiple
    output = swigc_SimpleClassDerp_get_multiplied(self%ptr, multiple)
   end function
-  subroutine swigf_SimpleClassDerp_action_dbl(self, val)
+  subroutine swigf_SimpleClassDerp_action__SWIG_1(self, val)
    use, intrinsic :: ISO_C_BINDING
    class(SimpleClassDerp) :: self
    real(C_DOUBLE), intent(inout) :: val
-   call swigc_SimpleClassDerp_action_dbl(self%ptr, val)
+   call swigc_SimpleClassDerp_action__SWIG_1(self%ptr, val)
   end subroutine
-  subroutine swigf_SimpleClassDerp_action_int(self, val)
+  subroutine swigf_SimpleClassDerp_action__SWIG_2(self, val)
    use, intrinsic :: ISO_C_BINDING
    class(SimpleClassDerp) :: self
    integer(C_INT), intent(inout) :: val
-   call swigc_SimpleClassDerp_action_int(self%ptr, val)
+   call swigc_SimpleClassDerp_action__SWIG_2(self%ptr, val)
   end subroutine
   subroutine print_value(c)
    use, intrinsic :: ISO_C_BINDING
