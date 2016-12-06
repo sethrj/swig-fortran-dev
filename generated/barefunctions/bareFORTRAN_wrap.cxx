@@ -8,13 +8,6 @@
  * interface file instead.
  * ----------------------------------------------------------------------------- */
 
-
-#ifndef SWIGJAVA
-#define SWIGJAVA
-#endif
-
-
-
 #ifdef __cplusplus
 /* SwigValueWrapper is described in swig.swg */
 template<typename T> class SwigValueWrapper {
@@ -163,187 +156,72 @@ template <typename T> T SwigValueInit() {
 #endif
 
 
-/* Fix for jlong on some versions of gcc on Windows */
-#if defined(__GNUC__) && !defined(__INTEL_COMPILER)
-  typedef long long __int64;
-#endif
-
-/* Fix for jlong on 64-bit x86 Solaris */
-#if defined(__x86_64)
-# ifdef _LP64
-#   undef _LP64
-# endif
-#endif
-
-#include <jni.h>
-#include <stdlib.h>
-#include <string.h>
-
-
-/* Support for throwing Java exceptions */
-typedef enum {
-  SWIG_JavaOutOfMemoryError = 1, 
-  SWIG_JavaIOException, 
-  SWIG_JavaRuntimeException, 
-  SWIG_JavaIndexOutOfBoundsException,
-  SWIG_JavaArithmeticException,
-  SWIG_JavaIllegalArgumentException,
-  SWIG_JavaNullPointerException,
-  SWIG_JavaDirectorPureVirtual,
-  SWIG_JavaUnknownError
-} SWIG_JavaExceptionCodes;
-
-typedef struct {
-  SWIG_JavaExceptionCodes code;
-  const char *java_exception;
-} SWIG_JavaExceptions_t;
-
-
-static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionCodes code, const char *msg) {
-  jclass excep;
-  static const SWIG_JavaExceptions_t java_exceptions[] = {
-    { SWIG_JavaOutOfMemoryError, "java/lang/OutOfMemoryError" },
-    { SWIG_JavaIOException, "java/io/IOException" },
-    { SWIG_JavaRuntimeException, "java/lang/RuntimeException" },
-    { SWIG_JavaIndexOutOfBoundsException, "java/lang/IndexOutOfBoundsException" },
-    { SWIG_JavaArithmeticException, "java/lang/ArithmeticException" },
-    { SWIG_JavaIllegalArgumentException, "java/lang/IllegalArgumentException" },
-    { SWIG_JavaNullPointerException, "java/lang/NullPointerException" },
-    { SWIG_JavaDirectorPureVirtual, "java/lang/RuntimeException" },
-    { SWIG_JavaUnknownError,  "java/lang/UnknownError" },
-    { (SWIG_JavaExceptionCodes)0,  "java/lang/UnknownError" }
-  };
-  const SWIG_JavaExceptions_t *except_ptr = java_exceptions;
-
-  while (except_ptr->code != code && except_ptr->code)
-    except_ptr++;
-
-  jenv->ExceptionClear();
-  excep = jenv->FindClass(except_ptr->java_exception);
-  if (excep)
-    jenv->ThrowNew(excep, msg);
-}
-
-
-/* Contract support */
-
-#define SWIG_contract_assert(nullreturn, expr, msg) if (!(expr)) {SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, msg); return nullreturn; } else
-
-
-#include "SimpleClass.hh"
-
+#include "bare.hh"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-SWIGEXPORT jlong JNICALL Java_simpleJNI_new_1SimpleClassDerp(JNIEnv *jenv, jclass jcls) {
-  jlong jresult = 0 ;
-  SimpleClass *result = 0 ;
+SWIGEXPORT void swigc_set_something(int* farg1, double* farg2) {
+  int arg1 ;
+  double arg2 ;
   
-  (void)jenv;
-  (void)jcls;
-  result = (SimpleClass *)new SimpleClass();
-  *(SimpleClass **)&jresult = result; 
-  return jresult;
+  arg1 = *farg1;
+  arg2 = *farg2;
+  set_something(arg1,arg2);
 }
 
 
-SWIGEXPORT void JNICALL Java_simpleJNI_delete_1SimpleClassDerp(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
+SWIGEXPORT double swigc_get_something(int* farg1) {
+  double fresult = 0 ;
+  int arg1 ;
+  double result;
   
-  (void)jenv;
-  (void)jcls;
-  arg1 = *(SimpleClass **)&jarg1; 
-  delete arg1;
+  arg1 = *farg1;
+  result = (double)get_something(arg1);
+  fresult = result;
+  return fresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_simpleJNI_SimpleClassDerp_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
-  SimpleClass::storage_type arg2 ;
+SWIGEXPORT void swigc_get_something_ref(int* farg1, double* farg2) {
+  int arg1 ;
+  double *arg2 = 0 ;
   
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(SimpleClass **)&jarg1; 
-  arg2 = (SimpleClass::storage_type)jarg2; 
-  (arg1)->set(arg2);
+  arg1 = *farg1;
+  arg2 = farg2;
+  get_something_ref(arg1,*arg2);
 }
 
 
-SWIGEXPORT void JNICALL Java_simpleJNI_SimpleClassDerp_1double_1it(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(SimpleClass **)&jarg1; 
-  (arg1)->double_it();
-}
-
-
-SWIGEXPORT jdouble JNICALL Java_simpleJNI_SimpleClassDerp_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jdouble jresult = 0 ;
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
-  SimpleClass::storage_type result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(SimpleClass **)&jarg1; 
-  result = (SimpleClass::storage_type)((SimpleClass const *)arg1)->get();
-  jresult = (jdouble)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jdouble JNICALL Java_simpleJNI_SimpleClassDerp_1get_1multiplied(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  jdouble jresult = 0 ;
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
-  SimpleClass::multiple_type arg2 ;
-  SimpleClass::storage_type result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(SimpleClass **)&jarg1; 
-  arg2 = (SimpleClass::multiple_type)jarg2; 
-  result = (SimpleClass::storage_type)((SimpleClass const *)arg1)->get_multiplied(arg2);
-  jresult = (jdouble)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_simpleJNI_SimpleClassDerp_1assign_1me(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
+SWIGEXPORT void swigc_get_something_ptr(int* farg1, double* farg2) {
+  int arg1 ;
   double *arg2 = (double *) 0 ;
-  int arg3 ;
   
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(SimpleClass **)&jarg1; 
-  {
-    // Double the count
-    arg3 = 100;
-  }
-  (arg1)->assign_me((double const *)arg2,arg3);
+  arg1 = *farg1;
+  arg2 = farg2;
+  get_something_ptr(arg1,arg2);
 }
 
 
-SWIGEXPORT void JNICALL Java_simpleJNI_print_1value(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  SimpleClass *arg1 = 0 ;
+SWIGEXPORT double swigc_get_something_rcref(int* farg1) {
+  double fresult = 0 ;
+  int arg1 ;
+  double *result = 0 ;
   
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(SimpleClass **)&jarg1;
-  if (!arg1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "SimpleClass const & reference is null");
-    return ;
-  } 
-  print_value((SimpleClass const &)*arg1);
+  arg1 = *farg1;
+  result = (double *) &get_something_rcref(arg1);
+  fresult = *result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_print_array(double* farg1, int* farg2) {
+  double *arg1 = (double *) 0 ;
+  std::size_t arg2 ;
+  
+  arg1 = farg1;
+  arg2 = *farg2;
+  print_array((double const *)arg1,arg2);
 }
 
 

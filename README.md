@@ -34,7 +34,7 @@ Basic language features
 - "generic" function overloading
 - DONE: templated class method instantiation (needed for plist)
 - DONE: namespaces
-- string wrapping
+- DONE: string wrapping
 - DONE: passing entire arrays of data in a single call
 - DONE: Add 'intent' qualifiers to arguments?
 - passing classes by value? (not done; RCP though)
@@ -48,7 +48,7 @@ Basic language features
 - Find out about quirks of C++ static object initialization when executed by a
   Fortran `main` function
 - Exception handling?
-- Error checking (pointers being assigned)
+- Error checking (pointers being assigned)?
 - dynamic-cast type checking for inheritance upcasts?
 
 Trilinos classes to wrap
@@ -60,6 +60,7 @@ Trilinos classes to wrap
 Vision:
 - One `.f90/.mod` for each package?
 - Or collections of alternative modules for different template instantiations?
+  (or both for kokkos/teuchos?)
 
 
 Discussion points

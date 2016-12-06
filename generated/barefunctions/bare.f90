@@ -12,6 +12,7 @@ module bare
  public :: get_something_ref
  public :: get_something_ptr
  public :: get_something_rcref
+ public :: print_array
  ! TYPES
  ! INTERFACES
  private
@@ -48,6 +49,12 @@ module bare
    real(C_DOUBLE) :: fresult
    integer(C_INT), intent(in) :: farg1
   end function
+  subroutine swigc_print_array(farg1, farg2) &
+     bind(C, name="swigc_print_array")
+   use, intrinsic :: ISO_C_BINDING
+   real(C_DOUBLE), dimension(*), intent(in) :: farg1
+   integer(C_INT), intent(in) :: farg2
+  end subroutine
  end interface
 contains
   ! FORTRAN PROXY CODE
@@ -83,4 +90,9 @@ contains
    integer(C_INT), intent(in) :: x
    output = swigc_get_something_rcref(x)
   end function
+  subroutine print_array(arr)
+   use, intrinsic :: ISO_C_BINDING
+   real(C_DOUBLE), dimension(:), intent(in) :: arr
+   call swigc_print_array(arr, size(arr))
+  end subroutine
 end module bare
