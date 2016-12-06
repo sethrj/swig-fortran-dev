@@ -15,7 +15,7 @@ module stdstr
   type(C_PTR), private :: ptr = C_NULL_PTR
  contains
   procedure :: create => swigf_new_string
-  procedure :: create_char => swigf_new_string_ctor_char
+  procedure :: create_char => swigf_new_string_create_char
   procedure :: resize => swigf_string_resize
   procedure :: clear => swigf_string_clear
   procedure :: size => swigf_string_size
@@ -35,8 +35,8 @@ module stdstr
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
   end function
-  function swigc_new_string_ctor_char(farg1, farg2) &
-     bind(C, name="swigc_new_string_ctor_char") &
+  function swigc_new_string_create_char(farg1, farg2) &
+     bind(C, name="swigc_new_string_create_char") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
@@ -120,11 +120,11 @@ contains
    class(string) :: self
    self%ptr = swigc_new_string()
   end subroutine
-  subroutine swigf_new_string_ctor_char(self, s)
+  subroutine swigf_new_string_create_char(self, s)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
    character(len=*) :: s
-   self%ptr = swigc_new_string_ctor_char(s, len(s))
+   self%ptr = swigc_new_string_create_char(s, len(s))
   end subroutine
   subroutine swigf_string_resize(self, count)
    use, intrinsic :: ISO_C_BINDING

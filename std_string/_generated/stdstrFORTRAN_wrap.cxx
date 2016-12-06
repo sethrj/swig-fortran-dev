@@ -194,7 +194,7 @@ SWIGEXPORT void* swigc_new_string() {
 }
 
 
-SWIGEXPORT void* swigc_new_string_ctor_char( char*  farg1, int* farg2) {
+SWIGEXPORT void* swigc_new_string_create_char( char*  farg1, int* farg2) {
   void* fresult = 0 ;
   std::string::const_pointer arg1 = (std::string::const_pointer) 0 ;
   std::string::size_type arg2 ;

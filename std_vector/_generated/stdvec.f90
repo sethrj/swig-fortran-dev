@@ -14,8 +14,8 @@ module stdvec
   type(C_PTR), private :: ptr = C_NULL_PTR
  contains
   procedure :: create => swigf_new_VecDbl
-  procedure :: create_count => swigf_new_VecDbl_ctor_count
-  procedure :: create_fill => swigf_new_VecDbl_ctor_fill
+  procedure :: create_count => swigf_new_VecDbl_create_count
+  procedure :: create_fill => swigf_new_VecDbl_create_fill
   procedure :: size => swigf_VecDbl_size
   procedure :: capacity => swigf_VecDbl_capacity
   procedure :: empty => swigf_VecDbl_empty
@@ -39,15 +39,15 @@ module stdvec
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
   end function
-  function swigc_new_VecDbl_ctor_count(farg1) &
-     bind(C, name="swigc_new_VecDbl_ctor_count") &
+  function swigc_new_VecDbl_create_count(farg1) &
+     bind(C, name="swigc_new_VecDbl_create_count") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
    integer(C_INT), intent(in) :: farg1
   end function
-  function swigc_new_VecDbl_ctor_fill(farg1, farg2) &
-     bind(C, name="swigc_new_VecDbl_ctor_fill") &
+  function swigc_new_VecDbl_create_fill(farg1, farg2) &
+     bind(C, name="swigc_new_VecDbl_create_fill") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
@@ -152,18 +152,18 @@ contains
    class(VecDbl) :: self
    self%ptr = swigc_new_VecDbl()
   end subroutine
-  subroutine swigf_new_VecDbl_ctor_count(self, count)
+  subroutine swigf_new_VecDbl_create_count(self, count)
    use, intrinsic :: ISO_C_BINDING
    class(VecDbl) :: self
    integer(C_INT), intent(in) :: count
-   self%ptr = swigc_new_VecDbl_ctor_count(count)
+   self%ptr = swigc_new_VecDbl_create_count(count)
   end subroutine
-  subroutine swigf_new_VecDbl_ctor_fill(self, count, v)
+  subroutine swigf_new_VecDbl_create_fill(self, count, v)
    use, intrinsic :: ISO_C_BINDING
    class(VecDbl) :: self
    integer(C_INT), intent(in) :: count
    real(C_DOUBLE), intent(in) :: v
-   self%ptr = swigc_new_VecDbl_ctor_fill(count, v)
+   self%ptr = swigc_new_VecDbl_create_fill(count, v)
   end subroutine
   function swigf_VecDbl_size(self) &
      result(output)

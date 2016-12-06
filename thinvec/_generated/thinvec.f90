@@ -18,8 +18,8 @@ module thinvec
   type(C_PTR), private :: ptr = C_NULL_PTR
  contains
   procedure :: create => swigf_new_ThinVecDbl
-  procedure :: create_fill => swigf_new_ThinVecDbl_ctor_fill
-  procedure :: create_count => swigf_new_ThinVecDbl_ctor_count
+  procedure :: create_fill => swigf_new_ThinVecDbl_create_fill
+  procedure :: create_count => swigf_new_ThinVecDbl_create_count
   procedure :: empty => swigf_ThinVecDbl_empty
   procedure :: size => swigf_ThinVecDbl_size
   procedure :: get => swigf_ThinVecDbl_get
@@ -34,8 +34,8 @@ module thinvec
   type(C_PTR), private :: ptr = C_NULL_PTR
  contains
   procedure :: create => swigf_new_ThinVecInt
-  procedure :: create_fill => swigf_new_ThinVecInt_ctor_fill
-  procedure :: create_count => swigf_new_ThinVecInt_ctor_count
+  procedure :: create_fill => swigf_new_ThinVecInt_create_fill
+  procedure :: create_count => swigf_new_ThinVecInt_create_count
   procedure :: empty => swigf_ThinVecInt_empty
   procedure :: size => swigf_ThinVecInt_size
   procedure :: get => swigf_ThinVecInt_get
@@ -67,16 +67,16 @@ module thinvec
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
   end function
-  function swigc_new_ThinVecDbl_ctor_fill(farg1, farg2) &
-     bind(C, name="swigc_new_ThinVecDbl_ctor_fill") &
+  function swigc_new_ThinVecDbl_create_fill(farg1, farg2) &
+     bind(C, name="swigc_new_ThinVecDbl_create_fill") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
    integer(C_INT), intent(in) :: farg1
    real(C_DOUBLE), intent(in) :: farg2
   end function
-  function swigc_new_ThinVecDbl_ctor_count(farg1) &
-     bind(C, name="swigc_new_ThinVecDbl_ctor_count") &
+  function swigc_new_ThinVecDbl_create_count(farg1) &
+     bind(C, name="swigc_new_ThinVecDbl_create_count") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
@@ -156,16 +156,16 @@ module thinvec
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
   end function
-  function swigc_new_ThinVecInt_ctor_fill(farg1, farg2) &
-     bind(C, name="swigc_new_ThinVecInt_ctor_fill") &
+  function swigc_new_ThinVecInt_create_fill(farg1, farg2) &
+     bind(C, name="swigc_new_ThinVecInt_create_fill") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
    integer(C_INT), intent(in) :: farg1
    integer(C_INT), intent(in) :: farg2
   end function
-  function swigc_new_ThinVecInt_ctor_count(farg1) &
-     bind(C, name="swigc_new_ThinVecInt_ctor_count") &
+  function swigc_new_ThinVecInt_create_count(farg1) &
+     bind(C, name="swigc_new_ThinVecInt_create_count") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
@@ -258,18 +258,18 @@ contains
    class(ThinVecDbl) :: self
    self%ptr = swigc_new_ThinVecDbl()
   end subroutine
-  subroutine swigf_new_ThinVecDbl_ctor_fill(self, count, fillval)
+  subroutine swigf_new_ThinVecDbl_create_fill(self, count, fillval)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: self
    integer(C_INT), intent(in) :: count
    real(C_DOUBLE), intent(in) :: fillval
-   self%ptr = swigc_new_ThinVecDbl_ctor_fill(count, fillval)
+   self%ptr = swigc_new_ThinVecDbl_create_fill(count, fillval)
   end subroutine
-  subroutine swigf_new_ThinVecDbl_ctor_count(self, count)
+  subroutine swigf_new_ThinVecDbl_create_count(self, count)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: self
    integer(C_INT), intent(in) :: count
-   self%ptr = swigc_new_ThinVecDbl_ctor_count(count)
+   self%ptr = swigc_new_ThinVecDbl_create_count(count)
   end subroutine
   function swigf_ThinVecDbl_empty(self) &
      result(output)
@@ -341,18 +341,18 @@ contains
    class(ThinVecInt) :: self
    self%ptr = swigc_new_ThinVecInt()
   end subroutine
-  subroutine swigf_new_ThinVecInt_ctor_fill(self, count, fillval)
+  subroutine swigf_new_ThinVecInt_create_fill(self, count, fillval)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecInt) :: self
    integer(C_INT), intent(in) :: count
    integer(C_INT), intent(in) :: fillval
-   self%ptr = swigc_new_ThinVecInt_ctor_fill(count, fillval)
+   self%ptr = swigc_new_ThinVecInt_create_fill(count, fillval)
   end subroutine
-  subroutine swigf_new_ThinVecInt_ctor_count(self, count)
+  subroutine swigf_new_ThinVecInt_create_count(self, count)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecInt) :: self
    integer(C_INT), intent(in) :: count
-   self%ptr = swigc_new_ThinVecInt_ctor_count(count)
+   self%ptr = swigc_new_ThinVecInt_create_count(count)
   end subroutine
   function swigf_ThinVecInt_empty(self) &
      result(output)

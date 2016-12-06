@@ -192,7 +192,7 @@ SWIGEXPORT void* swigc_new_VecDbl() {
 }
 
 
-SWIGEXPORT void* swigc_new_VecDbl_ctor_count(int* farg1) {
+SWIGEXPORT void* swigc_new_VecDbl_create_count(int* farg1) {
   void* fresult = 0 ;
   std::vector< double >::size_type arg1 ;
   std::vector< double > *result = 0 ;
@@ -204,7 +204,7 @@ SWIGEXPORT void* swigc_new_VecDbl_ctor_count(int* farg1) {
 }
 
 
-SWIGEXPORT void* swigc_new_VecDbl_ctor_fill(int* farg1, double* farg2) {
+SWIGEXPORT void* swigc_new_VecDbl_create_fill(int* farg1, double* farg2) {
   void* fresult = 0 ;
   std::vector< double >::size_type arg1 ;
   std::vector< double >::value_type *arg2 = 0 ;
