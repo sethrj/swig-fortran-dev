@@ -68,11 +68,11 @@ contains
    call swigc_set_something(x, y)
   end subroutine
   function get_something(x) &
-     result(output)
+     result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE) :: output
+   real(C_DOUBLE) :: fresult
    integer(C_INT), intent(in) :: x
-   output = swigc_get_something(x)
+   fresult = swigc_get_something(x)
   end function
   subroutine get_something_ref(x, y)
    use, intrinsic :: ISO_C_BINDING
@@ -87,11 +87,11 @@ contains
    call swigc_get_something_ptr(x, y)
   end subroutine
   function get_something_rcref(x) &
-     result(output)
+     result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE) :: output
+   real(C_DOUBLE) :: fresult
    integer(C_INT), intent(in) :: x
-   output = swigc_get_something_rcref(x)
+   fresult = swigc_get_something_rcref(x)
   end function
   subroutine print_array(arr)
    use, intrinsic :: ISO_C_BINDING

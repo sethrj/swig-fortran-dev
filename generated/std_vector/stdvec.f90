@@ -13,6 +13,7 @@ module stdvec
  ! TYPES
  type VecDbl
   type(C_PTR), private :: ptr = C_NULL_PTR
+  logical, private :: own = .false.
  contains
   procedure, private :: create__SWIG_0 => swigf_new_VecDbl__SWIG_0
   procedure, private :: create__SWIG_1 => swigf_new_VecDbl__SWIG_1
@@ -157,6 +158,7 @@ contains
    class(VecDbl) :: self
    if (c_associated(self%ptr)) call self%release()
    self%ptr = swigc_new_VecDbl__SWIG_0()
+   self%own = .true.
   end subroutine
   subroutine swigf_new_VecDbl__SWIG_1(self, count)
    use, intrinsic :: ISO_C_BINDING
@@ -164,6 +166,7 @@ contains
    integer(C_INT), intent(in) :: count
    if (c_associated(self%ptr)) call self%release()
    self%ptr = swigc_new_VecDbl__SWIG_1(count)
+   self%own = .true.
   end subroutine
   subroutine swigf_new_VecDbl__SWIG_2(self, count, v)
    use, intrinsic :: ISO_C_BINDING
@@ -172,27 +175,28 @@ contains
    real(C_DOUBLE), intent(in) :: v
    if (c_associated(self%ptr)) call self%release()
    self%ptr = swigc_new_VecDbl__SWIG_2(count, v)
+   self%own = .true.
   end subroutine
   function swigf_VecDbl_size(self) &
-     result(output)
+     result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: output
+   integer(C_INT) :: fresult
    class(VecDbl) :: self
-   output = swigc_VecDbl_size(self%ptr)
+   fresult = swigc_VecDbl_size(self%ptr)
   end function
   function swigf_VecDbl_capacity(self) &
-     result(output)
+     result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: output
+   integer(C_INT) :: fresult
    class(VecDbl) :: self
-   output = swigc_VecDbl_capacity(self%ptr)
+   fresult = swigc_VecDbl_capacity(self%ptr)
   end function
   function swigf_VecDbl_empty(self) &
-     result(output)
+     result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: output
+   logical(C_BOOL) :: fresult
    class(VecDbl) :: self
-   output = swigc_VecDbl_empty(self%ptr)
+   fresult = swigc_VecDbl_empty(self%ptr)
   end function
   subroutine swigf_VecDbl_clear(self)
    use, intrinsic :: ISO_C_BINDING
@@ -232,12 +236,12 @@ contains
    call swigc_VecDbl_set(self%ptr, pos, v)
   end subroutine
   function swigf_VecDbl_get(self, pos) &
-     result(output)
+     result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE) :: output
+   real(C_DOUBLE) :: fresult
    class(VecDbl) :: self
    integer(C_INT), intent(in) :: pos
-   output = swigc_VecDbl_get(self%ptr, pos)
+   fresult = swigc_VecDbl_get(self%ptr, pos)
   end function
   subroutine swigf_VecDbl_assign_from(self, arr)
    use, intrinsic :: ISO_C_BINDING
@@ -254,7 +258,10 @@ contains
   subroutine swigf_delete_VecDbl(self)
    use, intrinsic :: ISO_C_BINDING
    class(VecDbl) :: self
-   call swigc_delete_VecDbl(self%ptr)
+   if (self%own) then
+    call swigc_delete_VecDbl(self%ptr)
+    self%own = .false.
+   end if
    self%ptr = C_NULL_PTR
   end subroutine
   subroutine print_vecdbl(v)

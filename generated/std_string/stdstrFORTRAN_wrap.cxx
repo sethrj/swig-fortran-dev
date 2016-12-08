@@ -163,14 +163,6 @@ template <typename T> T SwigValueInit() {
 #include <algorithm>
 #include <stdexcept>
 
-SWIGINTERN void std_string_set(std::string *self,std::string::size_type pos,std::string::value_type v){
-        // TODO: check range
-        (*self)[pos] = v;
-    }
-SWIGINTERN std::string::value_type std_string_get(std::string *self,std::string::size_type pos){
-        // TODO: check range
-        return (*self)[pos];
-    }
 SWIGINTERN void std_string_assign_from(std::string *self,std::string::const_pointer s,std::string::size_type count){
         self->assign(s, s + count);
     }
@@ -246,32 +238,6 @@ SWIGEXPORT size_t swigc_string_length(void* farg1) {
   arg1 = (std::string *)(farg1); 
   result = ((std::string const *)arg1)->length();
   fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_string_set(void* farg1, size_t* farg2, char* farg3) {
-  std::string *arg1 = (std::string *) 0 ;
-  std::string::size_type arg2 ;
-  std::string::value_type arg3 ;
-  
-  arg1 = (std::string *)(farg1); 
-  arg2 = *farg2;
-  arg3 = *farg3; 
-  std_string_set(arg1,arg2,arg3);
-}
-
-
-SWIGEXPORT char swigc_string_get(void* farg1, size_t* farg2) {
-  char fresult = 0 ;
-  std::string *arg1 = (std::string *) 0 ;
-  std::string::size_type arg2 ;
-  std::string::value_type result;
-  
-  arg1 = (std::string *)(farg1); 
-  arg2 = *farg2;
-  result = (std::string::value_type)std_string_get(arg1,arg2);
-  fresult = result; 
   return fresult;
 }
 

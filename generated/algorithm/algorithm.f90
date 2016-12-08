@@ -103,12 +103,12 @@ contains
    call swigc_reverse__SWIG_1(arr, size(arr))
   end subroutine
   function find_sorted__SWIG_1(arr, val) &
-     result(output)
+     result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: output
+   integer(C_INT) :: fresult
    integer(C_INT), dimension(:), intent(in) :: arr
    integer(C_INT), intent(in) :: val
-   output = swigc_find_sorted__SWIG_1(arr, size(arr), val)
+   fresult = swigc_find_sorted__SWIG_1(arr, size(arr), val)
   end function
   subroutine sort__SWIG_2(arr)
    use, intrinsic :: ISO_C_BINDING
@@ -121,12 +121,12 @@ contains
    call swigc_reverse__SWIG_2(arr, size(arr))
   end subroutine
   function find_sorted__SWIG_2(arr, val) &
-     result(output)
+     result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: output
+   integer(C_INT) :: fresult
    real(C_FLOAT), dimension(:), intent(in) :: arr
    real(C_FLOAT), intent(in) :: val
-   output = swigc_find_sorted__SWIG_2(arr, size(arr), val)
+   fresult = swigc_find_sorted__SWIG_2(arr, size(arr), val)
   end function
   subroutine sort__SWIG_3(arr)
    use, intrinsic :: ISO_C_BINDING
@@ -139,11 +139,11 @@ contains
    call swigc_reverse__SWIG_3(arr, size(arr))
   end subroutine
   function find_sorted__SWIG_3(arr, val) &
-     result(output)
+     result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: output
+   integer(C_INT) :: fresult
    real(C_DOUBLE), dimension(:), intent(in) :: arr
    real(C_DOUBLE), intent(in) :: val
-   output = swigc_find_sorted__SWIG_3(arr, size(arr), val)
+   fresult = swigc_find_sorted__SWIG_3(arr, size(arr), val)
   end function
 end module algorithm

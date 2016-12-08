@@ -11,6 +11,7 @@ GEN=$HOME/_code/swig-fortran-dev/generated
 
 cd $BUILD
 for d in \
+  spdemo \
   algorithm \
   barefunctions \
   simpleclass \
@@ -27,10 +28,10 @@ do
   else
     cmake -C $SOURCE/cmake/config.cmake $SOURCE/$d
   fi
-  make
+  make || true
   ./test.exe
   dstdir="$GEN/$d"
-  mkdir 2>/dev/null || true
+  mkdir 2>/dev/null
   cp *.cxx *.f90 $dstdir
 done
 

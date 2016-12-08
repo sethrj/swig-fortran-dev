@@ -156,138 +156,154 @@ template <typename T> T SwigValueInit() {
 #endif
 
 
-#include "SimpleClass.hh"
+#include "spdemo.hh"
+
+
+#include <memory>
+
+
+struct SWIG_null_deleter {
+  void operator() (void const *) const {
+  }
+};
+#define SWIG_NO_NULL_DELETER_0 , SWIG_null_deleter()
+#define SWIG_NO_NULL_DELETER_1
+#define SWIG_NO_NULL_DELETER_SWIG_POINTER_NEW
+#define SWIG_NO_NULL_DELETER_SWIG_POINTER_OWN
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void* swigc_new_SimpleClass__SWIG_0() {
-  void* fresult = 0 ;
-  SimpleClass *result = 0 ;
+SWIGEXPORT void swigc_set_Foo_d_val(void* farg1, double* farg2) {
+  Foo *arg1 = (Foo *) 0 ;
+  double arg2 ;
+  std::shared_ptr< Foo > *smartarg1 = 0 ;
   
-  result = (SimpleClass *)new SimpleClass();
-  fresult = result; 
+  smartarg1 = (std::shared_ptr< Foo > *)farg1;
+  arg1 = (Foo *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  if (arg1) (arg1)->d_val = arg2;
+}
+
+
+SWIGEXPORT double swigc_get_Foo_d_val(void* farg1) {
+  double fresult = 0 ;
+  Foo *arg1 = (Foo *) 0 ;
+  std::shared_ptr< Foo > *smartarg1 = 0 ;
+  double result;
+  
+  smartarg1 = (std::shared_ptr< Foo > *)farg1;
+  arg1 = (Foo *)(smartarg1 ? smartarg1->get() : 0);
+  result = (double) ((arg1)->d_val);
+  fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_SimpleClass__SWIG_1(void* farg1) {
+SWIGEXPORT void* swigc_new_Foo__SWIG_0() {
   void* fresult = 0 ;
-  SimpleClass *arg1 = 0 ;
-  SimpleClass *result = 0 ;
+  Foo *result = 0 ;
   
-  arg1 = (SimpleClass *)(farg1); 
-  result = (SimpleClass *)new SimpleClass((SimpleClass const &)*arg1);
-  fresult = result; 
+  result = (Foo *)new Foo();
+  fresult = result ? new std::shared_ptr< Foo >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_SimpleClass__SWIG_2(double* farg1) {
+SWIGEXPORT void* swigc_new_Foo__SWIG_1(double* farg1) {
   void* fresult = 0 ;
   double arg1 ;
-  SimpleClass *result = 0 ;
+  Foo *result = 0 ;
   
   arg1 = *farg1;
-  result = (SimpleClass *)new SimpleClass(arg1);
-  fresult = result; 
+  result = (Foo *)new Foo(arg1);
+  fresult = result ? new std::shared_ptr< Foo >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_delete_SimpleClass(void* farg1) {
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
+SWIGEXPORT void swigc_delete_Foo(void* farg1) {
+  Foo *arg1 = (Foo *) 0 ;
+  std::shared_ptr< Foo > *smartarg1 = 0 ;
   
-  arg1 = (SimpleClass *)(farg1); 
-  delete arg1;
+  smartarg1 = (std::shared_ptr< Foo > *)farg1;
+  arg1 = (Foo *)(smartarg1 ? smartarg1->get() : 0);
+  (void)arg1; delete smartarg1;
 }
 
 
-SWIGEXPORT void swigc_SimpleClass_set(void* farg1, int* farg2) {
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
-  SimpleClass::storage_type arg2 ;
+SWIGEXPORT double swigc_Foo_get(void* farg1) {
+  double fresult = 0 ;
+  Foo *arg1 = (Foo *) 0 ;
+  std::shared_ptr< Foo const > *smartarg1 = 0 ;
+  double result;
   
-  arg1 = (SimpleClass *)(farg1); 
+  smartarg1 = (std::shared_ptr<const Foo > *)farg1;
+  arg1 = (Foo *)(smartarg1 ? smartarg1->get() : 0);
+  result = (double)((Foo const *)arg1)->get();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_Foo_set(void* farg1, double* farg2) {
+  Foo *arg1 = (Foo *) 0 ;
+  double arg2 ;
+  std::shared_ptr< Foo > *smartarg1 = 0 ;
+  
+  smartarg1 = (std::shared_ptr< Foo > *)farg1;
+  arg1 = (Foo *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = *farg2;
   (arg1)->set(arg2);
 }
 
 
-SWIGEXPORT void swigc_SimpleClass_double_it(void* farg1) {
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
+SWIGEXPORT void swigc_print_crsp(void * farg1) {
+  std::shared_ptr< Foo > *arg1 = 0 ;
+  std::shared_ptr< Foo > tempnull1 ;
   
-  arg1 = (SimpleClass *)(farg1); 
-  (arg1)->double_it();
+  arg1 = farg1 ? (std::shared_ptr< Foo > *)farg1 : &tempnull1;
+  print_crsp((std::shared_ptr< Foo > const &)*arg1);
 }
 
 
-SWIGEXPORT int swigc_SimpleClass_get(void* farg1) {
-  int fresult = 0 ;
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
-  SimpleClass::storage_type result;
+SWIGEXPORT void swigc_print_sp(void * farg1) {
+  std::shared_ptr< Foo > arg1 ;
   
-  arg1 = (SimpleClass *)(farg1); 
-  result = (SimpleClass::storage_type)((SimpleClass const *)arg1)->get();
-  fresult = result;
-  return fresult;
+  if (farg1) arg1 = *(std::shared_ptr< Foo > *)farg1;
+  print_sp(arg1);
 }
 
 
-SWIGEXPORT int swigc_SimpleClass_get_multiplied(void* farg1, int* farg2) {
-  int fresult = 0 ;
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
-  SimpleClass::multiple_type arg2 ;
-  SimpleClass::storage_type result;
+SWIGEXPORT void swigc_print_spc(void * farg1) {
+  std::shared_ptr< Foo const > arg1 ;
   
-  arg1 = (SimpleClass *)(farg1); 
-  arg2 = *farg2;
-  result = (SimpleClass::storage_type)((SimpleClass const *)arg1)->get_multiplied(arg2);
-  fresult = result;
-  return fresult;
+  if (farg1) arg1 = *(std::shared_ptr< Foo const > *)farg1;
+  print_spc(arg1);
 }
 
 
-SWIGEXPORT void swigc_print_value(void* farg1) {
-  SimpleClass *arg1 = 0 ;
+SWIGEXPORT void swigc_print_crspc(void * farg1) {
+  std::shared_ptr< Foo const > *arg1 = 0 ;
+  std::shared_ptr< Foo const > tempnull1 ;
   
-  arg1 = (SimpleClass *)(farg1); 
-  print_value((SimpleClass const &)*arg1);
+  arg1 = farg1 ? (std::shared_ptr< Foo const > *)farg1 : &tempnull1;
+  print_crspc((std::shared_ptr< Foo const > const &)*arg1);
 }
 
 
-SWIGEXPORT void* swigc_make_class(int* farg1) {
-  void* fresult = 0 ;
-  SimpleClass::storage_type arg1 ;
-  SimpleClass result;
+SWIGEXPORT void swigc_print_cr(void* farg1) {
+  Foo *arg1 = 0 ;
   
-  arg1 = *farg1;
-  result = make_class(arg1);
-  
-#if __cplusplus >= 201103L
-  fresult = new SimpleClass(std::move(result));
-#else
-  fresult = new SimpleClass(result);
-#endif
-  
-  return fresult;
-}
-
-
-SWIGEXPORT void* swigc_get_class() {
-  void* fresult = 0 ;
-  SimpleClass *result = 0 ;
-  
-  result = (SimpleClass *) &get_class();
-  fresult = result; 
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_set_class_by_copy(void* farg1) {
-  SimpleClass arg1 ;
-  
-  arg1 = *(SimpleClass *)(farg1); 
-  set_class_by_copy(arg1);
+  arg1 = (Foo *)(((std::shared_ptr<const Foo > *)farg1)
+    ? ((std::shared_ptr<const Foo > *)farg1)->get()
+    :0);
+  if (!arg1)
+  {
+    throw std::logic_error("Attempt to dereference null Foo const &");
+    return ;
+  }
+  print_cr((Foo const &)*arg1);
 }
 
 

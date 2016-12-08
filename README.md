@@ -29,8 +29,11 @@ Basic language features
 - DONE: methods/functions with class arguments
 - DONE: template instantiation (SWIG should already handle this)
 - inheritance (only base class holds pointer)
+- DONE: Ownership on fortran classes: return-by-value, return-by-new, const
+  reference
+- Move class return values to parameter values? (allow overloading for plist)
 - DONE: multiple constructors
-- `RCP/shared_ptr` wrapping (SWIG should already handle this)
+- DONE: `RCP/shared_ptr` wrapping (SWIG should already handle this)
 - DONE: "generic" function overloading
 - DONE: templated class method instantiation (needed for plist)
 - DONE: namespaces

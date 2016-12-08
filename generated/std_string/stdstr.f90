@@ -14,6 +14,7 @@ module stdstr
  ! TYPES
  type string
   type(C_PTR), private :: ptr = C_NULL_PTR
+  logical, private :: own = .false.
  contains
   procedure, private :: create__SWIG_0 => swigf_new_string__SWIG_0
   procedure, private :: create__SWIG_1 => swigf_new_string__SWIG_1
@@ -21,8 +22,6 @@ module stdstr
   procedure :: clear => swigf_string_clear
   procedure :: size => swigf_string_size
   procedure :: length => swigf_string_length
-  procedure :: set => swigf_string_set
-  procedure :: get => swigf_string_get
   procedure :: assign_from => swigf_string_assign_from
   procedure :: copy_to => swigf_string_copy_to
   procedure :: release => swigf_delete_string
@@ -71,21 +70,6 @@ module stdstr
    integer(C_SIZE_T) :: fresult
    type(C_PTR), value :: farg1
   end function
-  subroutine swigc_string_set(farg1, farg2, farg3) &
-     bind(C, name="swigc_string_set")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_SIZE_T), intent(in) :: farg2
-   character, value :: farg3
-  end subroutine
-  function swigc_string_get(farg1, farg2) &
-     bind(C, name="swigc_string_get") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   character :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_SIZE_T), intent(in) :: farg2
-  end function
   subroutine swigc_string_assign_from(farg1, farg2, farg3) &
      bind(C, name="swigc_string_assign_from")
    use, intrinsic :: ISO_C_BINDING
@@ -124,6 +108,7 @@ contains
    class(string) :: self
    if (c_associated(self%ptr)) call self%release()
    self%ptr = swigc_new_string__SWIG_0()
+   self%own = .true.
   end subroutine
   subroutine swigf_new_string__SWIG_1(self, s)
    use, intrinsic :: ISO_C_BINDING
@@ -131,6 +116,7 @@ contains
    character(len=*) :: s
    if (c_associated(self%ptr)) call self%release()
    self%ptr = swigc_new_string__SWIG_1(s, len(s))
+   self%own = .true.
   end subroutine
   subroutine swigf_string_resize(self, count)
    use, intrinsic :: ISO_C_BINDING
@@ -144,33 +130,18 @@ contains
    call swigc_string_clear(self%ptr)
   end subroutine
   function swigf_string_size(self) &
-     result(output)
+     result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: output
+   integer(C_SIZE_T) :: fresult
    class(string) :: self
-   output = swigc_string_size(self%ptr)
+   fresult = swigc_string_size(self%ptr)
   end function
   function swigf_string_length(self) &
-     result(output)
+     result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: output
+   integer(C_SIZE_T) :: fresult
    class(string) :: self
-   output = swigc_string_length(self%ptr)
-  end function
-  subroutine swigf_string_set(self, pos, v)
-   use, intrinsic :: ISO_C_BINDING
-   class(string) :: self
-   integer(C_SIZE_T), intent(in) :: pos
-   character, value, intent(in) :: v
-   call swigc_string_set(self%ptr, pos, v)
-  end subroutine
-  function swigf_string_get(self, pos) &
-     result(output)
-   use, intrinsic :: ISO_C_BINDING
-   character :: output
-   class(string) :: self
-   integer(C_SIZE_T), intent(in) :: pos
-   output = swigc_string_get(self%ptr, pos)
+   fresult = swigc_string_length(self%ptr)
   end function
   subroutine swigf_string_assign_from(self, s)
    use, intrinsic :: ISO_C_BINDING
@@ -187,7 +158,10 @@ contains
   subroutine swigf_delete_string(self)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
-   call swigc_delete_string(self%ptr)
+   if (self%own) then
+    call swigc_delete_string(self%ptr)
+    self%own = .false.
+   end if
    self%ptr = C_NULL_PTR
   end subroutine
   subroutine print_str(s)
