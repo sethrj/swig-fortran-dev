@@ -40,7 +40,8 @@ Basic language features
 - DONE: string wrapping
 - DONE: passing entire arrays of data in a single call
 - DONE: Add 'intent' qualifiers to arguments?
-- passing classes by value? (atypical fortran usage; RCP though)
+- DONE: passing classes by value? (atypical fortran usage; RCP though)
+- static methods/data
 - Fortran callback functions
 - "director" capability to subclass a c++ class using a Fortran class
 - Multiple interacting modules
