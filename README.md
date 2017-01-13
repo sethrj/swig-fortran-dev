@@ -43,14 +43,17 @@ Basic language features
 - DONE: passing classes by value? (atypical fortran usage; RCP though)
 - static methods/data
 - Fortran callback functions
+- enumerations?
+- global const data?
 - "director" capability to subclass a c++ class using a Fortran class
 - Multiple interacting modules
 - Iterators?
 - DONE: Optional generation of `final` statement for auto-destruction
 - Optional typemap for checking validity of pointers (class must be
   constructed)
-- Find out about quirks of C++ static object initialization when executed by a
-  Fortran `main` function
+- DONE: Find out about quirks of C++ static object initialization when executed
+  by a Fortran `main` function (no problems with gcc; see the SimpleClass
+  example)
 - Exception handling?
 - Error checking (pointers being assigned)?
 - dynamic-cast type checking for inheritance upcasts?

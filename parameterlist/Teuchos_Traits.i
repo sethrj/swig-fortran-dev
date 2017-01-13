@@ -55,7 +55,28 @@ class SerializationTraits<Ordinal,unsigned long long>
 
 %import "Teuchos_TypeNameTraits.hpp"
 %import "Teuchos_NullIteratorTraits.hpp"
-%import "Teuchos_ConstTypeTraits.hpp"
+
+// Teuchos const traits support
+//%import "Teuchos_ConstTypeTraits.hpp"
+
+namespace Teuchos
+{
+
+template<class T>
+struct ConstTypeTraits
+{
+    typedef T NonConstType;
+};
+
+template<class T>
+struct ConstTypeTraits<const T>
+{
+    typedef T NonConstType;
+};
+
+}
+
+%template() Teuchos::ConstTypeTraits<double>;
 
 #if 0
 ///////////////////////////////////

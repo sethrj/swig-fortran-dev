@@ -26,8 +26,10 @@
 %teuchos_rcp(Teuchos::SerialDenseMatrix< int, double >)
 
 // Enums
+//%ignore Teuchos::ENull;
 %import "Teuchos_ENull.hpp"
-%import "Teuchos_RCPNode.hpp"
+%ignore *(Teuchos::ENull);
+//%import "Teuchos_RCPNode.hpp"
 
 //---------------------------------------------------------------------------//
 // end of parameterlist/Teuchos_RCP.i

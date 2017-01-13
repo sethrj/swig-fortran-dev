@@ -81,8 +81,9 @@ using std::ptrdiff_t;
 
 %include "Teuchos_RCP.i"
 %include "Teuchos_Traits.i"
+%include "Teuchos_ArrayView.i"
 %include "Teuchos_Array.i"
-// %include "Teuchos_Comm.i"
+%include "Teuchos_Comm.i"
 // %include "Teuchos_ParameterList.i"
 // %include "Teuchos_XML.i"
 

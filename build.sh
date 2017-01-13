@@ -14,6 +14,7 @@ for d in \
   spdemo \
   algorithm \
   barefunctions \
+  inheritance \
   simpleclass \
   std_string \
   std_vector \
@@ -31,7 +32,7 @@ do
   make || true
   ./test.exe
   dstdir="$GEN/$d"
-  mkdir 2>/dev/null
+  mkdir 2>/dev/null || true
   cp *.cxx *.f90 $dstdir
 done
 
