@@ -51,7 +51,7 @@ class Describable { };
 %include "Teuchos_Comm.hpp"
 #endif
 
-%teuchos_rcp(Teuchos::Comm)
+%teuchos_rcp(Teuchos::Comm<int>)
 
 namespace Teuchos
 {
@@ -71,6 +71,7 @@ class Comm
 // COMM HELPERS
 //---------------------------------------------------------------------------//
 
+%ignore Teuchos::toString;
 %include "Teuchos_CommHelpers.hpp"
 %template(rank_int   ) Teuchos::rank<int>;
 %template(size_int   ) Teuchos::size<int>;
@@ -80,7 +81,7 @@ class Comm
 // SERIAL COMM
 //---------------------------------------------------------------------------//
 
-%teuchos_rcp(Teuchos::SerialComm)
+%teuchos_rcp(Teuchos::SerialComm<int>)
 %{
 #include "Teuchos_DefaultSerialComm.hpp"
 %}
