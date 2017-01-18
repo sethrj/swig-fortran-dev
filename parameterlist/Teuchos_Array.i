@@ -77,10 +77,9 @@ class Array
     }
 
 } // end extend
-
 };
 
-}
+} // end namespace Teuchos
 
 %template(ArrayDouble) Teuchos::Array<double>;
 

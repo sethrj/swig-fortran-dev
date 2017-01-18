@@ -18,18 +18,19 @@ include(SwigModules)
 
 # Trilinos library
 include("/Users/s3j/_local/trilinos-debug/lib/cmake/Trilinos/TrilinosConfig.cmake")
+#SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${Trilinos_SHARED_LIB_RPATH_COMMAND}")
 
 # Generate SWIG module
 include_directories(
   ${CMAKE_PROJECT_SOURCE_DIR}
   ${Trilinos_INCLUDE_DIRS})
 MAKE_SWIG(MODULE teuchos
-  DEPLIBS ${Trilinos_LIBRARIES})
+  DEPLIBS teuchoscomm teuchosparameterlist)
 
 # Create test executable
 add_executable(test.exe test.f90)
 # It depends on the compiled fortran module
-target_link_libraries(test.exe teuchos)
+target_link_libraries(test.exe teuchos ${Trilinos_TPL_LIBRARIES})
 
 ##---------------------------------------------------------------------------##
 ## end of parameterlist/CMakeLists.txt
