@@ -10,7 +10,12 @@
 #include "Teuchos_ParameterList.hpp"
 %}
 
-//%teuchos_rcp(Teuchos::ParameterList)
+%include <std_string.i>
+
+%fragment("StdStringCopyout");
+
+// %include "Teuchos_RCP.i"
+// %teuchos_rcp(Teuchos::ParameterList)
 
 namespace Teuchos
 {
@@ -32,108 +37,127 @@ class ParameterList
 
     // >>> DIAGNOSTICS
 
-    // >>> TYPED QUERIES
-
-    // Set a parameter
-    template<typename T>
-    ParameterList& set(const std::string& name, T const& value);
-
-    // Get a parameter, with default
-    template<typename T>
-    T& get(const std::string& name, T def_value);
-
-    // Get a parameter, no default
-    template<typename T>
-    T& get(const std::string& name);
-
     // Whether the given parameter is a type
     template<typename T>
     bool isType(const std::string& name) const;
 
     // >>> TYPELESS QUERIES
 
-    // Delete a parameter
-    bool remove(const std::string& name);
-
-    // Whether the given parameter exists
-    bool isParameter(const std::string& name) const;
-
 #endif
     %extend {
 
-    // Constructor
-    ParameterList(const char* STRING, int SIZE)
-    {
-        return new Teuchos::ParameterList(std::string(STRING, SIZE));
-    }
+// Constructor
+ParameterList(const char* STRING, int SIZE)
+{
+    return new Teuchos::ParameterList(std::string(STRING, SIZE));
+}
 
-%define ADD_GETSET(T)
-    void set(const char* STRING, int SIZE, const T& val)
-    {
-        $self->set<T>(std::string(STRING, SIZE), val);
-    }
+// >>> TYPED QUERIES
 
-    void get(const char* STRING, int SIZE, T& val)
-    {
-        val = $self->get<T>(std::string(STRING, SIZE));
-    }
-%enddef
+// Use fortran string typemap for value as well as key
+%apply (char* STRING, int SIZE)
+{ (char* VALSTRING, int VALSIZE) };
+%apply (const char* STRING, int SIZE)
+{ (const char* VALSTRING, int VALSIZE) };
 
-    ADD_GETSET(int);
-    ADD_GETSET(double);
-    ADD_GETSET(Teuchos::ParameterList);
+template<typename T>
+void set_scalar(const char* STRING, int SIZE, const T& value)
+{
+    $self->set(std::string(STRING, SIZE), value);
+}
 
-    // Use fortran string typemap for value as well as key
-    %apply (char* STRING, int SIZE)
-    { (char* STRINGVAL, int SIZEVAL) };
-    %apply (const char* STRING, int SIZE)
-    { (const char* STRINGVAL, int SIZEVAL) };
+template<typename T>
+void get_scalar(const char* STRING, int SIZE, T& value)
+{
+    value = $self->get<T>(std::string(STRING, SIZE));
+}
 
-    // String get/set
-    void set(const char* STRING, int SIZE,
-             const char* STRINGVAL, int SIZEVAL)
-    {
-        $self->set(std::string(STRING, SIZE),
-                   std::string(STRINGVAL, SIZEVAL));
-    }
+// Instantiate get/set
+%template(get) get_scalar<double>;
+%template(set) set_scalar<double>;
+%template(get) get_scalar<int>;
+%template(set) set_scalar<int>;
+%template(get) get_scalar<Teuchos::ParameterList>;
+%template(set) set_scalar<Teuchos::ParameterList>;
 
-    void get(const char* STRING,    int SIZE,
-             char* STRINGVAL, int SIZEVAL)
-    {
-        std::string value = $self->get<std::string>(std::string(STRING, SIZE));
+// TODO: allow set/get for C++ string type?
 
-        if (value.size() > SIZEVAL)
-            throw std::range_error("string length too small");
+// String get/set
+void set(const char* STRING, int SIZE,
+         const char* VALSTRING, int VALSIZE)
+{
+    $self->set(std::string(STRING, SIZE),
+               std::string(VALSTRING, VALSIZE));
+}
 
-        STRINGVAL = std::copy(value.begin(), value.end(), STRINGVAL);
-        std::fill_n(STRINGVAL, SIZEVAL - value.size(), ' ');
-    }
+void get(const char* STRING, int SIZE,
+         char* VALSTRING,    int VALSIZE)
+{
+    const std::string& value
+        = $self->get<std::string>(std::string(STRING, SIZE));
+    std_string_copyout(value, VALSTRING, VALSIZE);
+}
 
+// Use fortran array typemap for value as well as key
+%apply (SWIGTYPE* ARRAY, int SIZE)
+{ (const int* ARRAY, int ARRAYSIZE),
+  (const double* ARRAY, int ARRAYSIZE) };
 
-    // NOTE: this doesn't work, see
-    // https://github.com/swig/swig/issues/876
+//! Array get/set
+template<typename T>
+void set_array(const char* STRING, int SIZE,
+               const T* ARRAY,     int ARRAYSIZE)
+{
+    typedef Teuchos::Array<T> ArrayT;
+    $self->set(std::string(STRING, SIZE),
+               ArrayT(ARRAY, ARRAY + ARRAYSIZE));
+}
+%template(set) set_array<double>;
+%template(set) set_array<int>;
+
 #if 0
-    template<typename T>
-    void set(const char* STRING, int SIZE, const T& value)
-    {
-        $self->set(std::string(STRING, SIZE), value);
-    }
-
-    template<typename T>
-    void get(const char* STRING, int SIZE, T& value)
-    {
-        ;
-        value = $self->get<T>(std::string(STRING, SIZE));
-    }
-
-    // Instantiate get/set
-    %template(get) get<double>;
-    %template(set) set<double>;
-    %template(get) get<int>;
-    %template(set) set<int>;
+//! Array get/set
+void set_array(const char* STRING, int SIZE,
+               const int* ARRAY,   int ARRAYSIZE)
+{
+    typedef Teuchos::Array<int> ArrayT;
+    $self->set(std::string(STRING, SIZE),
+               ArrayT(ARRAY, ARRAY + ARRAYSIZE));
+}
 #endif
-    }
-};
+
+//! Get the length of a string or array
+int get_length(const char* STRING, int SIZE)
+{
+    std::string key(STRING, SIZE);
+#define PLIST_CHECK_RETURN(TYPE) \
+if ($self->isType<TYPE >(key)) return $self->get<TYPE >(key).size();
+
+    PLIST_CHECK_RETURN(std::string);
+    PLIST_CHECK_RETURN(Teuchos::Array<int>)
+    PLIST_CHECK_RETURN(Teuchos::Array<double>)
+
+#undef PLIST_CHECK_RETURN
+    // No type found
+    return -1;
+}
+
+//! Delete a parameter
+void remove(const char* STRING, int SIZE)
+{
+    $self->remove(std::string(STRING, SIZE));
+}
+
+//! Whether the given parameter exists
+bool is_parameter(const char* STRING, int SIZE) const
+{
+    return $self->isParameter(std::string(STRING, SIZE));
+}
+
+
+} // End %extend
+}; // end class
+
 } // end namespace Teuchos
 
 //---------------------------------------------------------------------------//
