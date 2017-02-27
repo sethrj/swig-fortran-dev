@@ -18,6 +18,7 @@
   %shared_ptr(CLASS)
 %enddef
 
+#if 0
 // SNIP: Teuchos.i:RCP_DAP
 
 %teuchos_rcp(std::basic_ostream)
@@ -30,6 +31,7 @@
 %import "Teuchos_ENull.hpp"
 %ignore *(Teuchos::ENull);
 //%import "Teuchos_RCPNode.hpp"
+#endif
 
 //---------------------------------------------------------------------------//
 // end of parameterlist/Teuchos_RCP.i

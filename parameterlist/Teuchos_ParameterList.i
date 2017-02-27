@@ -14,8 +14,7 @@
 
 %fragment("StdStringCopyout");
 
-// %include "Teuchos_RCP.i"
-// %teuchos_rcp(Teuchos::ParameterList)
+%teuchos_rcp(Teuchos::ParameterList)
 
 namespace Teuchos
 {
@@ -24,26 +23,9 @@ class ParameterList
 {
   public:
 
+    // Print the plist
     void print() const;
 
-#if 0
-    // Allow fortran strings to implicitly create strings for parameter name
-    // %typemap(fin, noblock=1) (const std::string& name)
-    // { $1_name, len($1_name) }
-    %apply const char* { (const std::string& name) };
-
-    ParameterList();
-    ParameterList(const std::string& name);
-
-    // >>> DIAGNOSTICS
-
-    // Whether the given parameter is a type
-    template<typename T>
-    bool isType(const std::string& name) const;
-
-    // >>> TYPELESS QUERIES
-
-#endif
     %extend {
 
 // Constructor
@@ -54,12 +36,9 @@ ParameterList(const char* STRING, int SIZE)
 
 // >>> TYPED QUERIES
 
-// Use fortran string typemap for value as well as key
-%apply (char* STRING, int SIZE)
-{ (char* VALSTRING, int VALSIZE) };
-%apply (const char* STRING, int SIZE)
-{ (const char* VALSTRING, int VALSIZE) };
+// Use fortran string typemap for string value as well as key
 
+//! String set/get
 template<typename T>
 void set_scalar(const char* STRING, int SIZE, const T& value)
 {
@@ -80,7 +59,10 @@ void get_scalar(const char* STRING, int SIZE, T& value)
 %template(get) get_scalar<Teuchos::ParameterList>;
 %template(set) set_scalar<Teuchos::ParameterList>;
 
-// TODO: allow set/get for C++ string type?
+%apply (char* STRING, int SIZE)
+{ (char* VALSTRING, int VALSIZE) };
+%apply (const char* STRING, int SIZE)
+{ (const char* VALSTRING, int VALSIZE) };
 
 // String get/set
 void set(const char* STRING, int SIZE,
@@ -100,10 +82,12 @@ void get(const char* STRING, int SIZE,
 
 // Use fortran array typemap for value as well as key
 %apply (SWIGTYPE* ARRAY, int SIZE)
-{ (const int* ARRAY, int ARRAYSIZE),
+{ (int* ARRAY, int ARRAYSIZE),
+  (double* ARRAY, int ARRAYSIZE),
+  (const int* ARRAY, int ARRAYSIZE),
   (const double* ARRAY, int ARRAYSIZE) };
 
-//! Array get/set
+//! Array set
 template<typename T>
 void set_array(const char* STRING, int SIZE,
                const T* ARRAY,     int ARRAYSIZE)
@@ -112,19 +96,26 @@ void set_array(const char* STRING, int SIZE,
     $self->set(std::string(STRING, SIZE),
                ArrayT(ARRAY, ARRAY + ARRAYSIZE));
 }
-%template(set) set_array<double>;
-%template(set) set_array<int>;
 
-#if 0
-//! Array get/set
-void set_array(const char* STRING, int SIZE,
-               const int* ARRAY,   int ARRAYSIZE)
+//! Array get
+template<typename T>
+void get_array(const char* STRING, int SIZE,
+               T* ARRAY,           int ARRAYSIZE)
 {
-    typedef Teuchos::Array<int> ArrayT;
-    $self->set(std::string(STRING, SIZE),
-               ArrayT(ARRAY, ARRAY + ARRAYSIZE));
+    typedef Teuchos::Array<T> ArrayT;
+    const ArrayT& arr
+        = $self->get<ArrayT>(std::string(STRING, SIZE));
+
+    if (arr.size() != ARRAYSIZE)
+        throw std::range_error("arr/vector size mismatch");
+
+    std::copy(arr.begin(), arr.end(), ARRAY);
 }
-#endif
+
+%template(set) set_array<double>;
+%template(get) get_array<double>;
+%template(set) set_array<int>;
+%template(get) get_array<int>;
 
 //! Get the length of a string or array
 int get_length(const char* STRING, int SIZE)

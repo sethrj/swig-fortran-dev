@@ -7,10 +7,23 @@
  */
 //---------------------------------------------------------------------------//
 %{
-#include "Teuchos_XML.hh"
+#include "Teuchos_XMLParameterListCoreHelpers.hpp"
 %}
 
-%include "Teuchos_XML.hh"
+%inline %{
+void load_from_xml(const Teuchos::RCP<Teuchos::ParameterList>& plist,
+                   const char* STRING, int SIZE)
+{
+    Teuchos::updateParametersFromXmlFile(std::string(STRING, SIZE), plist);
+}
+
+void save_to_xml(const Teuchos::ParameterList& plist,
+                 const char* STRING, int SIZE)
+{
+    Teuchos::writeParameterListToXmlFile(plist, std::string(STRING, SIZE));
+}
+%}
+
 
 //---------------------------------------------------------------------------//
 // end of parameterlist/Teuchos_XML.i

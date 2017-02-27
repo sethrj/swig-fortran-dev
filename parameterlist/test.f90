@@ -24,6 +24,8 @@ subroutine test_plist()
 
     write(0, *) "Constructing..."
     call plist%create("myname")
+    ! call load_from_xml(plist, "input_params.xml")
+
     call plist%set("myint", 4)
     call plist%set("mydouble", 4.0d0)
     call plist%set("intarr", test_int)
@@ -46,6 +48,9 @@ subroutine test_plist()
 
     write(0, *) "Printing"
     call plist%print()
+    write(0, *) "Saving to XML file"
+    call save_to_xml(plist, "myparams.xml")
+
     call plist%release()
 end subroutine
 
