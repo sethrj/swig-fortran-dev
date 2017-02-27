@@ -60,14 +60,14 @@ module stdstr
      bind(C, name="swigc_string_size") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
+   integer(C_INT) :: fresult
    type(C_PTR), value :: farg1
   end function
   function swigc_string_length(farg1) &
      bind(C, name="swigc_string_length") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
+   integer(C_INT) :: fresult
    type(C_PTR), value :: farg1
   end function
   subroutine swigc_string_assign_from(farg1, farg2, farg3) &
@@ -132,14 +132,14 @@ contains
   function swigf_string_size(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
+   integer(C_INT) :: fresult
    class(string) :: self
    fresult = swigc_string_size(self%ptr)
   end function
   function swigf_string_length(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
+   integer(C_INT) :: fresult
    class(string) :: self
    fresult = swigc_string_length(self%ptr)
   end function

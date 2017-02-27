@@ -26,6 +26,8 @@ module stdvec
   procedure, private :: resize__SWIG_0 => swigf_VecDbl_resize__SWIG_0
   procedure, private :: resize__SWIG_1 => swigf_VecDbl_resize__SWIG_1
   procedure :: push_back => swigf_VecDbl_push_back
+  procedure :: front => swigf_VecDbl_front
+  procedure :: back => swigf_VecDbl_back
   procedure :: set => swigf_VecDbl_set
   procedure :: get => swigf_VecDbl_get
   procedure :: assign_from => swigf_VecDbl_assign_from
@@ -110,6 +112,20 @@ module stdvec
    type(C_PTR), value :: farg1
    real(C_DOUBLE), intent(in) :: farg2
   end subroutine
+  function swigc_VecDbl_front(farg1) &
+     bind(C, name="swigc_VecDbl_front") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   real(C_DOUBLE) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_VecDbl_back(farg1) &
+     bind(C, name="swigc_VecDbl_back") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   real(C_DOUBLE) :: fresult
+   type(C_PTR), value :: farg1
+  end function
   subroutine swigc_VecDbl_set(farg1, farg2, farg3) &
      bind(C, name="swigc_VecDbl_set")
    use, intrinsic :: ISO_C_BINDING
@@ -228,20 +244,34 @@ contains
    real(C_DOUBLE), intent(in) :: v
    call swigc_VecDbl_push_back(self%ptr, v)
   end subroutine
-  subroutine swigf_VecDbl_set(self, pos, v)
-   use, intrinsic :: ISO_C_BINDING
-   class(VecDbl) :: self
-   integer(C_INT), intent(in) :: pos
-   real(C_DOUBLE), intent(in) :: v
-   call swigc_VecDbl_set(self%ptr, pos, v)
-  end subroutine
-  function swigf_VecDbl_get(self, pos) &
+  function swigf_VecDbl_front(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    real(C_DOUBLE) :: fresult
    class(VecDbl) :: self
-   integer(C_INT), intent(in) :: pos
-   fresult = swigc_VecDbl_get(self%ptr, pos)
+   fresult = swigc_VecDbl_front(self%ptr)
+  end function
+  function swigf_VecDbl_back(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   real(C_DOUBLE) :: fresult
+   class(VecDbl) :: self
+   fresult = swigc_VecDbl_back(self%ptr)
+  end function
+  subroutine swigf_VecDbl_set(self, index, v)
+   use, intrinsic :: ISO_C_BINDING
+   class(VecDbl) :: self
+   integer(C_INT), intent(in) :: index
+   real(C_DOUBLE), intent(in) :: v
+   call swigc_VecDbl_set(self%ptr, index, v)
+  end subroutine
+  function swigf_VecDbl_get(self, index) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   real(C_DOUBLE) :: fresult
+   class(VecDbl) :: self
+   integer(C_INT), intent(in) :: index
+   fresult = swigc_VecDbl_get(self%ptr, index)
   end function
   subroutine swigf_VecDbl_assign_from(self, arr)
    use, intrinsic :: ISO_C_BINDING

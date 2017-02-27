@@ -163,12 +163,12 @@ template <typename T> T SwigValueInit() {
 #include <stdexcept>
 #include <algorithm>
 
-SWIGINTERN void std_vector_Sl_double_Sg__set(std::vector< double > *self,std::vector< double >::size_type pos,std::vector< double >::const_reference v){
+SWIGINTERN void std_vector_Sl_double_Sg__set(std::vector< double > *self,std::vector< double >::size_type index,std::vector< double >::const_reference v){
         // TODO: check range
-        (*self)[pos] = v;
+        (*self)[index] = v;
     }
-SWIGINTERN std::vector< double >::value_type std_vector_Sl_double_Sg__get(std::vector< double > *self,std::vector< double >::size_type pos){
-        return (*self)[pos];
+SWIGINTERN std::vector< double >::value_type std_vector_Sl_double_Sg__get(std::vector< double > *self,std::vector< double >::size_type index){
+        return (*self)[index];
     }
 SWIGINTERN void std_vector_Sl_double_Sg__assign_from(std::vector< double > *self,std::vector< double >::const_pointer arr,std::vector< double >::size_type arrsize){
         self->assign(arr, arr + arrsize);
@@ -301,6 +301,30 @@ SWIGEXPORT void swigc_VecDbl_push_back(void* farg1, double* farg2) {
   arg1 = (std::vector< double > *)(farg1); 
   arg2 = farg2;
   (arg1)->push_back((std::vector< double >::value_type const &)*arg2);
+}
+
+
+SWIGEXPORT double swigc_VecDbl_front(void* farg1) {
+  double fresult = 0 ;
+  std::vector< double > *arg1 = (std::vector< double > *) 0 ;
+  double *result = 0 ;
+  
+  arg1 = (std::vector< double > *)(farg1); 
+  result = (double *) &((std::vector< double > const *)arg1)->front();
+  fresult = *result;
+  return fresult;
+}
+
+
+SWIGEXPORT double swigc_VecDbl_back(void* farg1) {
+  double fresult = 0 ;
+  std::vector< double > *arg1 = (std::vector< double > *) 0 ;
+  double *result = 0 ;
+  
+  arg1 = (std::vector< double > *)(farg1); 
+  result = (double *) &((std::vector< double > const *)arg1)->back();
+  fresult = *result;
+  return fresult;
 }
 
 

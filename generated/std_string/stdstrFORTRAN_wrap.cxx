@@ -163,15 +163,24 @@ template <typename T> T SwigValueInit() {
 #include <algorithm>
 #include <stdexcept>
 
+
+
+// Fill a Fortran string from a std::string; with whitespace after
+void std_string_copyout(const std::string& str, char* s, size_t count)
+{
+    if (str.size() > count)
+        throw std::range_error("string size too small");
+
+    s = std::copy(str.begin(), str.end(), s);
+    std::fill_n(s, count - str.size(), ' ');
+}
+
+
 SWIGINTERN void std_string_assign_from(std::string *self,std::string::const_pointer s,std::string::size_type count){
         self->assign(s, s + count);
     }
 SWIGINTERN void std_string_copy_to(std::string *self,std::string::pointer s,std::string::size_type count){
-        if (self->size() > count)
-            throw std::range_error("copy_to string is too small");
-
-        s = std::copy(self->begin(), self->end(), s);
-        std::fill_n(s, count - self->size(), ' ');
+        std_string_copyout(*self, s, count);
     }
 #ifdef __cplusplus
 extern "C" {
@@ -186,7 +195,7 @@ SWIGEXPORT void* swigc_new_string__SWIG_0() {
 }
 
 
-SWIGEXPORT void* swigc_new_string__SWIG_1( char*  farg1, int* farg2) {
+SWIGEXPORT void* swigc_new_string__SWIG_1( const char*  farg1, int* farg2) {
   void* fresult = 0 ;
   std::string::const_pointer arg1 = (std::string::const_pointer) 0 ;
   std::string::size_type arg2 ;
@@ -218,31 +227,31 @@ SWIGEXPORT void swigc_string_clear(void* farg1) {
 }
 
 
-SWIGEXPORT size_t swigc_string_size(void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT int swigc_string_size(void* farg1) {
+  int fresult = 0 ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type result;
   
   arg1 = (std::string *)(farg1); 
-  result = ((std::string const *)arg1)->size();
+  result = (std::string::size_type)((std::string const *)arg1)->size();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT size_t swigc_string_length(void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT int swigc_string_length(void* farg1) {
+  int fresult = 0 ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type result;
   
   arg1 = (std::string *)(farg1); 
-  result = ((std::string const *)arg1)->length();
+  result = (std::string::size_type)((std::string const *)arg1)->length();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_string_assign_from(void* farg1,  char*  farg2, int* farg3) {
+SWIGEXPORT void swigc_string_assign_from(void* farg1,  const char*  farg2, int* farg3) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::const_pointer arg2 = (std::string::const_pointer) 0 ;
   std::string::size_type arg3 ;

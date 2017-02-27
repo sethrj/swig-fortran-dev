@@ -291,6 +291,14 @@ SWIGEXPORT void swigc_set_class_by_copy(void* farg1) {
 }
 
 
+SWIGEXPORT void swigc_print_color(int* farg1) {
+  MyEnum arg1 ;
+  
+  arg1 = (MyEnum)(*farg1);
+  print_color(arg1);
+}
+
+
 #ifdef __cplusplus
 }
 #endif

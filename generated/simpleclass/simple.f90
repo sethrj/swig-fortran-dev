@@ -8,12 +8,21 @@ module simple
  implicit none
 
  ! PUBLIC METHODS AND TYPES
+ public :: MyEnum, RED, GREEN, BLUE, BLACK
  public :: SimpleClass
  public :: print_value
  public :: make_class
  public :: get_class
  public :: set_class_by_copy
+ public :: print_color
  ! TYPES
+ enum, bind(c)
+  enumerator :: MyEnum = -1
+  enumerator :: RED = 0
+  enumerator :: GREEN = RED + 1
+  enumerator :: BLUE = GREEN + 1
+  enumerator :: BLACK = -1
+ end enum
  type :: SimpleClass
   type(C_PTR), private :: ptr = C_NULL_PTR
   logical, private :: own = .false.
@@ -105,6 +114,11 @@ module simple
      bind(C, name="swigc_set_class_by_copy")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
+  end subroutine
+  subroutine swigc_print_color(farg1) &
+     bind(C, name="swigc_print_color")
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT), intent(in) :: farg1
   end subroutine
  end interface
 
@@ -200,5 +214,10 @@ contains
    use, intrinsic :: ISO_C_BINDING
    type(SimpleClass) :: c
    call swigc_set_class_by_copy(c%ptr)
+  end subroutine
+  subroutine print_color(color)
+   use, intrinsic :: ISO_C_BINDING
+   integer(kind(MyEnum)) :: color
+   call swigc_print_color(color)
   end subroutine
 end module simple
