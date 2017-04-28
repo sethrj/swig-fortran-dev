@@ -221,8 +221,7 @@ void clear_swig_err()
 #include <stdexcept>
 
 
-extern int    gcd(int x, int y);
-extern double Foo;
+#include "inheritance.hh"
 
 #ifdef __cplusplus
 extern "C" {
@@ -252,33 +251,139 @@ SWIGEXPORT void swigc_clear_swig_err() {
 }
 
 
-SWIGEXPORT int swigc_gcd(int* farg1, int* farg2) {
-  int fresult = 0 ;
-  int arg1 ;
-  int arg2 ;
-  int result;
+SWIGEXPORT void swigc_delete_BaseClass(void* farg1) {
+  BaseClass *arg1 = (BaseClass *) 0 ;
   
-  arg1 = *farg1;
-  arg2 = *farg2;
-  result = (int)gcd(arg1,arg2);
+  arg1 = (BaseClass *)(farg1); 
+  delete arg1;
+}
+
+
+SWIGEXPORT float swigc_BaseClass_foo(void* farg1) {
+  float fresult = 0 ;
+  BaseClass *arg1 = (BaseClass *) 0 ;
+  float result;
+  
+  arg1 = (BaseClass *)(farg1); 
+  result = (float)((BaseClass const *)arg1)->foo();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_set_Foo(double* farg1) {
-  double arg1 ;
+SWIGEXPORT int swigc_BaseClass_get_i(void* farg1) {
+  int fresult = 0 ;
+  BaseClass *arg1 = (BaseClass *) 0 ;
+  int result;
   
-  arg1 = *farg1;
-  Foo = arg1;
+  arg1 = (BaseClass *)(farg1); 
+  result = (int)((BaseClass const *)arg1)->get_i();
+  fresult = result;
+  return fresult;
 }
 
 
-SWIGEXPORT double swigc_get_Foo() {
-  double fresult = 0 ;
-  double result;
+SWIGEXPORT void swigc_BaseClass_set_i(void* farg1, int* farg2) {
+  BaseClass *arg1 = (BaseClass *) 0 ;
+  int arg2 ;
   
-  result = (double)Foo;
+  arg1 = (BaseClass *)(farg1); 
+  arg2 = *farg2;
+  (arg1)->set_i(arg2);
+}
+
+
+SWIGEXPORT void* swigc_new_DerivedA__SWIG_0() {
+  void* fresult = 0 ;
+  DerivedA *result = 0 ;
+  
+  result = (DerivedA *)new DerivedA();
+  fresult = result; 
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_DerivedA__SWIG_1(int* farg1, float* farg2) {
+  void* fresult = 0 ;
+  int arg1 ;
+  float arg2 ;
+  DerivedA *result = 0 ;
+  
+  arg1 = *farg1;
+  arg2 = *farg2;
+  result = (DerivedA *)new DerivedA(arg1,arg2);
+  fresult = result; 
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_DerivedA(void* farg1) {
+  DerivedA *arg1 = (DerivedA *) 0 ;
+  
+  arg1 = (DerivedA *)(farg1); 
+  delete arg1;
+}
+
+
+SWIGEXPORT float swigc_DerivedA_foo(void* farg1) {
+  float fresult = 0 ;
+  DerivedA *arg1 = (DerivedA *) 0 ;
+  float result;
+  
+  arg1 = (DerivedA *)(farg1); 
+  result = (float)((DerivedA const *)arg1)->foo();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_DerivedA_print(void* farg1) {
+  DerivedA *arg1 = (DerivedA *) 0 ;
+  
+  arg1 = (DerivedA *)(farg1); 
+  ((DerivedA const *)arg1)->print();
+}
+
+
+SWIGEXPORT void* swigc_new_DerivedB__SWIG_0() {
+  void* fresult = 0 ;
+  DerivedB *result = 0 ;
+  
+  result = (DerivedB *)new DerivedB();
+  fresult = result; 
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_DerivedB__SWIG_1(int* farg1, int* farg2) {
+  void* fresult = 0 ;
+  int arg1 ;
+  int arg2 ;
+  DerivedB *result = 0 ;
+  
+  arg1 = *farg1;
+  arg2 = *farg2;
+  result = (DerivedB *)new DerivedB(arg1,arg2);
+  fresult = result; 
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_DerivedB(void* farg1) {
+  DerivedB *arg1 = (DerivedB *) 0 ;
+  
+  arg1 = (DerivedB *)(farg1); 
+  delete arg1;
+}
+
+
+SWIGEXPORT float swigc_DerivedB_foo(void* farg1) {
+  float fresult = 0 ;
+  DerivedB *arg1 = (DerivedB *) 0 ;
+  float result;
+  
+  arg1 = (DerivedB *)(farg1); 
+  result = (float)((DerivedB const *)arg1)->foo();
   fresult = result;
   return fresult;
 }

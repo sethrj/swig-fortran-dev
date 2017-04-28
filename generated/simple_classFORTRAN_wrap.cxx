@@ -221,8 +221,12 @@ void clear_swig_err()
 #include <stdexcept>
 
 
-extern int    gcd(int x, int y);
-extern double Foo;
+#include "SimpleClass.hh"
+
+
+#if __cplusplus >= 201103L
+#include <utility>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -252,35 +256,181 @@ SWIGEXPORT void swigc_clear_swig_err() {
 }
 
 
-SWIGEXPORT int swigc_gcd(int* farg1, int* farg2) {
-  int fresult = 0 ;
-  int arg1 ;
+SWIGEXPORT void swigc_set_BasicStruct_val(void* farg1, int* farg2) {
+  BasicStruct *arg1 = (BasicStruct *) 0 ;
   int arg2 ;
+  
+  arg1 = (BasicStruct *)(farg1); 
+  arg2 = *farg2;
+  if (arg1) (arg1)->val = arg2;
+}
+
+
+SWIGEXPORT int swigc_get_BasicStruct_val(void* farg1) {
+  int fresult = 0 ;
+  BasicStruct *arg1 = (BasicStruct *) 0 ;
   int result;
   
-  arg1 = *farg1;
-  arg2 = *farg2;
-  result = (int)gcd(arg1,arg2);
+  arg1 = (BasicStruct *)(farg1); 
+  result = (int) ((arg1)->val);
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_set_Foo(double* farg1) {
+SWIGEXPORT void* swigc_new_BasicStruct() {
+  void* fresult = 0 ;
+  BasicStruct *result = 0 ;
+  
+  result = (BasicStruct *)new BasicStruct();
+  fresult = result; 
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_BasicStruct(void* farg1) {
+  BasicStruct *arg1 = (BasicStruct *) 0 ;
+  
+  arg1 = (BasicStruct *)(farg1); 
+  delete arg1;
+}
+
+
+SWIGEXPORT void* swigc_new_SimpleClass__SWIG_0() {
+  void* fresult = 0 ;
+  SimpleClass *result = 0 ;
+  
+  result = (SimpleClass *)new SimpleClass();
+  fresult = result; 
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_SimpleClass__SWIG_1(void* farg1) {
+  void* fresult = 0 ;
+  SimpleClass *arg1 = 0 ;
+  SimpleClass *result = 0 ;
+  
+  arg1 = (SimpleClass *)(farg1); 
+  result = (SimpleClass *)new SimpleClass((SimpleClass const &)*arg1);
+  fresult = result; 
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_SimpleClass__SWIG_2(double* farg1) {
+  void* fresult = 0 ;
   double arg1 ;
+  SimpleClass *result = 0 ;
   
   arg1 = *farg1;
-  Foo = arg1;
+  result = (SimpleClass *)new SimpleClass(arg1);
+  fresult = result; 
+  return fresult;
 }
 
 
-SWIGEXPORT double swigc_get_Foo() {
-  double fresult = 0 ;
-  double result;
+SWIGEXPORT void swigc_delete_SimpleClass(void* farg1) {
+  SimpleClass *arg1 = (SimpleClass *) 0 ;
   
-  result = (double)Foo;
+  arg1 = (SimpleClass *)(farg1); 
+  delete arg1;
+}
+
+
+SWIGEXPORT void swigc_SimpleClass_set(void* farg1, int* farg2) {
+  SimpleClass *arg1 = (SimpleClass *) 0 ;
+  SimpleClass::storage_type arg2 ;
+  
+  arg1 = (SimpleClass *)(farg1); 
+  arg2 = *farg2;
+  (arg1)->set(arg2);
+}
+
+
+SWIGEXPORT void swigc_SimpleClass_double_it(void* farg1) {
+  SimpleClass *arg1 = (SimpleClass *) 0 ;
+  
+  arg1 = (SimpleClass *)(farg1); 
+  (arg1)->double_it();
+}
+
+
+SWIGEXPORT int swigc_SimpleClass_get(void* farg1) {
+  int fresult = 0 ;
+  SimpleClass *arg1 = (SimpleClass *) 0 ;
+  SimpleClass::storage_type result;
+  
+  arg1 = (SimpleClass *)(farg1); 
+  result = (SimpleClass::storage_type)((SimpleClass const *)arg1)->get();
   fresult = result;
   return fresult;
+}
+
+
+SWIGEXPORT int swigc_SimpleClass_get_multiplied(void* farg1, int* farg2) {
+  int fresult = 0 ;
+  SimpleClass *arg1 = (SimpleClass *) 0 ;
+  SimpleClass::multiple_type arg2 ;
+  SimpleClass::storage_type result;
+  
+  arg1 = (SimpleClass *)(farg1); 
+  arg2 = *farg2;
+  result = (SimpleClass::storage_type)((SimpleClass const *)arg1)->get_multiplied(arg2);
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_print_value(void* farg1) {
+  SimpleClass *arg1 = 0 ;
+  
+  arg1 = (SimpleClass *)(farg1); 
+  print_value((SimpleClass const &)*arg1);
+}
+
+
+SWIGEXPORT void* swigc_make_class(int* farg1) {
+  void* fresult = 0 ;
+  SimpleClass::storage_type arg1 ;
+  SimpleClass result;
+  
+  arg1 = *farg1;
+  result = make_class(arg1);
+  
+#if __cplusplus >= 201103L
+  fresult = new SimpleClass(std::move(result));
+#else
+  fresult = new SimpleClass(result);
+#endif
+  
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_get_class() {
+  void* fresult = 0 ;
+  SimpleClass *result = 0 ;
+  
+  result = (SimpleClass *) &get_class();
+  fresult = result; 
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_set_class_by_copy(void* farg1) {
+  SimpleClass arg1 ;
+  
+  arg1 = *(SimpleClass *)(farg1);
+  set_class_by_copy(arg1);
+}
+
+
+SWIGEXPORT void swigc_print_color(int* farg1) {
+  MyEnum arg1 ;
+  
+  arg1 = (MyEnum)(*farg1);
+  print_color(arg1);
 }
 
 
