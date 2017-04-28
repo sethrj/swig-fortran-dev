@@ -25,6 +25,8 @@ module stdstr
   procedure :: clear => swigf_string_clear
   procedure :: size => swigf_string_size
   procedure :: length => swigf_string_length
+  procedure :: set => swigf_string_set
+  procedure :: get => swigf_string_get
   procedure :: assign_from => swigf_string_assign_from
   procedure :: copy_to => swigf_string_copy_to
   procedure :: release => swigf_delete_string
@@ -88,6 +90,21 @@ module stdstr
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT) :: fresult
    type(C_PTR), value :: farg1
+  end function
+  subroutine swigc_string_set(farg1, farg2, farg3) &
+     bind(C, name="swigc_string_set")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+   character, value :: farg3
+  end subroutine
+  function swigc_string_get(farg1, farg2) &
+     bind(C, name="swigc_string_get") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   character :: fresult
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
   end function
   subroutine swigc_string_assign_from(farg1, farg2, farg3) &
      bind(C, name="swigc_string_assign_from")
@@ -176,6 +193,21 @@ contains
    integer(C_INT) :: fresult
    class(string) :: self
    fresult = swigc_string_length(self%ptr)
+  end function
+  subroutine swigf_string_set(self, pos, v)
+   use, intrinsic :: ISO_C_BINDING
+   class(string) :: self
+   integer(C_INT), intent(in) :: pos
+   character, value, intent(in) :: v
+   call swigc_string_set(self%ptr, pos, v)
+  end subroutine
+  function swigf_string_get(self, pos) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   character :: fresult
+   class(string) :: self
+   integer(C_INT), intent(in) :: pos
+   fresult = swigc_string_get(self%ptr, pos)
   end function
   subroutine swigf_string_assign_from(self, s)
    use, intrinsic :: ISO_C_BINDING

@@ -251,6 +251,46 @@ SWIGEXPORT void swigc_clear_swig_err() {
 }
 
 
+SWIGEXPORT void swigc_set_BasicStruct_val(void* farg1, int* farg2) {
+  BasicStruct *arg1 = (BasicStruct *) 0 ;
+  int arg2 ;
+  
+  arg1 = (BasicStruct *)(farg1); 
+  arg2 = *farg2;
+  if (arg1) (arg1)->val = arg2;
+}
+
+
+SWIGEXPORT int swigc_get_BasicStruct_val(void* farg1) {
+  int fresult = 0 ;
+  BasicStruct *arg1 = (BasicStruct *) 0 ;
+  int result;
+  
+  arg1 = (BasicStruct *)(farg1); 
+  result = (int) ((arg1)->val);
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_BasicStruct() {
+  void* fresult = 0 ;
+  BasicStruct *result = 0 ;
+  
+  result = (BasicStruct *)new BasicStruct();
+  fresult = result; 
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_BasicStruct(void* farg1) {
+  BasicStruct *arg1 = (BasicStruct *) 0 ;
+  
+  arg1 = (BasicStruct *)(farg1); 
+  delete arg1;
+}
+
+
 SWIGEXPORT void* swigc_new_SimpleClass__SWIG_0() {
   void* fresult = 0 ;
   SimpleClass *result = 0 ;
@@ -376,7 +416,7 @@ SWIGEXPORT void* swigc_get_class() {
 SWIGEXPORT void swigc_set_class_by_copy(void* farg1) {
   SimpleClass arg1 ;
   
-  arg1 = *(SimpleClass *)(farg1); 
+  arg1 = *(SimpleClass *)(farg1);
   set_class_by_copy(arg1);
 }
 

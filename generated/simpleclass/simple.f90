@@ -11,6 +11,7 @@ module simple
  public :: get_swig_ierr
  public :: get_swig_serr
  public :: clear_swig_err
+ public :: BasicStruct
  public :: MyEnum, RED, GREEN, BLUE, BLACK
  public :: SimpleClass
  public :: print_value
@@ -19,6 +20,15 @@ module simple
  public :: set_class_by_copy
  public :: print_color
  ! TYPES
+ type :: BasicStruct
+  type(C_PTR), public :: ptr = C_NULL_PTR
+  logical, private :: own = .false.
+ contains
+  procedure :: set_val => swigf_set_BasicStruct_val
+  procedure :: get_val => swigf_get_BasicStruct_val
+  procedure :: create => swigf_new_BasicStruct
+  procedure :: release => swigf_delete_BasicStruct
+ end type
  enum, bind(c)
   enumerator :: MyEnum = -1
   enumerator :: RED = 0
@@ -59,6 +69,30 @@ module simple
   subroutine swigc_clear_swig_err() &
      bind(C, name="swigc_clear_swig_err")
    use, intrinsic :: ISO_C_BINDING
+  end subroutine
+  subroutine swigc_set_BasicStruct_val(farg1, farg2) &
+     bind(C, name="swigc_set_BasicStruct_val")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+  end subroutine
+  function swigc_get_BasicStruct_val(farg1) &
+     bind(C, name="swigc_get_BasicStruct_val") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_new_BasicStruct() &
+     bind(C, name="swigc_new_BasicStruct") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+  end function
+  subroutine swigc_delete_BasicStruct(farg1) &
+     bind(C, name="swigc_delete_BasicStruct")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
   end subroutine
   function swigc_new_SimpleClass__SWIG_0() &
      bind(C, name="swigc_new_SimpleClass__SWIG_0") &
@@ -157,6 +191,35 @@ contains
   subroutine clear_swig_err()
    use, intrinsic :: ISO_C_BINDING
    call swigc_clear_swig_err()
+  end subroutine
+  subroutine swigf_set_BasicStruct_val(self, val)
+   use, intrinsic :: ISO_C_BINDING
+   class(BasicStruct) :: self
+   integer(C_INT), intent(in) :: val
+   call swigc_set_BasicStruct_val(self%ptr, val)
+  end subroutine
+  function swigf_get_BasicStruct_val(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   class(BasicStruct) :: self
+   fresult = swigc_get_BasicStruct_val(self%ptr)
+  end function
+  subroutine swigf_new_BasicStruct(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(BasicStruct) :: self
+   if (c_associated(self%ptr)) call self%release()
+   self%ptr = swigc_new_BasicStruct()
+   self%own = .true.
+  end subroutine
+  subroutine swigf_delete_BasicStruct(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(BasicStruct) :: self
+   if (self%own) then
+    call swigc_delete_BasicStruct(self%ptr)
+    self%own = .false.
+   end if
+   self%ptr = C_NULL_PTR
   end subroutine
   subroutine swigf_new_SimpleClass__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
