@@ -14,6 +14,7 @@ for d in \
   spdemo \
   algorithm \
   barefunctions \
+  exceptions \
   inheritance \
   simpleclass \
   std_string \

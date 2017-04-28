@@ -8,6 +8,9 @@ module simple
  implicit none
 
  ! PUBLIC METHODS AND TYPES
+ public :: get_swig_ierr
+ public :: get_swig_serr
+ public :: clear_swig_err
  public :: MyEnum, RED, GREEN, BLUE, BLACK
  public :: SimpleClass
  public :: print_value
@@ -24,7 +27,7 @@ module simple
   enumerator :: BLACK = -1
  end enum
  type :: SimpleClass
-  type(C_PTR), private :: ptr = C_NULL_PTR
+  type(C_PTR), public :: ptr = C_NULL_PTR
   logical, private :: own = .false.
  contains
   procedure, private :: create__SWIG_0 => swigf_new_SimpleClass__SWIG_0
@@ -41,6 +44,22 @@ module simple
  ! WRAPPER DECLARATIONS
  private
  interface
+  function swigc_get_swig_ierr() &
+     bind(C, name="swigc_get_swig_ierr") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+  end function
+  subroutine swigc_get_swig_serr(farg1, farg2) &
+     bind(C, name="swigc_get_swig_serr")
+   use, intrinsic :: ISO_C_BINDING
+   character(C_CHAR) :: farg1
+   integer(C_INT), intent(in) :: farg2
+  end subroutine
+  subroutine swigc_clear_swig_err() &
+     bind(C, name="swigc_clear_swig_err")
+   use, intrinsic :: ISO_C_BINDING
+  end subroutine
   function swigc_new_SimpleClass__SWIG_0() &
      bind(C, name="swigc_new_SimpleClass__SWIG_0") &
      result(fresult)
@@ -124,6 +143,21 @@ module simple
 
 contains
   ! FORTRAN PROXY CODE
+  function get_swig_ierr() &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   fresult = swigc_get_swig_ierr()
+  end function
+  subroutine get_swig_serr(STRING)
+   use, intrinsic :: ISO_C_BINDING
+   character(len=*) :: STRING
+   call swigc_get_swig_serr(STRING, len(STRING))
+  end subroutine
+  subroutine clear_swig_err()
+   use, intrinsic :: ISO_C_BINDING
+   call swigc_clear_swig_err()
+  end subroutine
   subroutine swigf_new_SimpleClass__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
    class(SimpleClass) :: self

@@ -221,7 +221,7 @@ void clear_swig_err()
 #include <stdexcept>
 
 
-#include "SimpleClass.hh"
+#include "except.hh"
 
 #ifdef __cplusplus
 extern "C" {
@@ -251,141 +251,57 @@ SWIGEXPORT void swigc_clear_swig_err() {
 }
 
 
-SWIGEXPORT void* swigc_new_SimpleClass__SWIG_0() {
-  void* fresult = 0 ;
-  SimpleClass *result = 0 ;
-  
-  result = (SimpleClass *)new SimpleClass();
-  fresult = result; 
-  return fresult;
-}
-
-
-SWIGEXPORT void* swigc_new_SimpleClass__SWIG_1(void* farg1) {
-  void* fresult = 0 ;
-  SimpleClass *arg1 = 0 ;
-  SimpleClass *result = 0 ;
-  
-  arg1 = (SimpleClass *)(farg1); 
-  result = (SimpleClass *)new SimpleClass((SimpleClass const &)*arg1);
-  fresult = result; 
-  return fresult;
-}
-
-
-SWIGEXPORT void* swigc_new_SimpleClass__SWIG_2(double* farg1) {
-  void* fresult = 0 ;
-  double arg1 ;
-  SimpleClass *result = 0 ;
+SWIGEXPORT void swigc_alpha(int* farg1) {
+  int arg1 ;
   
   arg1 = *farg1;
-  result = (SimpleClass *)new SimpleClass(arg1);
-  fresult = result; 
-  return fresult;
+  {
+    swig::fortran_delayed_exception_check();
+    try
+    {
+      alpha(arg1);
+    }
+    catch (const std::exception& e)
+    {
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (const char* errstr)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, errstr); return ; 
+      };
+    }
+  }
 }
 
 
-SWIGEXPORT void swigc_delete_SimpleClass(void* farg1) {
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
-  
-  arg1 = (SimpleClass *)(farg1); 
-  delete arg1;
-}
-
-
-SWIGEXPORT void swigc_SimpleClass_set(void* farg1, int* farg2) {
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
-  SimpleClass::storage_type arg2 ;
-  
-  arg1 = (SimpleClass *)(farg1); 
-  arg2 = *farg2;
-  (arg1)->set(arg2);
-}
-
-
-SWIGEXPORT void swigc_SimpleClass_double_it(void* farg1) {
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
-  
-  arg1 = (SimpleClass *)(farg1); 
-  (arg1)->double_it();
-}
-
-
-SWIGEXPORT int swigc_SimpleClass_get(void* farg1) {
+SWIGEXPORT int swigc_bravo() {
   int fresult = 0 ;
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
-  SimpleClass::storage_type result;
+  int result;
   
-  arg1 = (SimpleClass *)(farg1); 
-  result = (SimpleClass::storage_type)((SimpleClass const *)arg1)->get();
+  {
+    swig::fortran_delayed_exception_check();
+    try
+    {
+      result = (int)bravo();
+    }
+    catch (const std::exception& e)
+    {
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      };
+    }
+    catch (const char* errstr)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, errstr); return 0; 
+      };
+    }
+  }
   fresult = result;
   return fresult;
-}
-
-
-SWIGEXPORT int swigc_SimpleClass_get_multiplied(void* farg1, int* farg2) {
-  int fresult = 0 ;
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
-  SimpleClass::multiple_type arg2 ;
-  SimpleClass::storage_type result;
-  
-  arg1 = (SimpleClass *)(farg1); 
-  arg2 = *farg2;
-  result = (SimpleClass::storage_type)((SimpleClass const *)arg1)->get_multiplied(arg2);
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_print_value(void* farg1) {
-  SimpleClass *arg1 = 0 ;
-  
-  arg1 = (SimpleClass *)(farg1); 
-  print_value((SimpleClass const &)*arg1);
-}
-
-
-SWIGEXPORT void* swigc_make_class(int* farg1) {
-  void* fresult = 0 ;
-  SimpleClass::storage_type arg1 ;
-  SimpleClass result;
-  
-  arg1 = *farg1;
-  result = make_class(arg1);
-  
-#if __cplusplus >= 201103L
-  fresult = new SimpleClass(std::move(result));
-#else
-  fresult = new SimpleClass(result);
-#endif
-  
-  return fresult;
-}
-
-
-SWIGEXPORT void* swigc_get_class() {
-  void* fresult = 0 ;
-  SimpleClass *result = 0 ;
-  
-  result = (SimpleClass *) &get_class();
-  fresult = result; 
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_set_class_by_copy(void* farg1) {
-  SimpleClass arg1 ;
-  
-  arg1 = *(SimpleClass *)(farg1); 
-  set_class_by_copy(arg1);
-}
-
-
-SWIGEXPORT void swigc_print_color(int* farg1) {
-  MyEnum arg1 ;
-  
-  arg1 = (MyEnum)(*farg1);
-  print_color(arg1);
 }
 
 

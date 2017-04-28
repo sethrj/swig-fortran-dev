@@ -155,12 +155,102 @@ template <typename T> T SwigValueInit() {
 # pragma warning disable 592
 #endif
 
+/*  Errors in SWIG */
+#define  SWIG_UnknownError    	   -1
+#define  SWIG_IOError        	   -2
+#define  SWIG_RuntimeError   	   -3
+#define  SWIG_IndexError     	   -4
+#define  SWIG_TypeError      	   -5
+#define  SWIG_DivisionByZero 	   -6
+#define  SWIG_OverflowError  	   -7
+#define  SWIG_SyntaxError    	   -8
+#define  SWIG_ValueError     	   -9
+#define  SWIG_SystemError    	   -10
+#define  SWIG_AttributeError 	   -11
+#define  SWIG_MemoryError    	   -12
+#define  SWIG_NullReferenceError   -13
+
+
+
+
+#include <string>
+#include <stdexcept>
+#include <algorithm>
+namespace swig
+{
+int fortran_exception_code = 0;
+std::string fortran_exception_str;
+
+SWIGINTERN void fortran_delayed_exception_check()
+{
+    if (fortran_exception_code != 0)
+        throw std::runtime_error("An unhandled exception occurred: "
+                                 + fortran_exception_str);
+}
+
+SWIGINTERN void fortran_store_exception(int code, const char *msg)
+{
+    fortran_exception_code = code;
+    fortran_exception_str = msg;
+}
+}
+
+
+//! Get the error code from a thrown error
+int get_swig_ierr() { return swig::fortran_exception_code; }
+//! Get the string corresponding to an error
+void get_swig_serr(char* STRING, int SIZE)
+{
+    int minsize = std::min<int>(SIZE, swig::fortran_exception_str.size());
+
+    char* dst = STRING;
+    dst = std::copy(swig::fortran_exception_str.begin(),
+                    swig::fortran_exception_str.begin() + minsize,
+                    dst);
+    std::fill(dst, STRING + SIZE, ' ');
+}
+//! Clear an exception (after handling it as needed)
+void clear_swig_err()
+{
+    swig::fortran_exception_code = 0;
+    swig::fortran_exception_str.clear();
+}
+
+
+#include <typeinfo>
+#include <stdexcept>
+
 
 #include "classes.hh"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+SWIGEXPORT int swigc_get_swig_ierr() {
+  int fresult = 0 ;
+  int result;
+  
+  result = (int)get_swig_ierr();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_get_swig_serr( char*  farg1, int* farg2) {
+  char *arg1 = (char *) 0 ;
+  int arg2 ;
+  
+  arg1 = (char *)farg1; 
+  arg2 = *farg2;
+  get_swig_serr(arg1,arg2);
+}
+
+
+SWIGEXPORT void swigc_clear_swig_err() {
+  clear_swig_err();
+}
+
+
 SWIGEXPORT void swigc_delete_BaseClass(void* farg1) {
   BaseClass *arg1 = (BaseClass *) 0 ;
   
