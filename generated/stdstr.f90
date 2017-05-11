@@ -8,9 +8,6 @@ module stdstr
  implicit none
 
  ! PUBLIC METHODS AND TYPES
- public :: get_swig_ierr
- public :: get_swig_serr
- public :: clear_swig_err
  public :: string
  public :: print_str
  public :: halve_str
@@ -36,22 +33,6 @@ module stdstr
  ! WRAPPER DECLARATIONS
  private
  interface
-  function swigc_get_swig_ierr() &
-     bind(C, name="swigc_get_swig_ierr") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-  end function
-  subroutine swigc_get_swig_serr(farg1, farg2) &
-     bind(C, name="swigc_get_swig_serr")
-   use, intrinsic :: ISO_C_BINDING
-   character(C_CHAR) :: farg1
-   integer(C_INT), intent(in) :: farg2
-  end subroutine
-  subroutine swigc_clear_swig_err() &
-     bind(C, name="swigc_clear_swig_err")
-   use, intrinsic :: ISO_C_BINDING
-  end subroutine
   function swigc_new_string__SWIG_0() &
      bind(C, name="swigc_new_string__SWIG_0") &
      result(fresult)
@@ -96,13 +77,13 @@ module stdstr
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    integer(C_INT), intent(in) :: farg2
-   character, value :: farg3
+   character(C_CHAR), intent(in) :: farg3
   end subroutine
   function swigc_string_get(farg1, farg2) &
      bind(C, name="swigc_string_get") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   character :: fresult
+   character(C_CHAR) :: fresult
    type(C_PTR), value :: farg1
    integer(C_INT), intent(in) :: farg2
   end function
@@ -139,21 +120,6 @@ module stdstr
 
 contains
   ! FORTRAN PROXY CODE
-  function get_swig_ierr() &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   fresult = swigc_get_swig_ierr()
-  end function
-  subroutine get_swig_serr(STRING)
-   use, intrinsic :: ISO_C_BINDING
-   character(len=*) :: STRING
-   call swigc_get_swig_serr(STRING, len(STRING))
-  end subroutine
-  subroutine clear_swig_err()
-   use, intrinsic :: ISO_C_BINDING
-   call swigc_clear_swig_err()
-  end subroutine
   subroutine swigf_new_string__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
@@ -164,7 +130,7 @@ contains
   subroutine swigf_new_string__SWIG_1(self, s)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
-   character(len=*) :: s
+   character(kind=C_CHAR, len=*) :: s
    if (c_associated(self%ptr)) call self%release()
    self%ptr = swigc_new_string__SWIG_1(s, len(s))
    self%own = .true.
@@ -198,13 +164,13 @@ contains
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
    integer(C_INT), intent(in) :: pos
-   character, value, intent(in) :: v
+   character(C_CHAR), intent(in) :: v
    call swigc_string_set(self%ptr, pos, v)
   end subroutine
   function swigf_string_get(self, pos) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   character :: fresult
+   character(C_CHAR) :: fresult
    class(string) :: self
    integer(C_INT), intent(in) :: pos
    fresult = swigc_string_get(self%ptr, pos)
@@ -212,13 +178,13 @@ contains
   subroutine swigf_string_assign_from(self, s)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
-   character(len=*) :: s
+   character(kind=C_CHAR, len=*) :: s
    call swigc_string_assign_from(self%ptr, s, len(s))
   end subroutine
   subroutine swigf_string_copy_to(self, s)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
-   character(len=*) :: s
+   character(kind=C_CHAR, len=*) :: s
    call swigc_string_copy_to(self%ptr, s, len(s))
   end subroutine
   subroutine swigf_delete_string(self)

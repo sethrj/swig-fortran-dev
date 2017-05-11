@@ -173,71 +173,45 @@ template <typename T> T SwigValueInit() {
 
 
 
-#include <string>
-#include <stdexcept>
-#include <algorithm>
-namespace swig
-{
-int fortran_exception_code = 0;
-std::string fortran_exception_str;
-
-SWIGINTERN void fortran_delayed_exception_check()
-{
-    if (fortran_exception_code != 0)
-        throw std::runtime_error("An unhandled exception occurred: "
-                                 + fortran_exception_str);
-}
-
-SWIGINTERN void fortran_store_exception(int code, const char *msg)
-{
-    fortran_exception_code = code;
-    fortran_exception_str = msg;
-}
-}
-
-
-//! Get the error code from a thrown error
-int get_swig_ierr() { return swig::fortran_exception_code; }
-//! Get the string corresponding to an error
-void get_swig_serr(char* STRING, int SIZE)
-{
-    int minsize = std::min<int>(SIZE, swig::fortran_exception_str.size());
-
-    char* dst = STRING;
-    dst = std::copy(swig::fortran_exception_str.begin(),
-                    swig::fortran_exception_str.begin() + minsize,
-                    dst);
-    std::fill(dst, STRING + SIZE, ' ');
-}
-//! Clear an exception (after handling it as needed)
-void clear_swig_err()
-{
-    swig::fortran_exception_code = 0;
-    swig::fortran_exception_str.clear();
-}
-
-
-#include <typeinfo>
-#include <stdexcept>
+/* Contract support */
+#define SWIG_contract_assert(nullreturn, expr, msg) if (!(expr)) { \
+swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
 
 
 #include "stdstr.hh"
 
 
-#include <string>
 #include <algorithm>
+
+
 #include <stdexcept>
 
 
+#include <string>
 
-// Fill a Fortran string from a std::string; with whitespace after
-void std_string_copyout(const std::string& str, char* s, size_t count)
+
+#include <sstream>
+
+
+namespace swig
 {
-    if (str.size() > count)
-        throw std::range_error("string size too small");
+void string_size_check(size_t src, size_t dst)
+{
+    if (dst < src)
+    {
+        std::ostringstream os;
+        os << "String size too small: " << dst << " < " << src;
+        throw std::range_error(os.str());
+    }
+}
+
+void string_copyout(const std::string& str, char* s, size_t count)
+{
+    string_size_check(str.size(), count);
 
     s = std::copy(str.begin(), str.end(), s);
     std::fill_n(s, count - str.size(), ' ');
+}
 }
 
 
@@ -253,56 +227,31 @@ SWIGINTERN void std_string_assign_from(std::string *self,std::string::const_poin
         self->assign(s, s + count);
     }
 SWIGINTERN void std_string_copy_to(std::string *self,std::string::pointer s,std::string::size_type count){
-        std_string_copyout(*self, s, count);
+        swig::string_copyout(*self, s, count);
     }
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT int swigc_get_swig_ierr() {
-  int fresult = 0 ;
-  int result;
-  
-  result = (int)get_swig_ierr();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_get_swig_serr( char*  farg1, int* farg2) {
-  char *arg1 = (char *) 0 ;
-  int arg2 ;
-  
-  arg1 = (char *)farg1; 
-  arg2 = *farg2;
-  get_swig_serr(arg1,arg2);
-}
-
-
-SWIGEXPORT void swigc_clear_swig_err() {
-  clear_swig_err();
-}
-
-
 SWIGEXPORT void* swigc_new_string__SWIG_0() {
   void* fresult = 0 ;
   std::string *result = 0 ;
   
   result = (std::string *)new std::string();
-  fresult = result; 
+  fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_string__SWIG_1( const char*  farg1, int* farg2) {
+SWIGEXPORT void* swigc_new_string__SWIG_1(const char* farg1, int* farg2) {
   void* fresult = 0 ;
   std::string::const_pointer arg1 = (std::string::const_pointer) 0 ;
   std::string::size_type arg2 ;
   std::string *result = 0 ;
   
-  arg1 = (std::string::const_pointer)farg1; 
+  arg1 = (std::string::const_pointer)farg1;
   arg2 = *farg2;
   result = (std::string *)new std::string(arg1,arg2);
-  fresult = result; 
+  fresult = result;
   return fresult;
 }
 
@@ -311,7 +260,7 @@ SWIGEXPORT void swigc_string_resize(void* farg1, int* farg2) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
   
-  arg1 = (std::string *)(farg1); 
+  arg1 = (std::string *)(farg1);
   arg2 = *farg2;
   (arg1)->resize(arg2);
 }
@@ -320,7 +269,7 @@ SWIGEXPORT void swigc_string_resize(void* farg1, int* farg2) {
 SWIGEXPORT void swigc_string_clear(void* farg1) {
   std::string *arg1 = (std::string *) 0 ;
   
-  arg1 = (std::string *)(farg1); 
+  arg1 = (std::string *)(farg1);
   (arg1)->clear();
 }
 
@@ -330,7 +279,7 @@ SWIGEXPORT int swigc_string_size(void* farg1) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type result;
   
-  arg1 = (std::string *)(farg1); 
+  arg1 = (std::string *)(farg1);
   result = (std::string::size_type)((std::string const *)arg1)->size();
   fresult = result;
   return fresult;
@@ -342,58 +291,59 @@ SWIGEXPORT int swigc_string_length(void* farg1) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type result;
   
-  arg1 = (std::string *)(farg1); 
+  arg1 = (std::string *)(farg1);
   result = (std::string::size_type)((std::string const *)arg1)->length();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_string_set(void* farg1, int* farg2,  char  farg3) {
+SWIGEXPORT void swigc_string_set(void* farg1, int* farg2, \
+  char* farg3) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
   std::string::value_type arg3 ;
   
-  arg1 = (std::string *)(farg1); 
+  arg1 = (std::string *)(farg1);
   arg2 = *farg2;
-  arg3 = farg3; 
+  arg3 = *farg3;
   std_string_set(arg1,arg2,arg3);
 }
 
 
-SWIGEXPORT  char  swigc_string_get(void* farg1, int* farg2) {
-  char  fresult = 0 ;
+SWIGEXPORT        char swigc_string_get(void* farg1, int* farg2) {
+  char fresult = 0 ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
   std::string::value_type result;
   
-  arg1 = (std::string *)(farg1); 
+  arg1 = (std::string *)(farg1);
   arg2 = *farg2;
   result = (std::string::value_type)std_string_get(arg1,arg2);
-  fresult = result; 
+  fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_string_assign_from(void* farg1,  const char*  farg2, int* farg3) {
+SWIGEXPORT void swigc_string_assign_from(void* farg1, const char* farg2, int* farg3) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::const_pointer arg2 = (std::string::const_pointer) 0 ;
   std::string::size_type arg3 ;
   
-  arg1 = (std::string *)(farg1); 
-  arg2 = (std::string::const_pointer)farg2; 
+  arg1 = (std::string *)(farg1);
+  arg2 = (std::string::const_pointer)farg2;
   arg3 = *farg3;
   std_string_assign_from(arg1,(char const *)arg2,arg3);
 }
 
 
-SWIGEXPORT void swigc_string_copy_to(void* farg1,  char*  farg2, int* farg3) {
+SWIGEXPORT void swigc_string_copy_to(void* farg1, char* farg2, int* farg3) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::pointer arg2 = (std::string::pointer) 0 ;
   std::string::size_type arg3 ;
   
-  arg1 = (std::string *)(farg1); 
-  arg2 = (std::string::pointer)farg2; 
+  arg1 = (std::string *)(farg1);
+  arg2 = (std::string::pointer)farg2;
   arg3 = *farg3;
   std_string_copy_to(arg1,arg2,arg3);
 }
@@ -402,7 +352,7 @@ SWIGEXPORT void swigc_string_copy_to(void* farg1,  char*  farg2, int* farg3) {
 SWIGEXPORT void swigc_delete_string(void* farg1) {
   std::string *arg1 = (std::string *) 0 ;
   
-  arg1 = (std::string *)(farg1); 
+  arg1 = (std::string *)(farg1);
   delete arg1;
 }
 
@@ -410,7 +360,7 @@ SWIGEXPORT void swigc_delete_string(void* farg1) {
 SWIGEXPORT void swigc_print_str(void* farg1) {
   std::string *arg1 = 0 ;
   
-  arg1 = (std::string *)(farg1); 
+  arg1 = (std::string *)(farg1);
   print_str((std::string const &)*arg1);
 }
 
@@ -418,7 +368,7 @@ SWIGEXPORT void swigc_print_str(void* farg1) {
 SWIGEXPORT void swigc_halve_str(void* farg1) {
   std::string *arg1 = 0 ;
   
-  arg1 = (std::string *)(farg1); 
+  arg1 = (std::string *)(farg1);
   halve_str(*arg1);
 }
 

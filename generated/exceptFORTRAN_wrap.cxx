@@ -173,52 +173,66 @@ template <typename T> T SwigValueInit() {
 
 
 
-#include <string>
+/* Contract support */
+#define SWIG_contract_assert(nullreturn, expr, msg) if (!(expr)) { \
+swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
+
+
 #include <stdexcept>
+
+
+#include <string>
+
+
 #include <algorithm>
+
+
+// External fortran-owned data that we save to
+
+extern "C" {
+
+extern int ierr;
+extern char serr[1024];
+
+}
+
+
 namespace swig
 {
-int fortran_exception_code = 0;
-std::string fortran_exception_str;
+// Stored exception message (XXX: is this safe if main() is fortran?)
+std::string fortran_last_exception_msg;
 
-SWIGINTERN void fortran_delayed_exception_check()
+// Call this function before any new action
+void fortran_check_unhandled_exception()
 {
-    if (fortran_exception_code != 0)
-        throw std::runtime_error("An unhandled exception occurred: "
-                                 + fortran_exception_str);
+    if (::ierr != 0)
+    {
+        throw std::runtime_error(
+                "An unhandled exception occurred: "
+                + fortran_last_exception_msg);
+    }
 }
 
-SWIGINTERN void fortran_store_exception(int code, const char *msg)
+// Save an exception to the fortran error code and string
+void fortran_store_exception(int code, const char *msg)
 {
-    fortran_exception_code = code;
-    fortran_exception_str = msg;
-}
-}
+    ::ierr = code;
 
+    // Save the message to a std::string first
+    fortran_last_exception_msg = msg;
 
-//! Get the error code from a thrown error
-int get_swig_ierr() { return swig::fortran_exception_code; }
-//! Get the string corresponding to an error
-void get_swig_serr(char* STRING, int SIZE)
-{
-    int minsize = std::min<int>(SIZE, swig::fortran_exception_str.size());
+    std::size_t msg_size = std::min<std::size_t>(
+            fortran_last_exception_msg.size(),
+            1024);
 
-    char* dst = STRING;
-    dst = std::copy(swig::fortran_exception_str.begin(),
-                    swig::fortran_exception_str.begin() + minsize,
+    // Copy to space-padded Fortran string
+    char* dst = serr;
+    dst = std::copy(fortran_last_exception_msg.begin(),
+                    fortran_last_exception_msg.begin() + msg_size,
                     dst);
-    std::fill(dst, STRING + SIZE, ' ');
+    std::fill(dst, serr + 1024, ' ');
 }
-//! Clear an exception (after handling it as needed)
-void clear_swig_err()
-{
-    swig::fortran_exception_code = 0;
-    swig::fortran_exception_str.clear();
-}
-
-
-#include <typeinfo>
-#include <stdexcept>
+} // end namespace swig
 
 
 #include "except.hh"
@@ -226,52 +240,27 @@ void clear_swig_err()
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT int swigc_get_swig_ierr() {
-  int fresult = 0 ;
-  int result;
-  
-  result = (int)get_swig_ierr();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_get_swig_serr( char*  farg1, int* farg2) {
-  char *arg1 = (char *) 0 ;
-  int arg2 ;
-  
-  arg1 = (char *)farg1; 
-  arg2 = *farg2;
-  get_swig_serr(arg1,arg2);
-}
-
-
-SWIGEXPORT void swigc_clear_swig_err() {
-  clear_swig_err();
-}
-
-
 SWIGEXPORT void swigc_alpha(int* farg1) {
   int arg1 ;
   
   arg1 = *farg1;
   {
-    swig::fortran_delayed_exception_check();
+    swig::fortran_check_unhandled_exception();
     try
     {
       alpha(arg1);
     }
     catch (const std::exception& e)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const char* errstr)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, errstr); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -282,22 +271,22 @@ SWIGEXPORT int swigc_bravo() {
   int result;
   
   {
-    swig::fortran_delayed_exception_check();
+    swig::fortran_check_unhandled_exception();
     try
     {
       result = (int)bravo();
     }
     catch (const std::exception& e)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      };
+      } while(0);
     }
     catch (const char* errstr)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, errstr); return 0; 
-      };
+      } while(0);
     }
   }
   fresult = result;

@@ -173,52 +173,9 @@ template <typename T> T SwigValueInit() {
 
 
 
-#include <string>
-#include <stdexcept>
-#include <algorithm>
-namespace swig
-{
-int fortran_exception_code = 0;
-std::string fortran_exception_str;
-
-SWIGINTERN void fortran_delayed_exception_check()
-{
-    if (fortran_exception_code != 0)
-        throw std::runtime_error("An unhandled exception occurred: "
-                                 + fortran_exception_str);
-}
-
-SWIGINTERN void fortran_store_exception(int code, const char *msg)
-{
-    fortran_exception_code = code;
-    fortran_exception_str = msg;
-}
-}
-
-
-//! Get the error code from a thrown error
-int get_swig_ierr() { return swig::fortran_exception_code; }
-//! Get the string corresponding to an error
-void get_swig_serr(char* STRING, int SIZE)
-{
-    int minsize = std::min<int>(SIZE, swig::fortran_exception_str.size());
-
-    char* dst = STRING;
-    dst = std::copy(swig::fortran_exception_str.begin(),
-                    swig::fortran_exception_str.begin() + minsize,
-                    dst);
-    std::fill(dst, STRING + SIZE, ' ');
-}
-//! Clear an exception (after handling it as needed)
-void clear_swig_err()
-{
-    swig::fortran_exception_code = 0;
-    swig::fortran_exception_str.clear();
-}
-
-
-#include <typeinfo>
-#include <stdexcept>
+/* Contract support */
+#define SWIG_contract_assert(nullreturn, expr, msg) if (!(expr)) { \
+swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
 
 
 #include "SimpleClass.hh"
@@ -231,36 +188,11 @@ void clear_swig_err()
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT int swigc_get_swig_ierr() {
-  int fresult = 0 ;
-  int result;
-  
-  result = (int)get_swig_ierr();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_get_swig_serr( char*  farg1, int* farg2) {
-  char *arg1 = (char *) 0 ;
-  int arg2 ;
-  
-  arg1 = (char *)farg1; 
-  arg2 = *farg2;
-  get_swig_serr(arg1,arg2);
-}
-
-
-SWIGEXPORT void swigc_clear_swig_err() {
-  clear_swig_err();
-}
-
-
 SWIGEXPORT void swigc_set_BasicStruct_val(void* farg1, int* farg2) {
   BasicStruct *arg1 = (BasicStruct *) 0 ;
   int arg2 ;
   
-  arg1 = (BasicStruct *)(farg1); 
+  arg1 = (BasicStruct *)(farg1);
   arg2 = *farg2;
   if (arg1) (arg1)->val = arg2;
 }
@@ -271,7 +203,7 @@ SWIGEXPORT int swigc_get_BasicStruct_val(void* farg1) {
   BasicStruct *arg1 = (BasicStruct *) 0 ;
   int result;
   
-  arg1 = (BasicStruct *)(farg1); 
+  arg1 = (BasicStruct *)(farg1);
   result = (int) ((arg1)->val);
   fresult = result;
   return fresult;
@@ -283,7 +215,7 @@ SWIGEXPORT void* swigc_new_BasicStruct() {
   BasicStruct *result = 0 ;
   
   result = (BasicStruct *)new BasicStruct();
-  fresult = result; 
+  fresult = result;
   return fresult;
 }
 
@@ -291,7 +223,7 @@ SWIGEXPORT void* swigc_new_BasicStruct() {
 SWIGEXPORT void swigc_delete_BasicStruct(void* farg1) {
   BasicStruct *arg1 = (BasicStruct *) 0 ;
   
-  arg1 = (BasicStruct *)(farg1); 
+  arg1 = (BasicStruct *)(farg1);
   delete arg1;
 }
 
@@ -301,7 +233,7 @@ SWIGEXPORT void* swigc_new_SimpleClass__SWIG_0() {
   SimpleClass *result = 0 ;
   
   result = (SimpleClass *)new SimpleClass();
-  fresult = result; 
+  fresult = result;
   return fresult;
 }
 
@@ -311,9 +243,9 @@ SWIGEXPORT void* swigc_new_SimpleClass__SWIG_1(void* farg1) {
   SimpleClass *arg1 = 0 ;
   SimpleClass *result = 0 ;
   
-  arg1 = (SimpleClass *)(farg1); 
+  arg1 = (SimpleClass *)(farg1);
   result = (SimpleClass *)new SimpleClass((SimpleClass const &)*arg1);
-  fresult = result; 
+  fresult = result;
   return fresult;
 }
 
@@ -325,7 +257,7 @@ SWIGEXPORT void* swigc_new_SimpleClass__SWIG_2(double* farg1) {
   
   arg1 = *farg1;
   result = (SimpleClass *)new SimpleClass(arg1);
-  fresult = result; 
+  fresult = result;
   return fresult;
 }
 
@@ -333,7 +265,7 @@ SWIGEXPORT void* swigc_new_SimpleClass__SWIG_2(double* farg1) {
 SWIGEXPORT void swigc_delete_SimpleClass(void* farg1) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   
-  arg1 = (SimpleClass *)(farg1); 
+  arg1 = (SimpleClass *)(farg1);
   delete arg1;
 }
 
@@ -342,7 +274,7 @@ SWIGEXPORT void swigc_SimpleClass_set(void* farg1, int* farg2) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   SimpleClass::storage_type arg2 ;
   
-  arg1 = (SimpleClass *)(farg1); 
+  arg1 = (SimpleClass *)(farg1);
   arg2 = *farg2;
   (arg1)->set(arg2);
 }
@@ -351,7 +283,7 @@ SWIGEXPORT void swigc_SimpleClass_set(void* farg1, int* farg2) {
 SWIGEXPORT void swigc_SimpleClass_double_it(void* farg1) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   
-  arg1 = (SimpleClass *)(farg1); 
+  arg1 = (SimpleClass *)(farg1);
   (arg1)->double_it();
 }
 
@@ -361,7 +293,7 @@ SWIGEXPORT int swigc_SimpleClass_get(void* farg1) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   SimpleClass::storage_type result;
   
-  arg1 = (SimpleClass *)(farg1); 
+  arg1 = (SimpleClass *)(farg1);
   result = (SimpleClass::storage_type)((SimpleClass const *)arg1)->get();
   fresult = result;
   return fresult;
@@ -374,7 +306,7 @@ SWIGEXPORT int swigc_SimpleClass_get_multiplied(void* farg1, int* farg2) {
   SimpleClass::multiple_type arg2 ;
   SimpleClass::storage_type result;
   
-  arg1 = (SimpleClass *)(farg1); 
+  arg1 = (SimpleClass *)(farg1);
   arg2 = *farg2;
   result = (SimpleClass::storage_type)((SimpleClass const *)arg1)->get_multiplied(arg2);
   fresult = result;
@@ -385,7 +317,7 @@ SWIGEXPORT int swigc_SimpleClass_get_multiplied(void* farg1, int* farg2) {
 SWIGEXPORT void swigc_print_value(void* farg1) {
   SimpleClass *arg1 = 0 ;
   
-  arg1 = (SimpleClass *)(farg1); 
+  arg1 = (SimpleClass *)(farg1);
   print_value((SimpleClass const &)*arg1);
 }
 
@@ -413,7 +345,7 @@ SWIGEXPORT void* swigc_get_class() {
   SimpleClass *result = 0 ;
   
   result = (SimpleClass *) &get_class();
-  fresult = result; 
+  fresult = result;
   return fresult;
 }
 

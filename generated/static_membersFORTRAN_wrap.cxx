@@ -178,84 +178,56 @@ template <typename T> T SwigValueInit() {
 swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
 
 
-#include "bare.hh"
+#include "static_members.hh"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_set_something(int* farg1, double* farg2) {
+SWIGEXPORT void swigc_set_BaseClass_i(int* farg1) {
   int arg1 ;
-  double arg2 ;
   
   arg1 = *farg1;
-  arg2 = *farg2;
-  set_something(arg1,arg2);
+  BaseClass::i = arg1;
 }
 
 
-SWIGEXPORT double swigc_get_something(int* farg1) {
+SWIGEXPORT int swigc_get_BaseClass_i() {
+  int fresult = 0 ;
+  int result;
+  
+  result = (int)BaseClass::i;
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT double swigc_BaseClass_f(int* farg1) {
   double fresult = 0 ;
   int arg1 ;
   double result;
   
   arg1 = *farg1;
-  result = (double)get_something(arg1);
+  result = (double)BaseClass::f(arg1);
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_get_something_ref(int* farg1, double* farg2) {
-  int arg1 ;
-  double *arg2 = 0 ;
+SWIGEXPORT void* swigc_new_BaseClass() {
+  void* fresult = 0 ;
+  BaseClass *result = 0 ;
   
-  arg1 = *farg1;
-  arg2 = farg2;
-  get_something_ref(arg1,*arg2);
-}
-
-
-SWIGEXPORT void swigc_get_something_ptr(int* farg1, double* farg2) {
-  int arg1 ;
-  double *arg2 = (double *) 0 ;
-  
-  arg1 = *farg1;
-  arg2 = farg2;
-  get_something_ptr(arg1,arg2);
-}
-
-
-SWIGEXPORT double* swigc_get_something_rref(int* farg1) {
-  double* fresult = 0 ;
-  int arg1 ;
-  double *result = 0 ;
-  
-  arg1 = *farg1;
-  result = (double *) &get_something_rref(arg1);
+  result = (BaseClass *)new BaseClass();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT double swigc_get_something_rcref(int* farg1) {
-  double fresult = 0 ;
-  int arg1 ;
-  double *result = 0 ;
+SWIGEXPORT void swigc_delete_BaseClass(void* farg1) {
+  BaseClass *arg1 = (BaseClass *) 0 ;
   
-  arg1 = *farg1;
-  result = (double *) &get_something_rcref(arg1);
-  fresult = *result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_print_array(double* farg1, int* farg2) {
-  double *arg1 = (double *) 0 ;
-  int arg2 ;
-  
-  arg1 = farg1;
-  arg2 = *farg2;
-  print_array((double const *)arg1,arg2);
+  arg1 = (BaseClass *)(farg1);
+  delete arg1;
 }
 
 

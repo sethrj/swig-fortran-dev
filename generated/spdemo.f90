@@ -8,9 +8,6 @@ module spdemo
  implicit none
 
  ! PUBLIC METHODS AND TYPES
- public :: get_swig_ierr
- public :: get_swig_serr
- public :: clear_swig_err
  public :: Foo
  public :: print_crsp
  public :: print_sp
@@ -21,8 +18,6 @@ module spdemo
  type :: Foo
   type(C_PTR), public :: ptr = C_NULL_PTR
  contains
-  procedure :: set_d_val => swigf_set_Foo_d_val
-  procedure :: get_d_val => swigf_get_Foo_d_val
   procedure, private :: create__SWIG_0 => swigf_new_Foo__SWIG_0
   procedure, private :: create__SWIG_1 => swigf_new_Foo__SWIG_1
   procedure :: release => swigf_delete_Foo
@@ -34,22 +29,6 @@ module spdemo
  ! WRAPPER DECLARATIONS
  private
  interface
-  function swigc_get_swig_ierr() &
-     bind(C, name="swigc_get_swig_ierr") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-  end function
-  subroutine swigc_get_swig_serr(farg1, farg2) &
-     bind(C, name="swigc_get_swig_serr")
-   use, intrinsic :: ISO_C_BINDING
-   character(C_CHAR) :: farg1
-   integer(C_INT), intent(in) :: farg2
-  end subroutine
-  subroutine swigc_clear_swig_err() &
-     bind(C, name="swigc_clear_swig_err")
-   use, intrinsic :: ISO_C_BINDING
-  end subroutine
   subroutine swigc_set_Foo_d_val(farg1, farg2) &
      bind(C, name="swigc_set_Foo_d_val")
    use, intrinsic :: ISO_C_BINDING
@@ -123,21 +102,6 @@ module spdemo
 
 contains
   ! FORTRAN PROXY CODE
-  function get_swig_ierr() &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   fresult = swigc_get_swig_ierr()
-  end function
-  subroutine get_swig_serr(STRING)
-   use, intrinsic :: ISO_C_BINDING
-   character(len=*) :: STRING
-   call swigc_get_swig_serr(STRING, len(STRING))
-  end subroutine
-  subroutine clear_swig_err()
-   use, intrinsic :: ISO_C_BINDING
-   call swigc_clear_swig_err()
-  end subroutine
   subroutine swigf_set_Foo_d_val(self, d_val)
    use, intrinsic :: ISO_C_BINDING
    class(Foo) :: self

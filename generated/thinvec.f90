@@ -8,9 +8,6 @@ module thinvec
  implicit none
 
  ! PUBLIC METHODS AND TYPES
- public :: get_swig_ierr
- public :: get_swig_serr
- public :: clear_swig_err
  public :: print_vec
  public :: obtain_free
  public :: ThinVecDbl
@@ -56,22 +53,6 @@ module thinvec
  ! WRAPPER DECLARATIONS
  private
  interface
-  function swigc_get_swig_ierr() &
-     bind(C, name="swigc_get_swig_ierr") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-  end function
-  subroutine swigc_get_swig_serr(farg1, farg2) &
-     bind(C, name="swigc_get_swig_serr")
-   use, intrinsic :: ISO_C_BINDING
-   character(C_CHAR) :: farg1
-   integer(C_INT), intent(in) :: farg2
-  end subroutine
-  subroutine swigc_clear_swig_err() &
-     bind(C, name="swigc_clear_swig_err")
-   use, intrinsic :: ISO_C_BINDING
-  end subroutine
   subroutine swigc_print_vec(farg1) &
      bind(C, name="swigc_print_vec")
    use, intrinsic :: ISO_C_BINDING
@@ -266,21 +247,6 @@ module thinvec
 
 contains
   ! FORTRAN PROXY CODE
-  function get_swig_ierr() &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   fresult = swigc_get_swig_ierr()
-  end function
-  subroutine get_swig_serr(STRING)
-   use, intrinsic :: ISO_C_BINDING
-   character(len=*) :: STRING
-   call swigc_get_swig_serr(STRING, len(STRING))
-  end subroutine
-  subroutine clear_swig_err()
-   use, intrinsic :: ISO_C_BINDING
-   call swigc_clear_swig_err()
-  end subroutine
   subroutine print_vec(v)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: v

@@ -178,84 +178,202 @@ template <typename T> T SwigValueInit() {
 swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
 
 
-#include "bare.hh"
+#include "example.hh"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_set_something(int* farg1, double* farg2) {
-  int arg1 ;
+SWIGEXPORT void swigc_delete_Shape(void* farg1) {
+  Shape *arg1 = (Shape *) 0 ;
+  
+  arg1 = (Shape *)(farg1);
+  delete arg1;
+}
+
+
+SWIGEXPORT void swigc_set_Shape_x(void* farg1, double* farg2) {
+  Shape *arg1 = (Shape *) 0 ;
   double arg2 ;
   
-  arg1 = *farg1;
+  arg1 = (Shape *)(farg1);
   arg2 = *farg2;
-  set_something(arg1,arg2);
+  if (arg1) (arg1)->x = arg2;
 }
 
 
-SWIGEXPORT double swigc_get_something(int* farg1) {
+SWIGEXPORT double swigc_get_Shape_x(void* farg1) {
   double fresult = 0 ;
-  int arg1 ;
+  Shape *arg1 = (Shape *) 0 ;
   double result;
   
-  arg1 = *farg1;
-  result = (double)get_something(arg1);
+  arg1 = (Shape *)(farg1);
+  result = (double) ((arg1)->x);
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_get_something_ref(int* farg1, double* farg2) {
-  int arg1 ;
-  double *arg2 = 0 ;
+SWIGEXPORT void swigc_set_Shape_y(void* farg1, double* farg2) {
+  Shape *arg1 = (Shape *) 0 ;
+  double arg2 ;
   
-  arg1 = *farg1;
-  arg2 = farg2;
-  get_something_ref(arg1,*arg2);
-}
-
-
-SWIGEXPORT void swigc_get_something_ptr(int* farg1, double* farg2) {
-  int arg1 ;
-  double *arg2 = (double *) 0 ;
-  
-  arg1 = *farg1;
-  arg2 = farg2;
-  get_something_ptr(arg1,arg2);
-}
-
-
-SWIGEXPORT double* swigc_get_something_rref(int* farg1) {
-  double* fresult = 0 ;
-  int arg1 ;
-  double *result = 0 ;
-  
-  arg1 = *farg1;
-  result = (double *) &get_something_rref(arg1);
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT double swigc_get_something_rcref(int* farg1) {
-  double fresult = 0 ;
-  int arg1 ;
-  double *result = 0 ;
-  
-  arg1 = *farg1;
-  result = (double *) &get_something_rcref(arg1);
-  fresult = *result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_print_array(double* farg1, int* farg2) {
-  double *arg1 = (double *) 0 ;
-  int arg2 ;
-  
-  arg1 = farg1;
+  arg1 = (Shape *)(farg1);
   arg2 = *farg2;
-  print_array((double const *)arg1,arg2);
+  if (arg1) (arg1)->y = arg2;
+}
+
+
+SWIGEXPORT double swigc_get_Shape_y(void* farg1) {
+  double fresult = 0 ;
+  Shape *arg1 = (Shape *) 0 ;
+  double result;
+  
+  arg1 = (Shape *)(farg1);
+  result = (double) ((arg1)->y);
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_Shape_move(void* farg1, double* farg2, double* farg3) {
+  Shape *arg1 = (Shape *) 0 ;
+  double arg2 ;
+  double arg3 ;
+  
+  arg1 = (Shape *)(farg1);
+  arg2 = *farg2;
+  arg3 = *farg3;
+  (arg1)->move(arg2,arg3);
+}
+
+
+SWIGEXPORT double swigc_Shape_area(void* farg1) {
+  double fresult = 0 ;
+  Shape *arg1 = (Shape *) 0 ;
+  double result;
+  
+  arg1 = (Shape *)(farg1);
+  result = (double)(arg1)->area();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT double swigc_Shape_perimeter(void* farg1) {
+  double fresult = 0 ;
+  Shape *arg1 = (Shape *) 0 ;
+  double result;
+  
+  arg1 = (Shape *)(farg1);
+  result = (double)(arg1)->perimeter();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_set_Shape_nshapes(int* farg1) {
+  int arg1 ;
+  
+  arg1 = *farg1;
+  Shape::nshapes = arg1;
+}
+
+
+SWIGEXPORT int swigc_get_Shape_nshapes() {
+  int fresult = 0 ;
+  int result;
+  
+  result = (int)Shape::nshapes;
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_Circle(double* farg1) {
+  void* fresult = 0 ;
+  double arg1 ;
+  Circle *result = 0 ;
+  
+  arg1 = *farg1;
+  result = (Circle *)new Circle(arg1);
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT double swigc_Circle_area(void* farg1) {
+  double fresult = 0 ;
+  Circle *arg1 = (Circle *) 0 ;
+  double result;
+  
+  arg1 = (Circle *)(farg1);
+  result = (double)(arg1)->area();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT double swigc_Circle_perimeter(void* farg1) {
+  double fresult = 0 ;
+  Circle *arg1 = (Circle *) 0 ;
+  double result;
+  
+  arg1 = (Circle *)(farg1);
+  result = (double)(arg1)->perimeter();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_Circle(void* farg1) {
+  Circle *arg1 = (Circle *) 0 ;
+  
+  arg1 = (Circle *)(farg1);
+  delete arg1;
+}
+
+
+SWIGEXPORT void* swigc_new_Square(double* farg1) {
+  void* fresult = 0 ;
+  double arg1 ;
+  Square *result = 0 ;
+  
+  arg1 = *farg1;
+  result = (Square *)new Square(arg1);
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT double swigc_Square_area(void* farg1) {
+  double fresult = 0 ;
+  Square *arg1 = (Square *) 0 ;
+  double result;
+  
+  arg1 = (Square *)(farg1);
+  result = (double)(arg1)->area();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT double swigc_Square_perimeter(void* farg1) {
+  double fresult = 0 ;
+  Square *arg1 = (Square *) 0 ;
+  double result;
+  
+  arg1 = (Square *)(farg1);
+  result = (double)(arg1)->perimeter();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_Square(void* farg1) {
+  Square *arg1 = (Square *) 0 ;
+  
+  arg1 = (Square *)(farg1);
+  delete arg1;
 }
 
 
