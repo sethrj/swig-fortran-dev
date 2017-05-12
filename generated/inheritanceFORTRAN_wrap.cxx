@@ -191,7 +191,7 @@ SWIGEXPORT void swigc_delete_BaseClass(void* farg1) {
 }
 
 
-SWIGEXPORT float swigc_BaseClass_foo(void* farg1) {
+SWIGEXPORT float swigc_BaseClass_foo(const void* farg1) {
   float fresult = 0 ;
   BaseClass *arg1 = (BaseClass *) 0 ;
   float result;
@@ -203,7 +203,7 @@ SWIGEXPORT float swigc_BaseClass_foo(void* farg1) {
 }
 
 
-SWIGEXPORT int swigc_BaseClass_get_i(void* farg1) {
+SWIGEXPORT int swigc_BaseClass_get_i(const void* farg1) {
   int fresult = 0 ;
   BaseClass *arg1 = (BaseClass *) 0 ;
   int result;
@@ -215,7 +215,7 @@ SWIGEXPORT int swigc_BaseClass_get_i(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_BaseClass_set_i(void* farg1, int* farg2) {
+SWIGEXPORT void swigc_BaseClass_set_i(void* farg1, const int* farg2) {
   BaseClass *arg1 = (BaseClass *) 0 ;
   int arg2 ;
   
@@ -235,7 +235,7 @@ SWIGEXPORT void* swigc_new_DerivedA__SWIG_0() {
 }
 
 
-SWIGEXPORT void* swigc_new_DerivedA__SWIG_1(int* farg1, float* farg2) {
+SWIGEXPORT void* swigc_new_DerivedA__SWIG_1(const int* farg1, const float* farg2) {
   void* fresult = 0 ;
   int arg1 ;
   float arg2 ;
@@ -257,7 +257,7 @@ SWIGEXPORT void swigc_delete_DerivedA(void* farg1) {
 }
 
 
-SWIGEXPORT float swigc_DerivedA_foo(void* farg1) {
+SWIGEXPORT float swigc_DerivedA_foo(const void* farg1) {
   float fresult = 0 ;
   DerivedA *arg1 = (DerivedA *) 0 ;
   float result;
@@ -269,7 +269,7 @@ SWIGEXPORT float swigc_DerivedA_foo(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_DerivedA_print(void* farg1) {
+SWIGEXPORT void swigc_DerivedA_print(const void* farg1) {
   DerivedA *arg1 = (DerivedA *) 0 ;
   
   arg1 = (DerivedA *)(farg1);
@@ -287,7 +287,7 @@ SWIGEXPORT void* swigc_new_DerivedB__SWIG_0() {
 }
 
 
-SWIGEXPORT void* swigc_new_DerivedB__SWIG_1(int* farg1, int* farg2) {
+SWIGEXPORT void* swigc_new_DerivedB__SWIG_1(const int* farg1, const int* farg2) {
   void* fresult = 0 ;
   int arg1 ;
   int arg2 ;
@@ -309,7 +309,7 @@ SWIGEXPORT void swigc_delete_DerivedB(void* farg1) {
 }
 
 
-SWIGEXPORT float swigc_DerivedB_foo(void* farg1) {
+SWIGEXPORT float swigc_DerivedB_foo(const void* farg1) {
   float fresult = 0 ;
   DerivedB *arg1 = (DerivedB *) 0 ;
   float result;

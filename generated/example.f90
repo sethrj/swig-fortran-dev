@@ -13,10 +13,15 @@ module example
  public :: Square
  ! TYPES
  type, abstract :: Shape
+  ! These should be treated as PROTECTED data
   type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, private :: own = .false.
+  logical, public :: own = .false.
  contains
   procedure :: release => swigf_delete_Shape
+  procedure :: set_x => swigf_set_Shape_x
+  procedure :: get_x => swigf_get_Shape_x
+  procedure :: set_y => swigf_set_Shape_y
+  procedure :: get_y => swigf_get_Shape_y
   procedure :: move => swigf_Shape_move
   procedure :: area => swigf_Shape_area
   procedure :: perimeter => swigf_Shape_perimeter

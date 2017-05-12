@@ -13,8 +13,9 @@ module inheritance
  public :: DerivedB
  ! TYPES
  type, abstract :: BaseClass
+  ! These should be treated as PROTECTED data
   type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, private :: own = .false.
+  logical, public :: own = .false.
  contains
   procedure :: release => swigf_delete_BaseClass
   procedure :: foo => swigf_BaseClass_foo

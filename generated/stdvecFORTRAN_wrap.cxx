@@ -234,7 +234,7 @@ SWIGEXPORT void* swigc_new_VecDbl__SWIG_0() {
 }
 
 
-SWIGEXPORT void* swigc_new_VecDbl__SWIG_1(int* farg1) {
+SWIGEXPORT void* swigc_new_VecDbl__SWIG_1(const int* farg1) {
   void* fresult = 0 ;
   std::vector< double >::size_type arg1 ;
   std::vector< double > *result = 0 ;
@@ -246,21 +246,21 @@ SWIGEXPORT void* swigc_new_VecDbl__SWIG_1(int* farg1) {
 }
 
 
-SWIGEXPORT void* swigc_new_VecDbl__SWIG_2(int* farg1, double* farg2) {
+SWIGEXPORT void* swigc_new_VecDbl__SWIG_2(const int* farg1, const double* farg2) {
   void* fresult = 0 ;
   std::vector< double >::size_type arg1 ;
   std::vector< double >::value_type *arg2 = 0 ;
   std::vector< double > *result = 0 ;
   
   arg1 = *farg1;
-  arg2 = farg2;
+  arg2 = (std::vector< double >::value_type *)(farg2);
   result = (std::vector< double > *)new std::vector< double >(arg1,(std::vector< double >::value_type const &)*arg2);
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_VecDbl_size(void* farg1) {
+SWIGEXPORT int swigc_VecDbl_size(const void* farg1) {
   int fresult = 0 ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type result;
@@ -272,7 +272,7 @@ SWIGEXPORT int swigc_VecDbl_size(void* farg1) {
 }
 
 
-SWIGEXPORT int swigc_VecDbl_capacity(void* farg1) {
+SWIGEXPORT int swigc_VecDbl_capacity(const void* farg1) {
   int fresult = 0 ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type result;
@@ -284,7 +284,7 @@ SWIGEXPORT int swigc_VecDbl_capacity(void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_VecDbl_empty(void* farg1) {
+SWIGEXPORT bool swigc_VecDbl_empty(const void* farg1) {
   bool fresult = 0 ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   bool result;
@@ -304,7 +304,7 @@ SWIGEXPORT void swigc_VecDbl_clear(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_VecDbl_reserve(void* farg1, int* farg2) {
+SWIGEXPORT void swigc_VecDbl_reserve(void* farg1, const int* farg2) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   
@@ -314,7 +314,7 @@ SWIGEXPORT void swigc_VecDbl_reserve(void* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT void swigc_VecDbl_resize__SWIG_0(void* farg1, int* farg2) {
+SWIGEXPORT void swigc_VecDbl_resize__SWIG_0(void* farg1, const int* farg2) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   
@@ -324,29 +324,29 @@ SWIGEXPORT void swigc_VecDbl_resize__SWIG_0(void* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT void swigc_VecDbl_resize__SWIG_1(void* farg1, int* farg2, double* farg3) {
+SWIGEXPORT void swigc_VecDbl_resize__SWIG_1(void* farg1, const int* farg2, const double* farg3) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   std::vector< double >::value_type *arg3 = 0 ;
   
   arg1 = (std::vector< double > *)(farg1);
   arg2 = *farg2;
-  arg3 = farg3;
+  arg3 = (std::vector< double >::value_type *)(farg3);
   (arg1)->resize(arg2,(std::vector< double >::value_type const &)*arg3);
 }
 
 
-SWIGEXPORT void swigc_VecDbl_push_back(void* farg1, double* farg2) {
+SWIGEXPORT void swigc_VecDbl_push_back(void* farg1, const double* farg2) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::value_type *arg2 = 0 ;
   
   arg1 = (std::vector< double > *)(farg1);
-  arg2 = farg2;
+  arg2 = (std::vector< double >::value_type *)(farg2);
   (arg1)->push_back((std::vector< double >::value_type const &)*arg2);
 }
 
 
-SWIGEXPORT double swigc_VecDbl_front(void* farg1) {
+SWIGEXPORT double swigc_VecDbl_front(const void* farg1) {
   double fresult = 0 ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   double *result = 0 ;
@@ -358,7 +358,7 @@ SWIGEXPORT double swigc_VecDbl_front(void* farg1) {
 }
 
 
-SWIGEXPORT double swigc_VecDbl_back(void* farg1) {
+SWIGEXPORT double swigc_VecDbl_back(const void* farg1) {
   double fresult = 0 ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   double *result = 0 ;
@@ -370,19 +370,19 @@ SWIGEXPORT double swigc_VecDbl_back(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_VecDbl_set(void* farg1, int* farg2, double* farg3) {
+SWIGEXPORT void swigc_VecDbl_set(void* farg1, const int* farg2, const double* farg3) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   double *arg3 = 0 ;
   
   arg1 = (std::vector< double > *)(farg1);
   arg2 = *farg2;
-  arg3 = farg3;
+  arg3 = (double *)(farg3);
   std_vector_Sl_double_Sg__set(arg1,arg2,(double const &)*arg3);
 }
 
 
-SWIGEXPORT double swigc_VecDbl_get(void* farg1, int* farg2) {
+SWIGEXPORT double swigc_VecDbl_get(void* farg1, const int* farg2) {
   double fresult = 0 ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
@@ -396,7 +396,7 @@ SWIGEXPORT double swigc_VecDbl_get(void* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT void swigc_VecDbl_assign_from(void* farg1, double* farg2, int* farg3) {
+SWIGEXPORT void swigc_VecDbl_assign_from(void* farg1, std::vector< double >::const_pointer farg2, const int* farg3) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::const_pointer arg2 = (std::vector< double >::const_pointer) 0 ;
   std::vector< double >::size_type arg3 ;
@@ -408,7 +408,7 @@ SWIGEXPORT void swigc_VecDbl_assign_from(void* farg1, double* farg2, int* farg3)
 }
 
 
-SWIGEXPORT void swigc_VecDbl_copy_to(void* farg1, double* farg2, int* farg3) {
+SWIGEXPORT void swigc_VecDbl_copy_to(void* farg1, std::vector< double >::pointer farg2, const int* farg3) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::pointer arg2 = (std::vector< double >::pointer) 0 ;
   std::vector< double >::size_type arg3 ;
@@ -428,7 +428,7 @@ SWIGEXPORT void swigc_delete_VecDbl(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_print_vecdbl(void* farg1) {
+SWIGEXPORT void swigc_print_vecdbl(const void* farg1) {
   std::vector< double,std::allocator< double > > *arg1 = 0 ;
   
   arg1 = (std::vector< double,std::allocator< double > > *)(farg1);

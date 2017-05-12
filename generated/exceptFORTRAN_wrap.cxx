@@ -240,7 +240,7 @@ void fortran_store_exception(int code, const char *msg)
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_alpha(int* farg1) {
+SWIGEXPORT void swigc_alpha(const int* farg1) {
   int arg1 ;
   
   arg1 = *farg1;

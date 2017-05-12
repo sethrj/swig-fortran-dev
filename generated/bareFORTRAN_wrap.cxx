@@ -183,7 +183,7 @@ swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_set_something(int* farg1, double* farg2) {
+SWIGEXPORT void swigc_set_something(const int* farg1, const double* farg2) {
   int arg1 ;
   double arg2 ;
   
@@ -193,7 +193,7 @@ SWIGEXPORT void swigc_set_something(int* farg1, double* farg2) {
 }
 
 
-SWIGEXPORT double swigc_get_something(int* farg1) {
+SWIGEXPORT double swigc_get_something(const int* farg1) {
   double fresult = 0 ;
   int arg1 ;
   double result;
@@ -205,7 +205,7 @@ SWIGEXPORT double swigc_get_something(int* farg1) {
 }
 
 
-SWIGEXPORT void swigc_get_something_ref(int* farg1, double* farg2) {
+SWIGEXPORT void swigc_get_something_ref(const int* farg1, double* farg2) {
   int arg1 ;
   double *arg2 = 0 ;
   
@@ -215,7 +215,7 @@ SWIGEXPORT void swigc_get_something_ref(int* farg1, double* farg2) {
 }
 
 
-SWIGEXPORT void swigc_get_something_ptr(int* farg1, double* farg2) {
+SWIGEXPORT void swigc_get_something_ptr(const int* farg1, double * farg2) {
   int arg1 ;
   double *arg2 = (double *) 0 ;
   
@@ -225,7 +225,7 @@ SWIGEXPORT void swigc_get_something_ptr(int* farg1, double* farg2) {
 }
 
 
-SWIGEXPORT double* swigc_get_something_rref(int* farg1) {
+SWIGEXPORT double* swigc_get_something_rref(const int* farg1) {
   double* fresult = 0 ;
   int arg1 ;
   double *result = 0 ;
@@ -237,7 +237,7 @@ SWIGEXPORT double* swigc_get_something_rref(int* farg1) {
 }
 
 
-SWIGEXPORT double swigc_get_something_rcref(int* farg1) {
+SWIGEXPORT double swigc_get_something_rcref(const int* farg1) {
   double fresult = 0 ;
   int arg1 ;
   double *result = 0 ;
@@ -249,7 +249,7 @@ SWIGEXPORT double swigc_get_something_rcref(int* farg1) {
 }
 
 
-SWIGEXPORT void swigc_print_array(double* farg1, int* farg2) {
+SWIGEXPORT void swigc_print_array(double * farg1, const int* farg2) {
   double *arg1 = (double *) 0 ;
   int arg2 ;
   

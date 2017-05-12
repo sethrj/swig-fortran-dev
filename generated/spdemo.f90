@@ -18,6 +18,8 @@ module spdemo
  type :: Foo
   type(C_PTR), public :: ptr = C_NULL_PTR
  contains
+  procedure :: set_d_val => swigf_set_Foo_d_val
+  procedure :: get_d_val => swigf_get_Foo_d_val
   procedure, private :: create__SWIG_0 => swigf_new_Foo__SWIG_0
   procedure, private :: create__SWIG_1 => swigf_new_Foo__SWIG_1
   procedure :: release => swigf_delete_Foo

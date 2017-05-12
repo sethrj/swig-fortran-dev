@@ -196,7 +196,7 @@ struct SWIG_null_deleter {
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_set_Foo_d_val(void* farg1, double* farg2) {
+SWIGEXPORT void swigc_set_Foo_d_val(void* farg1, const double* farg2) {
   Foo *arg1 = (Foo *) 0 ;
   double arg2 ;
   std::shared_ptr< Foo > *smartarg1 = 0 ;
@@ -232,7 +232,7 @@ SWIGEXPORT void* swigc_new_Foo__SWIG_0() {
 }
 
 
-SWIGEXPORT void* swigc_new_Foo__SWIG_1(double* farg1) {
+SWIGEXPORT void* swigc_new_Foo__SWIG_1(const double* farg1) {
   void* fresult = 0 ;
   double arg1 ;
   Foo *result = 0 ;
@@ -254,7 +254,7 @@ SWIGEXPORT void swigc_delete_Foo(void* farg1) {
 }
 
 
-SWIGEXPORT double swigc_Foo_get(void* farg1) {
+SWIGEXPORT double swigc_Foo_get(const void* farg1) {
   double fresult = 0 ;
   Foo *arg1 = (Foo *) 0 ;
   std::shared_ptr< Foo const > *smartarg1 = 0 ;
@@ -268,7 +268,7 @@ SWIGEXPORT double swigc_Foo_get(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_Foo_set(void* farg1, double* farg2) {
+SWIGEXPORT void swigc_Foo_set(void* farg1, const double* farg2) {
   Foo *arg1 = (Foo *) 0 ;
   double arg2 ;
   std::shared_ptr< Foo > *smartarg1 = 0 ;
@@ -314,7 +314,7 @@ SWIGEXPORT void swigc_print_crspc(void * farg1) {
 }
 
 
-SWIGEXPORT void swigc_print_cr(void* farg1) {
+SWIGEXPORT void swigc_print_cr(const void* farg1) {
   Foo *arg1 = 0 ;
   
   arg1 = (Foo *)(((std::shared_ptr<const Foo > *)farg1)

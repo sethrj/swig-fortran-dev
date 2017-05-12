@@ -18,9 +18,12 @@ module simple_class
  public :: print_color
  ! TYPES
  type :: BasicStruct
+  ! These should be treated as PROTECTED data
   type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, private :: own = .false.
+  logical, public :: own = .false.
  contains
+  procedure :: set_val => swigf_set_BasicStruct_val
+  procedure :: get_val => swigf_get_BasicStruct_val
   procedure :: create => swigf_new_BasicStruct
   procedure :: release => swigf_delete_BasicStruct
  end type
@@ -32,8 +35,9 @@ module simple_class
   enumerator :: BLACK = -1
  end enum
  type :: SimpleClass
+  ! These should be treated as PROTECTED data
   type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, private :: own = .false.
+  logical, public :: own = .false.
  contains
   procedure, private :: create__SWIG_0 => swigf_new_SimpleClass__SWIG_0
   procedure, private :: create__SWIG_1 => swigf_new_SimpleClass__SWIG_1

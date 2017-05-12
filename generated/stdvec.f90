@@ -12,8 +12,9 @@ module stdvec
  public :: print_vecdbl
  ! TYPES
  type :: VecDbl
+  ! These should be treated as PROTECTED data
   type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, private :: own = .false.
+  logical, public :: own = .false.
  contains
   procedure, private :: create__SWIG_0 => swigf_new_VecDbl__SWIG_0
   procedure, private :: create__SWIG_1 => swigf_new_VecDbl__SWIG_1

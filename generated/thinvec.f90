@@ -16,8 +16,9 @@ module thinvec
  public :: obtain_free_i
  ! TYPES
  type :: ThinVecDbl
+  ! These should be treated as PROTECTED data
   type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, private :: own = .false.
+  logical, public :: own = .false.
  contains
   procedure :: create => swigf_new_ThinVecDbl
   procedure :: create_fill => swigf_new_ThinVecDbl_create_fill
@@ -33,8 +34,9 @@ module thinvec
   procedure :: release => swigf_delete_ThinVecDbl
  end type
  type :: ThinVecInt
+  ! These should be treated as PROTECTED data
   type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, private :: own = .false.
+  logical, public :: own = .false.
  contains
   procedure :: create => swigf_new_ThinVecInt
   procedure :: create_fill => swigf_new_ThinVecInt_create_fill

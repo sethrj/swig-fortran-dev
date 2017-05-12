@@ -191,7 +191,7 @@ SWIGEXPORT void swigc_delete_Shape(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_set_Shape_x(void* farg1, double* farg2) {
+SWIGEXPORT void swigc_set_Shape_x(void* farg1, const double* farg2) {
   Shape *arg1 = (Shape *) 0 ;
   double arg2 ;
   
@@ -213,7 +213,7 @@ SWIGEXPORT double swigc_get_Shape_x(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_set_Shape_y(void* farg1, double* farg2) {
+SWIGEXPORT void swigc_set_Shape_y(void* farg1, const double* farg2) {
   Shape *arg1 = (Shape *) 0 ;
   double arg2 ;
   
@@ -235,7 +235,7 @@ SWIGEXPORT double swigc_get_Shape_y(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_Shape_move(void* farg1, double* farg2, double* farg3) {
+SWIGEXPORT void swigc_Shape_move(void* farg1, const double* farg2, const double* farg3) {
   Shape *arg1 = (Shape *) 0 ;
   double arg2 ;
   double arg3 ;
@@ -271,7 +271,7 @@ SWIGEXPORT double swigc_Shape_perimeter(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_set_Shape_nshapes(int* farg1) {
+SWIGEXPORT void swigc_set_Shape_nshapes(const int* farg1) {
   int arg1 ;
   
   arg1 = *farg1;
@@ -289,7 +289,7 @@ SWIGEXPORT int swigc_get_Shape_nshapes() {
 }
 
 
-SWIGEXPORT void* swigc_new_Circle(double* farg1) {
+SWIGEXPORT void* swigc_new_Circle(const double* farg1) {
   void* fresult = 0 ;
   double arg1 ;
   Circle *result = 0 ;
@@ -333,7 +333,7 @@ SWIGEXPORT void swigc_delete_Circle(void* farg1) {
 }
 
 
-SWIGEXPORT void* swigc_new_Square(double* farg1) {
+SWIGEXPORT void* swigc_new_Square(const double* farg1) {
   void* fresult = 0 ;
   double arg1 ;
   Square *result = 0 ;

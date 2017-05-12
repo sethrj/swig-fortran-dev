@@ -184,7 +184,7 @@ extern double Foo;
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT int swigc_gcd(int* farg1, int* farg2) {
+SWIGEXPORT int swigc_gcd(const int* farg1, const int* farg2) {
   int fresult = 0 ;
   int arg1 ;
   int arg2 ;
@@ -198,7 +198,7 @@ SWIGEXPORT int swigc_gcd(int* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT void swigc_set_Foo(double* farg1) {
+SWIGEXPORT void swigc_set_Foo(const double* farg1) {
   double arg1 ;
   
   arg1 = *farg1;

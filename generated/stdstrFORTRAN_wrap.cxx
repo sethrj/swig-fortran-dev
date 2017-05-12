@@ -242,7 +242,7 @@ SWIGEXPORT void* swigc_new_string__SWIG_0() {
 }
 
 
-SWIGEXPORT void* swigc_new_string__SWIG_1(const char* farg1, int* farg2) {
+SWIGEXPORT void* swigc_new_string__SWIG_1(const char* farg1, const int* farg2) {
   void* fresult = 0 ;
   std::string::const_pointer arg1 = (std::string::const_pointer) 0 ;
   std::string::size_type arg2 ;
@@ -256,7 +256,7 @@ SWIGEXPORT void* swigc_new_string__SWIG_1(const char* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT void swigc_string_resize(void* farg1, int* farg2) {
+SWIGEXPORT void swigc_string_resize(void* farg1, const int* farg2) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
   
@@ -274,7 +274,7 @@ SWIGEXPORT void swigc_string_clear(void* farg1) {
 }
 
 
-SWIGEXPORT int swigc_string_size(void* farg1) {
+SWIGEXPORT int swigc_string_size(const void* farg1) {
   int fresult = 0 ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type result;
@@ -286,7 +286,7 @@ SWIGEXPORT int swigc_string_size(void* farg1) {
 }
 
 
-SWIGEXPORT int swigc_string_length(void* farg1) {
+SWIGEXPORT int swigc_string_length(const void* farg1) {
   int fresult = 0 ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type result;
@@ -298,8 +298,7 @@ SWIGEXPORT int swigc_string_length(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_string_set(void* farg1, int* farg2, \
-  char* farg3) {
+SWIGEXPORT void swigc_string_set(void* farg1, const int* farg2, const char* farg3) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
   std::string::value_type arg3 ;
@@ -311,7 +310,7 @@ SWIGEXPORT void swigc_string_set(void* farg1, int* farg2, \
 }
 
 
-SWIGEXPORT        char swigc_string_get(void* farg1, int* farg2) {
+SWIGEXPORT char swigc_string_get(void* farg1, const int* farg2) {
   char fresult = 0 ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
@@ -325,7 +324,7 @@ SWIGEXPORT        char swigc_string_get(void* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT void swigc_string_assign_from(void* farg1, const char* farg2, int* farg3) {
+SWIGEXPORT void swigc_string_assign_from(void* farg1, const char* farg2, const int* farg3) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::const_pointer arg2 = (std::string::const_pointer) 0 ;
   std::string::size_type arg3 ;
@@ -337,7 +336,7 @@ SWIGEXPORT void swigc_string_assign_from(void* farg1, const char* farg2, int* fa
 }
 
 
-SWIGEXPORT void swigc_string_copy_to(void* farg1, char* farg2, int* farg3) {
+SWIGEXPORT void swigc_string_copy_to(void* farg1, char* farg2, const int* farg3) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::pointer arg2 = (std::string::pointer) 0 ;
   std::string::size_type arg3 ;
@@ -357,7 +356,7 @@ SWIGEXPORT void swigc_delete_string(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_print_str(void* farg1) {
+SWIGEXPORT void swigc_print_str(const void* farg1) {
   std::string *arg1 = 0 ;
   
   arg1 = (std::string *)(farg1);

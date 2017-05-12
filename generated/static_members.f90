@@ -11,8 +11,9 @@ module static_members
  public :: BaseClass
  ! TYPES
  type :: BaseClass
+  ! These should be treated as PROTECTED data
   type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, private :: own = .false.
+  logical, public :: own = .false.
  contains
   procedure, nopass :: set_i => swigf_set_BaseClass_i
   procedure, nopass :: get_i => swigf_get_BaseClass_i

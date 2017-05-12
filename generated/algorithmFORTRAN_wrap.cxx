@@ -183,7 +183,7 @@ swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_sort__SWIG_1(int* farg1, int* farg2) {
+SWIGEXPORT void swigc_sort__SWIG_1(int * farg1, const int* farg2) {
   int *arg1 = (int *) 0 ;
   int arg2 ;
   
@@ -193,7 +193,7 @@ SWIGEXPORT void swigc_sort__SWIG_1(int* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT void swigc_reverse__SWIG_1(int* farg1, int* farg2) {
+SWIGEXPORT void swigc_reverse__SWIG_1(int * farg1, const int* farg2) {
   int *arg1 = (int *) 0 ;
   int arg2 ;
   
@@ -203,7 +203,7 @@ SWIGEXPORT void swigc_reverse__SWIG_1(int* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT int swigc_find_sorted__SWIG_1(int* farg1, int* farg2, int* farg3) {
+SWIGEXPORT int swigc_find_sorted__SWIG_1(int * farg1, const int* farg2, const int* farg3) {
   int fresult = 0 ;
   int *arg1 = (int *) 0 ;
   int arg2 ;
@@ -219,7 +219,7 @@ SWIGEXPORT int swigc_find_sorted__SWIG_1(int* farg1, int* farg2, int* farg3) {
 }
 
 
-SWIGEXPORT void swigc_sort__SWIG_2(float* farg1, int* farg2) {
+SWIGEXPORT void swigc_sort__SWIG_2(float * farg1, const int* farg2) {
   float *arg1 = (float *) 0 ;
   int arg2 ;
   
@@ -229,7 +229,7 @@ SWIGEXPORT void swigc_sort__SWIG_2(float* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT void swigc_reverse__SWIG_2(float* farg1, int* farg2) {
+SWIGEXPORT void swigc_reverse__SWIG_2(float * farg1, const int* farg2) {
   float *arg1 = (float *) 0 ;
   int arg2 ;
   
@@ -239,7 +239,7 @@ SWIGEXPORT void swigc_reverse__SWIG_2(float* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT int swigc_find_sorted__SWIG_2(float* farg1, int* farg2, float* farg3) {
+SWIGEXPORT int swigc_find_sorted__SWIG_2(float * farg1, const int* farg2, const float* farg3) {
   int fresult = 0 ;
   float *arg1 = (float *) 0 ;
   int arg2 ;
@@ -255,7 +255,7 @@ SWIGEXPORT int swigc_find_sorted__SWIG_2(float* farg1, int* farg2, float* farg3)
 }
 
 
-SWIGEXPORT void swigc_sort__SWIG_3(double* farg1, int* farg2) {
+SWIGEXPORT void swigc_sort__SWIG_3(double * farg1, const int* farg2) {
   double *arg1 = (double *) 0 ;
   int arg2 ;
   
@@ -265,7 +265,7 @@ SWIGEXPORT void swigc_sort__SWIG_3(double* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT void swigc_reverse__SWIG_3(double* farg1, int* farg2) {
+SWIGEXPORT void swigc_reverse__SWIG_3(double * farg1, const int* farg2) {
   double *arg1 = (double *) 0 ;
   int arg2 ;
   
@@ -275,7 +275,7 @@ SWIGEXPORT void swigc_reverse__SWIG_3(double* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT int swigc_find_sorted__SWIG_3(double* farg1, int* farg2, double* farg3) {
+SWIGEXPORT int swigc_find_sorted__SWIG_3(double * farg1, const int* farg2, const double* farg3) {
   int fresult = 0 ;
   double *arg1 = (double *) 0 ;
   int arg2 ;

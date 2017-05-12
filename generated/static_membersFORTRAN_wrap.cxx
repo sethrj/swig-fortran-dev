@@ -183,7 +183,7 @@ swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_set_BaseClass_i(int* farg1) {
+SWIGEXPORT void swigc_set_BaseClass_i(const int* farg1) {
   int arg1 ;
   
   arg1 = *farg1;
@@ -201,7 +201,7 @@ SWIGEXPORT int swigc_get_BaseClass_i() {
 }
 
 
-SWIGEXPORT double swigc_BaseClass_f(int* farg1) {
+SWIGEXPORT double swigc_BaseClass_f(const int* farg1) {
   double fresult = 0 ;
   int arg1 ;
   double result;
