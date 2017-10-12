@@ -1,0 +1,13 @@
+{
+  "title": "Shared pointer bug ",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "Issue [28](<https://github.com/sethrj/swig/issues/28>) on github"
+    },
+    {
+      "type": "markdown",
+      "data": "Duplicated the broken one, made it work by replacing `T` with `U` for the typedef.\n\nrun\n\n```sh\n\n~/\\_code/\\_build/swig-debug/swig -fortran -c++ -debug-typemap spbug.i 2\\>&1 | grep -v '}' | sed -e 's/: Hash(.\\*//' | sort | uniq \\> types.txt\n\n```\n\nthen diff the two, and it's clear something fishy is going on with the template parameters because some of them are missing from the \"bad\" tpyemaps."
+    }
+  ]
+}

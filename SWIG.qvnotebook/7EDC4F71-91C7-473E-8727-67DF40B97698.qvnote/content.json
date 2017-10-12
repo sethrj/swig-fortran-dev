@@ -1,0 +1,9 @@
+{
+  "title": "SWIG dev notes",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "# SWIG node properties\n\nThe `%rename` directive changes the `sym:name` property\n\n# Running unit tests\n\nTo run fortran and build a list of failing tests:\n    cd Examples/test-suite/fortran\n    rm summary.txt\n    make -k check-cpp\n \nThe dumping of pass/failing tests into summary.txt was added in `2520171dc2ee16c0e099f577f0d3ec2a78376c05` . The failure list can be processed using `swig-failures/process-failures.ipynb`, then used to update `Examples/test-suite/fortran/Makefile.in`."
+    }
+  ]
+}
