@@ -14,8 +14,8 @@ module stdstr
  ! TYPES
  type :: string
   ! These should be treated as PROTECTED data
-  type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, public :: own = .false.
+  type(C_PTR), public :: swigptr = C_NULL_PTR
+  logical, public :: swigown = .false.
  contains
   procedure, private :: create__SWIG_0 => swigf_new_string__SWIG_0
   procedure, private :: create__SWIG_1 => swigf_new_string__SWIG_1
@@ -124,49 +124,49 @@ contains
   subroutine swigf_new_string__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_string__SWIG_0()
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_string__SWIG_0()
+   self%swigown = .true.
   end subroutine
   subroutine swigf_new_string__SWIG_1(self, s)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
    character(kind=C_CHAR, len=*) :: s
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_string__SWIG_1(s, len(s))
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_string__SWIG_1(s, len(s))
+   self%swigown = .true.
   end subroutine
   subroutine swigf_string_resize(self, count)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
    integer(C_INT), intent(in) :: count
-   call swigc_string_resize(self%ptr, count)
+   call swigc_string_resize(self%swigptr, count)
   end subroutine
   subroutine swigf_string_clear(self)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
-   call swigc_string_clear(self%ptr)
+   call swigc_string_clear(self%swigptr)
   end subroutine
   function swigf_string_size(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT) :: fresult
    class(string) :: self
-   fresult = swigc_string_size(self%ptr)
+   fresult = swigc_string_size(self%swigptr)
   end function
   function swigf_string_length(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT) :: fresult
    class(string) :: self
-   fresult = swigc_string_length(self%ptr)
+   fresult = swigc_string_length(self%swigptr)
   end function
   subroutine swigf_string_set(self, pos, v)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
    integer(C_INT), intent(in) :: pos
    character(C_CHAR), intent(in) :: v
-   call swigc_string_set(self%ptr, pos, v)
+   call swigc_string_set(self%swigptr, pos, v)
   end subroutine
   function swigf_string_get(self, pos) &
      result(fresult)
@@ -174,37 +174,37 @@ contains
    character(C_CHAR) :: fresult
    class(string) :: self
    integer(C_INT), intent(in) :: pos
-   fresult = swigc_string_get(self%ptr, pos)
+   fresult = swigc_string_get(self%swigptr, pos)
   end function
   subroutine swigf_string_assign_from(self, s)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
    character(kind=C_CHAR, len=*) :: s
-   call swigc_string_assign_from(self%ptr, s, len(s))
+   call swigc_string_assign_from(self%swigptr, s, len(s))
   end subroutine
   subroutine swigf_string_copy_to(self, s)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
    character(kind=C_CHAR, len=*) :: s
-   call swigc_string_copy_to(self%ptr, s, len(s))
+   call swigc_string_copy_to(self%swigptr, s, len(s))
   end subroutine
   subroutine swigf_delete_string(self)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
-   if (self%own) then
-    call swigc_delete_string(self%ptr)
-    self%own = .false.
+   if (self%swigown) then
+    call swigc_delete_string(self%swigptr)
+    self%swigown = .false.
    end if
-   self%ptr = C_NULL_PTR
+   self%swigptr = C_NULL_PTR
   end subroutine
   subroutine print_str(s)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: s
-   call swigc_print_str(s%ptr)
+   call swigc_print_str(s%swigptr)
   end subroutine
   subroutine halve_str(s)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: s
-   call swigc_halve_str(s%ptr)
+   call swigc_halve_str(s%swigptr)
   end subroutine
 end module stdstr

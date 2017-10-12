@@ -12,8 +12,8 @@ module static_members
  ! TYPES
  type :: BaseClass
   ! These should be treated as PROTECTED data
-  type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, public :: own = .false.
+  type(C_PTR), public :: swigptr = C_NULL_PTR
+  logical, public :: swigown = .false.
  contains
   procedure, nopass :: set_i => swigf_set_BaseClass_i
   procedure, nopass :: get_i => swigf_get_BaseClass_i
@@ -79,17 +79,17 @@ contains
   subroutine swigf_new_BaseClass(self)
    use, intrinsic :: ISO_C_BINDING
    class(BaseClass) :: self
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_BaseClass()
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_BaseClass()
+   self%swigown = .true.
   end subroutine
   subroutine swigf_delete_BaseClass(self)
    use, intrinsic :: ISO_C_BINDING
    class(BaseClass) :: self
-   if (self%own) then
-    call swigc_delete_BaseClass(self%ptr)
-    self%own = .false.
+   if (self%swigown) then
+    call swigc_delete_BaseClass(self%swigptr)
+    self%swigown = .false.
    end if
-   self%ptr = C_NULL_PTR
+   self%swigptr = C_NULL_PTR
   end subroutine
 end module static_members

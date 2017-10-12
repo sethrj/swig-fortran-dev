@@ -14,8 +14,8 @@ module example
  ! TYPES
  type, abstract :: Shape
   ! These should be treated as PROTECTED data
-  type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, public :: own = .false.
+  type(C_PTR), public :: swigptr = C_NULL_PTR
+  logical, public :: swigown = .false.
  contains
   procedure :: release => swigf_delete_Shape
   procedure :: set_x => swigf_set_Shape_x
@@ -168,58 +168,58 @@ contains
   subroutine swigf_delete_Shape(self)
    use, intrinsic :: ISO_C_BINDING
    class(Shape) :: self
-   if (self%own) then
-    call swigc_delete_Shape(self%ptr)
-    self%own = .false.
+   if (self%swigown) then
+    call swigc_delete_Shape(self%swigptr)
+    self%swigown = .false.
    end if
-   self%ptr = C_NULL_PTR
+   self%swigptr = C_NULL_PTR
   end subroutine
   subroutine swigf_set_Shape_x(self, x)
    use, intrinsic :: ISO_C_BINDING
    class(Shape) :: self
    real(C_DOUBLE), intent(in) :: x
-   call swigc_set_Shape_x(self%ptr, x)
+   call swigc_set_Shape_x(self%swigptr, x)
   end subroutine
   function swigf_get_Shape_x(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    real(C_DOUBLE) :: fresult
    class(Shape) :: self
-   fresult = swigc_get_Shape_x(self%ptr)
+   fresult = swigc_get_Shape_x(self%swigptr)
   end function
   subroutine swigf_set_Shape_y(self, y)
    use, intrinsic :: ISO_C_BINDING
    class(Shape) :: self
    real(C_DOUBLE), intent(in) :: y
-   call swigc_set_Shape_y(self%ptr, y)
+   call swigc_set_Shape_y(self%swigptr, y)
   end subroutine
   function swigf_get_Shape_y(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    real(C_DOUBLE) :: fresult
    class(Shape) :: self
-   fresult = swigc_get_Shape_y(self%ptr)
+   fresult = swigc_get_Shape_y(self%swigptr)
   end function
   subroutine swigf_Shape_move(self, dx, dy)
    use, intrinsic :: ISO_C_BINDING
    class(Shape) :: self
    real(C_DOUBLE), intent(in) :: dx
    real(C_DOUBLE), intent(in) :: dy
-   call swigc_Shape_move(self%ptr, dx, dy)
+   call swigc_Shape_move(self%swigptr, dx, dy)
   end subroutine
   function swigf_Shape_area(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    real(C_DOUBLE) :: fresult
    class(Shape) :: self
-   fresult = swigc_Shape_area(self%ptr)
+   fresult = swigc_Shape_area(self%swigptr)
   end function
   function swigf_Shape_perimeter(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    real(C_DOUBLE) :: fresult
    class(Shape) :: self
-   fresult = swigc_Shape_perimeter(self%ptr)
+   fresult = swigc_Shape_perimeter(self%swigptr)
   end function
   subroutine swigf_set_Shape_nshapes(nshapes)
    use, intrinsic :: ISO_C_BINDING
@@ -236,62 +236,62 @@ contains
    use, intrinsic :: ISO_C_BINDING
    class(Circle) :: self
    real(C_DOUBLE), intent(in) :: r
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_Circle(r)
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_Circle(r)
+   self%swigown = .true.
   end subroutine
   function swigf_Circle_area(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    real(C_DOUBLE) :: fresult
    class(Circle) :: self
-   fresult = swigc_Circle_area(self%ptr)
+   fresult = swigc_Circle_area(self%swigptr)
   end function
   function swigf_Circle_perimeter(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    real(C_DOUBLE) :: fresult
    class(Circle) :: self
-   fresult = swigc_Circle_perimeter(self%ptr)
+   fresult = swigc_Circle_perimeter(self%swigptr)
   end function
   subroutine swigf_delete_Circle(self)
    use, intrinsic :: ISO_C_BINDING
    class(Circle) :: self
-   if (self%own) then
-    call swigc_delete_Circle(self%ptr)
-    self%own = .false.
+   if (self%swigown) then
+    call swigc_delete_Circle(self%swigptr)
+    self%swigown = .false.
    end if
-   self%ptr = C_NULL_PTR
+   self%swigptr = C_NULL_PTR
   end subroutine
   subroutine swigf_new_Square(self, w)
    use, intrinsic :: ISO_C_BINDING
    class(Square) :: self
    real(C_DOUBLE), intent(in) :: w
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_Square(w)
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_Square(w)
+   self%swigown = .true.
   end subroutine
   function swigf_Square_area(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    real(C_DOUBLE) :: fresult
    class(Square) :: self
-   fresult = swigc_Square_area(self%ptr)
+   fresult = swigc_Square_area(self%swigptr)
   end function
   function swigf_Square_perimeter(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    real(C_DOUBLE) :: fresult
    class(Square) :: self
-   fresult = swigc_Square_perimeter(self%ptr)
+   fresult = swigc_Square_perimeter(self%swigptr)
   end function
   subroutine swigf_delete_Square(self)
    use, intrinsic :: ISO_C_BINDING
    class(Square) :: self
-   if (self%own) then
-    call swigc_delete_Square(self%ptr)
-    self%own = .false.
+   if (self%swigown) then
+    call swigc_delete_Square(self%swigptr)
+    self%swigown = .false.
    end if
-   self%ptr = C_NULL_PTR
+   self%swigptr = C_NULL_PTR
   end subroutine
 end module example

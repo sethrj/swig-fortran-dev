@@ -16,7 +16,7 @@ module spdemo
  public :: print_cr
  ! TYPES
  type :: Foo
-  type(C_PTR), public :: ptr = C_NULL_PTR
+  type(C_PTR), public :: swigptr = C_NULL_PTR
  contains
   procedure :: set_d_val => swigf_set_Foo_d_val
   procedure :: get_d_val => swigf_get_Foo_d_val
@@ -25,6 +25,12 @@ module spdemo
   procedure :: release => swigf_delete_Foo
   procedure :: get => swigf_Foo_get
   procedure :: set => swigf_Foo_set
+  procedure :: clone => swigf_Foo_clone
+  procedure :: clone_sp => swigf_Foo_clone_sp
+  procedure :: mutable_ref => swigf_Foo_mutable_ref
+  procedure :: ref => swigf_Foo_ref
+  procedure :: mutable_ptr => swigf_Foo_mutable_ptr
+  procedure :: ptr => swigf_Foo_ptr
   generic :: create => create__SWIG_0, create__SWIG_1
  end type
 
@@ -75,6 +81,48 @@ module spdemo
    type(C_PTR), value :: farg1
    real(C_DOUBLE), intent(in) :: farg2
   end subroutine
+  function swigc_Foo_clone(farg1) &
+     bind(C, name="swigc_Foo_clone") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_Foo_clone_sp(farg1) &
+     bind(C, name="swigc_Foo_clone_sp") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_Foo_mutable_ref(farg1) &
+     bind(C, name="swigc_Foo_mutable_ref") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_Foo_ref(farg1) &
+     bind(C, name="swigc_Foo_ref") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_Foo_mutable_ptr(farg1) &
+     bind(C, name="swigc_Foo_mutable_ptr") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_Foo_ptr(farg1) &
+     bind(C, name="swigc_Foo_ptr") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
   subroutine swigc_print_crsp(farg1) &
      bind(C, name="swigc_print_crsp")
    use, intrinsic :: ISO_C_BINDING
@@ -108,70 +156,112 @@ contains
    use, intrinsic :: ISO_C_BINDING
    class(Foo) :: self
    real(C_DOUBLE), intent(in) :: d_val
-   call swigc_set_Foo_d_val(self%ptr, d_val)
+   call swigc_set_Foo_d_val(self%swigptr, d_val)
   end subroutine
   function swigf_get_Foo_d_val(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    real(C_DOUBLE) :: fresult
    class(Foo) :: self
-   fresult = swigc_get_Foo_d_val(self%ptr)
+   fresult = swigc_get_Foo_d_val(self%swigptr)
   end function
   subroutine swigf_new_Foo__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
    class(Foo) :: self
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_Foo__SWIG_0()
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_Foo__SWIG_0()
   end subroutine
   subroutine swigf_new_Foo__SWIG_1(self, val)
    use, intrinsic :: ISO_C_BINDING
    class(Foo) :: self
    real(C_DOUBLE), intent(in) :: val
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_Foo__SWIG_1(val)
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_Foo__SWIG_1(val)
   end subroutine
   subroutine swigf_delete_Foo(self)
    use, intrinsic :: ISO_C_BINDING
    class(Foo) :: self
-   call swigc_delete_Foo(self%ptr)
-   self%ptr = C_NULL_PTR
+   call swigc_delete_Foo(self%swigptr)
+   self%swigptr = C_NULL_PTR
   end subroutine
   function swigf_Foo_get(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    real(C_DOUBLE) :: fresult
    class(Foo) :: self
-   fresult = swigc_Foo_get(self%ptr)
+   fresult = swigc_Foo_get(self%swigptr)
   end function
   subroutine swigf_Foo_set(self, v)
    use, intrinsic :: ISO_C_BINDING
    class(Foo) :: self
    real(C_DOUBLE), intent(in) :: v
-   call swigc_Foo_set(self%ptr, v)
+   call swigc_Foo_set(self%swigptr, v)
   end subroutine
+  function swigf_Foo_clone(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(Foo) :: fresult
+   class(Foo) :: self
+   fresult%swigptr = swigc_Foo_clone(self%swigptr)
+  end function
+  function swigf_Foo_clone_sp(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(Foo) :: fresult
+   class(Foo) :: self
+   fresult%swigptr = swigc_Foo_clone_sp(self%swigptr)
+  end function
+  function swigf_Foo_mutable_ref(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(Foo) :: fresult
+   class(Foo) :: self
+   fresult%swigptr = swigc_Foo_mutable_ref(self%swigptr)
+  end function
+  function swigf_Foo_ref(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(Foo) :: fresult
+   class(Foo) :: self
+   fresult%swigptr = swigc_Foo_ref(self%swigptr)
+  end function
+  function swigf_Foo_mutable_ptr(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(Foo) :: fresult
+   class(Foo) :: self
+   fresult%swigptr = swigc_Foo_mutable_ptr(self%swigptr)
+  end function
+  function swigf_Foo_ptr(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(Foo) :: fresult
+   class(Foo) :: self
+   fresult%swigptr = swigc_Foo_ptr(self%swigptr)
+  end function
   subroutine print_crsp(f)
    use, intrinsic :: ISO_C_BINDING
    type(Foo) :: f
-   call swigc_print_crsp(f%ptr)
+   call swigc_print_crsp(f%swigptr)
   end subroutine
   subroutine print_sp(f)
    use, intrinsic :: ISO_C_BINDING
    type(Foo) :: f
-   call swigc_print_sp(f%ptr)
+   call swigc_print_sp(f%swigptr)
   end subroutine
   subroutine print_spc(f)
    use, intrinsic :: ISO_C_BINDING
    type(Foo) :: f
-   call swigc_print_spc(f%ptr)
+   call swigc_print_spc(f%swigptr)
   end subroutine
   subroutine print_crspc(f)
    use, intrinsic :: ISO_C_BINDING
    type(Foo) :: f
-   call swigc_print_crspc(f%ptr)
+   call swigc_print_crspc(f%swigptr)
   end subroutine
   subroutine print_cr(f)
    use, intrinsic :: ISO_C_BINDING
    class(Foo) :: f
-   call swigc_print_cr(f%ptr)
+   call swigc_print_cr(f%swigptr)
   end subroutine
 end module spdemo

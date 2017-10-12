@@ -14,8 +14,8 @@ module inheritance
  ! TYPES
  type, abstract :: BaseClass
   ! These should be treated as PROTECTED data
-  type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, public :: own = .false.
+  type(C_PTR), public :: swigptr = C_NULL_PTR
+  logical, public :: swigown = .false.
  contains
   procedure :: release => swigf_delete_BaseClass
   procedure :: foo => swigf_BaseClass_foo
@@ -132,99 +132,99 @@ contains
   subroutine swigf_delete_BaseClass(self)
    use, intrinsic :: ISO_C_BINDING
    class(BaseClass) :: self
-   if (self%own) then
-    call swigc_delete_BaseClass(self%ptr)
-    self%own = .false.
+   if (self%swigown) then
+    call swigc_delete_BaseClass(self%swigptr)
+    self%swigown = .false.
    end if
-   self%ptr = C_NULL_PTR
+   self%swigptr = C_NULL_PTR
   end subroutine
   function swigf_BaseClass_foo(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    real(C_FLOAT) :: fresult
    class(BaseClass) :: self
-   fresult = swigc_BaseClass_foo(self%ptr)
+   fresult = swigc_BaseClass_foo(self%swigptr)
   end function
   function swigf_BaseClass_get_i(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT) :: fresult
    class(BaseClass) :: self
-   fresult = swigc_BaseClass_get_i(self%ptr)
+   fresult = swigc_BaseClass_get_i(self%swigptr)
   end function
   subroutine swigf_BaseClass_set_i(self, i)
    use, intrinsic :: ISO_C_BINDING
    class(BaseClass) :: self
    integer(C_INT), intent(in) :: i
-   call swigc_BaseClass_set_i(self%ptr, i)
+   call swigc_BaseClass_set_i(self%swigptr, i)
   end subroutine
   subroutine swigf_new_DerivedA__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
    class(DerivedA) :: self
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_DerivedA__SWIG_0()
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_DerivedA__SWIG_0()
+   self%swigown = .true.
   end subroutine
   subroutine swigf_new_DerivedA__SWIG_1(self, i, f)
    use, intrinsic :: ISO_C_BINDING
    class(DerivedA) :: self
    integer(C_INT), intent(in) :: i
    real(C_FLOAT), intent(in) :: f
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_DerivedA__SWIG_1(i, f)
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_DerivedA__SWIG_1(i, f)
+   self%swigown = .true.
   end subroutine
   subroutine swigf_delete_DerivedA(self)
    use, intrinsic :: ISO_C_BINDING
    class(DerivedA) :: self
-   if (self%own) then
-    call swigc_delete_DerivedA(self%ptr)
-    self%own = .false.
+   if (self%swigown) then
+    call swigc_delete_DerivedA(self%swigptr)
+    self%swigown = .false.
    end if
-   self%ptr = C_NULL_PTR
+   self%swigptr = C_NULL_PTR
   end subroutine
   function swigf_DerivedA_foo(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    real(C_FLOAT) :: fresult
    class(DerivedA) :: self
-   fresult = swigc_DerivedA_foo(self%ptr)
+   fresult = swigc_DerivedA_foo(self%swigptr)
   end function
   subroutine swigf_DerivedA_print(self)
    use, intrinsic :: ISO_C_BINDING
    class(DerivedA) :: self
-   call swigc_DerivedA_print(self%ptr)
+   call swigc_DerivedA_print(self%swigptr)
   end subroutine
   subroutine swigf_new_DerivedB__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
    class(DerivedB) :: self
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_DerivedB__SWIG_0()
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_DerivedB__SWIG_0()
+   self%swigown = .true.
   end subroutine
   subroutine swigf_new_DerivedB__SWIG_1(self, i, i2)
    use, intrinsic :: ISO_C_BINDING
    class(DerivedB) :: self
    integer(C_INT), intent(in) :: i
    integer(C_INT), intent(in) :: i2
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_DerivedB__SWIG_1(i, i2)
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_DerivedB__SWIG_1(i, i2)
+   self%swigown = .true.
   end subroutine
   subroutine swigf_delete_DerivedB(self)
    use, intrinsic :: ISO_C_BINDING
    class(DerivedB) :: self
-   if (self%own) then
-    call swigc_delete_DerivedB(self%ptr)
-    self%own = .false.
+   if (self%swigown) then
+    call swigc_delete_DerivedB(self%swigptr)
+    self%swigown = .false.
    end if
-   self%ptr = C_NULL_PTR
+   self%swigptr = C_NULL_PTR
   end subroutine
   function swigf_DerivedB_foo(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    real(C_FLOAT) :: fresult
    class(DerivedB) :: self
-   fresult = swigc_DerivedB_foo(self%ptr)
+   fresult = swigc_DerivedB_foo(self%swigptr)
   end function
 end module inheritance

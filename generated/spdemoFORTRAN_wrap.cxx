@@ -280,6 +280,90 @@ SWIGEXPORT void swigc_Foo_set(void* farg1, const double* farg2) {
 }
 
 
+SWIGEXPORT void* swigc_Foo_clone(const void* farg1) {
+  void* fresult = 0 ;
+  Foo *arg1 = (Foo *) 0 ;
+  std::shared_ptr< Foo const > *smartarg1 = 0 ;
+  Foo result;
+  
+  smartarg1 = (std::shared_ptr<const Foo > *)farg1;
+  arg1 = (Foo *)(smartarg1 ? smartarg1->get() : 0);
+  result = ((Foo const *)arg1)->clone();
+  fresult = new std::shared_ptr< Foo >(new Foo((Foo &)result));
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_Foo_clone_sp(const void* farg1) {
+  void * fresult = 0 ;
+  Foo *arg1 = (Foo *) 0 ;
+  std::shared_ptr< Foo const > *smartarg1 = 0 ;
+  std::shared_ptr< Foo > result;
+  
+  smartarg1 = (std::shared_ptr<const Foo > *)farg1;
+  arg1 = (Foo *)(smartarg1 ? smartarg1->get() : 0);
+  result = ((Foo const *)arg1)->clone_sp();
+  fresult = result ? new std::shared_ptr< Foo >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_Foo_mutable_ref(void* farg1) {
+  void* fresult = 0 ;
+  Foo *arg1 = (Foo *) 0 ;
+  std::shared_ptr< Foo > *smartarg1 = 0 ;
+  Foo *result = 0 ;
+  
+  smartarg1 = (std::shared_ptr< Foo > *)farg1;
+  arg1 = (Foo *)(smartarg1 ? smartarg1->get() : 0);
+  result = (Foo *) &(arg1)->mutable_ref();
+  fresult = new std::shared_ptr< Foo >(result SWIG_NO_NULL_DELETER_0);
+  return fresult;
+}
+
+
+SWIGEXPORT const void* swigc_Foo_ref(const void* farg1) {
+  const void* fresult = 0 ;
+  Foo *arg1 = (Foo *) 0 ;
+  std::shared_ptr< Foo const > *smartarg1 = 0 ;
+  Foo *result = 0 ;
+  
+  smartarg1 = (std::shared_ptr<const Foo > *)farg1;
+  arg1 = (Foo *)(smartarg1 ? smartarg1->get() : 0);
+  result = (Foo *) &((Foo const *)arg1)->ref();
+  fresult = new std::shared_ptr<const Foo >(result SWIG_NO_NULL_DELETER_0);
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_Foo_mutable_ptr(void* farg1) {
+  void* fresult = 0 ;
+  Foo *arg1 = (Foo *) 0 ;
+  std::shared_ptr< Foo > *smartarg1 = 0 ;
+  Foo *result = 0 ;
+  
+  smartarg1 = (std::shared_ptr< Foo > *)farg1;
+  arg1 = (Foo *)(smartarg1 ? smartarg1->get() : 0);
+  result = (Foo *)(arg1)->mutable_ptr();
+  fresult = result ? new std::shared_ptr< Foo >(result SWIG_NO_NULL_DELETER_0) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT const void* swigc_Foo_ptr(const void* farg1) {
+  const void* fresult = 0 ;
+  Foo *arg1 = (Foo *) 0 ;
+  std::shared_ptr< Foo const > *smartarg1 = 0 ;
+  Foo *result = 0 ;
+  
+  smartarg1 = (std::shared_ptr<const Foo > *)farg1;
+  arg1 = (Foo *)(smartarg1 ? smartarg1->get() : 0);
+  result = (Foo *)((Foo const *)arg1)->ptr();
+  fresult = result ? new std::shared_ptr<const Foo >(result SWIG_NO_NULL_DELETER_0) : 0;
+  return fresult;
+}
+
+
 SWIGEXPORT void swigc_print_crsp(void * farg1) {
   std::shared_ptr< Foo > *arg1 = 0 ;
   std::shared_ptr< Foo > tempnull1 ;

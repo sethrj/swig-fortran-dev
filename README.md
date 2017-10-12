@@ -20,6 +20,15 @@ SWIG notes
 ==========
 
 - The `%rename` directive changes the `sym:name` property
+- To run unit tests::
+
+    cd Examples/test-suite/fortran
+    rm summary.txt
+    make -k check-cpp
+ 
+ - process failure list using `swig-failures/process-failures.ipynb`
+ - Update `Examples/test-suite/fortran/Makefile.in`
+  
 
 Basic language features
 =======================

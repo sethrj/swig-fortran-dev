@@ -17,8 +17,8 @@ module thinvec
  ! TYPES
  type :: ThinVecDbl
   ! These should be treated as PROTECTED data
-  type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, public :: own = .false.
+  type(C_PTR), public :: swigptr = C_NULL_PTR
+  logical, public :: swigown = .false.
  contains
   procedure :: create => swigf_new_ThinVecDbl
   procedure :: create_fill => swigf_new_ThinVecDbl_create_fill
@@ -35,8 +35,8 @@ module thinvec
  end type
  type :: ThinVecInt
   ! These should be treated as PROTECTED data
-  type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, public :: own = .false.
+  type(C_PTR), public :: swigptr = C_NULL_PTR
+  logical, public :: swigown = .false.
  contains
   procedure :: create => swigf_new_ThinVecInt
   procedure :: create_fill => swigf_new_ThinVecInt_create_fill
@@ -252,51 +252,51 @@ contains
   subroutine print_vec(v)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: v
-   call swigc_print_vec(v%ptr)
+   call swigc_print_vec(v%swigptr)
   end subroutine
   subroutine obtain_free(v, p)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: v
    real(C_DOUBLE), dimension(:), intent(inout) :: p
-   call swigc_obtain_free(v%ptr, p, size(p))
+   call swigc_obtain_free(v%swigptr, p, size(p))
   end subroutine
   subroutine swigf_new_ThinVecDbl(self)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: self
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_ThinVecDbl()
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_ThinVecDbl()
+   self%swigown = .true.
   end subroutine
   subroutine swigf_new_ThinVecDbl_create_fill(self, count, fillval)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: self
    integer(C_INT), intent(in) :: count
    real(C_DOUBLE), intent(in) :: fillval
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_ThinVecDbl_create_fill(count, fillval)
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_ThinVecDbl_create_fill(count, fillval)
+   self%swigown = .true.
   end subroutine
   subroutine swigf_new_ThinVecDbl_create_count(self, count)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: self
    integer(C_INT), intent(in) :: count
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_ThinVecDbl_create_count(count)
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_ThinVecDbl_create_count(count)
+   self%swigown = .true.
   end subroutine
   function swigf_ThinVecDbl_empty(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    logical(C_BOOL) :: fresult
    class(ThinVecDbl) :: self
-   fresult = swigc_ThinVecDbl_empty(self%ptr)
+   fresult = swigc_ThinVecDbl_empty(self%swigptr)
   end function
   function swigf_ThinVecDbl_size(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT) :: fresult
    class(ThinVecDbl) :: self
-   fresult = swigc_ThinVecDbl_size(self%ptr)
+   fresult = swigc_ThinVecDbl_size(self%swigptr)
   end function
   function swigf_ThinVecDbl_get(self, index) &
      result(fresult)
@@ -304,92 +304,92 @@ contains
    real(C_DOUBLE) :: fresult
    class(ThinVecDbl) :: self
    integer(C_INT), intent(in) :: index
-   fresult = swigc_ThinVecDbl_get(self%ptr, index)
+   fresult = swigc_ThinVecDbl_get(self%swigptr, index)
   end function
   subroutine swigf_ThinVecDbl_set(self, index, val)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: self
    integer(C_INT), intent(in) :: index
    real(C_DOUBLE), intent(in) :: val
-   call swigc_ThinVecDbl_set(self%ptr, index, val)
+   call swigc_ThinVecDbl_set(self%swigptr, index, val)
   end subroutine
   subroutine swigf_ThinVecDbl_resize_fill(self, newsize, fillval)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: self
    integer(C_INT), intent(in) :: newsize
    real(C_DOUBLE), intent(in) :: fillval
-   call swigc_ThinVecDbl_resize_fill(self%ptr, newsize, fillval)
+   call swigc_ThinVecDbl_resize_fill(self%swigptr, newsize, fillval)
   end subroutine
   subroutine swigf_ThinVecDbl_resize(self, newsize)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: self
    integer(C_INT), intent(in) :: newsize
-   call swigc_ThinVecDbl_resize(self%ptr, newsize)
+   call swigc_ThinVecDbl_resize(self%swigptr, newsize)
   end subroutine
   subroutine swigf_ThinVecDbl_ass(self, p)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: self
    real(C_DOUBLE), dimension(:), intent(in) :: p
-   call swigc_ThinVecDbl_ass(self%ptr, p, size(p))
+   call swigc_ThinVecDbl_ass(self%swigptr, p, size(p))
   end subroutine
   subroutine swigf_ThinVecDbl_obtain(self, p)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: self
    real(C_DOUBLE), dimension(:), intent(inout) :: p
-   call swigc_ThinVecDbl_obtain(self%ptr, p, size(p))
+   call swigc_ThinVecDbl_obtain(self%swigptr, p, size(p))
   end subroutine
   subroutine swigf_delete_ThinVecDbl(self)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: self
-   if (self%own) then
-    call swigc_delete_ThinVecDbl(self%ptr)
-    self%own = .false.
+   if (self%swigown) then
+    call swigc_delete_ThinVecDbl(self%swigptr)
+    self%swigown = .false.
    end if
-   self%ptr = C_NULL_PTR
+   self%swigptr = C_NULL_PTR
   end subroutine
   subroutine obtain_free_d(v, p)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecDbl) :: v
    real(C_DOUBLE), dimension(:), intent(inout) :: p
-   call swigc_obtain_free_d(v%ptr, p, size(p))
+   call swigc_obtain_free_d(v%swigptr, p, size(p))
   end subroutine
   subroutine swigf_new_ThinVecInt(self)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecInt) :: self
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_ThinVecInt()
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_ThinVecInt()
+   self%swigown = .true.
   end subroutine
   subroutine swigf_new_ThinVecInt_create_fill(self, count, fillval)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecInt) :: self
    integer(C_INT), intent(in) :: count
    integer(C_INT), intent(in) :: fillval
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_ThinVecInt_create_fill(count, fillval)
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_ThinVecInt_create_fill(count, fillval)
+   self%swigown = .true.
   end subroutine
   subroutine swigf_new_ThinVecInt_create_count(self, count)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecInt) :: self
    integer(C_INT), intent(in) :: count
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_ThinVecInt_create_count(count)
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_ThinVecInt_create_count(count)
+   self%swigown = .true.
   end subroutine
   function swigf_ThinVecInt_empty(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    logical(C_BOOL) :: fresult
    class(ThinVecInt) :: self
-   fresult = swigc_ThinVecInt_empty(self%ptr)
+   fresult = swigc_ThinVecInt_empty(self%swigptr)
   end function
   function swigf_ThinVecInt_size(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT) :: fresult
    class(ThinVecInt) :: self
-   fresult = swigc_ThinVecInt_size(self%ptr)
+   fresult = swigc_ThinVecInt_size(self%swigptr)
   end function
   function swigf_ThinVecInt_get(self, index) &
      result(fresult)
@@ -397,53 +397,53 @@ contains
    integer(C_INT) :: fresult
    class(ThinVecInt) :: self
    integer(C_INT), intent(in) :: index
-   fresult = swigc_ThinVecInt_get(self%ptr, index)
+   fresult = swigc_ThinVecInt_get(self%swigptr, index)
   end function
   subroutine swigf_ThinVecInt_set(self, index, val)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecInt) :: self
    integer(C_INT), intent(in) :: index
    integer(C_INT), intent(in) :: val
-   call swigc_ThinVecInt_set(self%ptr, index, val)
+   call swigc_ThinVecInt_set(self%swigptr, index, val)
   end subroutine
   subroutine swigf_ThinVecInt_resize_fill(self, newsize, fillval)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecInt) :: self
    integer(C_INT), intent(in) :: newsize
    integer(C_INT), intent(in) :: fillval
-   call swigc_ThinVecInt_resize_fill(self%ptr, newsize, fillval)
+   call swigc_ThinVecInt_resize_fill(self%swigptr, newsize, fillval)
   end subroutine
   subroutine swigf_ThinVecInt_resize(self, newsize)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecInt) :: self
    integer(C_INT), intent(in) :: newsize
-   call swigc_ThinVecInt_resize(self%ptr, newsize)
+   call swigc_ThinVecInt_resize(self%swigptr, newsize)
   end subroutine
   subroutine swigf_ThinVecInt_ass(self, p)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecInt) :: self
    integer(C_INT), dimension(:), intent(in) :: p
-   call swigc_ThinVecInt_ass(self%ptr, p, size(p))
+   call swigc_ThinVecInt_ass(self%swigptr, p, size(p))
   end subroutine
   subroutine swigf_ThinVecInt_obtain(self, p)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecInt) :: self
    integer(C_INT), dimension(:), intent(inout) :: p
-   call swigc_ThinVecInt_obtain(self%ptr, p, size(p))
+   call swigc_ThinVecInt_obtain(self%swigptr, p, size(p))
   end subroutine
   subroutine swigf_delete_ThinVecInt(self)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecInt) :: self
-   if (self%own) then
-    call swigc_delete_ThinVecInt(self%ptr)
-    self%own = .false.
+   if (self%swigown) then
+    call swigc_delete_ThinVecInt(self%swigptr)
+    self%swigown = .false.
    end if
-   self%ptr = C_NULL_PTR
+   self%swigptr = C_NULL_PTR
   end subroutine
   subroutine obtain_free_i(v, p)
    use, intrinsic :: ISO_C_BINDING
    class(ThinVecInt) :: v
    integer(C_INT), dimension(:), intent(inout) :: p
-   call swigc_obtain_free_i(v%ptr, p, size(p))
+   call swigc_obtain_free_i(v%swigptr, p, size(p))
   end subroutine
 end module thinvec
