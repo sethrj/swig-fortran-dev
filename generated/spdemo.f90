@@ -9,6 +9,7 @@ module spdemo
 
  ! PUBLIC METHODS AND TYPES
  public :: Foo
+ public :: use_count
  public :: print_crsp
  public :: print_sp
  public :: print_spc
@@ -22,6 +23,7 @@ module spdemo
   procedure :: get_d_val => swigf_get_Foo_d_val
   procedure, private :: create__SWIG_0 => swigf_new_Foo__SWIG_0
   procedure, private :: create__SWIG_1 => swigf_new_Foo__SWIG_1
+  procedure, private :: create__SWIG_2 => swigf_new_Foo__SWIG_2
   procedure :: release => swigf_delete_Foo
   procedure :: get => swigf_Foo_get
   procedure :: set => swigf_Foo_set
@@ -31,7 +33,9 @@ module spdemo
   procedure :: ref => swigf_Foo_ref
   procedure :: mutable_ptr => swigf_Foo_mutable_ptr
   procedure :: ptr => swigf_Foo_ptr
-  generic :: create => create__SWIG_0, create__SWIG_1
+  procedure, private :: swigf_assign_Foo
+  generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2
+  generic :: assignment(=) => swigf_assign_Foo
  end type
 
  ! WRAPPER DECLARATIONS
@@ -58,6 +62,13 @@ module spdemo
   end function
   function swigc_new_Foo__SWIG_1(farg1) &
      bind(C, name="swigc_new_Foo__SWIG_1") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_new_Foo__SWIG_2(farg1) &
+     bind(C, name="swigc_new_Foo__SWIG_2") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
@@ -123,6 +134,20 @@ module spdemo
    type(C_PTR) :: fresult
    type(C_PTR), value :: farg1
   end function
+  function swigc_spcopy_Foo(farg1) &
+     bind(C, name="swigc_spcopy_Foo") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_use_count(farg1) &
+     bind(C, name="swigc_use_count") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   type(C_PTR), value :: farg1
+  end function
   subroutine swigc_print_crsp(farg1) &
      bind(C, name="swigc_print_crsp")
    use, intrinsic :: ISO_C_BINDING
@@ -171,12 +196,19 @@ contains
    if (c_associated(self%swigptr)) call self%release()
    self%swigptr = swigc_new_Foo__SWIG_0()
   end subroutine
-  subroutine swigf_new_Foo__SWIG_1(self, val)
+  subroutine swigf_new_Foo__SWIG_1(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(Foo) :: self
+   class(Foo) :: other
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_Foo__SWIG_1(other%swigptr)
+  end subroutine
+  subroutine swigf_new_Foo__SWIG_2(self, val)
    use, intrinsic :: ISO_C_BINDING
    class(Foo) :: self
    real(C_DOUBLE), intent(in) :: val
    if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_Foo__SWIG_1(val)
+   self%swigptr = swigc_new_Foo__SWIG_2(val)
   end subroutine
   subroutine swigf_delete_Foo(self)
    use, intrinsic :: ISO_C_BINDING
@@ -238,6 +270,20 @@ contains
    type(Foo) :: fresult
    class(Foo) :: self
    fresult%swigptr = swigc_Foo_ptr(self%swigptr)
+  end function
+  subroutine swigf_assign_Foo(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(Foo), intent(inout) :: self
+   type(Foo), intent(in) :: other
+   call self%release()
+   self%swigptr = swigc_spcopy_Foo(other%swigptr)
+  end subroutine
+  function use_count(f) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   type(Foo) :: f
+   fresult = swigc_use_count(f%swigptr)
   end function
   subroutine print_crsp(f)
    use, intrinsic :: ISO_C_BINDING

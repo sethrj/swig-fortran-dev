@@ -9,7 +9,15 @@ module stdvec
 
  ! PUBLIC METHODS AND TYPES
  public :: VecDbl
+ public :: VecViewDbl
+ public :: const_VecViewDbl
+ public :: make_viewdbl
+ public :: make_const_viewdbl
  public :: print_vecdbl
+ public :: print_viewdbl
+ interface print_viewdbl
+  module procedure :: print_viewdbl__SWIG_0, print_viewdbl__SWIG_1
+ end interface
  ! TYPES
  type :: VecDbl
   ! These should be treated as PROTECTED data
@@ -36,6 +44,32 @@ module stdvec
   procedure :: release => swigf_delete_VecDbl
   generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2
   generic :: resize => resize__SWIG_0, resize__SWIG_1
+ end type
+ type :: VecViewDbl
+  ! These should be treated as PROTECTED data
+  type(C_PTR), public :: swigptr = C_NULL_PTR
+  logical, public :: swigown = .false.
+ contains
+  procedure, private :: create__SWIG_0 => swigf_new_VecViewDbl__SWIG_0
+  procedure, private :: create__SWIG_1 => swigf_new_VecViewDbl__SWIG_1
+  procedure :: size => swigf_VecViewDbl_size
+  procedure :: data => swigf_VecViewDbl_data
+procedure :: view => VecViewDbl_view
+  procedure :: release => swigf_delete_VecViewDbl
+  generic :: create => create__SWIG_0, create__SWIG_1
+ end type
+ type :: const_VecViewDbl
+  ! These should be treated as PROTECTED data
+  type(C_PTR), public :: swigptr = C_NULL_PTR
+  logical, public :: swigown = .false.
+ contains
+  procedure, private :: create__SWIG_0 => swigf_new_const_VecViewDbl__SWIG_0
+  procedure, private :: create__SWIG_1 => swigf_new_const_VecViewDbl__SWIG_1
+  procedure :: size => swigf_const_VecViewDbl_size
+  procedure :: data => swigf_const_VecViewDbl_data
+procedure :: view => const_VecViewDbl_view
+  procedure :: release => swigf_delete_const_VecViewDbl
+  generic :: create => create__SWIG_0, create__SWIG_1
  end type
 
  ! WRAPPER DECLARATIONS
@@ -158,6 +192,96 @@ module stdvec
   end subroutine
   subroutine swigc_delete_VecDbl(farg1) &
      bind(C, name="swigc_delete_VecDbl")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+  end subroutine
+  function swigc_new_VecViewDbl__SWIG_0() &
+     bind(C, name="swigc_new_VecViewDbl__SWIG_0") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+  end function
+  function swigc_new_VecViewDbl__SWIG_1(farg1, farg2) &
+     bind(C, name="swigc_new_VecViewDbl__SWIG_1") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   real(C_DOUBLE), dimension(*), intent(inout) :: farg1
+   real(C_DOUBLE), dimension(*), intent(inout) :: farg2
+  end function
+  function swigc_VecViewDbl_size(farg1) &
+     bind(C, name="swigc_VecViewDbl_size") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_VecViewDbl_data(farg1) &
+     bind(C, name="swigc_VecViewDbl_data") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  subroutine swigc_delete_VecViewDbl(farg1) &
+     bind(C, name="swigc_delete_VecViewDbl")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+  end subroutine
+  function swigc_new_const_VecViewDbl__SWIG_0() &
+     bind(C, name="swigc_new_const_VecViewDbl__SWIG_0") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+  end function
+  function swigc_new_const_VecViewDbl__SWIG_1(farg1, farg2) &
+     bind(C, name="swigc_new_const_VecViewDbl__SWIG_1") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   real(C_DOUBLE), dimension(*), intent(in) :: farg1
+   real(C_DOUBLE), dimension(*), intent(in) :: farg2
+  end function
+  function swigc_const_VecViewDbl_size(farg1) &
+     bind(C, name="swigc_const_VecViewDbl_size") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_const_VecViewDbl_data(farg1) &
+     bind(C, name="swigc_const_VecViewDbl_data") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  subroutine swigc_delete_const_VecViewDbl(farg1) &
+     bind(C, name="swigc_delete_const_VecViewDbl")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+  end subroutine
+  function swigc_make_viewdbl(farg1) &
+     bind(C, name="swigc_make_viewdbl") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_make_const_viewdbl(farg1) &
+     bind(C, name="swigc_make_const_viewdbl") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  subroutine swigc_print_viewdbl__SWIG_0(farg1) &
+     bind(C, name="swigc_print_viewdbl__SWIG_0")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+  end subroutine
+  subroutine swigc_print_viewdbl__SWIG_1(farg1) &
+     bind(C, name="swigc_print_viewdbl__SWIG_1")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
   end subroutine
@@ -294,6 +418,130 @@ contains
     self%swigown = .false.
    end if
    self%swigptr = C_NULL_PTR
+  end subroutine
+  subroutine swigf_new_VecViewDbl__SWIG_0(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(VecViewDbl) :: self
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_VecViewDbl__SWIG_0()
+   self%swigown = .true.
+  end subroutine
+  subroutine swigf_new_VecViewDbl__SWIG_1(self, begin, end)
+   use, intrinsic :: ISO_C_BINDING
+   class(VecViewDbl) :: self
+   real(C_DOUBLE), dimension(:), intent(inout) :: begin
+   real(C_DOUBLE), dimension(:), intent(inout) :: end
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_VecViewDbl__SWIG_1(begin, end)
+   self%swigown = .true.
+  end subroutine
+  function swigf_VecViewDbl_size(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   class(VecViewDbl) :: self
+   fresult = swigc_VecViewDbl_size(self%swigptr)
+  end function
+  function swigf_VecViewDbl_data(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   real(C_DOUBLE), pointer :: fresult
+   class(VecViewDbl) :: self
+   call c_f_pointer(swigc_VecViewDbl_data(self%swigptr), fresult)
+  end function
+
+  function VecViewDbl_view(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   real(C_DOUBLE), pointer :: fresult(:)
+   real(C_DOUBLE), pointer :: temp
+   class(VecViewDbl) :: self
+   temp => self%data()
+   call c_f_pointer(c_loc(temp), fresult, [self%size()])
+  end function
+  subroutine swigf_delete_VecViewDbl(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(VecViewDbl) :: self
+   if (self%swigown) then
+    call swigc_delete_VecViewDbl(self%swigptr)
+    self%swigown = .false.
+   end if
+   self%swigptr = C_NULL_PTR
+  end subroutine
+  subroutine swigf_new_const_VecViewDbl__SWIG_0(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(const_VecViewDbl) :: self
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_const_VecViewDbl__SWIG_0()
+   self%swigown = .true.
+  end subroutine
+  subroutine swigf_new_const_VecViewDbl__SWIG_1(self, begin, end)
+   use, intrinsic :: ISO_C_BINDING
+   class(const_VecViewDbl) :: self
+   real(C_DOUBLE), dimension(:), intent(in) :: begin
+   real(C_DOUBLE), dimension(:), intent(in) :: end
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_const_VecViewDbl__SWIG_1(begin, end)
+   self%swigown = .true.
+  end subroutine
+  function swigf_const_VecViewDbl_size(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   class(const_VecViewDbl) :: self
+   fresult = swigc_const_VecViewDbl_size(self%swigptr)
+  end function
+  function swigf_const_VecViewDbl_data(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   real(C_DOUBLE), pointer :: fresult
+   class(const_VecViewDbl) :: self
+   call c_f_pointer(swigc_const_VecViewDbl_data(self%swigptr), fresult)
+  end function
+
+  function const_VecViewDbl_view(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   real(C_DOUBLE), pointer :: fresult(:)
+   real(C_DOUBLE), pointer :: temp
+   class(const_VecViewDbl) :: self
+   temp => self%data()
+   call c_f_pointer(c_loc(temp), fresult, [self%size()])
+  end function
+  subroutine swigf_delete_const_VecViewDbl(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(const_VecViewDbl) :: self
+   if (self%swigown) then
+    call swigc_delete_const_VecViewDbl(self%swigptr)
+    self%swigown = .false.
+   end if
+   self%swigptr = C_NULL_PTR
+  end subroutine
+  function make_viewdbl(v) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(VecViewDbl) :: fresult
+   class(VecDbl) :: v
+   fresult%swigptr = swigc_make_viewdbl(v%swigptr)
+   fresult%swigown = .true.
+  end function
+  function make_const_viewdbl(v) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(const_VecViewDbl) :: fresult
+   class(VecDbl) :: v
+   fresult%swigptr = swigc_make_const_viewdbl(v%swigptr)
+   fresult%swigown = .true.
+  end function
+  subroutine print_viewdbl__SWIG_0(view)
+   use, intrinsic :: ISO_C_BINDING
+   type(VecViewDbl) :: view
+   call swigc_print_viewdbl__SWIG_0(view%swigptr)
+  end subroutine
+  subroutine print_viewdbl__SWIG_1(view)
+   use, intrinsic :: ISO_C_BINDING
+   type(const_VecViewDbl) :: view
+   call swigc_print_viewdbl__SWIG_1(view%swigptr)
   end subroutine
   subroutine print_vecdbl(v)
    use, intrinsic :: ISO_C_BINDING

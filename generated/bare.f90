@@ -12,6 +12,7 @@ module bare
  public :: get_something
  public :: get_something_ref
  public :: get_something_ptr
+ public :: get_something_rcptr
  public :: get_something_rref
  public :: get_something_rcref
  public :: print_array
@@ -45,6 +46,13 @@ module bare
    integer(C_INT), intent(in) :: farg1
    real(C_DOUBLE), dimension(*), intent(inout) :: farg2
   end subroutine
+  function swigc_get_something_rcptr(farg1) &
+     bind(C, name="swigc_get_something_rcptr") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   integer(C_INT), intent(in) :: farg1
+  end function
   function swigc_get_something_rref(farg1) &
      bind(C, name="swigc_get_something_rref") &
      result(fresult)
@@ -94,6 +102,13 @@ contains
    real(C_DOUBLE), dimension(:), intent(inout) :: y
    call swigc_get_something_ptr(x, y)
   end subroutine
+  function get_something_rcptr(x) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   real(C_DOUBLE), pointer :: fresult
+   integer(C_INT), intent(in) :: x
+   call c_f_pointer(swigc_get_something_rcptr(x), fresult)
+  end function
   function get_something_rref(x) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING

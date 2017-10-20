@@ -225,6 +225,18 @@ SWIGEXPORT void swigc_get_something_ptr(const int* farg1, double * farg2) {
 }
 
 
+SWIGEXPORT double * swigc_get_something_rcptr(const int* farg1) {
+  double * fresult = 0 ;
+  int arg1 ;
+  double *result = 0 ;
+  
+  arg1 = *farg1;
+  result = (double *)get_something_rcptr(arg1);
+  fresult = result;
+  return fresult;
+}
+
+
 SWIGEXPORT double* swigc_get_something_rref(const int* farg1) {
   double* fresult = 0 ;
   int arg1 ;

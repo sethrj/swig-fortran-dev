@@ -232,7 +232,26 @@ SWIGEXPORT void* swigc_new_Foo__SWIG_0() {
 }
 
 
-SWIGEXPORT void* swigc_new_Foo__SWIG_1(const double* farg1) {
+SWIGEXPORT void* swigc_new_Foo__SWIG_1(const void* farg1) {
+  void* fresult = 0 ;
+  Foo *arg1 = 0 ;
+  Foo *result = 0 ;
+  
+  arg1 = (Foo *)(((std::shared_ptr<const Foo > *)farg1)
+    ? ((std::shared_ptr<const Foo > *)farg1)->get()
+    :0);
+  if (!arg1)
+  {
+    throw std::logic_error("Attempt to dereference null Foo const &");
+    return 0;
+  }
+  result = (Foo *)new Foo((Foo const &)*arg1);
+  fresult = result ? new std::shared_ptr< Foo >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_Foo__SWIG_2(const double* farg1) {
   void* fresult = 0 ;
   double arg1 ;
   Foo *result = 0 ;
@@ -360,6 +379,25 @@ SWIGEXPORT const void* swigc_Foo_ptr(const void* farg1) {
   arg1 = (Foo *)(smartarg1 ? smartarg1->get() : 0);
   result = (Foo *)((Foo const *)arg1)->ptr();
   fresult = result ? new std::shared_ptr<const Foo >(result SWIG_NO_NULL_DELETER_0) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_spcopy_Foo(void* farg1) {
+  std::shared_ptr< Foo >* arg1 = (std::shared_ptr< Foo > *)farg1;
+  return new std::shared_ptr< Foo >(*arg1);
+}
+
+
+SWIGEXPORT int swigc_use_count(void * farg1) {
+  int fresult = 0 ;
+  std::shared_ptr< Foo > *arg1 = 0 ;
+  std::shared_ptr< Foo > tempnull1 ;
+  int result;
+  
+  arg1 = farg1 ? (std::shared_ptr< Foo > *)farg1 : &tempnull1;
+  result = (int)use_count((std::shared_ptr< Foo > const &)*arg1);
+  fresult = result;
   return fresult;
 }
 

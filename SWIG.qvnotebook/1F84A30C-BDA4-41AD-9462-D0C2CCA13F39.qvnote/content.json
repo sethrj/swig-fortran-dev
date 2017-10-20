@@ -1,0 +1,9 @@
+{
+  "title": "Performance testing",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "- Multiple loops of increasing sizes\n- Re-execute program multiple times\n- Easily parseable output\n- Load results into Python"
+    }
+  ]
+}
