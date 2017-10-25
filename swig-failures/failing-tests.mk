@@ -1,25 +1,12 @@
 
 # failed to compile fortran
-allowexcept \
-  allprotected \
-  apply_signed_char \
-  array_member \
-  arrays_dimensionless \
-  arrays_global \
-  arrays_global_twodim \
+allprotected \
   autodoc \
-  bools \
-  char_binary \
-  char_strings \
-  chartest \
   constant_pointers \
   constructor_copy \
-  cpp_namespace \
-  cpp_nodefault \
   default_args \
   default_constructor \
   director_basic \
-  director_classes \
   director_detect \
   director_enum \
   director_frob \
@@ -27,36 +14,25 @@ allowexcept \
   director_keywords \
   director_nested \
   director_overload \
-  director_primitives \
   director_property \
   director_protected \
   director_redefined \
   enum_ignore \
   enum_scope_template \
   enum_thorough \
-  enum_var \
-  equality \
   evil_diamond_prop \
-  exception_order \
-  extend_constructor_destructor \
   extend_default \
   extend_template_method \
   extern_c \
   friends \
   global_namespace \
-  grouping \
-  li_carrays_cpp \
-  li_std_string \
   li_std_vector_enum \
-  li_windows \
-  long_long_apply \
   mixed_types \
   multiple_inheritance_abstract \
   multiple_inheritance_interfaces \
   multiple_inheritance_nspace \
   namespace_class \
   namespace_nested \
-  naturalvar \
   naturalvar_more \
   nested_scope \
   nested_workaround \
@@ -73,9 +49,6 @@ allowexcept \
   preproc_constants \
   primitive_ref \
   refcount \
-  reference_global_vars \
-  rename_predicates \
-  rename_simple \
   return_const_value \
   samename \
   smart_pointer_const \
@@ -93,11 +66,8 @@ allowexcept \
   smart_pointer_templatevariables \
   smart_pointer_typedef \
   special_variables \
-  string_constants \
-  struct_initialization_cpp \
   template_arg_typename \
   template_basic \
-  template_default \
   template_default_arg \
   template_enum \
   template_explicit \
@@ -108,7 +78,6 @@ allowexcept \
   template_specialization_enum \
   template_typedef_inherit \
   typemap_ns_using \
-  typemap_variables \
   types_directive \
   using1 \
   using2 \
