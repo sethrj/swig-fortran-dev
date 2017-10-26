@@ -1,9 +1,11 @@
 
 # failed to compile fortran
 abstract_signature \
+  allprotected \
   autodoc \
   constructor_copy \
-  cpp_nodefault \
+  default_args \
+  default_constructor \
   director_basic \
   director_classes \
   director_default \
@@ -18,12 +20,16 @@ abstract_signature \
   director_redefined \
   enum_scope_template \
   evil_diamond_prop \
+  extend_default \
   extern_c \
   friends \
   fvirtual \
   inherit_target_language \
-  kwargs_feature \
+  li_std_vector_ptr \
   multiple_inheritance \
+  multiple_inheritance_abstract \
+  multiple_inheritance_interfaces \
+  multiple_inheritance_nspace \
   namespace_class \
   namespace_nested \
   naturalvar_more \
@@ -35,8 +41,11 @@ abstract_signature \
   overload_arrays \
   overload_method \
   overload_polymorphic \
+  overload_return_type \
   overload_simple \
   overload_subtype \
+  overload_template \
+  overload_template_fast \
   preproc_constants \
   primitive_ref \
   refcount \
@@ -63,6 +72,8 @@ abstract_signature \
   smart_pointer_templatevariables \
   smart_pointer_typedef \
   special_variables \
+  template_arg_typename \
+  template_default_arg \
   template_enum \
   template_extend_overload \
   template_methods \
@@ -71,7 +82,6 @@ abstract_signature \
   template_specialization_enum \
   template_typedef_inherit \
   typemap_ns_using \
-  typemap_out_optimal \
   types_directive \
   using1 \
   using2 \
@@ -85,38 +95,19 @@ abstract_signature \
   wallkw
 
 # failed to compile wrapper
-aggregate \
-  allprotected \
-  apply_strings \
-  argout \
-  array_typedef_memberin \
-  arrayref \
-  arrays_global \
-  arrays_global_twodim \
-  catches \
-  char_binary \
-  char_strings \
+apply_strings \
   constant_pointers \
-  constover \
   contract \
   cpp_basic \
   cpp_enum \
-  default_args \
-  default_constructor \
   director_binary_string \
   director_enum \
   director_extend \
-  director_primitives \
   director_smartptr \
-  director_string \
   dynamic_cast \
   enum_ignore \
   enum_thorough \
-  exception_order \
   extend \
-  extend_default \
-  extend_placement \
-  funcptr_cpp \
   global_namespace \
   global_vars \
   li_attribute \
@@ -127,54 +118,33 @@ aggregate \
   li_cdata_cpp \
   li_std_except \
   li_std_except_as_class \
-  li_std_string \
-  li_std_vector \
   li_std_vector_enum \
-  li_std_vector_ptr \
-  li_swigtype_inout \
   member_funcptr_galore \
   member_pointer \
   member_pointer_const \
   memberin_extend \
   mixed_types \
-  multiple_inheritance_abstract \
-  multiple_inheritance_interfaces \
-  multiple_inheritance_nspace \
   multiple_inheritance_shared_ptr \
   name_warnings \
   namespace_spaces \
   namespace_typemap \
   nested_ignore \
   operator_pointer_ref \
-  overload_bool \
-  overload_return_type \
-  overload_template \
-  overload_template_fast \
-  pointer_reference \
   return_const_value \
   smart_pointer_const_overload \
   special_variable_macros \
-  string_constants \
-  swig_exception \
-  template_arg_typename \
   template_basic \
-  template_const_ref \
-  template_default_arg \
-  template_default_arg_overloaded \
   template_explicit \
-  template_nested_typemaps \
   template_rename \
   template_typedef_rec \
-  threads \
-  threads_exception \
   typedef_sizet \
   typedef_struct_cpp \
   typemap_various \
   valuewrapper_const \
-  varargs \
-  varargs_overload \
   virtual_poly \
   wrapmacro
 
 # failed to run swig
-
+typemap_namespace \
+  varargs \
+  varargs_overload
