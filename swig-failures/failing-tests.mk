@@ -1,15 +1,49 @@
 
+# failed to run swig
+  
+
+# failed to compile wrapper
+  apply_signed_char \
+  apply_strings \
+  cpp_basic \
+  director_binary_string \
+  dynamic_cast \
+  extend \
+  li_attribute \
+  li_attribute_template \
+  li_cdata_cpp \
+  li_std_except \
+  li_std_except_as_class \
+  li_windows \
+  member_funcptr_galore \
+  member_pointer \
+  member_pointer_const \
+  memberin_extend \
+  namespace_spaces \
+  namespace_typemap \
+  operator_pointer_ref \
+  smart_pointer_const_overload \
+  special_variable_macros \
+  template_basic \
+  template_explicit \
+  typedef_struct_cpp \
+  typemap_various
+
 # failed to compile fortran
-abstract_signature \
+  abstract_signature \
   allprotected \
   autodoc \
+  constant_pointers \
   constructor_copy \
+  contract \
+  cpp_enum \
   default_args \
   default_constructor \
   director_basic \
   director_classes \
   director_default \
   director_detect \
+  director_enum \
   director_frob \
   director_ignore \
   director_keywords \
@@ -18,18 +52,26 @@ abstract_signature \
   director_property \
   director_protected \
   director_redefined \
+  enum_ignore \
   enum_scope_template \
+  enum_thorough \
   evil_diamond_prop \
   extend_default \
-  extern_c \
   friends \
   fvirtual \
+  global_namespace \
+  global_vars \
   inherit_target_language \
+  li_boost_shared_ptr \
+  li_std_vector_enum \
   li_std_vector_ptr \
+  mixed_types \
   multiple_inheritance \
   multiple_inheritance_abstract \
   multiple_inheritance_interfaces \
   multiple_inheritance_nspace \
+  multiple_inheritance_shared_ptr \
+  name_warnings \
   namespace_class \
   namespace_nested \
   naturalvar_more \
@@ -49,6 +91,7 @@ abstract_signature \
   preproc_constants \
   primitive_ref \
   refcount \
+  return_const_value \
   samename \
   smart_pointer_const \
   smart_pointer_const2 \
@@ -90,61 +133,8 @@ abstract_signature \
   using_inherit \
   using_protected \
   valuewrapper_base \
+  valuewrapper_const \
   valuewrapper_opaque \
   variable_replacement \
-  wallkw
-
-# failed to compile wrapper
-apply_strings \
-  constant_pointers \
-  contract \
-  cpp_basic \
-  cpp_enum \
-  director_binary_string \
-  director_enum \
-  director_extend \
-  director_smartptr \
-  dynamic_cast \
-  enum_ignore \
-  enum_thorough \
-  extend \
-  global_namespace \
-  global_vars \
-  li_attribute \
-  li_attribute_template \
-  li_boost_shared_ptr \
-  li_boost_shared_ptr_bits \
-  li_boost_shared_ptr_template \
-  li_cdata_cpp \
-  li_std_except \
-  li_std_except_as_class \
-  li_std_vector_enum \
-  member_funcptr_galore \
-  member_pointer \
-  member_pointer_const \
-  memberin_extend \
-  mixed_types \
-  multiple_inheritance_shared_ptr \
-  name_warnings \
-  namespace_spaces \
-  namespace_typemap \
-  nested_ignore \
-  operator_pointer_ref \
-  return_const_value \
-  smart_pointer_const_overload \
-  special_variable_macros \
-  template_basic \
-  template_explicit \
-  template_rename \
-  template_typedef_rec \
-  typedef_sizet \
-  typedef_struct_cpp \
-  typemap_various \
-  valuewrapper_const \
   virtual_poly \
-  wrapmacro
-
-# failed to run swig
-typemap_namespace \
-  varargs \
-  varargs_overload
+  wallkw
