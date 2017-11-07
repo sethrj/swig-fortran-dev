@@ -15,10 +15,6 @@
     },
     {
       "type": "markdown",
-      "data": "# Memory management in SWIG\n- Delete when you call \"new\"\n- Calling `SetAttr` increments the reference counter (should delete after using)\n- Calling `GetAttr` returns a reference, not a copy (don't delete)"
-    },
-    {
-      "type": "markdown",
       "data": "# Overriding typemaps\n\nIt would be nice to automatically replace `fout` with `fcreate` and `frelease` where appropriate. But there's no way to specialize typemaps based on function names.\n\nThe `%feature` directive allows specific function names to be modified, but doesn't support regex\n\nMove constructor/destructor special case code to C++\n\nNew typemap: `imimport` allows importing typenames from module namespace, needed if fortran classes "
     }
   ]

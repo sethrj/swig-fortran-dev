@@ -1,0 +1,13 @@
+{
+  "title": "Fortran C binding structs",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "- How do we know what's C-compatible by default?\n- Provide `%feature` directive to override (like with the `valuewrapper` and `novaluewrapper` features)\n- Usually classes are proxy functions with stored C pointers, and the generic `SWIGTYPE` uses that. However, how do we identify what wrapped types are structs and how to access them by directly passing their type through to C++? Is it possible to use a `%feature` directive, like with shared pointers?"
+    },
+    {
+      "type": "markdown",
+      "data": "Trivial constructor, standard layout => POD\n[descriptions](https://msdn.microsoft.com/en-us/library/mt767760.aspx)\n\nTaking the example code:\n```c++\nstruct BasicStruct\n{\n    int foo;\n    double bar;\n};\n\nstruct DerivedStruct : BasicStruct\n{\n    int vald;\n    double bard;\n};\n\nstruct AbstractStruct\n{\n    int foo;\n    double bar;\n    virtual void do_nothing() = 0;\n};\n\nstruct PrivateStruct\n{\n    int foo;\n  private:\n    double bar;\n};\n\nstruct NontrivialStruct\n{\n    int foo;\n    double bar;\n    NontrivialStruct(int i);\n};\n```\n\nand copying the output using `print_pynode`:\n```py\nitems = {k: set(v) for k,v in classes.items()}\nbasic = items.pop('BasicStruct')\nfor k,v in items.items():\n    print(k, \" has:\", \",\".join(sorted(v - basic)))\n    print(k, \" is missing:\", \",\".join(sorted(basic - v)))\n```\nyields\n```\nPrivateStruct  has: previousSibling\nPrivateStruct  is missing: \nAbstractStruct  has: abstracts,previousSibling\nAbstractStruct  is missing: has_default_constructor\nDerivedStruct  has: allbases,baselist,bases,previousSibling,privatebaselist,protectedbaselist\nDerivedStruct  is missing: \nNontrivialStruct  has: allocate:has_constructor,allocate:public_constructor,previousSibling\nNontrivialStruct  is missing: allocate:default_constructor,has_default_constructor,nextSibling\n```\n\nThus it should be easy to give default struct accessibility for everything but types with private data."
+    }
+  ]
+}

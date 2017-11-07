@@ -4,6 +4,14 @@
     {
       "type": "markdown",
       "data": "# SWIG node properties\n\nThe `%rename` directive changes the `sym:name` property\n\n# Running unit tests\n\nTo run fortran and build a list of failing tests:\n\n    cd Examples/test-suite/fortran\n    rm summary.txt\n    make -k check-cpp\n \nThe dumping of pass/failing tests into summary.txt was added in `2520171dc2ee16c0e099f577f0d3ec2a78376c05` . The failure list can be processed using `swig-failures/process-failures.ipynb` in this repo, then used to update `Examples/test-suite/fortran/Makefile.in`.\n\nTo run a single check:\n\n    make director_smartptr.cpptest"
+    },
+    {
+      "type": "markdown",
+      "data": "# Memory management in SWIG\n- Delete when you call \"new\"\n- Calling `SetAttr` increments the reference counter (should delete after using)\n- Calling `GetAttr` returns a reference, not a copy (don't delete)"
+    },
+    {
+      "type": "markdown",
+      "data": "# SWIG typedef resolution\n\nPreviously I was typedefing `size_type` as `int` in the STL wrappers so that the fortran side could use native integers. However, once I changed the typemap code to use `$lname` instead of `CTYPE`, this meant that the actual typedef `vector::size_type` (rather than the resolved name `int`) was being injected into the wrapper code. So an `int*` was being implicitly used as a `size_t*` which is of course a problem if the two are different sizes."
     }
   ]
 }
