@@ -43,8 +43,8 @@ function swigc_BaseClass_f(farg1) &
 bind(C, name="swigc_BaseClass_f") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 integer(C_INT), intent(in) :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 function swigc_new_BaseClass() &
@@ -72,7 +72,6 @@ integer(C_INT) :: farg1
 
 farg1 = value0
 call swigc_set_BaseClass_i(farg1)
-
 end subroutine
 
 function swigf_get_BaseClass_i() &
@@ -106,7 +105,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_BaseClass()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_delete_BaseClass(self)
@@ -117,7 +115,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_BaseClass(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 

@@ -27,10 +27,10 @@ function swigc_do_op(farg1, farg2, farg3) &
 bind(C, name="swigc_do_op") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 integer(C_INT), intent(in) :: farg1
 integer(C_INT), intent(in) :: farg2
 type(C_FUNPTR), intent(in), value :: farg3
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_set_funcvar(farg1) &
@@ -77,7 +77,6 @@ type(C_FUNPTR) :: farg1
 
 farg1 = funcvar
 call swigc_set_funcvar(farg1)
-
 end subroutine
 
 function get_funcvar() &

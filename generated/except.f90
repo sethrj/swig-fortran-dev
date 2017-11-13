@@ -50,7 +50,6 @@ integer(C_INT) :: farg1
 
 farg1 = val
 call swigc_alpha(farg1)
-
 end subroutine
 
 function bravo() &

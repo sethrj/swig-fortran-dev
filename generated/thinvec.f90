@@ -79,42 +79,42 @@ function swigc_new_ThinVecDbl_create_fill(farg1, farg2) &
 bind(C, name="swigc_new_ThinVecDbl_create_fill") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
 real(C_DOUBLE), intent(in) :: farg2
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_ThinVecDbl_create_count(farg1) &
 bind(C, name="swigc_new_ThinVecDbl_create_count") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_ThinVecDbl_empty(farg1) &
 bind(C, name="swigc_ThinVecDbl_empty") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
+logical(C_BOOL) :: fresult
 end function
 
 function swigc_ThinVecDbl_size(farg1) &
 bind(C, name="swigc_ThinVecDbl_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_ThinVecDbl_get(farg1, farg2) &
 bind(C, name="swigc_ThinVecDbl_get") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
+real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_ThinVecDbl_set(farg1, farg2, farg3) &
@@ -153,8 +153,8 @@ bind(C, name="swigc_ThinVecDbl_view") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(SwigfArrayWrapper) :: fresult
 type(C_PTR), value :: farg1
+type(SwigfArrayWrapper) :: fresult
 end function
 
 subroutine swigc_delete_ThinVecDbl(farg1) &
@@ -174,42 +174,42 @@ function swigc_new_ThinVecInt_create_fill(farg1, farg2) &
 bind(C, name="swigc_new_ThinVecInt_create_fill") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
 integer(C_INT), intent(in) :: farg2
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_ThinVecInt_create_count(farg1) &
 bind(C, name="swigc_new_ThinVecInt_create_count") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_ThinVecInt_empty(farg1) &
 bind(C, name="swigc_ThinVecInt_empty") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
+logical(C_BOOL) :: fresult
 end function
 
 function swigc_ThinVecInt_size(farg1) &
 bind(C, name="swigc_ThinVecInt_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_ThinVecInt_get(farg1, farg2) &
 bind(C, name="swigc_ThinVecInt_get") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_ThinVecInt_set(farg1, farg2, farg3) &
@@ -248,8 +248,8 @@ bind(C, name="swigc_ThinVecInt_view") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(SwigfArrayWrapper) :: fresult
 type(C_PTR), value :: farg1
+type(SwigfArrayWrapper) :: fresult
 end function
 
 subroutine swigc_delete_ThinVecInt(farg1) &
@@ -282,7 +282,6 @@ type(C_PTR) :: farg1
 
 farg1 = indices%swigptr
 call swigc_print_offbyone(farg1)
-
 end subroutine
 
 subroutine swigf_new_ThinVecDbl(self)
@@ -293,7 +292,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_ThinVecDbl()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_ThinVecDbl_create_fill(self, count, fillval)
@@ -310,7 +308,6 @@ farg1 = count
 farg2 = fillval
 fresult = swigc_new_ThinVecDbl_create_fill(farg1, farg2)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_ThinVecDbl_create_count(self, count)
@@ -324,7 +321,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = count
 fresult = swigc_new_ThinVecDbl_create_count(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 function swigf_ThinVecDbl_empty(self) &
@@ -382,7 +378,6 @@ farg1 = self%swigptr
 farg2 = index
 farg3 = val
 call swigc_ThinVecDbl_set(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_ThinVecDbl_resize_fill(self, newsize, fillval)
@@ -398,7 +393,6 @@ farg1 = self%swigptr
 farg2 = newsize
 farg3 = fillval
 call swigc_ThinVecDbl_resize_fill(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_ThinVecDbl_resize(self, newsize)
@@ -411,7 +405,6 @@ integer(C_INT) :: farg2
 farg1 = self%swigptr
 farg2 = newsize
 call swigc_ThinVecDbl_resize(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_ThinVecDbl_assign_from(self, arr)
@@ -425,7 +418,6 @@ farg1 = self%swigptr
 farg2%data = c_loc(arr(1))
 farg2%size = size(arr)
 call swigc_ThinVecDbl_assign_from(farg1, farg2)
-
 end subroutine
 
 function swigf_ThinVecDbl_view(self) &
@@ -440,7 +432,6 @@ farg1 = self%swigptr
 fresult = swigc_ThinVecDbl_view(farg1)
 
 call c_f_pointer(fresult%data, swigf_result, [fresult%size])
-
 end function
 
 subroutine swigf_delete_ThinVecDbl(self)
@@ -451,7 +442,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_ThinVecDbl(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -463,7 +453,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_ThinVecInt()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_ThinVecInt_create_fill(self, count, fillval)
@@ -480,7 +469,6 @@ farg1 = count
 farg2 = fillval
 fresult = swigc_new_ThinVecInt_create_fill(farg1, farg2)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_ThinVecInt_create_count(self, count)
@@ -494,7 +482,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = count
 fresult = swigc_new_ThinVecInt_create_count(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 function swigf_ThinVecInt_empty(self) &
@@ -552,7 +539,6 @@ farg1 = self%swigptr
 farg2 = index
 farg3 = val
 call swigc_ThinVecInt_set(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_ThinVecInt_resize_fill(self, newsize, fillval)
@@ -568,7 +554,6 @@ farg1 = self%swigptr
 farg2 = newsize
 farg3 = fillval
 call swigc_ThinVecInt_resize_fill(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_ThinVecInt_resize(self, newsize)
@@ -581,7 +566,6 @@ integer(C_INT) :: farg2
 farg1 = self%swigptr
 farg2 = newsize
 call swigc_ThinVecInt_resize(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_ThinVecInt_assign_from(self, arr)
@@ -595,7 +579,6 @@ farg1 = self%swigptr
 farg2%data = c_loc(arr(1))
 farg2%size = size(arr)
 call swigc_ThinVecInt_assign_from(farg1, farg2)
-
 end subroutine
 
 function swigf_ThinVecInt_view(self) &
@@ -610,7 +593,6 @@ farg1 = self%swigptr
 fresult = swigc_ThinVecInt_view(farg1)
 
 call c_f_pointer(fresult%data, swigf_result, [fresult%size])
-
 end function
 
 subroutine swigf_delete_ThinVecInt(self)
@@ -621,7 +603,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_ThinVecInt(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -632,7 +613,6 @@ type(C_PTR) :: farg1
 
 farg1 = v%swigptr
 call swigc_print_vec__SWIG_1(farg1)
-
 end subroutine
 
 subroutine print_vec__SWIG_2(v)
@@ -642,7 +622,6 @@ type(C_PTR) :: farg1
 
 farg1 = v%swigptr
 call swigc_print_vec__SWIG_2(farg1)
-
 end subroutine
 
 

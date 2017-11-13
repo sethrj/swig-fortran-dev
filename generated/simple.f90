@@ -19,9 +19,9 @@ function swigc_gcd(farg1, farg2) &
 bind(C, name="swigc_gcd") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 integer(C_INT), intent(in) :: farg1
 integer(C_INT), intent(in) :: farg2
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_set_Foo(farg1) &
@@ -65,7 +65,6 @@ real(C_DOUBLE) :: farg1
 
 farg1 = foo
 call swigc_set_Foo(farg1)
-
 end subroutine
 
 function get_Foo() &

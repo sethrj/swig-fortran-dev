@@ -92,8 +92,8 @@ function swigc_get_Shape_x(farg1) &
 bind(C, name="swigc_get_Shape_x") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 type(C_PTR), value :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_set_Shape_y(farg1, farg2) &
@@ -107,8 +107,8 @@ function swigc_get_Shape_y(farg1) &
 bind(C, name="swigc_get_Shape_y") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 type(C_PTR), value :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_delete_Shape(farg1) &
@@ -129,40 +129,40 @@ function swigc_Shape_area(farg1) &
 bind(C, name="swigc_Shape_area") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 type(C_PTR), value :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 function swigc_Shape_perimeter(farg1) &
 bind(C, name="swigc_Shape_perimeter") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 type(C_PTR), value :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 function swigc_new_Circle(farg1) &
 bind(C, name="swigc_new_Circle") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 real(C_DOUBLE), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_Circle_area(farg1) &
 bind(C, name="swigc_Circle_area") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 type(C_PTR), value :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 function swigc_Circle_perimeter(farg1) &
 bind(C, name="swigc_Circle_perimeter") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 type(C_PTR), value :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_delete_Circle(farg1) &
@@ -175,24 +175,24 @@ function swigc_new_Square(farg1) &
 bind(C, name="swigc_new_Square") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 real(C_DOUBLE), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_Square_area(farg1) &
 bind(C, name="swigc_Square_area") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 type(C_PTR), value :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 function swigc_Square_perimeter(farg1) &
 bind(C, name="swigc_Square_perimeter") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 type(C_PTR), value :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_delete_Square(farg1) &
@@ -205,16 +205,16 @@ function swigc_new_Sphere(farg1) &
 bind(C, name="swigc_new_Sphere") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 real(C_DOUBLE), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_Sphere_volume(farg1) &
 bind(C, name="swigc_Sphere_volume") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 type(C_PTR), value :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_delete_Sphere(farg1) &
@@ -227,8 +227,8 @@ function swigc_surface_to_volume(farg1) &
 bind(C, name="swigc_surface_to_volume") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 type(C_PTR), value :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
  end interface
@@ -243,7 +243,6 @@ integer(C_INT) :: farg1
 
 farg1 = value0
 call swigc_set_Shape_nshapes(farg1)
-
 end subroutine
 
 function swigf_get_Shape_nshapes() &
@@ -266,7 +265,6 @@ real(C_DOUBLE) :: farg2
 farg1 = self%swigptr
 farg2 = x
 call swigc_set_Shape_x(farg1, farg2)
-
 end subroutine
 
 function swigf_get_Shape_x(self) &
@@ -292,7 +290,6 @@ real(C_DOUBLE) :: farg2
 farg1 = self%swigptr
 farg2 = y
 call swigc_set_Shape_y(farg1, farg2)
-
 end subroutine
 
 function swigf_get_Shape_y(self) &
@@ -316,7 +313,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_Shape(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -333,7 +329,6 @@ farg1 = self%swigptr
 farg2 = dx
 farg3 = dy
 call swigc_Shape_move(farg1, farg2, farg3)
-
 end subroutine
 
 function swigf_Shape_area(self) &
@@ -373,7 +368,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = r
 fresult = swigc_new_Circle(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 function swigf_Circle_area(self) &
@@ -410,7 +404,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_Circle(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -425,7 +418,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = w
 fresult = swigc_new_Square(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 function swigf_Square_area(self) &
@@ -462,7 +454,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_Square(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -477,7 +468,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = r
 fresult = swigc_new_Sphere(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 function swigf_Sphere_volume(self) &
@@ -501,7 +491,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_Sphere(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 

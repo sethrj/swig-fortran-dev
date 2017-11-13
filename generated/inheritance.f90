@@ -54,16 +54,16 @@ function swigc_BaseClass_foo(farg1) &
 bind(C, name="swigc_BaseClass_foo") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_FLOAT) :: fresult
 type(C_PTR), value :: farg1
+real(C_FLOAT) :: fresult
 end function
 
 function swigc_BaseClass_get_i(farg1) &
 bind(C, name="swigc_BaseClass_get_i") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_BaseClass_set_i(farg1, farg2) &
@@ -84,9 +84,9 @@ function swigc_new_DerivedA__SWIG_1(farg1, farg2) &
 bind(C, name="swigc_new_DerivedA__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
 real(C_FLOAT), intent(in) :: farg2
+type(C_PTR) :: fresult
 end function
 
 subroutine swigc_delete_DerivedA(farg1) &
@@ -99,8 +99,8 @@ function swigc_DerivedA_foo(farg1) &
 bind(C, name="swigc_DerivedA_foo") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_FLOAT) :: fresult
 type(C_PTR), value :: farg1
+real(C_FLOAT) :: fresult
 end function
 
 subroutine swigc_DerivedA_print(farg1) &
@@ -120,9 +120,9 @@ function swigc_new_DerivedB__SWIG_1(farg1, farg2) &
 bind(C, name="swigc_new_DerivedB__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
 integer(C_INT), intent(in) :: farg2
+type(C_PTR) :: fresult
 end function
 
 subroutine swigc_delete_DerivedB(farg1) &
@@ -135,8 +135,8 @@ function swigc_DerivedB_foo(farg1) &
 bind(C, name="swigc_DerivedB_foo") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_FLOAT) :: fresult
 type(C_PTR), value :: farg1
+real(C_FLOAT) :: fresult
 end function
 
  end interface
@@ -152,7 +152,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_BaseClass(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -192,7 +191,6 @@ integer(C_INT) :: farg2
 farg1 = self%swigptr
 farg2 = i
 call swigc_BaseClass_set_i(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_new_DerivedA__SWIG_0(self)
@@ -203,7 +201,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_DerivedA__SWIG_0()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_DerivedA__SWIG_1(self, i, f)
@@ -220,7 +217,6 @@ farg1 = i
 farg2 = f
 fresult = swigc_new_DerivedA__SWIG_1(farg1, farg2)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_delete_DerivedA(self)
@@ -231,7 +227,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_DerivedA(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -255,7 +250,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_DerivedA_print(farg1)
-
 end subroutine
 
 subroutine swigf_new_DerivedB__SWIG_0(self)
@@ -266,7 +260,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_DerivedB__SWIG_0()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_DerivedB__SWIG_1(self, i, i2)
@@ -283,7 +276,6 @@ farg1 = i
 farg2 = i2
 fresult = swigc_new_DerivedB__SWIG_1(farg1, farg2)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_delete_DerivedB(self)
@@ -294,7 +286,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_DerivedB(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 

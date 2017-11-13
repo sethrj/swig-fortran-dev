@@ -73,8 +73,8 @@ function swigc_get_something(farg1) &
 bind(C, name="swigc_get_something") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 integer(C_INT), intent(in) :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_get_something_ref(farg1, farg2) &
@@ -95,32 +95,32 @@ function swigc_get_something_rptr(farg1) &
 bind(C, name="swigc_get_something_rptr") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_get_something_rcptr(farg1) &
 bind(C, name="swigc_get_something_rcptr") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_get_something_rref(farg1) &
 bind(C, name="swigc_get_something_rref") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_get_something_rcref(farg1) &
 bind(C, name="swigc_get_something_rcref") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 integer(C_INT), intent(in) :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_print_array(farg1) &
@@ -198,7 +198,6 @@ real(C_DOUBLE) :: farg2
 farg1 = x
 farg2 = y
 call swigc_set_something(farg1, farg2)
-
 end subroutine
 
 function get_something(x) &
@@ -224,7 +223,6 @@ type(C_PTR) :: farg2
 farg1 = x
 farg2 = c_loc(y)
 call swigc_get_something_ref(farg1, farg2)
-
 end subroutine
 
 subroutine get_something_ptr(x, y)
@@ -237,7 +235,6 @@ type(C_PTR) :: farg2
 farg1 = x
 farg2 = c_loc(y)
 call swigc_get_something_ptr(farg1, farg2)
-
 end subroutine
 
 function get_something_rptr(x) &
@@ -300,7 +297,6 @@ type(SwigfArrayWrapper) :: farg1
 farg1%data = c_loc(arr(1))
 farg1%size = size(arr)
 call swigc_print_array(farg1)
-
 end subroutine
 
 function get_linked_const_int() &
@@ -350,7 +346,6 @@ integer(C_INT) :: farg1
 
 farg1 = value0
 call swigc_set_global_counter(farg1)
-
 end subroutine
 
 function get_global_counter() &
@@ -370,7 +365,6 @@ integer(C_INT) :: farg1
 
 farg1 = color
 call swigc_print_rgb(farg1)
-
 end subroutine
 
 subroutine print_cmyk(color)
@@ -380,7 +374,6 @@ integer(C_INT) :: farg1
 
 farg1 = color
 call swigc_print_cmyk(farg1)
-
 end subroutine
 
 

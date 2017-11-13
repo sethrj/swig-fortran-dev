@@ -64,16 +64,16 @@ function swigc_string_size(farg1) &
 bind(C, name="swigc_string_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: fresult
 type(C_PTR), value :: farg1
+integer(C_LONG) :: fresult
 end function
 
 function swigc_string_length(farg1) &
 bind(C, name="swigc_string_length") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: fresult
 type(C_PTR), value :: farg1
+integer(C_LONG) :: fresult
 end function
 
 subroutine swigc_string_set(farg1, farg2, farg3) &
@@ -88,9 +88,9 @@ function swigc_string_get(farg1, farg2) &
 bind(C, name="swigc_string_get") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_SIGNED_CHAR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_LONG), intent(in) :: farg2
+integer(C_SIGNED_CHAR) :: fresult
 end function
 
 subroutine swigc_string_assign_from(farg1, farg2) &
@@ -106,8 +106,8 @@ bind(C, name="swigc_string_view") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(SwigfArrayWrapper) :: fresult
 type(C_PTR), value :: farg1
+type(SwigfArrayWrapper) :: fresult
 end function
 
 subroutine swigc_string_copy_to(farg1, farg2) &
@@ -149,7 +149,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_string()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_string_resize(self, count)
@@ -162,7 +161,6 @@ integer(C_LONG) :: farg2
 farg1 = self%swigptr
 farg2 = count
 call swigc_string_resize(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_string_clear(self)
@@ -172,7 +170,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_string_clear(farg1)
-
 end subroutine
 
 function swigf_string_size(self) &
@@ -214,7 +211,6 @@ farg1 = self%swigptr
 farg2 = pos
 farg3 = v
 call swigc_string_set(farg1, farg2, farg3)
-
 end subroutine
 
 function swigf_string_get(self, pos) &
@@ -244,7 +240,6 @@ farg1 = self%swigptr
 farg2%data = c_loc(view)
 farg2%size = len(view)
 call swigc_string_assign_from(farg1, farg2)
-
 end subroutine
 
 function swigf_string_view(self) &
@@ -259,7 +254,6 @@ farg1 = self%swigptr
 fresult = swigc_string_view(farg1)
 
 call c_f_pointer(fresult%data, swigf_result, [fresult%size])
-
 end function
 
 subroutine swigf_string_copy_to(self, view)
@@ -273,7 +267,6 @@ farg1 = self%swigptr
 farg2%data = c_loc(view)
 farg2%size = len(view)
 call swigc_string_copy_to(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_delete_string(self)
@@ -284,7 +277,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_string(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -295,7 +287,6 @@ type(C_PTR) :: farg1
 
 farg1 = s%swigptr
 call swigc_print_str(farg1)
-
 end subroutine
 
 subroutine halve_str(s)
@@ -305,7 +296,6 @@ type(C_PTR) :: farg1
 
 farg1 = s%swigptr
 call swigc_halve_str(farg1)
-
 end subroutine
 
 

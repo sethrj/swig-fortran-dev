@@ -53,9 +53,9 @@ bind(C, name="swigc_find_sorted__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-integer(C_INT) :: fresult
 type(SwigfArrayWrapper) :: farg1
 integer(C_INT), intent(in) :: farg2
+integer(C_INT) :: fresult
 end function
 
 function swigc_get_view__SWIG_1(farg1) &
@@ -63,8 +63,8 @@ bind(C, name="swigc_get_view__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(SwigfArrayWrapper) :: fresult
 type(SwigfArrayWrapper) :: farg1
+type(SwigfArrayWrapper) :: fresult
 end function
 
 subroutine swigc_sort__SWIG_2(farg1) &
@@ -86,9 +86,9 @@ bind(C, name="swigc_find_sorted__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-integer(C_INT) :: fresult
 type(SwigfArrayWrapper) :: farg1
 real(C_FLOAT), intent(in) :: farg2
+integer(C_INT) :: fresult
 end function
 
 function swigc_get_view__SWIG_2(farg1) &
@@ -96,8 +96,8 @@ bind(C, name="swigc_get_view__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(SwigfArrayWrapper) :: fresult
 type(SwigfArrayWrapper) :: farg1
+type(SwigfArrayWrapper) :: fresult
 end function
 
 subroutine swigc_sort__SWIG_3(farg1) &
@@ -119,9 +119,9 @@ bind(C, name="swigc_find_sorted__SWIG_3") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-integer(C_INT) :: fresult
 type(SwigfArrayWrapper) :: farg1
 real(C_DOUBLE), intent(in) :: farg2
+integer(C_INT) :: fresult
 end function
 
 function swigc_get_view__SWIG_3(farg1) &
@@ -129,8 +129,8 @@ bind(C, name="swigc_get_view__SWIG_3") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(SwigfArrayWrapper) :: fresult
 type(SwigfArrayWrapper) :: farg1
+type(SwigfArrayWrapper) :: fresult
 end function
 
  end interface
@@ -146,7 +146,6 @@ type(SwigfArrayWrapper) :: farg1
 farg1%data = c_loc(view(1))
 farg1%size = size(view)
 call swigc_sort__SWIG_1(farg1)
-
 end subroutine
 
 subroutine reverse__SWIG_1(view)
@@ -157,7 +156,6 @@ type(SwigfArrayWrapper) :: farg1
 farg1%data = c_loc(view(1))
 farg1%size = size(view)
 call swigc_reverse__SWIG_1(farg1)
-
 end subroutine
 
 function find_sorted__SWIG_1(view, val) &
@@ -190,7 +188,6 @@ farg1%size = size(view)
 fresult = swigc_get_view__SWIG_1(farg1)
 
 call c_f_pointer(fresult%data, swigf_result, [fresult%size])
-
 end function
 
 subroutine sort__SWIG_2(view)
@@ -201,7 +198,6 @@ type(SwigfArrayWrapper) :: farg1
 farg1%data = c_loc(view(1))
 farg1%size = size(view)
 call swigc_sort__SWIG_2(farg1)
-
 end subroutine
 
 subroutine reverse__SWIG_2(view)
@@ -212,7 +208,6 @@ type(SwigfArrayWrapper) :: farg1
 farg1%data = c_loc(view(1))
 farg1%size = size(view)
 call swigc_reverse__SWIG_2(farg1)
-
 end subroutine
 
 function find_sorted__SWIG_2(view, val) &
@@ -245,7 +240,6 @@ farg1%size = size(view)
 fresult = swigc_get_view__SWIG_2(farg1)
 
 call c_f_pointer(fresult%data, swigf_result, [fresult%size])
-
 end function
 
 subroutine sort__SWIG_3(view)
@@ -256,7 +250,6 @@ type(SwigfArrayWrapper) :: farg1
 farg1%data = c_loc(view(1))
 farg1%size = size(view)
 call swigc_sort__SWIG_3(farg1)
-
 end subroutine
 
 subroutine reverse__SWIG_3(view)
@@ -267,7 +260,6 @@ type(SwigfArrayWrapper) :: farg1
 farg1%data = c_loc(view(1))
 farg1%size = size(view)
 call swigc_reverse__SWIG_3(farg1)
-
 end subroutine
 
 function find_sorted__SWIG_3(view, val) &
@@ -300,7 +292,6 @@ farg1%size = size(view)
 fresult = swigc_get_view__SWIG_3(farg1)
 
 call c_f_pointer(fresult%data, swigf_result, [fresult%size])
-
 end function
 
 

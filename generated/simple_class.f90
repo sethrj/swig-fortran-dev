@@ -63,8 +63,8 @@ function swigc_get_BasicStruct_val(farg1) &
 bind(C, name="swigc_get_BasicStruct_val") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_new_BasicStruct() &
@@ -91,16 +91,16 @@ function swigc_new_SimpleClass__SWIG_1(farg1) &
 bind(C, name="swigc_new_SimpleClass__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_SimpleClass__SWIG_2(farg1) &
 bind(C, name="swigc_new_SimpleClass__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 real(C_DOUBLE), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 subroutine swigc_delete_SimpleClass(farg1) &
@@ -126,17 +126,17 @@ function swigc_SimpleClass_get(farg1) &
 bind(C, name="swigc_SimpleClass_get") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_SimpleClass_get_multiplied(farg1, farg2) &
 bind(C, name="swigc_SimpleClass_get_multiplied") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_print_value(farg1) &
@@ -149,8 +149,8 @@ function swigc_make_class(farg1) &
 bind(C, name="swigc_make_class") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_get_class() &
@@ -181,7 +181,6 @@ type(C_PTR) :: farg2
 farg1 = msg
 farg2 = ptr
 call swigc_print_pointer(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_set_BasicStruct_val(self, val)
@@ -194,7 +193,6 @@ integer(C_INT) :: farg2
 farg1 = self%swigptr
 farg2 = val
 call swigc_set_BasicStruct_val(farg1, farg2)
-
 end subroutine
 
 function swigf_get_BasicStruct_val(self) &
@@ -218,7 +216,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_BasicStruct()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_delete_BasicStruct(self)
@@ -229,7 +226,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_BasicStruct(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -241,7 +237,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_SimpleClass__SWIG_0()
 self%swigptr = fresult
-
 
 call print_pointer(0, self%swigptr)
 end subroutine
@@ -258,7 +253,6 @@ farg1 = rhs%swigptr
 fresult = swigc_new_SimpleClass__SWIG_1(farg1)
 self%swigptr = fresult
 
-
 call print_pointer(0, self%swigptr)
 end subroutine
 
@@ -274,7 +268,6 @@ farg1 = d
 fresult = swigc_new_SimpleClass__SWIG_2(farg1)
 self%swigptr = fresult
 
-
 call print_pointer(0, self%swigptr)
 end subroutine
 
@@ -289,7 +282,6 @@ call print_pointer(1, self%swigptr)
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_SimpleClass(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -303,7 +295,6 @@ integer(C_INT) :: farg2
 farg1 = self%swigptr
 farg2 = val
 call swigc_SimpleClass_set(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_SimpleClass_double_it(self)
@@ -313,7 +304,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_SimpleClass_double_it(farg1)
-
 end subroutine
 
 function swigf_SimpleClass_get(self) &
@@ -352,7 +342,6 @@ type(C_PTR) :: farg1
 
 farg1 = c%swigptr
 call swigc_print_value(farg1)
-
 end subroutine
 
 function make_class(val) &
@@ -385,7 +374,6 @@ type(C_PTR) :: farg1
 
 farg1 = c%swigptr
 call swigc_set_class_by_copy(farg1)
-
 end subroutine
 
 

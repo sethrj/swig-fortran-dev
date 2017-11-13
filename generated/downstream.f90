@@ -17,7 +17,6 @@ module downstream
 subroutine swigc_throw_error() &
 bind(C, name="swigc_throw_error")
 use, intrinsic :: ISO_C_BINDING
-
 end subroutine
 
  end interface
@@ -29,7 +28,6 @@ subroutine throw_error()
 use, intrinsic :: ISO_C_BINDING
 
 call swigc_throw_error()
-
 end subroutine
 
 

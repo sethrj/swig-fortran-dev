@@ -55,8 +55,8 @@ function swigc_get_Foo_d_val(farg1) &
 bind(C, name="swigc_get_Foo_d_val") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 type(C_PTR), value :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 function swigc_new_Foo__SWIG_0() &
@@ -70,16 +70,16 @@ function swigc_new_Foo__SWIG_1(farg1) &
 bind(C, name="swigc_new_Foo__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_Foo__SWIG_2(farg1) &
 bind(C, name="swigc_new_Foo__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 real(C_DOUBLE), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 subroutine swigc_delete_Foo(farg1) &
@@ -92,8 +92,8 @@ function swigc_Foo_get(farg1) &
 bind(C, name="swigc_Foo_get") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 type(C_PTR), value :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_Foo_set(farg1, farg2) &
@@ -107,48 +107,48 @@ function swigc_Foo_clone(farg1) &
 bind(C, name="swigc_Foo_clone") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_Foo_clone_sp(farg1) &
 bind(C, name="swigc_Foo_clone_sp") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_Foo_mutable_ref(farg1) &
 bind(C, name="swigc_Foo_mutable_ref") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_Foo_ref(farg1) &
 bind(C, name="swigc_Foo_ref") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_Foo_mutable_ptr(farg1) &
 bind(C, name="swigc_Foo_mutable_ptr") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_Foo_ptr(farg1) &
 bind(C, name="swigc_Foo_ptr") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
   function swigc_spcopy_Foo(farg1) &
@@ -162,8 +162,8 @@ function swigc_use_count(farg1) &
 bind(C, name="swigc_use_count") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_print_crsp(farg1) &
@@ -211,7 +211,6 @@ real(C_DOUBLE) :: farg2
 farg1 = self%swigptr
 farg2 = d_val
 call swigc_set_Foo_d_val(farg1, farg2)
-
 end subroutine
 
 function swigf_get_Foo_d_val(self) &
@@ -235,7 +234,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_Foo__SWIG_0()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_Foo__SWIG_1(self, other)
@@ -249,7 +247,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = other%swigptr
 fresult = swigc_new_Foo__SWIG_1(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_Foo__SWIG_2(self, val)
@@ -263,7 +260,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = val
 fresult = swigc_new_Foo__SWIG_2(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_delete_Foo(self)
@@ -274,7 +270,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_Foo(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -301,7 +296,6 @@ real(C_DOUBLE) :: farg2
 farg1 = self%swigptr
 farg2 = v
 call swigc_Foo_set(farg1, farg2)
-
 end subroutine
 
 function swigf_Foo_clone(self) &
@@ -409,7 +403,6 @@ type(C_PTR) :: farg1
 
 farg1 = f%swigptr
 call swigc_print_crsp(farg1)
-
 end subroutine
 
 subroutine print_sp(f)
@@ -419,7 +412,6 @@ type(C_PTR) :: farg1
 
 farg1 = f%swigptr
 call swigc_print_sp(farg1)
-
 end subroutine
 
 subroutine print_spc(f)
@@ -429,7 +421,6 @@ type(C_PTR) :: farg1
 
 farg1 = f%swigptr
 call swigc_print_spc(farg1)
-
 end subroutine
 
 subroutine print_crspc(f)
@@ -439,7 +430,6 @@ type(C_PTR) :: farg1
 
 farg1 = f%swigptr
 call swigc_print_crspc(farg1)
-
 end subroutine
 
 subroutine print_cr(f)
@@ -449,7 +439,6 @@ type(C_PTR) :: farg1
 
 farg1 = f%swigptr
 call swigc_print_cr(farg1)
-
 end subroutine
 
 
