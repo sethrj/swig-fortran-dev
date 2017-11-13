@@ -208,70 +208,28 @@ template <typename T> T SwigValueInit() {
 #include <stdexcept>
 
 
-extern "C" {
-extern int ierr;
-extern char serr[1024];
-}
-
-
-#include <string>
-
-
-#include <algorithm>
-
-
 namespace swig
 {
-// Stored exception message
-std::string fortran_last_exception_msg;
-
-// Call this function before any new action
-void fortran_check_unhandled_exception()
-{
-    if (::ierr != 0)
-    {
-        throw std::runtime_error(
-                "An unhandled exception occurred in $symname: "
-                + fortran_last_exception_msg);
-    }
-}
-
-// Save an exception to the fortran error code and string
-void fortran_store_exception(int code, const char *msg)
-{
-    ::ierr = code;
-
-    // Save the message to a std::string first
-    fortran_last_exception_msg = msg;
-
-    std::size_t msg_size = std::min<std::size_t>(
-            fortran_last_exception_msg.size(),
-            1024);
-
-    // Copy to space-padded Fortran string
-    char* dst = serr;
-    dst = std::copy(fortran_last_exception_msg.begin(),
-                    fortran_last_exception_msg.begin() + msg_size,
-                    dst);
-    std::fill(dst, serr + 1024, ' ');
-}
+// Functions are defined in an imported module
+void fortran_check_unhandled_exception();
+void fortran_store_exception(int code, const char *msg);
 } // end namespace swig
 
 
-#include "except.hh"
+void throw_error()
+{
+    throw std::logic_error("Threw an error for you");
+}
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_alpha(int const *farg1) {
-  int arg1 ;
-  
-  arg1 = *farg1;
+SWIGEXPORT void swigc_throw_error() {
   {
     swig::fortran_check_unhandled_exception();
     try
     {
-      alpha(arg1);
+      throw_error();
     }
     catch (const std::exception& e)
     {
@@ -283,30 +241,6 @@ SWIGEXPORT void swigc_alpha(int const *farg1) {
     }
   }
   
-}
-
-
-SWIGEXPORT int swigc_bravo() {
-  int fresult ;
-  int result;
-  
-  {
-    swig::fortran_check_unhandled_exception();
-    try
-    {
-      result = (int)bravo();
-    }
-    catch (const std::exception& e)
-    {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
-    }
-    catch (const char* errstr)
-    {
-      SWIG_exception_impl(SWIG_UnknownError, errstr, 0);
-    }
-  }
-  fresult = result;
-  return fresult;
 }
 
 

@@ -155,6 +155,15 @@ template <typename T> T SwigValueInit() {
 # pragma warning disable 592
 #endif
 
+
+#ifndef SWIGEXTERN
+#ifdef __cplusplus
+#define SWIGEXTERN extern
+#else
+#define SWIGEXTERN
+#endif
+#endif
+
 /*  Errors in SWIG */
 #define  SWIG_UnknownError    	   -1
 #define  SWIG_IOError        	   -2
@@ -173,28 +182,62 @@ template <typename T> T SwigValueInit() {
 
 
 
+// Default exception handler
+#define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
+    throw std::logic_error(MSG); return NULLRETURN;
+
+
 /* Contract support */
-#define SWIG_contract_assert(nullreturn, expr, msg) if (!(expr)) { \
-swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
+#define SWIG_contract_assert(NULLRETURN, EXPR, MSG) \
+    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, NULLRETURN); }
+
+
+#define SWIGVERSION 0x040000 
+#define SWIG_VERSION SWIGVERSION
+
+
+#define SWIG_as_voidptr(a) const_cast< void * >(static_cast< const void * >(a)) 
+#define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
+
+
+#include <stdexcept>
 
 
 #include "bare.hh"
 
+
+#include <utility>
+
+
+namespace swig {
+template<class T>
+struct SwigfArrayWrapper
+{
+    T* data;
+    std::size_t size;
+};
+}
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_set_something(const int* farg1, const double* farg2) {
+SWIGEXPORT SWIGEXTERN int const swigc_octal_const = 0777;
+
+SWIGEXPORT SWIGEXTERN int const swigc_wrapped_const = 0xdeadbeef;
+
+SWIGEXPORT void swigc_set_something(int const *farg1, double const *farg2) {
   int arg1 ;
   double arg2 ;
   
   arg1 = *farg1;
   arg2 = *farg2;
   set_something(arg1,arg2);
+  
 }
 
 
-SWIGEXPORT double swigc_get_something(const int* farg1) {
-  double fresult = 0 ;
+SWIGEXPORT double swigc_get_something(int const *farg1) {
+  double fresult ;
   int arg1 ;
   double result;
   
@@ -205,52 +248,66 @@ SWIGEXPORT double swigc_get_something(const int* farg1) {
 }
 
 
-SWIGEXPORT void swigc_get_something_ref(const int* farg1, double* farg2) {
+SWIGEXPORT void swigc_get_something_ref(int const *farg1, double *farg2) {
   int arg1 ;
   double *arg2 = 0 ;
   
   arg1 = *farg1;
-  arg2 = farg2;
+  arg2 = reinterpret_cast< double * >(farg2);
   get_something_ref(arg1,*arg2);
+  
 }
 
 
-SWIGEXPORT void swigc_get_something_ptr(const int* farg1, double * farg2) {
+SWIGEXPORT void swigc_get_something_ptr(int const *farg1, double *farg2) {
   int arg1 ;
   double *arg2 = (double *) 0 ;
   
   arg1 = *farg1;
-  arg2 = farg2;
+  arg2 = reinterpret_cast< double * >(farg2);
   get_something_ptr(arg1,arg2);
+  
 }
 
 
-SWIGEXPORT double * swigc_get_something_rcptr(const int* farg1) {
-  double * fresult = 0 ;
+SWIGEXPORT double * swigc_get_something_rptr(int const *farg1) {
+  double * fresult ;
+  int arg1 ;
+  double *result = 0 ;
+  
+  arg1 = *farg1;
+  result = (double *)get_something_rptr(arg1);
+  fresult = reinterpret_cast< double* >(result);
+  return fresult;
+}
+
+
+SWIGEXPORT double * swigc_get_something_rcptr(int const *farg1) {
+  double * fresult ;
   int arg1 ;
   double *result = 0 ;
   
   arg1 = *farg1;
   result = (double *)get_something_rcptr(arg1);
-  fresult = result;
+  fresult = const_cast< double* >(reinterpret_cast< const double* >(result));
   return fresult;
 }
 
 
-SWIGEXPORT double* swigc_get_something_rref(const int* farg1) {
-  double* fresult = 0 ;
+SWIGEXPORT double * swigc_get_something_rref(int const *farg1) {
+  double * fresult ;
   int arg1 ;
   double *result = 0 ;
   
   arg1 = *farg1;
   result = (double *) &get_something_rref(arg1);
-  fresult = result;
+  fresult = reinterpret_cast< double* >(result);
   return fresult;
 }
 
 
-SWIGEXPORT double swigc_get_something_rcref(const int* farg1) {
-  double fresult = 0 ;
+SWIGEXPORT double swigc_get_something_rcref(int const *farg1) {
+  double fresult ;
   int arg1 ;
   double *result = 0 ;
   
@@ -261,13 +318,109 @@ SWIGEXPORT double swigc_get_something_rcref(const int* farg1) {
 }
 
 
-SWIGEXPORT void swigc_print_array(double * farg1, const int* farg2) {
-  double *arg1 = (double *) 0 ;
-  int arg2 ;
+SWIGEXPORT void swigc_print_array(swig::SwigfArrayWrapper< double const > *farg1) {
+  std::pair< double const *,std::size_t > arg1 ;
   
-  arg1 = farg1;
-  arg2 = *farg2;
-  print_array((double const *)arg1,arg2);
+  arg1 = ::std::pair< const double*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  print_array(arg1);
+  
+}
+
+
+SWIGEXPORT SWIGEXTERN int const swigc_RgbEnum = -1;
+
+SWIGEXPORT SWIGEXTERN int const swigc_RED = RED;
+
+SWIGEXPORT SWIGEXTERN int const swigc_GREEN = GREEN;
+
+SWIGEXPORT SWIGEXTERN int const swigc_BLUE = BLUE;
+
+SWIGEXPORT SWIGEXTERN int const swigc_CmykEnum = -1;
+
+SWIGEXPORT SWIGEXTERN int const swigc_CYAN = CYAN;
+
+SWIGEXPORT SWIGEXTERN int const swigc_MAGENTA = MAGENTA;
+
+SWIGEXPORT SWIGEXTERN int const swigc_YELLOW = YELLOW;
+
+SWIGEXPORT SWIGEXTERN int const swigc_BLACK = BLACK;
+
+SWIGEXPORT int swigc_get_linked_const_int() {
+  int fresult ;
+  int result;
+  
+  result = (int)(int)linked_const_int;
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_get_simple_int() {
+  int fresult ;
+  int result;
+  
+  result = (int)(int)simple_int;
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_get_weird_int() {
+  int fresult ;
+  int result;
+  
+  result = (int)(int)weird_int;
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT double swigc_get_approx_twopi() {
+  double fresult ;
+  double result;
+  
+  result = (double)(double)approx_twopi;
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_set_global_counter(int const *farg1) {
+  int arg1 ;
+  
+  arg1 = *farg1;
+  foo::global_counter = arg1;
+  
+}
+
+
+SWIGEXPORT int swigc_get_global_counter() {
+  int fresult ;
+  int result;
+  
+  result = (int)foo::global_counter;
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_print_rgb(int const *farg1) {
+  RgbEnum arg1 ;
+  
+  arg1 = static_cast< RgbEnum >(*farg1);
+  print_rgb(arg1);
+  
+}
+
+
+SWIGEXPORT void swigc_print_cmyk(int const *farg1) {
+  CmykEnum arg1 ;
+  
+  arg1 = static_cast< CmykEnum >(*farg1);
+  print_cmyk(arg1);
+  
 }
 
 

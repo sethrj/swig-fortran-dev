@@ -16,6 +16,10 @@
     {
       "type": "markdown",
       "data": "# Overriding typemaps\n\nIt would be nice to automatically replace `fout` with `fcreate` and `frelease` where appropriate. But there's no way to specialize typemaps based on function names.\n\nThe `%feature` directive allows specific function names to be modified, but doesn't support regex\n\nMove constructor/destructor special case code to C++\n\nNew typemap: `imimport` allows importing typenames from module namespace, needed if fortran classes "
+    },
+    {
+      "type": "markdown",
+      "data": "# Variable arguments (ellipses)\n\nUse `debug-module 4` to show parsed data *after* everything has gone through the wrapper:\n```sh\n../../../swig -debug-module 4 -fortran -c++ -outcurrentdir -I/Users/s3j/_code/swig/Examples/test-suite -o varargs_wrap.cxx /Users/s3j/_code/swig/Examples/test-suite/fortran/../varargs.i\n```"
     }
   ]
 }

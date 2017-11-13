@@ -6,14 +6,15 @@
 module static_members
  use, intrinsic :: ISO_C_BINDING
  implicit none
+ private
 
  ! PUBLIC METHODS AND TYPES
  public :: BaseClass
+
  ! TYPES
  type :: BaseClass
   ! These should be treated as PROTECTED data
   type(C_PTR), public :: swigptr = C_NULL_PTR
-  logical, public :: swigown = .false.
  contains
   procedure, nopass :: set_i => swigf_set_BaseClass_i
   procedure, nopass :: get_i => swigf_get_BaseClass_i
@@ -22,74 +23,103 @@ module static_members
   procedure :: release => swigf_delete_BaseClass
  end type
 
+
  ! WRAPPER DECLARATIONS
- private
  interface
-  subroutine swigc_set_BaseClass_i(farg1) &
-     bind(C, name="swigc_set_BaseClass_i")
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT), intent(in) :: farg1
-  end subroutine
-  function swigc_get_BaseClass_i() &
-     bind(C, name="swigc_get_BaseClass_i") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-  end function
-  function swigc_BaseClass_f(farg1) &
-     bind(C, name="swigc_BaseClass_f") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE) :: fresult
-   integer(C_INT), intent(in) :: farg1
-  end function
-  function swigc_new_BaseClass() &
-     bind(C, name="swigc_new_BaseClass") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-  end function
-  subroutine swigc_delete_BaseClass(farg1) &
-     bind(C, name="swigc_delete_BaseClass")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
+subroutine swigc_set_BaseClass_i(farg1) &
+bind(C, name="swigc_set_BaseClass_i")
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT), intent(in) :: farg1
+end subroutine
+
+function swigc_get_BaseClass_i() &
+bind(C, name="swigc_get_BaseClass_i") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+end function
+
+function swigc_BaseClass_f(farg1) &
+bind(C, name="swigc_BaseClass_f") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: fresult
+integer(C_INT), intent(in) :: farg1
+end function
+
+function swigc_new_BaseClass() &
+bind(C, name="swigc_new_BaseClass") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+end function
+
+subroutine swigc_delete_BaseClass(farg1) &
+bind(C, name="swigc_delete_BaseClass")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
  end interface
 
+
 contains
-  ! FORTRAN PROXY CODE
-  subroutine swigf_set_BaseClass_i(i)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT), intent(in) :: i
-   call swigc_set_BaseClass_i(i)
-  end subroutine
-  function swigf_get_BaseClass_i() &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   fresult = swigc_get_BaseClass_i()
-  end function
-  function swigf_BaseClass_f(x) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE) :: fresult
-   integer(C_INT), intent(in) :: x
-   fresult = swigc_BaseClass_f(x)
-  end function
-  subroutine swigf_new_BaseClass(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(BaseClass) :: self
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_BaseClass()
-   self%swigown = .true.
-  end subroutine
-  subroutine swigf_delete_BaseClass(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(BaseClass) :: self
-   if (self%swigown) then
-    call swigc_delete_BaseClass(self%swigptr)
-    self%swigown = .false.
-   end if
-   self%swigptr = C_NULL_PTR
-  end subroutine
+ ! FORTRAN PROXY CODE
+subroutine swigf_set_BaseClass_i(value0)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT), intent(in) :: value0
+integer(C_INT) :: farg1 
+
+farg1 = value0
+call swigc_set_BaseClass_i(farg1)
+
+end subroutine
+
+function swigf_get_BaseClass_i() &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+integer(C_INT) :: fresult 
+
+fresult = swigc_get_BaseClass_i()
+swigf_result = fresult
+end function
+
+function swigf_BaseClass_f(x) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: swigf_result
+integer(C_INT), intent(in) :: x
+real(C_DOUBLE) :: fresult 
+integer(C_INT) :: farg1 
+
+farg1 = x
+fresult = swigc_BaseClass_f(farg1)
+swigf_result = fresult
+end function
+
+subroutine swigf_new_BaseClass(self)
+use, intrinsic :: ISO_C_BINDING
+class(BaseClass) :: self
+type(C_PTR) :: fresult 
+
+if (c_associated(self%swigptr)) call self%release()
+fresult = swigc_new_BaseClass()
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_delete_BaseClass(self)
+use, intrinsic :: ISO_C_BINDING
+class(BaseClass) :: self
+type(C_PTR) :: farg1 
+
+if (.not. c_associated(self%swigptr)) return
+farg1 = self%swigptr
+call swigc_delete_BaseClass(farg1)
+
+self%swigptr = C_NULL_PTR
+end subroutine
+
+
 end module static_members

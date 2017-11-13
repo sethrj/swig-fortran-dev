@@ -19,7 +19,7 @@
     },
     {
       "type": "markdown",
-      "data": ""
+      "data": "It's not standards compliant to take the location of a deferred-size array (since it may be strided). It has to be allocatable or fixed-size. So I modified the typemap to return the pointer to the first element; which will give incorrect elements if the array is a slice/section."
     }
   ]
 }

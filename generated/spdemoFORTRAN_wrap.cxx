@@ -155,6 +155,15 @@ template <typename T> T SwigValueInit() {
 # pragma warning disable 592
 #endif
 
+
+#ifndef SWIGEXTERN
+#ifdef __cplusplus
+#define SWIGEXTERN extern
+#else
+#define SWIGEXTERN
+#endif
+#endif
+
 /*  Errors in SWIG */
 #define  SWIG_UnknownError    	   -1
 #define  SWIG_IOError        	   -2
@@ -173,9 +182,25 @@ template <typename T> T SwigValueInit() {
 
 
 
+// Default exception handler
+#define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
+    throw std::logic_error(MSG); return NULLRETURN;
+
+
 /* Contract support */
-#define SWIG_contract_assert(nullreturn, expr, msg) if (!(expr)) { \
-swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
+#define SWIG_contract_assert(NULLRETURN, EXPR, MSG) \
+    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, NULLRETURN); }
+
+
+#define SWIGVERSION 0x040000 
+#define SWIG_VERSION SWIGVERSION
+
+
+#define SWIG_as_voidptr(a) const_cast< void * >(static_cast< const void * >(a)) 
+#define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
+
+
+#include <stdexcept>
 
 
 #include "spdemo.hh"
@@ -196,7 +221,7 @@ struct SWIG_null_deleter {
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_set_Foo_d_val(void* farg1, const double* farg2) {
+SWIGEXPORT void swigc_set_Foo_d_val(void *farg1, double const *farg2) {
   Foo *arg1 = (Foo *) 0 ;
   double arg2 ;
   std::shared_ptr< Foo > *smartarg1 = 0 ;
@@ -205,11 +230,12 @@ SWIGEXPORT void swigc_set_Foo_d_val(void* farg1, const double* farg2) {
   arg1 = (Foo *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = *farg2;
   if (arg1) (arg1)->d_val = arg2;
+  
 }
 
 
-SWIGEXPORT double swigc_get_Foo_d_val(void* farg1) {
-  double fresult = 0 ;
+SWIGEXPORT double swigc_get_Foo_d_val(void *farg1) {
+  double fresult ;
   Foo *arg1 = (Foo *) 0 ;
   std::shared_ptr< Foo > *smartarg1 = 0 ;
   double result;
@@ -222,8 +248,8 @@ SWIGEXPORT double swigc_get_Foo_d_val(void* farg1) {
 }
 
 
-SWIGEXPORT void* swigc_new_Foo__SWIG_0() {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_Foo__SWIG_0() {
+  void * fresult ;
   Foo *result = 0 ;
   
   result = (Foo *)new Foo();
@@ -232,8 +258,8 @@ SWIGEXPORT void* swigc_new_Foo__SWIG_0() {
 }
 
 
-SWIGEXPORT void* swigc_new_Foo__SWIG_1(const void* farg1) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_Foo__SWIG_1(void const *farg1) {
+  void * fresult ;
   Foo *arg1 = 0 ;
   Foo *result = 0 ;
   
@@ -251,8 +277,8 @@ SWIGEXPORT void* swigc_new_Foo__SWIG_1(const void* farg1) {
 }
 
 
-SWIGEXPORT void* swigc_new_Foo__SWIG_2(const double* farg1) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_Foo__SWIG_2(double const *farg1) {
+  void * fresult ;
   double arg1 ;
   Foo *result = 0 ;
   
@@ -263,18 +289,19 @@ SWIGEXPORT void* swigc_new_Foo__SWIG_2(const double* farg1) {
 }
 
 
-SWIGEXPORT void swigc_delete_Foo(void* farg1) {
+SWIGEXPORT void swigc_delete_Foo(void *farg1) {
   Foo *arg1 = (Foo *) 0 ;
   std::shared_ptr< Foo > *smartarg1 = 0 ;
   
   smartarg1 = (std::shared_ptr< Foo > *)farg1;
   arg1 = (Foo *)(smartarg1 ? smartarg1->get() : 0);
-  (void)arg1; delete smartarg1;
+  (void)arg1; delete smartarg1; 
+  
 }
 
 
-SWIGEXPORT double swigc_Foo_get(const void* farg1) {
-  double fresult = 0 ;
+SWIGEXPORT double swigc_Foo_get(void const *farg1) {
+  double fresult ;
   Foo *arg1 = (Foo *) 0 ;
   std::shared_ptr< Foo const > *smartarg1 = 0 ;
   double result;
@@ -287,7 +314,7 @@ SWIGEXPORT double swigc_Foo_get(const void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_Foo_set(void* farg1, const double* farg2) {
+SWIGEXPORT void swigc_Foo_set(void *farg1, double const *farg2) {
   Foo *arg1 = (Foo *) 0 ;
   double arg2 ;
   std::shared_ptr< Foo > *smartarg1 = 0 ;
@@ -296,11 +323,12 @@ SWIGEXPORT void swigc_Foo_set(void* farg1, const double* farg2) {
   arg1 = (Foo *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = *farg2;
   (arg1)->set(arg2);
+  
 }
 
 
-SWIGEXPORT void* swigc_Foo_clone(const void* farg1) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_Foo_clone(void const *farg1) {
+  void * fresult ;
   Foo *arg1 = (Foo *) 0 ;
   std::shared_ptr< Foo const > *smartarg1 = 0 ;
   Foo result;
@@ -313,8 +341,8 @@ SWIGEXPORT void* swigc_Foo_clone(const void* farg1) {
 }
 
 
-SWIGEXPORT void * swigc_Foo_clone_sp(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_Foo_clone_sp(void const *farg1) {
+  void * fresult ;
   Foo *arg1 = (Foo *) 0 ;
   std::shared_ptr< Foo const > *smartarg1 = 0 ;
   std::shared_ptr< Foo > result;
@@ -327,8 +355,8 @@ SWIGEXPORT void * swigc_Foo_clone_sp(const void* farg1) {
 }
 
 
-SWIGEXPORT void* swigc_Foo_mutable_ref(void* farg1) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_Foo_mutable_ref(void *farg1) {
+  void * fresult ;
   Foo *arg1 = (Foo *) 0 ;
   std::shared_ptr< Foo > *smartarg1 = 0 ;
   Foo *result = 0 ;
@@ -341,8 +369,8 @@ SWIGEXPORT void* swigc_Foo_mutable_ref(void* farg1) {
 }
 
 
-SWIGEXPORT const void* swigc_Foo_ref(const void* farg1) {
-  const void* fresult = 0 ;
+SWIGEXPORT void const * swigc_Foo_ref(void const *farg1) {
+  void const * fresult ;
   Foo *arg1 = (Foo *) 0 ;
   std::shared_ptr< Foo const > *smartarg1 = 0 ;
   Foo *result = 0 ;
@@ -355,8 +383,8 @@ SWIGEXPORT const void* swigc_Foo_ref(const void* farg1) {
 }
 
 
-SWIGEXPORT void* swigc_Foo_mutable_ptr(void* farg1) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_Foo_mutable_ptr(void *farg1) {
+  void * fresult ;
   Foo *arg1 = (Foo *) 0 ;
   std::shared_ptr< Foo > *smartarg1 = 0 ;
   Foo *result = 0 ;
@@ -369,8 +397,8 @@ SWIGEXPORT void* swigc_Foo_mutable_ptr(void* farg1) {
 }
 
 
-SWIGEXPORT const void* swigc_Foo_ptr(const void* farg1) {
-  const void* fresult = 0 ;
+SWIGEXPORT void const * swigc_Foo_ptr(void const *farg1) {
+  void const * fresult ;
   Foo *arg1 = (Foo *) 0 ;
   std::shared_ptr< Foo const > *smartarg1 = 0 ;
   Foo *result = 0 ;
@@ -389,8 +417,8 @@ SWIGEXPORT void* swigc_spcopy_Foo(void* farg1) {
 }
 
 
-SWIGEXPORT int swigc_use_count(void * farg1) {
-  int fresult = 0 ;
+SWIGEXPORT int swigc_use_count(void *farg1) {
+  int fresult ;
   std::shared_ptr< Foo > *arg1 = 0 ;
   std::shared_ptr< Foo > tempnull1 ;
   int result;
@@ -402,41 +430,45 @@ SWIGEXPORT int swigc_use_count(void * farg1) {
 }
 
 
-SWIGEXPORT void swigc_print_crsp(void * farg1) {
+SWIGEXPORT void swigc_print_crsp(void *farg1) {
   std::shared_ptr< Foo > *arg1 = 0 ;
   std::shared_ptr< Foo > tempnull1 ;
   
   arg1 = farg1 ? (std::shared_ptr< Foo > *)farg1 : &tempnull1;
   print_crsp((std::shared_ptr< Foo > const &)*arg1);
+  
 }
 
 
-SWIGEXPORT void swigc_print_sp(void * farg1) {
+SWIGEXPORT void swigc_print_sp(void *farg1) {
   std::shared_ptr< Foo > arg1 ;
   
   if (farg1) arg1 = *(std::shared_ptr< Foo > *)farg1;
   print_sp(arg1);
+  
 }
 
 
-SWIGEXPORT void swigc_print_spc(void * farg1) {
+SWIGEXPORT void swigc_print_spc(void *farg1) {
   std::shared_ptr< Foo const > arg1 ;
   
   if (farg1) arg1 = *(std::shared_ptr< Foo const > *)farg1;
   print_spc(arg1);
+  
 }
 
 
-SWIGEXPORT void swigc_print_crspc(void * farg1) {
+SWIGEXPORT void swigc_print_crspc(void *farg1) {
   std::shared_ptr< Foo const > *arg1 = 0 ;
   std::shared_ptr< Foo const > tempnull1 ;
   
   arg1 = farg1 ? (std::shared_ptr< Foo const > *)farg1 : &tempnull1;
   print_crspc((std::shared_ptr< Foo const > const &)*arg1);
+  
 }
 
 
-SWIGEXPORT void swigc_print_cr(const void* farg1) {
+SWIGEXPORT void swigc_print_cr(void const *farg1) {
   Foo *arg1 = 0 ;
   
   arg1 = (Foo *)(((std::shared_ptr<const Foo > *)farg1)
@@ -448,6 +480,7 @@ SWIGEXPORT void swigc_print_cr(const void* farg1) {
     return ;
   }
   print_cr((Foo const &)*arg1);
+  
 }
 
 

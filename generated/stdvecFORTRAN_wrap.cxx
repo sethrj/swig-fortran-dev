@@ -155,6 +155,15 @@ template <typename T> T SwigValueInit() {
 # pragma warning disable 592
 #endif
 
+
+#ifndef SWIGEXTERN
+#ifdef __cplusplus
+#define SWIGEXTERN extern
+#else
+#define SWIGEXTERN
+#endif
+#endif
+
 /*  Errors in SWIG */
 #define  SWIG_UnknownError    	   -1
 #define  SWIG_IOError        	   -2
@@ -173,64 +182,67 @@ template <typename T> T SwigValueInit() {
 
 
 
+// Default exception handler
+#define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
+    throw std::logic_error(MSG); return NULLRETURN;
+
+
 /* Contract support */
-#define SWIG_contract_assert(nullreturn, expr, msg) if (!(expr)) { \
-swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
+#define SWIG_contract_assert(NULLRETURN, EXPR, MSG) \
+    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, NULLRETURN); }
 
 
-#include "stdvec.hh"
+#define SWIGVERSION 0x040000 
+#define SWIG_VERSION SWIGVERSION
 
 
-#include <vector>
-
-
-#include <algorithm>
+#define SWIG_as_voidptr(a) const_cast< void * >(static_cast< const void * >(a)) 
+#define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
 
 
 #include <stdexcept>
 
 
-#include <sstream>
+#include <utility>
+#include "stdvec.hh"
 
 
-namespace swig
-{
-void array_size_check(size_t src, size_t dst)
-{
-    if (dst < src)
-    {
-        std::ostringstream os;
-        os << "Array size mismatch: " << src << " != " << dst;
-        throw std::range_error(os.str());
-    }
-}
-}
+#include <utility>
 
+
+#include <vector>
 
 SWIGINTERN void std_vector_Sl_double_Sg__set(std::vector< double > *self,std::vector< double >::size_type index,std::vector< double >::const_reference v){
         // TODO: check range
         (*self)[index] = v;
     }
 SWIGINTERN std::vector< double >::value_type std_vector_Sl_double_Sg__get(std::vector< double > *self,std::vector< double >::size_type index){
+        // TODO: check range
         return (*self)[index];
     }
-SWIGINTERN void std_vector_Sl_double_Sg__assign_from(std::vector< double > *self,std::vector< double >::const_pointer arr,std::vector< double >::size_type arrsize){
-        self->assign(arr, arr + arrsize);
-    }
-SWIGINTERN void std_vector_Sl_double_Sg__copy_to(std::vector< double > *self,std::vector< double >::pointer arr,std::vector< double >::size_type arrsize){
-        swig::array_size_check(self->size(), arrsize);
-        std::copy(self->begin(), self->end(), arr);
-    }
 
-#if __cplusplus >= 201103L
-#include <utility>
-#endif
+namespace swig {
+template<class T>
+struct SwigfArrayWrapper
+{
+    T* data;
+    std::size_t size;
+};
+}
 
+SWIGINTERN void std_vector_Sl_double_Sg__fill(std::vector< double > *self,std::pair< double const *,std::size_t > view){
+        self->assign(view.first, view.first + view.second);
+    }
+SWIGINTERN std::pair< double *,std::size_t > std_vector_Sl_double_Sg__view(std::vector< double > *self){
+        if (self->empty())
+            return {nullptr, 0};
+        return {self->data(), self->size()};
+    }
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void* swigc_new_VecDbl__SWIG_0() {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_VecDbl__SWIG_0() {
+  void * fresult ;
   std::vector< double > *result = 0 ;
   
   result = (std::vector< double > *)new std::vector< double >();
@@ -239,8 +251,8 @@ SWIGEXPORT void* swigc_new_VecDbl__SWIG_0() {
 }
 
 
-SWIGEXPORT void* swigc_new_VecDbl__SWIG_1(const int* farg1) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_VecDbl__SWIG_1(int const *farg1) {
+  void * fresult ;
   std::vector< double >::size_type arg1 ;
   std::vector< double > *result = 0 ;
   
@@ -251,149 +263,155 @@ SWIGEXPORT void* swigc_new_VecDbl__SWIG_1(const int* farg1) {
 }
 
 
-SWIGEXPORT void* swigc_new_VecDbl__SWIG_2(const int* farg1, const double* farg2) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_VecDbl__SWIG_2(int const *farg1, double const *farg2) {
+  void * fresult ;
   std::vector< double >::size_type arg1 ;
   std::vector< double >::value_type *arg2 = 0 ;
   std::vector< double > *result = 0 ;
   
   arg1 = *farg1;
-  arg2 = (std::vector< double >::value_type *)(farg2);
+  arg2 = reinterpret_cast< std::vector< double >::value_type * >(const_cast< double* >(farg2));
   result = (std::vector< double > *)new std::vector< double >(arg1,(std::vector< double >::value_type const &)*arg2);
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_VecDbl_size(const void* farg1) {
-  int fresult = 0 ;
+SWIGEXPORT int swigc_VecDbl_size(void const *farg1) {
+  int fresult ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type result;
   
-  arg1 = (std::vector< double > *)(farg1);
+  arg1 = static_cast< std::vector< double > * >(const_cast< void* >(farg1));
   result = (std::vector< double >::size_type)((std::vector< double > const *)arg1)->size();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_VecDbl_capacity(const void* farg1) {
-  int fresult = 0 ;
+SWIGEXPORT int swigc_VecDbl_capacity(void const *farg1) {
+  int fresult ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type result;
   
-  arg1 = (std::vector< double > *)(farg1);
+  arg1 = static_cast< std::vector< double > * >(const_cast< void* >(farg1));
   result = (std::vector< double >::size_type)((std::vector< double > const *)arg1)->capacity();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_VecDbl_empty(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_VecDbl_empty(void const *farg1) {
+  bool fresult ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   bool result;
   
-  arg1 = (std::vector< double > *)(farg1);
+  arg1 = static_cast< std::vector< double > * >(const_cast< void* >(farg1));
   result = (bool)((std::vector< double > const *)arg1)->empty();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_VecDbl_clear(void* farg1) {
+SWIGEXPORT void swigc_VecDbl_clear(void *farg1) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   
-  arg1 = (std::vector< double > *)(farg1);
+  arg1 = static_cast< std::vector< double > * >(farg1);
   (arg1)->clear();
+  
 }
 
 
-SWIGEXPORT void swigc_VecDbl_reserve(void* farg1, const int* farg2) {
+SWIGEXPORT void swigc_VecDbl_reserve(void *farg1, int const *farg2) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   
-  arg1 = (std::vector< double > *)(farg1);
+  arg1 = static_cast< std::vector< double > * >(farg1);
   arg2 = *farg2;
   (arg1)->reserve(arg2);
+  
 }
 
 
-SWIGEXPORT void swigc_VecDbl_resize__SWIG_0(void* farg1, const int* farg2) {
+SWIGEXPORT void swigc_VecDbl_resize__SWIG_0(void *farg1, int const *farg2) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   
-  arg1 = (std::vector< double > *)(farg1);
+  arg1 = static_cast< std::vector< double > * >(farg1);
   arg2 = *farg2;
   (arg1)->resize(arg2);
+  
 }
 
 
-SWIGEXPORT void swigc_VecDbl_resize__SWIG_1(void* farg1, const int* farg2, const double* farg3) {
+SWIGEXPORT void swigc_VecDbl_resize__SWIG_1(void *farg1, int const *farg2, double const *farg3) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   std::vector< double >::value_type *arg3 = 0 ;
   
-  arg1 = (std::vector< double > *)(farg1);
+  arg1 = static_cast< std::vector< double > * >(farg1);
   arg2 = *farg2;
-  arg3 = (std::vector< double >::value_type *)(farg3);
+  arg3 = reinterpret_cast< std::vector< double >::value_type * >(const_cast< double* >(farg3));
   (arg1)->resize(arg2,(std::vector< double >::value_type const &)*arg3);
+  
 }
 
 
-SWIGEXPORT void swigc_VecDbl_push_back(void* farg1, const double* farg2) {
+SWIGEXPORT void swigc_VecDbl_push_back(void *farg1, double const *farg2) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::value_type *arg2 = 0 ;
   
-  arg1 = (std::vector< double > *)(farg1);
-  arg2 = (std::vector< double >::value_type *)(farg2);
+  arg1 = static_cast< std::vector< double > * >(farg1);
+  arg2 = reinterpret_cast< std::vector< double >::value_type * >(const_cast< double* >(farg2));
   (arg1)->push_back((std::vector< double >::value_type const &)*arg2);
+  
 }
 
 
-SWIGEXPORT double swigc_VecDbl_front(const void* farg1) {
-  double fresult = 0 ;
+SWIGEXPORT double swigc_VecDbl_front(void const *farg1) {
+  double fresult ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   double *result = 0 ;
   
-  arg1 = (std::vector< double > *)(farg1);
+  arg1 = static_cast< std::vector< double > * >(const_cast< void* >(farg1));
   result = (double *) &((std::vector< double > const *)arg1)->front();
   fresult = *result;
   return fresult;
 }
 
 
-SWIGEXPORT double swigc_VecDbl_back(const void* farg1) {
-  double fresult = 0 ;
+SWIGEXPORT double swigc_VecDbl_back(void const *farg1) {
+  double fresult ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   double *result = 0 ;
   
-  arg1 = (std::vector< double > *)(farg1);
+  arg1 = static_cast< std::vector< double > * >(const_cast< void* >(farg1));
   result = (double *) &((std::vector< double > const *)arg1)->back();
   fresult = *result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_VecDbl_set(void* farg1, const int* farg2, const double* farg3) {
+SWIGEXPORT void swigc_VecDbl_set(void *farg1, int const *farg2, double const *farg3) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   double *arg3 = 0 ;
   
-  arg1 = (std::vector< double > *)(farg1);
+  arg1 = static_cast< std::vector< double > * >(farg1);
   arg2 = *farg2;
-  arg3 = (double *)(farg3);
+  arg3 = reinterpret_cast< double * >(const_cast< double* >(farg3));
   std_vector_Sl_double_Sg__set(arg1,arg2,(double const &)*arg3);
+  
 }
 
 
-SWIGEXPORT double swigc_VecDbl_get(void* farg1, const int* farg2) {
-  double fresult = 0 ;
+SWIGEXPORT double swigc_VecDbl_get(void *farg1, int const *farg2) {
+  double fresult ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   std::vector< double >::value_type result;
   
-  arg1 = (std::vector< double > *)(farg1);
+  arg1 = static_cast< std::vector< double > * >(farg1);
   arg2 = *farg2;
   result = (std::vector< double >::value_type)std_vector_Sl_double_Sg__get(arg1,arg2);
   fresult = result;
@@ -401,207 +419,75 @@ SWIGEXPORT double swigc_VecDbl_get(void* farg1, const int* farg2) {
 }
 
 
-SWIGEXPORT void swigc_VecDbl_assign_from(void* farg1, std::vector< double >::const_pointer farg2, const int* farg3) {
+SWIGEXPORT void swigc_VecDbl_fill(void *farg1, swig::SwigfArrayWrapper< double const > *farg2) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
-  std::vector< double >::const_pointer arg2 = (std::vector< double >::const_pointer) 0 ;
-  std::vector< double >::size_type arg3 ;
+  std::pair< double const *,std::size_t > arg2 ;
   
-  arg1 = (std::vector< double > *)(farg1);
-  arg2 = farg2;
-  arg3 = *farg3;
-  std_vector_Sl_double_Sg__assign_from(arg1,(double const *)arg2,arg3);
+  arg2 = ::std::pair< const double*, std::size_t >();
+  arg1 = static_cast< std::vector< double > * >(farg1);
+  (&arg2)->first  = farg2->data;
+  (&arg2)->second = farg2->size;
+  std_vector_Sl_double_Sg__fill(arg1,arg2);
+  
 }
 
 
-SWIGEXPORT void swigc_VecDbl_copy_to(void* farg1, std::vector< double >::pointer farg2, const int* farg3) {
+SWIGEXPORT swig::SwigfArrayWrapper< double > swigc_VecDbl_view(void *farg1) {
+  swig::SwigfArrayWrapper< double > fresult ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
-  std::vector< double >::pointer arg2 = (std::vector< double >::pointer) 0 ;
-  std::vector< double >::size_type arg3 ;
+  std::pair< double *,std::size_t > result;
   
-  arg1 = (std::vector< double > *)(farg1);
-  arg2 = farg2;
-  arg3 = *farg3;
-  std_vector_Sl_double_Sg__copy_to(arg1,arg2,arg3);
+  arg1 = static_cast< std::vector< double > * >(farg1);
+  result = std_vector_Sl_double_Sg__view(arg1);
+  fresult.data = (&result)->first;
+  fresult.size = (&result)->second;
+  return fresult;
 }
 
 
-SWIGEXPORT void swigc_delete_VecDbl(void* farg1) {
+SWIGEXPORT void swigc_delete_VecDbl(void *farg1) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   
-  arg1 = (std::vector< double > *)(farg1);
+  arg1 = static_cast< std::vector< double > * >(farg1);
   delete arg1;
-}
-
-
-SWIGEXPORT void* swigc_new_VecViewDbl__SWIG_0() {
-  void* fresult = 0 ;
-  VectorView< double > *result = 0 ;
   
-  result = (VectorView< double > *)new VectorView< double >();
-  fresult = result;
-  return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_VecViewDbl__SWIG_1(VectorView< double >::pointer_type farg1, VectorView< double >::pointer_type farg2) {
-  void* fresult = 0 ;
-  VectorView< double >::pointer_type arg1 = (VectorView< double >::pointer_type) 0 ;
-  VectorView< double >::pointer_type arg2 = (VectorView< double >::pointer_type) 0 ;
-  VectorView< double > *result = 0 ;
-  
-  arg1 = farg1;
-  arg2 = farg2;
-  result = (VectorView< double > *)new VectorView< double >(arg1,arg2);
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT int swigc_VecViewDbl_size(const void* farg1) {
-  int fresult = 0 ;
-  VectorView< double > *arg1 = (VectorView< double > *) 0 ;
-  VectorView< double >::size_type result;
-  
-  arg1 = (VectorView< double > *)(farg1);
-  result = (VectorView< double >::size_type)((VectorView< double > const *)arg1)->size();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT VectorView< double >::pointer_type swigc_VecViewDbl_data(const void* farg1) {
-  VectorView< double >::pointer_type fresult = 0 ;
-  VectorView< double > *arg1 = (VectorView< double > *) 0 ;
-  VectorView< double >::pointer_type result;
-  
-  arg1 = (VectorView< double > *)(farg1);
-  result = (VectorView< double >::pointer_type)((VectorView< double > const *)arg1)->data();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_delete_VecViewDbl(void* farg1) {
-  VectorView< double > *arg1 = (VectorView< double > *) 0 ;
-  
-  arg1 = (VectorView< double > *)(farg1);
-  delete arg1;
-}
-
-
-SWIGEXPORT void* swigc_new_const_VecViewDbl__SWIG_0() {
-  void* fresult = 0 ;
-  VectorView< double const > *result = 0 ;
-  
-  result = (VectorView< double const > *)new VectorView< double const >();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void* swigc_new_const_VecViewDbl__SWIG_1(VectorView< double const >::pointer_type farg1, VectorView< double const >::pointer_type farg2) {
-  void* fresult = 0 ;
-  VectorView< double const >::pointer_type arg1 = (VectorView< double const >::pointer_type) 0 ;
-  VectorView< double const >::pointer_type arg2 = (VectorView< double const >::pointer_type) 0 ;
-  VectorView< double const > *result = 0 ;
-  
-  arg1 = farg1;
-  arg2 = farg2;
-  result = (VectorView< double const > *)new VectorView< double const >(arg1,arg2);
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT int swigc_const_VecViewDbl_size(const void* farg1) {
-  int fresult = 0 ;
-  VectorView< double const > *arg1 = (VectorView< double const > *) 0 ;
-  VectorView< double const >::size_type result;
-  
-  arg1 = (VectorView< double const > *)(farg1);
-  result = (VectorView< double const >::size_type)((VectorView< double const > const *)arg1)->size();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT VectorView< double const >::pointer_type swigc_const_VecViewDbl_data(const void* farg1) {
-  VectorView< double const >::pointer_type fresult = 0 ;
-  VectorView< double const > *arg1 = (VectorView< double const > *) 0 ;
-  VectorView< double const >::pointer_type result;
-  
-  arg1 = (VectorView< double const > *)(farg1);
-  result = (VectorView< double const >::pointer_type)((VectorView< double const > const *)arg1)->data();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_delete_const_VecViewDbl(void* farg1) {
-  VectorView< double const > *arg1 = (VectorView< double const > *) 0 ;
-  
-  arg1 = (VectorView< double const > *)(farg1);
-  delete arg1;
-}
-
-
-SWIGEXPORT void* swigc_make_viewdbl(void* farg1) {
-  void* fresult = 0 ;
+SWIGEXPORT swig::SwigfArrayWrapper< double > swigc_make_viewdbl(void *farg1) {
+  swig::SwigfArrayWrapper< double > fresult ;
   std::vector< double,std::allocator< double > > *arg1 = 0 ;
-  VectorView< double > result;
+  std::pair< double *,std::size_t > result;
   
-  arg1 = (std::vector< double,std::allocator< double > > *)(farg1);
+  arg1 = static_cast< std::vector< double,std::allocator< double > > * >(farg1);
   result = make_view< double >(*arg1);
-  
-#if __cplusplus >= 201103L
-  fresult = new VectorView< double >(std::move(result));
-#else
-  fresult = new VectorView< double >(result);
-#endif
-  
+  fresult.data = (&result)->first;
+  fresult.size = (&result)->second;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_make_const_viewdbl(const void* farg1) {
-  void* fresult = 0 ;
+SWIGEXPORT swig::SwigfArrayWrapper< double const > swigc_make_const_viewdbl(void const *farg1) {
+  swig::SwigfArrayWrapper< double const > fresult ;
   std::vector< double,std::allocator< double > > *arg1 = 0 ;
-  VectorView< double const > result;
+  std::pair< double const *,std::size_t > result;
   
-  arg1 = (std::vector< double,std::allocator< double > > *)(farg1);
+  arg1 = static_cast< std::vector< double,std::allocator< double > > * >(const_cast< void* >(farg1));
   result = make_const_view< double >((std::vector< double,std::allocator< double > > const &)*arg1);
-  
-#if __cplusplus >= 201103L
-  fresult = new VectorView< double const >(std::move(result));
-#else
-  fresult = new VectorView< double const >(result);
-#endif
-  
+  fresult.data = (&result)->first;
+  fresult.size = (&result)->second;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_print_viewdbl__SWIG_0(void* farg1) {
-  VectorView< double > arg1 ;
+SWIGEXPORT void swigc_print_viewdbl(swig::SwigfArrayWrapper< double const > *farg1) {
+  std::pair< double const *,std::size_t > arg1 ;
   
-  arg1 = *(VectorView< double > *)(farg1);
+  arg1 = ::std::pair< const double*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
   print_view< double >(arg1);
-}
-
-
-SWIGEXPORT void swigc_print_viewdbl__SWIG_1(void* farg1) {
-  VectorView< double const > arg1 ;
   
-  arg1 = *(VectorView< double const > *)(farg1);
-  print_view< double >(arg1);
-}
-
-
-SWIGEXPORT void swigc_print_vecdbl(const void* farg1) {
-  std::vector< double,std::allocator< double > > *arg1 = 0 ;
-  
-  arg1 = (std::vector< double,std::allocator< double > > *)(farg1);
-  print_vec< double >((std::vector< double,std::allocator< double > > const &)*arg1);
 }
 
 

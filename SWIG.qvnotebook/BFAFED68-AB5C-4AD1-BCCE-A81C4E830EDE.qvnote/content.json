@@ -1,0 +1,18 @@
+{
+  "title": "Fortran inheritance",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "# Fortran abstract classes and such\n\nFrom [Stack Overflow](https://stackoverflow.com/questions/25410476/understanding-fortran-extends-types-and-override):\n\nthe base class defines an abstract function `allocateBasis` that accepts a real value; the subclass defines an implementation as well as an overload that takes a complex value."
+    },
+    {
+      "type": "code",
+      "language": "fortran",
+      "data": "module basis_module\n  implicit none\n\n  type, abstract :: Basis\n    integer :: NBasis\n  contains\n    procedure(allocBasisR1Interface), deferred :: allocateBasisR1\n    generic :: allocateBasis => allocateBasisR1\n  end type Basis\n\n  interface \n    ! Interface for real basis allocation\n    subroutine allocBasisR1Interface(self, array)\n      import\n      class(Basis), intent(inout) :: self\n      real, intent(in) :: array(:)\n    end subroutine allocBasisR1Interface\n  end interface\n\nend module basis_module\n\n\nmodule extension_module\n  use basis_module\n  implicit none\n\n  type, extends(Basis) :: GridBasis\n  contains\n    ! Extending the mapping allocateBasis => allocateBasisR1 of\n    ! the parent type.\n    generic :: allocateBasis => allocateBasisC1\n    procedure :: allocateBasisC1\n    ! Implementation for the deferred procedure in Basis\n    procedure :: allocateBasisR1\n  end type GridBasis\n\ncontains\n\n  subroutine allocateBasisR1(self, array)\n    class(GridBasis), intent(inout) :: self\n    real, intent(in) :: array(:)\n\n    self%NBasis = size(array)\n    print *, \"GridBasis:allocateBasisR1\"\n\n  end subroutine allocateBasisR1\n\n\n  subroutine allocateBasisC1(self, array)\n    class(GridBasis), intent(inout) :: self\n    complex, intent(in) :: array(:)\n\n    self%NBasis = size(array)\n    print *, \"GridBasis:allocateBasisC1\"\n\n  end subroutine allocateBasisC1\n\nend module extension_module\n\n\nprogram test\n  use extension_module\n  implicit none\n\n  type(GridBasis) :: mybasis\n  real :: myRealArray(10)\n  complex :: myComplexArray(5)\n\n  call mybasis%allocateBasis(myRealArray)\n  call mybasis%allocateBasis(myComplexArray)\n\nend program test\n"
+    },
+    {
+      "type": "markdown",
+      "data": "SWIG sets the `abstract` property on the function `meth`. Currently it outputs:\n```fortran  \n  procedure :: meth => swigf_abstract_foo_meth\n```\nand defines a function `swigf_abstract_foo_meth`\nbut instead should write an interface:\n```\nprocedure(swigf_abstract_foo_meth_interface), deferred :: swigf_abstract_foo_meth\ngeneric :: meth => swigf_abstract_foo_meth\n```\n- Don't write `swigc_abstract_foo_meth`?\n- \n"
+    }
+  ]
+}

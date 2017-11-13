@@ -6,126 +6,382 @@
 module bare
  use, intrinsic :: ISO_C_BINDING
  implicit none
+ private
 
  ! PUBLIC METHODS AND TYPES
  public :: set_something
  public :: get_something
  public :: get_something_ref
  public :: get_something_ptr
+ public :: get_something_rptr
  public :: get_something_rcptr
  public :: get_something_rref
  public :: get_something_rcref
+
+type, public, bind(C) :: SwigfArrayWrapper
+  type(C_PTR), public :: data
+  integer(C_SIZE_T), public :: size
+end type
+
  public :: print_array
- ! TYPES
+ public :: get_linked_const_int
+ public :: get_simple_int
+ public :: get_weird_int
+ public :: get_approx_twopi
+ public :: set_global_counter
+ public :: get_global_counter
+ public :: print_rgb
+ public :: print_cmyk
+
+ ! PARAMETERS
+ integer(C_INT), parameter, public :: MY_SPECIAL_NUMBERS = 5_C_INT
+ integer(C_INT), parameter, public :: param_const = 911_C_INT
+ integer(C_INT), protected, public, &
+   bind(C, name="swigc_octal_const") :: octal_const
+ integer(C_INT), protected, public, &
+   bind(C, name="swigc_wrapped_const") :: wrapped_const
+ integer(C_INT), protected, public, &
+   bind(C, name="swigc_RgbEnum") :: RgbEnum
+ integer(C_INT), protected, public, &
+   bind(C, name="swigc_RED") :: RED
+ integer(C_INT), protected, public, &
+   bind(C, name="swigc_GREEN") :: GREEN
+ integer(C_INT), protected, public, &
+   bind(C, name="swigc_BLUE") :: BLUE
+ integer(C_INT), protected, public, &
+   bind(C, name="swigc_CmykEnum") :: CmykEnum
+ integer(C_INT), protected, public, &
+   bind(C, name="swigc_CYAN") :: CYAN
+ integer(C_INT), protected, public, &
+   bind(C, name="swigc_MAGENTA") :: MAGENTA
+ integer(C_INT), protected, public, &
+   bind(C, name="swigc_YELLOW") :: YELLOW
+ integer(C_INT), protected, public, &
+   bind(C, name="swigc_BLACK") :: BLACK
+ real(C_DOUBLE), parameter, public :: approx_pi = 3.14160000001_C_DOUBLE
 
  ! WRAPPER DECLARATIONS
- private
  interface
-  subroutine swigc_set_something(farg1, farg2) &
-     bind(C, name="swigc_set_something")
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT), intent(in) :: farg1
-   real(C_DOUBLE), intent(in) :: farg2
-  end subroutine
-  function swigc_get_something(farg1) &
-     bind(C, name="swigc_get_something") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE) :: fresult
-   integer(C_INT), intent(in) :: farg1
-  end function
-  subroutine swigc_get_something_ref(farg1, farg2) &
-     bind(C, name="swigc_get_something_ref")
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT), intent(in) :: farg1
-   real(C_DOUBLE), intent(inout) :: farg2
-  end subroutine
-  subroutine swigc_get_something_ptr(farg1, farg2) &
-     bind(C, name="swigc_get_something_ptr")
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT), intent(in) :: farg1
-   real(C_DOUBLE), dimension(*), intent(inout) :: farg2
-  end subroutine
-  function swigc_get_something_rcptr(farg1) &
-     bind(C, name="swigc_get_something_rcptr") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   integer(C_INT), intent(in) :: farg1
-  end function
-  function swigc_get_something_rref(farg1) &
-     bind(C, name="swigc_get_something_rref") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   integer(C_INT), intent(in) :: farg1
-  end function
-  function swigc_get_something_rcref(farg1) &
-     bind(C, name="swigc_get_something_rcref") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE) :: fresult
-   integer(C_INT), intent(in) :: farg1
-  end function
-  subroutine swigc_print_array(farg1, farg2) &
-     bind(C, name="swigc_print_array")
-   use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE), dimension(*), intent(in) :: farg1
-   integer(C_INT), intent(in) :: farg2
-  end subroutine
+subroutine swigc_set_something(farg1, farg2) &
+bind(C, name="swigc_set_something")
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT), intent(in) :: farg1
+real(C_DOUBLE), intent(in) :: farg2
+end subroutine
+
+function swigc_get_something(farg1) &
+bind(C, name="swigc_get_something") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: fresult
+integer(C_INT), intent(in) :: farg1
+end function
+
+subroutine swigc_get_something_ref(farg1, farg2) &
+bind(C, name="swigc_get_something_ref")
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT), intent(in) :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+subroutine swigc_get_something_ptr(farg1, farg2) &
+bind(C, name="swigc_get_something_ptr")
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT), intent(in) :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+function swigc_get_something_rptr(farg1) &
+bind(C, name="swigc_get_something_rptr") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+integer(C_INT), intent(in) :: farg1
+end function
+
+function swigc_get_something_rcptr(farg1) &
+bind(C, name="swigc_get_something_rcptr") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+integer(C_INT), intent(in) :: farg1
+end function
+
+function swigc_get_something_rref(farg1) &
+bind(C, name="swigc_get_something_rref") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+integer(C_INT), intent(in) :: farg1
+end function
+
+function swigc_get_something_rcref(farg1) &
+bind(C, name="swigc_get_something_rcref") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: fresult
+integer(C_INT), intent(in) :: farg1
+end function
+
+subroutine swigc_print_array(farg1) &
+bind(C, name="swigc_print_array")
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
+type(SwigfArrayWrapper) :: farg1
+end subroutine
+
+function swigc_get_linked_const_int() &
+bind(C, name="swigc_get_linked_const_int") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+end function
+
+function swigc_get_simple_int() &
+bind(C, name="swigc_get_simple_int") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+end function
+
+function swigc_get_weird_int() &
+bind(C, name="swigc_get_weird_int") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+end function
+
+function swigc_get_approx_twopi() &
+bind(C, name="swigc_get_approx_twopi") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: fresult
+end function
+
+subroutine swigc_set_global_counter(farg1) &
+bind(C, name="swigc_set_global_counter")
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT), intent(in) :: farg1
+end subroutine
+
+function swigc_get_global_counter() &
+bind(C, name="swigc_get_global_counter") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+end function
+
+subroutine swigc_print_rgb(farg1) &
+bind(C, name="swigc_print_rgb")
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT), intent(in) :: farg1
+end subroutine
+
+subroutine swigc_print_cmyk(farg1) &
+bind(C, name="swigc_print_cmyk")
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT), intent(in) :: farg1
+end subroutine
+
  end interface
 
+
 contains
-  ! FORTRAN PROXY CODE
-  subroutine set_something(x, y)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT), intent(in) :: x
-   real(C_DOUBLE), intent(in) :: y
-   call swigc_set_something(x, y)
-  end subroutine
-  function get_something(x) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE) :: fresult
-   integer(C_INT), intent(in) :: x
-   fresult = swigc_get_something(x)
-  end function
-  subroutine get_something_ref(x, y)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT), intent(in) :: x
-   real(C_DOUBLE), intent(inout) :: y
-   call swigc_get_something_ref(x, y)
-  end subroutine
-  subroutine get_something_ptr(x, y)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT), intent(in) :: x
-   real(C_DOUBLE), dimension(:), intent(inout) :: y
-   call swigc_get_something_ptr(x, y)
-  end subroutine
-  function get_something_rcptr(x) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE), pointer :: fresult
-   integer(C_INT), intent(in) :: x
-   call c_f_pointer(swigc_get_something_rcptr(x), fresult)
-  end function
-  function get_something_rref(x) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE), pointer :: fresult
-   integer(C_INT), intent(in) :: x
-   call c_f_pointer(swigc_get_something_rref(x), fresult)
-  end function
-  function get_something_rcref(x) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE) :: fresult
-   integer(C_INT), intent(in) :: x
-   fresult = swigc_get_something_rcref(x)
-  end function
-  subroutine print_array(arr)
-   use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE), dimension(:), intent(in) :: arr
-   call swigc_print_array(arr, size(arr))
-  end subroutine
+ ! FORTRAN PROXY CODE
+subroutine set_something(x, y)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT), intent(in) :: x
+real(C_DOUBLE), intent(in) :: y
+integer(C_INT) :: farg1 
+real(C_DOUBLE) :: farg2 
+
+farg1 = x
+farg2 = y
+call swigc_set_something(farg1, farg2)
+
+end subroutine
+
+function get_something(x) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: swigf_result
+integer(C_INT), intent(in) :: x
+real(C_DOUBLE) :: fresult 
+integer(C_INT) :: farg1 
+
+farg1 = x
+fresult = swigc_get_something(farg1)
+swigf_result = fresult
+end function
+
+subroutine get_something_ref(x, y)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT), intent(in) :: x
+real(C_DOUBLE), target, intent(inout) :: y
+integer(C_INT) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = x
+farg2 = c_loc(y)
+call swigc_get_something_ref(farg1, farg2)
+
+end subroutine
+
+subroutine get_something_ptr(x, y)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT), intent(in) :: x
+real(C_DOUBLE), target, intent(inout) :: y
+integer(C_INT) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = x
+farg2 = c_loc(y)
+call swigc_get_something_ptr(farg1, farg2)
+
+end subroutine
+
+function get_something_rptr(x) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE), pointer :: swigf_result
+integer(C_INT), intent(in) :: x
+type(C_PTR) :: fresult 
+integer(C_INT) :: farg1 
+
+farg1 = x
+fresult = swigc_get_something_rptr(farg1)
+call c_f_pointer(fresult, swigf_result)
+end function
+
+function get_something_rcptr(x) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE), pointer :: swigf_result
+integer(C_INT), intent(in) :: x
+type(C_PTR) :: fresult 
+integer(C_INT) :: farg1 
+
+farg1 = x
+fresult = swigc_get_something_rcptr(farg1)
+call c_f_pointer(fresult, swigf_result)
+end function
+
+function get_something_rref(x) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE), pointer :: swigf_result
+integer(C_INT), intent(in) :: x
+type(C_PTR) :: fresult 
+integer(C_INT) :: farg1 
+
+farg1 = x
+fresult = swigc_get_something_rref(farg1)
+call c_f_pointer(fresult, swigf_result)
+end function
+
+function get_something_rcref(x) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: swigf_result
+integer(C_INT), intent(in) :: x
+real(C_DOUBLE) :: fresult 
+integer(C_INT) :: farg1 
+
+farg1 = x
+fresult = swigc_get_something_rcref(farg1)
+swigf_result = fresult
+end function
+
+subroutine print_array(arr)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE), dimension(:), target, intent(inout) :: arr
+type(SwigfArrayWrapper) :: farg1 
+
+farg1%data = c_loc(arr(1))
+farg1%size = size(arr)
+call swigc_print_array(farg1)
+
+end subroutine
+
+function get_linked_const_int() &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+integer(C_INT) :: fresult 
+
+fresult = swigc_get_linked_const_int()
+swigf_result = fresult
+end function
+
+function get_simple_int() &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+integer(C_INT) :: fresult 
+
+fresult = swigc_get_simple_int()
+swigf_result = fresult
+end function
+
+function get_weird_int() &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+integer(C_INT) :: fresult 
+
+fresult = swigc_get_weird_int()
+swigf_result = fresult
+end function
+
+function get_approx_twopi() &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: swigf_result
+real(C_DOUBLE) :: fresult 
+
+fresult = swigc_get_approx_twopi()
+swigf_result = fresult
+end function
+
+subroutine set_global_counter(value0)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT), intent(in) :: value0
+integer(C_INT) :: farg1 
+
+farg1 = value0
+call swigc_set_global_counter(farg1)
+
+end subroutine
+
+function get_global_counter() &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+integer(C_INT) :: fresult 
+
+fresult = swigc_get_global_counter()
+swigf_result = fresult
+end function
+
+subroutine print_rgb(color)
+use, intrinsic :: ISO_C_BINDING
+integer(kind(RgbEnum)), intent(in) :: color
+integer(C_INT) :: farg1 
+
+farg1 = color
+call swigc_print_rgb(farg1)
+
+end subroutine
+
+subroutine print_cmyk(color)
+use, intrinsic :: ISO_C_BINDING
+integer(kind(CmykEnum)), intent(in) :: color
+integer(C_INT) :: farg1 
+
+farg1 = color
+call swigc_print_cmyk(farg1)
+
+end subroutine
+
+
 end module bare

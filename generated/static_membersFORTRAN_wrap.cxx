@@ -155,6 +155,15 @@ template <typename T> T SwigValueInit() {
 # pragma warning disable 592
 #endif
 
+
+#ifndef SWIGEXTERN
+#ifdef __cplusplus
+#define SWIGEXTERN extern
+#else
+#define SWIGEXTERN
+#endif
+#endif
+
 /*  Errors in SWIG */
 #define  SWIG_UnknownError    	   -1
 #define  SWIG_IOError        	   -2
@@ -173,9 +182,25 @@ template <typename T> T SwigValueInit() {
 
 
 
+// Default exception handler
+#define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
+    throw std::logic_error(MSG); return NULLRETURN;
+
+
 /* Contract support */
-#define SWIG_contract_assert(nullreturn, expr, msg) if (!(expr)) { \
-swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
+#define SWIG_contract_assert(NULLRETURN, EXPR, MSG) \
+    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, NULLRETURN); }
+
+
+#define SWIGVERSION 0x040000 
+#define SWIG_VERSION SWIGVERSION
+
+
+#define SWIG_as_voidptr(a) const_cast< void * >(static_cast< const void * >(a)) 
+#define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
+
+
+#include <stdexcept>
 
 
 #include "static_members.hh"
@@ -183,16 +208,17 @@ swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_set_BaseClass_i(const int* farg1) {
+SWIGEXPORT void swigc_set_BaseClass_i(int const *farg1) {
   int arg1 ;
   
   arg1 = *farg1;
   BaseClass::i = arg1;
+  
 }
 
 
 SWIGEXPORT int swigc_get_BaseClass_i() {
-  int fresult = 0 ;
+  int fresult ;
   int result;
   
   result = (int)BaseClass::i;
@@ -201,8 +227,8 @@ SWIGEXPORT int swigc_get_BaseClass_i() {
 }
 
 
-SWIGEXPORT double swigc_BaseClass_f(const int* farg1) {
-  double fresult = 0 ;
+SWIGEXPORT double swigc_BaseClass_f(int const *farg1) {
+  double fresult ;
   int arg1 ;
   double result;
   
@@ -213,8 +239,8 @@ SWIGEXPORT double swigc_BaseClass_f(const int* farg1) {
 }
 
 
-SWIGEXPORT void* swigc_new_BaseClass() {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_BaseClass() {
+  void * fresult ;
   BaseClass *result = 0 ;
   
   result = (BaseClass *)new BaseClass();
@@ -223,11 +249,12 @@ SWIGEXPORT void* swigc_new_BaseClass() {
 }
 
 
-SWIGEXPORT void swigc_delete_BaseClass(void* farg1) {
+SWIGEXPORT void swigc_delete_BaseClass(void *farg1) {
   BaseClass *arg1 = (BaseClass *) 0 ;
   
-  arg1 = (BaseClass *)(farg1);
+  arg1 = static_cast< BaseClass * >(farg1);
   delete arg1;
+  
 }
 
 

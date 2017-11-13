@@ -155,6 +155,15 @@ template <typename T> T SwigValueInit() {
 # pragma warning disable 592
 #endif
 
+
+#ifndef SWIGEXTERN
+#ifdef __cplusplus
+#define SWIGEXTERN extern
+#else
+#define SWIGEXTERN
+#endif
+#endif
+
 /*  Errors in SWIG */
 #define  SWIG_UnknownError    	   -1
 #define  SWIG_IOError        	   -2
@@ -173,9 +182,25 @@ template <typename T> T SwigValueInit() {
 
 
 
+// Default exception handler
+#define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
+    throw std::logic_error(MSG); return NULLRETURN;
+
+
 /* Contract support */
-#define SWIG_contract_assert(nullreturn, expr, msg) if (!(expr)) { \
-swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
+#define SWIG_contract_assert(NULLRETURN, EXPR, MSG) \
+    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, NULLRETURN); }
+
+
+#define SWIGVERSION 0x040000 
+#define SWIG_VERSION SWIGVERSION
+
+
+#define SWIG_as_voidptr(a) const_cast< void * >(static_cast< const void * >(a)) 
+#define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
+
+
+#include <stdexcept>
 
 
 extern int    gcd(int x, int y);
@@ -184,8 +209,8 @@ extern double Foo;
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT int swigc_gcd(const int* farg1, const int* farg2) {
-  int fresult = 0 ;
+SWIGEXPORT int swigc_gcd(int const *farg1, int const *farg2) {
+  int fresult ;
   int arg1 ;
   int arg2 ;
   int result;
@@ -198,16 +223,17 @@ SWIGEXPORT int swigc_gcd(const int* farg1, const int* farg2) {
 }
 
 
-SWIGEXPORT void swigc_set_Foo(const double* farg1) {
+SWIGEXPORT void swigc_set_Foo(double const *farg1) {
   double arg1 ;
   
   arg1 = *farg1;
   Foo = arg1;
+  
 }
 
 
 SWIGEXPORT double swigc_get_Foo() {
-  double fresult = 0 ;
+  double fresult ;
   double result;
   
   result = (double)Foo;

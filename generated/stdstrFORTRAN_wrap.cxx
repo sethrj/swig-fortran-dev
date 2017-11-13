@@ -155,6 +155,15 @@ template <typename T> T SwigValueInit() {
 # pragma warning disable 592
 #endif
 
+
+#ifndef SWIGEXTERN
+#ifdef __cplusplus
+#define SWIGEXTERN extern
+#else
+#define SWIGEXTERN
+#endif
+#endif
+
 /*  Errors in SWIG */
 #define  SWIG_UnknownError    	   -1
 #define  SWIG_IOError        	   -2
@@ -173,47 +182,39 @@ template <typename T> T SwigValueInit() {
 
 
 
+// Default exception handler
+#define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
+    throw std::logic_error(MSG); return NULLRETURN;
+
+
 /* Contract support */
-#define SWIG_contract_assert(nullreturn, expr, msg) if (!(expr)) { \
-swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
+#define SWIG_contract_assert(NULLRETURN, EXPR, MSG) \
+    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, NULLRETURN); }
 
 
-#include "stdstr.hh"
+#define SWIGVERSION 0x040000 
+#define SWIG_VERSION SWIGVERSION
 
 
-#include <algorithm>
+#define SWIG_as_voidptr(a) const_cast< void * >(static_cast< const void * >(a)) 
+#define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
 
 
 #include <stdexcept>
 
 
-#include <string>
+#include "stdstr.hh"
 
 
+#include <utility>
+
+
+#include <stdexcept>
+#include <algorithm>
 #include <sstream>
 
 
-namespace swig
-{
-void string_size_check(size_t src, size_t dst)
-{
-    if (dst < src)
-    {
-        std::ostringstream os;
-        os << "String size too small: " << dst << " < " << src;
-        throw std::range_error(os.str());
-    }
-}
-
-void string_copyout(const std::string& str, char* s, size_t count)
-{
-    string_size_check(str.size(), count);
-
-    s = std::copy(str.begin(), str.end(), s);
-    std::fill_n(s, count - str.size(), ' ');
-}
-}
-
+#include <string>
 
 SWIGINTERN void std_string_set(std::string *self,std::string::size_type pos,std::string::value_type v){
         // TODO: check range
@@ -223,17 +224,42 @@ SWIGINTERN std::string::value_type std_string_get(std::string *self,std::string:
         // TODO: check range
         return (*self)[pos];
     }
-SWIGINTERN void std_string_assign_from(std::string *self,std::string::const_pointer s,std::string::size_type count){
-        self->assign(s, s + count);
+
+namespace swig {
+template<class T>
+struct SwigfArrayWrapper
+{
+    T* data;
+    std::size_t size;
+};
+}
+
+SWIGINTERN void std_string_assign_from(std::string *self,std::pair< char const *,std::size_t > view){
+        self->assign(view.first, view.first + view.second);
     }
-SWIGINTERN void std_string_copy_to(std::string *self,std::string::pointer s,std::string::size_type count){
-        swig::string_copyout(*self, s, count);
+SWIGINTERN std::pair< char const *,std::size_t > std_string_view(std::string *self){
+        if (self->empty())
+            return {nullptr, 0};
+        return {self->data(), self->size()};
+    }
+SWIGINTERN void std_string_copy_to(std::string *self,std::pair< char *,std::size_t > view){
+        if (view.second < self->size())
+        {
+            std::ostringstream os;
+            os << "String size too small: " << view.second
+                << " < " << self->size();
+            throw std::range_error(os.str());
+        }
+
+        char* s = view.first;
+        s = std::copy(self->begin(), self->end(), s);
+        std::fill_n(s, view.second - self->size(), ' ');
     }
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void* swigc_new_string__SWIG_0() {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_string() {
+  void * fresult ;
   std::string *result = 0 ;
   
   result = (std::string *)new std::string();
@@ -242,81 +268,70 @@ SWIGEXPORT void* swigc_new_string__SWIG_0() {
 }
 
 
-SWIGEXPORT void* swigc_new_string__SWIG_1(const char* farg1, const int* farg2) {
-  void* fresult = 0 ;
-  std::string::const_pointer arg1 = (std::string::const_pointer) 0 ;
-  std::string::size_type arg2 ;
-  std::string *result = 0 ;
-  
-  arg1 = (std::string::const_pointer)farg1;
-  arg2 = *farg2;
-  result = (std::string *)new std::string(arg1,arg2);
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_string_resize(void* farg1, const int* farg2) {
+SWIGEXPORT void swigc_string_resize(void *farg1, long const *farg2) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
   
-  arg1 = (std::string *)(farg1);
+  arg1 = static_cast< std::string * >(farg1);
   arg2 = *farg2;
   (arg1)->resize(arg2);
+  
 }
 
 
-SWIGEXPORT void swigc_string_clear(void* farg1) {
+SWIGEXPORT void swigc_string_clear(void *farg1) {
   std::string *arg1 = (std::string *) 0 ;
   
-  arg1 = (std::string *)(farg1);
+  arg1 = static_cast< std::string * >(farg1);
   (arg1)->clear();
+  
 }
 
 
-SWIGEXPORT int swigc_string_size(const void* farg1) {
-  int fresult = 0 ;
+SWIGEXPORT long swigc_string_size(void const *farg1) {
+  long fresult ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type result;
   
-  arg1 = (std::string *)(farg1);
+  arg1 = static_cast< std::string * >(const_cast< void* >(farg1));
   result = (std::string::size_type)((std::string const *)arg1)->size();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_string_length(const void* farg1) {
-  int fresult = 0 ;
+SWIGEXPORT long swigc_string_length(void const *farg1) {
+  long fresult ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type result;
   
-  arg1 = (std::string *)(farg1);
+  arg1 = static_cast< std::string * >(const_cast< void* >(farg1));
   result = (std::string::size_type)((std::string const *)arg1)->length();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_string_set(void* farg1, const int* farg2, const char* farg3) {
+SWIGEXPORT void swigc_string_set(void *farg1, long const *farg2, char const *farg3) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
   std::string::value_type arg3 ;
   
-  arg1 = (std::string *)(farg1);
+  arg1 = static_cast< std::string * >(farg1);
   arg2 = *farg2;
   arg3 = *farg3;
   std_string_set(arg1,arg2,arg3);
+  
 }
 
 
-SWIGEXPORT char swigc_string_get(void* farg1, const int* farg2) {
-  char fresult = 0 ;
+SWIGEXPORT char swigc_string_get(void *farg1, long const *farg2) {
+  char fresult ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
   std::string::value_type result;
   
-  arg1 = (std::string *)(farg1);
+  arg1 = static_cast< std::string * >(farg1);
   arg2 = *farg2;
   result = (std::string::value_type)std_string_get(arg1,arg2);
   fresult = result;
@@ -324,51 +339,69 @@ SWIGEXPORT char swigc_string_get(void* farg1, const int* farg2) {
 }
 
 
-SWIGEXPORT void swigc_string_assign_from(void* farg1, const char* farg2, const int* farg3) {
+SWIGEXPORT void swigc_string_assign_from(void *farg1, swig::SwigfArrayWrapper< char const > *farg2) {
   std::string *arg1 = (std::string *) 0 ;
-  std::string::const_pointer arg2 = (std::string::const_pointer) 0 ;
-  std::string::size_type arg3 ;
+  std::pair< char const *,std::size_t > arg2 ;
   
-  arg1 = (std::string *)(farg1);
-  arg2 = (std::string::const_pointer)farg2;
-  arg3 = *farg3;
-  std_string_assign_from(arg1,(char const *)arg2,arg3);
+  arg2 = ::std::pair< const char*, std::size_t >();
+  arg1 = static_cast< std::string * >(farg1);
+  (&arg2)->first  = farg2->data;
+  (&arg2)->second = farg2->size;
+  std_string_assign_from(arg1,arg2);
+  
 }
 
 
-SWIGEXPORT void swigc_string_copy_to(void* farg1, char* farg2, const int* farg3) {
+SWIGEXPORT swig::SwigfArrayWrapper< char const > swigc_string_view(void *farg1) {
+  swig::SwigfArrayWrapper< char const > fresult ;
   std::string *arg1 = (std::string *) 0 ;
-  std::string::pointer arg2 = (std::string::pointer) 0 ;
-  std::string::size_type arg3 ;
+  std::pair< char const *,std::size_t > result;
   
-  arg1 = (std::string *)(farg1);
-  arg2 = (std::string::pointer)farg2;
-  arg3 = *farg3;
-  std_string_copy_to(arg1,arg2,arg3);
+  arg1 = static_cast< std::string * >(farg1);
+  result = std_string_view(arg1);
+  fresult.data = (&result)->first;
+  fresult.size = (&result)->second;
+  return fresult;
 }
 
 
-SWIGEXPORT void swigc_delete_string(void* farg1) {
+SWIGEXPORT void swigc_string_copy_to(void *farg1, swig::SwigfArrayWrapper< char > *farg2) {
+  std::string *arg1 = (std::string *) 0 ;
+  std::pair< char *,std::size_t > arg2 ;
+  
+  arg2 = ::std::pair< char*, std::size_t >();
+  arg1 = static_cast< std::string * >(farg1);
+  (&arg2)->first  = farg2->data;
+  (&arg2)->second = farg2->size;
+  std_string_copy_to(arg1,arg2);
+  
+}
+
+
+SWIGEXPORT void swigc_delete_string(void *farg1) {
   std::string *arg1 = (std::string *) 0 ;
   
-  arg1 = (std::string *)(farg1);
+  arg1 = static_cast< std::string * >(farg1);
   delete arg1;
+  
 }
 
 
-SWIGEXPORT void swigc_print_str(const void* farg1) {
+SWIGEXPORT void swigc_print_str(void const *farg1) {
   std::string *arg1 = 0 ;
   
-  arg1 = (std::string *)(farg1);
+  arg1 = static_cast< std::string * >(const_cast< void* >(farg1));
   print_str((std::string const &)*arg1);
+  
 }
 
 
-SWIGEXPORT void swigc_halve_str(void* farg1) {
+SWIGEXPORT void swigc_halve_str(void *farg1) {
   std::string *arg1 = 0 ;
   
-  arg1 = (std::string *)(farg1);
+  arg1 = static_cast< std::string * >(farg1);
   halve_str(*arg1);
+  
 }
 
 

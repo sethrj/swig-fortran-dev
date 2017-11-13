@@ -6,16 +6,17 @@
 module inheritance
  use, intrinsic :: ISO_C_BINDING
  implicit none
+ private
 
  ! PUBLIC METHODS AND TYPES
  public :: BaseClass
  public :: DerivedA
  public :: DerivedB
+
  ! TYPES
  type, abstract :: BaseClass
   ! These should be treated as PROTECTED data
   type(C_PTR), public :: swigptr = C_NULL_PTR
-  logical, public :: swigown = .false.
  contains
   procedure :: release => swigf_delete_BaseClass
   procedure :: foo => swigf_BaseClass_foo
@@ -40,191 +41,275 @@ module inheritance
   generic :: create => create__SWIG_0, create__SWIG_1
  end type
 
+
  ! WRAPPER DECLARATIONS
- private
  interface
-  subroutine swigc_delete_BaseClass(farg1) &
-     bind(C, name="swigc_delete_BaseClass")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  function swigc_BaseClass_foo(farg1) &
-     bind(C, name="swigc_BaseClass_foo") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   real(C_FLOAT) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_BaseClass_get_i(farg1) &
-     bind(C, name="swigc_BaseClass_get_i") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  subroutine swigc_BaseClass_set_i(farg1, farg2) &
-     bind(C, name="swigc_BaseClass_set_i")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-  end subroutine
-  function swigc_new_DerivedA__SWIG_0() &
-     bind(C, name="swigc_new_DerivedA__SWIG_0") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-  end function
-  function swigc_new_DerivedA__SWIG_1(farg1, farg2) &
-     bind(C, name="swigc_new_DerivedA__SWIG_1") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   integer(C_INT), intent(in) :: farg1
-   real(C_FLOAT), intent(in) :: farg2
-  end function
-  subroutine swigc_delete_DerivedA(farg1) &
-     bind(C, name="swigc_delete_DerivedA")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  function swigc_DerivedA_foo(farg1) &
-     bind(C, name="swigc_DerivedA_foo") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   real(C_FLOAT) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  subroutine swigc_DerivedA_print(farg1) &
-     bind(C, name="swigc_DerivedA_print")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  function swigc_new_DerivedB__SWIG_0() &
-     bind(C, name="swigc_new_DerivedB__SWIG_0") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-  end function
-  function swigc_new_DerivedB__SWIG_1(farg1, farg2) &
-     bind(C, name="swigc_new_DerivedB__SWIG_1") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   integer(C_INT), intent(in) :: farg1
-   integer(C_INT), intent(in) :: farg2
-  end function
-  subroutine swigc_delete_DerivedB(farg1) &
-     bind(C, name="swigc_delete_DerivedB")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  function swigc_DerivedB_foo(farg1) &
-     bind(C, name="swigc_DerivedB_foo") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   real(C_FLOAT) :: fresult
-   type(C_PTR), value :: farg1
-  end function
+subroutine swigc_delete_BaseClass(farg1) &
+bind(C, name="swigc_delete_BaseClass")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+function swigc_BaseClass_foo(farg1) &
+bind(C, name="swigc_BaseClass_foo") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+real(C_FLOAT) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_BaseClass_get_i(farg1) &
+bind(C, name="swigc_BaseClass_get_i") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+subroutine swigc_BaseClass_set_i(farg1, farg2) &
+bind(C, name="swigc_BaseClass_set_i")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+end subroutine
+
+function swigc_new_DerivedA__SWIG_0() &
+bind(C, name="swigc_new_DerivedA__SWIG_0") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+end function
+
+function swigc_new_DerivedA__SWIG_1(farg1, farg2) &
+bind(C, name="swigc_new_DerivedA__SWIG_1") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+integer(C_INT), intent(in) :: farg1
+real(C_FLOAT), intent(in) :: farg2
+end function
+
+subroutine swigc_delete_DerivedA(farg1) &
+bind(C, name="swigc_delete_DerivedA")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+function swigc_DerivedA_foo(farg1) &
+bind(C, name="swigc_DerivedA_foo") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+real(C_FLOAT) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+subroutine swigc_DerivedA_print(farg1) &
+bind(C, name="swigc_DerivedA_print")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+function swigc_new_DerivedB__SWIG_0() &
+bind(C, name="swigc_new_DerivedB__SWIG_0") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+end function
+
+function swigc_new_DerivedB__SWIG_1(farg1, farg2) &
+bind(C, name="swigc_new_DerivedB__SWIG_1") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+integer(C_INT), intent(in) :: farg1
+integer(C_INT), intent(in) :: farg2
+end function
+
+subroutine swigc_delete_DerivedB(farg1) &
+bind(C, name="swigc_delete_DerivedB")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+function swigc_DerivedB_foo(farg1) &
+bind(C, name="swigc_DerivedB_foo") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+real(C_FLOAT) :: fresult
+type(C_PTR), value :: farg1
+end function
+
  end interface
 
+
 contains
-  ! FORTRAN PROXY CODE
-  subroutine swigf_delete_BaseClass(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(BaseClass) :: self
-   if (self%swigown) then
-    call swigc_delete_BaseClass(self%swigptr)
-    self%swigown = .false.
-   end if
-   self%swigptr = C_NULL_PTR
-  end subroutine
-  function swigf_BaseClass_foo(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   real(C_FLOAT) :: fresult
-   class(BaseClass) :: self
-   fresult = swigc_BaseClass_foo(self%swigptr)
-  end function
-  function swigf_BaseClass_get_i(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(BaseClass) :: self
-   fresult = swigc_BaseClass_get_i(self%swigptr)
-  end function
-  subroutine swigf_BaseClass_set_i(self, i)
-   use, intrinsic :: ISO_C_BINDING
-   class(BaseClass) :: self
-   integer(C_INT), intent(in) :: i
-   call swigc_BaseClass_set_i(self%swigptr, i)
-  end subroutine
-  subroutine swigf_new_DerivedA__SWIG_0(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(DerivedA) :: self
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_DerivedA__SWIG_0()
-   self%swigown = .true.
-  end subroutine
-  subroutine swigf_new_DerivedA__SWIG_1(self, i, f)
-   use, intrinsic :: ISO_C_BINDING
-   class(DerivedA) :: self
-   integer(C_INT), intent(in) :: i
-   real(C_FLOAT), intent(in) :: f
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_DerivedA__SWIG_1(i, f)
-   self%swigown = .true.
-  end subroutine
-  subroutine swigf_delete_DerivedA(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(DerivedA) :: self
-   if (self%swigown) then
-    call swigc_delete_DerivedA(self%swigptr)
-    self%swigown = .false.
-   end if
-   self%swigptr = C_NULL_PTR
-  end subroutine
-  function swigf_DerivedA_foo(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   real(C_FLOAT) :: fresult
-   class(DerivedA) :: self
-   fresult = swigc_DerivedA_foo(self%swigptr)
-  end function
-  subroutine swigf_DerivedA_print(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(DerivedA) :: self
-   call swigc_DerivedA_print(self%swigptr)
-  end subroutine
-  subroutine swigf_new_DerivedB__SWIG_0(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(DerivedB) :: self
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_DerivedB__SWIG_0()
-   self%swigown = .true.
-  end subroutine
-  subroutine swigf_new_DerivedB__SWIG_1(self, i, i2)
-   use, intrinsic :: ISO_C_BINDING
-   class(DerivedB) :: self
-   integer(C_INT), intent(in) :: i
-   integer(C_INT), intent(in) :: i2
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_DerivedB__SWIG_1(i, i2)
-   self%swigown = .true.
-  end subroutine
-  subroutine swigf_delete_DerivedB(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(DerivedB) :: self
-   if (self%swigown) then
-    call swigc_delete_DerivedB(self%swigptr)
-    self%swigown = .false.
-   end if
-   self%swigptr = C_NULL_PTR
-  end subroutine
-  function swigf_DerivedB_foo(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   real(C_FLOAT) :: fresult
-   class(DerivedB) :: self
-   fresult = swigc_DerivedB_foo(self%swigptr)
-  end function
+ ! FORTRAN PROXY CODE
+subroutine swigf_delete_BaseClass(self)
+use, intrinsic :: ISO_C_BINDING
+class(BaseClass) :: self
+type(C_PTR) :: farg1 
+
+if (.not. c_associated(self%swigptr)) return
+farg1 = self%swigptr
+call swigc_delete_BaseClass(farg1)
+
+self%swigptr = C_NULL_PTR
+end subroutine
+
+function swigf_BaseClass_foo(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_FLOAT) :: swigf_result
+class(BaseClass) :: self
+real(C_FLOAT) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_BaseClass_foo(farg1)
+swigf_result = fresult
+end function
+
+function swigf_BaseClass_get_i(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(BaseClass) :: self
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_BaseClass_get_i(farg1)
+swigf_result = fresult
+end function
+
+subroutine swigf_BaseClass_set_i(self, i)
+use, intrinsic :: ISO_C_BINDING
+class(BaseClass) :: self
+integer(C_INT), intent(in) :: i
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+
+farg1 = self%swigptr
+farg2 = i
+call swigc_BaseClass_set_i(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_new_DerivedA__SWIG_0(self)
+use, intrinsic :: ISO_C_BINDING
+class(DerivedA) :: self
+type(C_PTR) :: fresult 
+
+if (c_associated(self%swigptr)) call self%release()
+fresult = swigc_new_DerivedA__SWIG_0()
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_DerivedA__SWIG_1(self, i, f)
+use, intrinsic :: ISO_C_BINDING
+class(DerivedA) :: self
+integer(C_INT), intent(in) :: i
+real(C_FLOAT), intent(in) :: f
+type(C_PTR) :: fresult 
+integer(C_INT) :: farg1 
+real(C_FLOAT) :: farg2 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = i
+farg2 = f
+fresult = swigc_new_DerivedA__SWIG_1(farg1, farg2)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_delete_DerivedA(self)
+use, intrinsic :: ISO_C_BINDING
+class(DerivedA) :: self
+type(C_PTR) :: farg1 
+
+if (.not. c_associated(self%swigptr)) return
+farg1 = self%swigptr
+call swigc_delete_DerivedA(farg1)
+
+self%swigptr = C_NULL_PTR
+end subroutine
+
+function swigf_DerivedA_foo(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_FLOAT) :: swigf_result
+class(DerivedA) :: self
+real(C_FLOAT) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_DerivedA_foo(farg1)
+swigf_result = fresult
+end function
+
+subroutine swigf_DerivedA_print(self)
+use, intrinsic :: ISO_C_BINDING
+class(DerivedA) :: self
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+call swigc_DerivedA_print(farg1)
+
+end subroutine
+
+subroutine swigf_new_DerivedB__SWIG_0(self)
+use, intrinsic :: ISO_C_BINDING
+class(DerivedB) :: self
+type(C_PTR) :: fresult 
+
+if (c_associated(self%swigptr)) call self%release()
+fresult = swigc_new_DerivedB__SWIG_0()
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_DerivedB__SWIG_1(self, i, i2)
+use, intrinsic :: ISO_C_BINDING
+class(DerivedB) :: self
+integer(C_INT), intent(in) :: i
+integer(C_INT), intent(in) :: i2
+type(C_PTR) :: fresult 
+integer(C_INT) :: farg1 
+integer(C_INT) :: farg2 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = i
+farg2 = i2
+fresult = swigc_new_DerivedB__SWIG_1(farg1, farg2)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_delete_DerivedB(self)
+use, intrinsic :: ISO_C_BINDING
+class(DerivedB) :: self
+type(C_PTR) :: farg1 
+
+if (.not. c_associated(self%swigptr)) return
+farg1 = self%swigptr
+call swigc_delete_DerivedB(farg1)
+
+self%swigptr = C_NULL_PTR
+end subroutine
+
+function swigf_DerivedB_foo(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_FLOAT) :: swigf_result
+class(DerivedB) :: self
+real(C_FLOAT) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_DerivedB_foo(farg1)
+swigf_result = fresult
+end function
+
+
 end module inheritance

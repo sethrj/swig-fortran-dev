@@ -18,7 +18,7 @@ then
 else
   cmake -C $SOURCE/cmake/config.cmake $SOURCE
 fi
-make && \ctest -V
+make && \ctest -V || echo "Encountered errors!"
 cp */*.{f90,cxx} $GEN
 rm $GEN/feature_tests.cxx 2>/dev/null || true
 
