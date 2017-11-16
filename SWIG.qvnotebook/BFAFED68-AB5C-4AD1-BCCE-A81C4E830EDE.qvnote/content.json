@@ -13,6 +13,10 @@
     {
       "type": "markdown",
       "data": "SWIG sets the `abstract` property on the function `meth`. Currently it outputs:\n```fortran  \n  procedure :: meth => swigf_abstract_foo_meth\n```\nand defines a function `swigf_abstract_foo_meth`\nbut instead should write an interface:\n```\nprocedure(swigf_abstract_foo_meth_interface), deferred :: swigf_abstract_foo_meth\ngeneric :: meth => swigf_abstract_foo_meth\n```\n- Don't write `swigc_abstract_foo_meth`?\n- \n"
+    },
+    {
+      "type": "markdown",
+      "data": "[Fortran deferred bindings](https://www.ibm.com/support/knowledgecenter/SSGH4D_14.1.0/com.ibm.xlf141.aix.doc/language_ref/abstracttypes.html)"
     }
   ]
 }
