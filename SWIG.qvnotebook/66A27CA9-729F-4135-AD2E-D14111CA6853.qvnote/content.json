@@ -3,6 +3,10 @@
   "cells": [
     {
       "type": "markdown",
+      "data": "See [issue 11](https://github.com/sethrj/swig/issues/11)"
+    },
+    {
+      "type": "markdown",
       "data": "- How do we know what's C-compatible by default?\n- Provide `%feature` directive to override (like with the `valuewrapper` and `novaluewrapper` features)\n- Usually classes are proxy functions with stored C pointers, and the generic `SWIGTYPE` uses that. However, how do we identify what wrapped types are structs and how to access them by directly passing their type through to C++? Is it possible to use a `%feature` directive, like with shared pointers?"
     },
     {
@@ -12,6 +16,10 @@
     {
       "type": "markdown",
       "data": "# Typemap\n\nFor each struct we make, we need to add a custom typemap for that struct (kind of like with the `%shared_ptr` thing) that knows to pass by pointer instead of accessing the `swigptr` variable.\n\nSo maybe don't make it automatic? Or use `Swig_typemap_register`?\n\nOR define a \"struct\" typemap and call `Swig_typemap_apply` to copy it to the given type!!"
+    },
+    {
+      "type": "markdown",
+      "data": "# Current implementation\n\nFor now I'm manually defining a macro to bind C structs. There are a couple issues with wrapping C routines though.\n\nFirst, it looks like the `SWIGTYPE*` typemap is overriding the `%apply CPPTYPE& { CPPTYPE*, CPPTYPE[], CPPTYPE[ANY] };` directive, causing `class($fclassname)` to be inserted instead of `type($fclassname)`.\n\nSecond, there's still an outstanding issue of how to set all the C pointers in the structs: some of them are e.g. arrays of objects. Do we provide a helper function to get/set those? And since there's no type safety for the fortran equivalents of these functions, how could it possibly be safe?\n\nAlong the same lines, what about things like `type(C_PTR), public :: title`? That would require a helper function that returns a compatible C-string. So we'd end up having a bunch of free functions without any type safety. Ugh."
     },
     {
       "type": "markdown",

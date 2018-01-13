@@ -1,9 +1,9 @@
 {
-  "title": "SWIG usage tips",
+  "title": "Exceptions",
   "cells": [
     {
       "type": "markdown",
-      "data": "# Enabling exceptions in SWIG\n```c++\n%include <std_except.i>\n%exception {\n    // Make sure no unhandled exceptions exist before performing a new action\n    swig::fortran_check_unhandled_exception();\n    try\n    {\n        // Attempt the wrapped function call\n        $action\n    }\n    catch (const std::exception& e)\n    {\n        // Store a C++ exception\n        SWIG_exception(SWIG_RuntimeError, e.what());\n    }\n    catch (...)\n    {\n        SWIG_exception(SWIG_UnknownError, \"An unknown exception occurred\");\n    }\n}\n```\nthen in Fortran:\n```fortran\nif (ierr /= 0) then\n    write(*,*) \"Got error \", ierr, \":\", trim(serr)\n    stop 1\nendif\n```"
+      "data": "# Enabling exceptions in SWIG\n```c++\n%include <std_except.i>\n%exception {\n    // Make sure no unhandled exceptions exist before performing a new action\n    swig::fortran_check_unhandled_exception();\n    try\n    {\n        // Attempt the wrapped function call\n        $action\n    }\n    catch (const std::exception& e)\n    {\n        // Store a C++ exception\n        SWIG_exception(SWIG_RuntimeError, e.what());\n    }\n    catch (...)\n    {\n        SWIG_exception(SWIG_UnknownError, \"An unknown exception occurred\");\n    }\n}\n```\nthen in Fortran:\n```fortran\nif (ierr /= 0) then\n    write(*,*) \"Got error \", ierr, \":\", get_string)\n    stop 1\nendif\n```"
     }
   ]
 }

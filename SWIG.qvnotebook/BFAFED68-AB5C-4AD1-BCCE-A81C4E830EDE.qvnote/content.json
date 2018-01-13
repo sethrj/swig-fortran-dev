@@ -3,6 +3,18 @@
   "cells": [
     {
       "type": "markdown",
+      "data": "# Generic procedures and overriding\n\nIt looks like procedures can't override other procedures in the base class except in very special circumstances:\n> See Fortran 2008, \"4.5.7.3 Type-bound procedure overriding\":\n> \"The overriding and overridden type-bound procedures shall satisfy the following conditions. [...] They shall have the same number of dummy arguments.\"\n\nAlso, `GENERIC` bindings cannot be overriden; instead, they always extend the base's generic methods."
+    },
+    {
+      "type": "markdown",
+      "data": "# New inheritance\n\n- Proxy class types will be COMPLETELY INDEPENDENT: shadowing and such is handled by SWIG since Fortran sucks balls\n- Write C wrapper functions only for base class methods (i.e. don't duplicate wrapper code between base and derived)\n- Add implementation (private) functions that implement casts between the C++ class pointers\n- Proxy code will use pointer casting functions \n- Add user-accessible free functions to cast between Fortran proxy classes\n\nExample:\n```c++\nclass A {\n  public:\n    virtual ~A();\n    virtual void foo() = 0;\n    void bar();\n    void bar(int a);\n};\n\nclass B : public A {\n  public:\n    B();\n    void foo();\n    void bar(double c);\n    void baz();\n};\n```\n\nFortran proxy code:\n```fortran\nfunction derived_to_base(derived) &\n    result(base)\n    use, intrinsic :: ISO_C_BINDING\n    type(A) :: base\n    class(B) :: derived\n    type(C_PTR) :: fresult \n    type(C_PTR) :: farg1 \n\n    farg1 = derived%swigptr\n    fresult = swigc_derived_to_base(farg1)\n    base%swigptr = fresult\nend function\n```"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
       "data": "# Fortran abstract classes and such\n\nFrom [Stack Overflow](https://stackoverflow.com/questions/25410476/understanding-fortran-extends-types-and-override):\n\nthe base class defines an abstract function `allocateBasis` that accepts a real value; the subclass defines an implementation as well as an overload that takes a complex value."
     },
     {
@@ -12,7 +24,7 @@
     },
     {
       "type": "markdown",
-      "data": "SWIG sets the `abstract` property on the function `meth`. Currently it outputs:\n```fortran  \n  procedure :: meth => swigf_abstract_foo_meth\n```\nand defines a function `swigf_abstract_foo_meth`\nbut instead should write an interface:\n```\nprocedure(swigf_abstract_foo_meth_interface), deferred :: swigf_abstract_foo_meth\ngeneric :: meth => swigf_abstract_foo_meth\n```\n- Don't write `swigc_abstract_foo_meth`?\n- \n"
+      "data": "SWIG sets the `abstract` property on the function `meth`. Currently it outputs:\n```fortran  \n  procedure :: meth => swigf_abstract_foo_meth\n```\nand defines a function `swigf_abstract_foo_meth`\nbut instead should write an interface:\n```\nprocedure(swigf_abstract_foo_meth_interface), deferred :: swigf_abstract_foo_meth\ngeneric :: meth => swigf_abstract_foo_meth\n```\n- Don't write `swigc_abstract_foo_meth`?\n"
     },
     {
       "type": "markdown",
