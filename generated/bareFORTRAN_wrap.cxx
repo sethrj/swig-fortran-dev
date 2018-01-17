@@ -251,7 +251,7 @@ SWIGEXPORT void swigc_get_something_ref(int const *farg1, double *farg2) {
   double *arg2 = 0 ;
   
   arg1 = *farg1;
-  arg2 = farg2;
+  arg2 = reinterpret_cast< double * >(farg2);
   get_something_ref(arg1,*arg2);
   
 }
@@ -262,7 +262,7 @@ SWIGEXPORT void swigc_get_something_ptr(int const *farg1, double *farg2) {
   double *arg2 = (double *) 0 ;
   
   arg1 = *farg1;
-  arg2 = farg2;
+  arg2 = reinterpret_cast< double * >(farg2);
   get_something_ptr(arg1,arg2);
   
 }
@@ -275,7 +275,7 @@ SWIGEXPORT double * swigc_get_something_rptr(int const *farg1) {
   
   arg1 = *farg1;
   result = (double *)get_something_rptr(arg1);
-  fresult = static_cast< double * >(result);
+  fresult = reinterpret_cast< double* >(result);
   return fresult;
 }
 
@@ -287,7 +287,7 @@ SWIGEXPORT double const * swigc_get_something_rcptr(int const *farg1) {
   
   arg1 = *farg1;
   result = (double *)get_something_rcptr(arg1);
-  fresult = result;
+  fresult = const_cast< double* >(reinterpret_cast< const double* >(result));
   return fresult;
 }
 
@@ -299,7 +299,7 @@ SWIGEXPORT double * swigc_get_something_rref(int const *farg1) {
   
   arg1 = *farg1;
   result = (double *) &get_something_rref(arg1);
-  fresult = static_cast< double * >(result);
+  fresult = reinterpret_cast< double* >(result);
   return fresult;
 }
 

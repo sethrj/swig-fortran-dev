@@ -217,20 +217,19 @@ enum SwigfProxyFlag {
 
 
 
-template<class T>
 struct SwigfClassWrapper
 {
-    T*             ptr;
+    void*          ptr;
     SwigfProxyFlag flag;
-    // Static function to return an empty 
-    static SwigfClassWrapper<T> uninitialized()
-    {
-        SwigfClassWrapper<T> result;
-        result.ptr = NULL;
-        result.flag = SWIGF_UNINIT;
-        return result;
-    }
 };
+
+SwigfClassWrapper SwigfClassWrapper_uninitialized()
+{
+    SwigfClassWrapper result;
+    result.ptr  = NULL;
+    result.flag = SWIGF_UNINIT;
+    return result;
+}
 
 #ifdef __cplusplus
 extern "C" {
@@ -266,21 +265,21 @@ SWIGEXPORT double swigc_BaseClass_f(int const *farg1) {
 }
 
 
-SWIGEXPORT SwigfClassWrapper< BaseClass > swigc_new_BaseClass() {
-  SwigfClassWrapper< BaseClass > fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_new_BaseClass() {
+  SwigfClassWrapper fresult ;
   BaseClass *result = 0 ;
   
   result = (BaseClass *)new BaseClass();
-  fresult.ptr = result;
+  fresult.ptr  = result;
   fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_delete_BaseClass(SwigfClassWrapper< BaseClass > *farg1) {
+SWIGEXPORT void swigc_delete_BaseClass(SwigfClassWrapper const *farg1) {
   BaseClass *arg1 = (BaseClass *) 0 ;
   
-  arg1 = farg1->ptr;
+  arg1 = static_cast< BaseClass * >(farg1->ptr);
   delete arg1;
   
 }

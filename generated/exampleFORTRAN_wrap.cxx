@@ -288,20 +288,19 @@ enum SwigfProxyFlag {
 
 
 
-template<class T>
 struct SwigfClassWrapper
 {
-    T*             ptr;
+    void*          ptr;
     SwigfProxyFlag flag;
-    // Static function to return an empty 
-    static SwigfClassWrapper<T> uninitialized()
-    {
-        SwigfClassWrapper<T> result;
-        result.ptr = NULL;
-        result.flag = SWIGF_UNINIT;
-        return result;
-    }
 };
+
+SwigfClassWrapper SwigfClassWrapper_uninitialized()
+{
+    SwigfClassWrapper result;
+    result.ptr  = NULL;
+    result.flag = SWIGF_UNINIT;
+    return result;
+}
 
 #ifdef __cplusplus
 extern "C" {
@@ -337,56 +336,56 @@ SWIGEXPORT int swigc_get_Shape_nshapes() {
 }
 
 
-SWIGEXPORT void swigc_set_Shape_x(SwigfClassWrapper< Shape > *farg1, double const *farg2) {
+SWIGEXPORT void swigc_set_Shape_x(SwigfClassWrapper const *farg1, double const *farg2) {
   Shape *arg1 = (Shape *) 0 ;
   double arg2 ;
   
-  arg1 = farg1->ptr;
+  arg1 = static_cast< Shape * >(farg1->ptr);
   arg2 = *farg2;
   if (arg1) (arg1)->x = arg2;
   
 }
 
 
-SWIGEXPORT double swigc_get_Shape_x(SwigfClassWrapper< Shape > *farg1) {
+SWIGEXPORT double swigc_get_Shape_x(SwigfClassWrapper const *farg1) {
   double fresult ;
   Shape *arg1 = (Shape *) 0 ;
   double result;
   
-  arg1 = farg1->ptr;
+  arg1 = static_cast< Shape * >(farg1->ptr);
   result = (double) ((arg1)->x);
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_set_Shape_y(SwigfClassWrapper< Shape > *farg1, double const *farg2) {
+SWIGEXPORT void swigc_set_Shape_y(SwigfClassWrapper const *farg1, double const *farg2) {
   Shape *arg1 = (Shape *) 0 ;
   double arg2 ;
   
-  arg1 = farg1->ptr;
+  arg1 = static_cast< Shape * >(farg1->ptr);
   arg2 = *farg2;
   if (arg1) (arg1)->y = arg2;
   
 }
 
 
-SWIGEXPORT double swigc_get_Shape_y(SwigfClassWrapper< Shape > *farg1) {
+SWIGEXPORT double swigc_get_Shape_y(SwigfClassWrapper const *farg1) {
   double fresult ;
   Shape *arg1 = (Shape *) 0 ;
   double result;
   
-  arg1 = farg1->ptr;
+  arg1 = static_cast< Shape * >(farg1->ptr);
   result = (double) ((arg1)->y);
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_delete_Shape(SwigfClassWrapper< Shape > *farg1) {
+SWIGEXPORT void swigc_delete_Shape(SwigfClassWrapper const *farg1) {
   Shape *arg1 = (Shape *) 0 ;
   
-  arg1 = farg1->ptr;
+  arg1 = static_cast< Shape * >(farg1->ptr);
   {
     try {
       delete arg1;
@@ -400,12 +399,12 @@ SWIGEXPORT void swigc_delete_Shape(SwigfClassWrapper< Shape > *farg1) {
 }
 
 
-SWIGEXPORT void swigc_Shape_move(SwigfClassWrapper< Shape > *farg1, double const *farg2, double const *farg3) {
+SWIGEXPORT void swigc_Shape_move(SwigfClassWrapper const *farg1, double const *farg2, double const *farg3) {
   Shape *arg1 = (Shape *) 0 ;
   double arg2 ;
   double arg3 ;
   
-  arg1 = farg1->ptr;
+  arg1 = static_cast< Shape * >(farg1->ptr);
   arg2 = *farg2;
   arg3 = *farg3;
   {
@@ -421,12 +420,12 @@ SWIGEXPORT void swigc_Shape_move(SwigfClassWrapper< Shape > *farg1, double const
 }
 
 
-SWIGEXPORT double swigc_Shape_area(SwigfClassWrapper< Shape const > const *farg1) {
+SWIGEXPORT double swigc_Shape_area(SwigfClassWrapper const *farg1) {
   double fresult ;
   Shape *arg1 = (Shape *) 0 ;
   double result;
   
-  arg1 = const_cast< Shape* >(farg1->ptr);
+  arg1 = static_cast< Shape* >(farg1->ptr);
   {
     try {
       result = (double)((Shape const *)arg1)->area();
@@ -441,12 +440,12 @@ SWIGEXPORT double swigc_Shape_area(SwigfClassWrapper< Shape const > const *farg1
 }
 
 
-SWIGEXPORT double swigc_Shape_perimeter(SwigfClassWrapper< Shape const > const *farg1) {
+SWIGEXPORT double swigc_Shape_perimeter(SwigfClassWrapper const *farg1) {
   double fresult ;
   Shape *arg1 = (Shape *) 0 ;
   double result;
   
-  arg1 = const_cast< Shape* >(farg1->ptr);
+  arg1 = static_cast< Shape* >(farg1->ptr);
   {
     try {
       result = (double)((Shape const *)arg1)->perimeter();
@@ -461,8 +460,8 @@ SWIGEXPORT double swigc_Shape_perimeter(SwigfClassWrapper< Shape const > const *
 }
 
 
-SWIGEXPORT SwigfClassWrapper< Circle > swigc_new_Circle(double const *farg1) {
-  SwigfClassWrapper< Circle > fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_new_Circle(double const *farg1) {
+  SwigfClassWrapper fresult ;
   double arg1 ;
   Circle *result = 0 ;
   
@@ -473,21 +472,21 @@ SWIGEXPORT SwigfClassWrapper< Circle > swigc_new_Circle(double const *farg1) {
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), SwigfClassWrapper<Circle>::uninitialized());
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), SwigfClassWrapper_uninitialized());
     }
   }
-  fresult.ptr = result;
+  fresult.ptr  = result;
   fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
   return fresult;
 }
 
 
-SWIGEXPORT double swigc_Circle_area(SwigfClassWrapper< Circle const > const *farg1) {
+SWIGEXPORT double swigc_Circle_area(SwigfClassWrapper const *farg1) {
   double fresult ;
   Circle *arg1 = (Circle *) 0 ;
   double result;
   
-  arg1 = const_cast< Circle* >(farg1->ptr);
+  arg1 = static_cast< Circle* >(farg1->ptr);
   {
     try {
       result = (double)((Circle const *)arg1)->area();
@@ -502,12 +501,12 @@ SWIGEXPORT double swigc_Circle_area(SwigfClassWrapper< Circle const > const *far
 }
 
 
-SWIGEXPORT double swigc_Circle_perimeter(SwigfClassWrapper< Circle const > const *farg1) {
+SWIGEXPORT double swigc_Circle_perimeter(SwigfClassWrapper const *farg1) {
   double fresult ;
   Circle *arg1 = (Circle *) 0 ;
   double result;
   
-  arg1 = const_cast< Circle* >(farg1->ptr);
+  arg1 = static_cast< Circle* >(farg1->ptr);
   {
     try {
       result = (double)((Circle const *)arg1)->perimeter();
@@ -522,10 +521,10 @@ SWIGEXPORT double swigc_Circle_perimeter(SwigfClassWrapper< Circle const > const
 }
 
 
-SWIGEXPORT void swigc_delete_Circle(SwigfClassWrapper< Circle > *farg1) {
+SWIGEXPORT void swigc_delete_Circle(SwigfClassWrapper const *farg1) {
   Circle *arg1 = (Circle *) 0 ;
   
-  arg1 = farg1->ptr;
+  arg1 = static_cast< Circle * >(farg1->ptr);
   {
     try {
       delete arg1;
@@ -539,8 +538,8 @@ SWIGEXPORT void swigc_delete_Circle(SwigfClassWrapper< Circle > *farg1) {
 }
 
 
-SWIGEXPORT SwigfClassWrapper< Square > swigc_new_Square(double const *farg1) {
-  SwigfClassWrapper< Square > fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_new_Square(double const *farg1) {
+  SwigfClassWrapper fresult ;
   double arg1 ;
   Square *result = 0 ;
   
@@ -551,21 +550,21 @@ SWIGEXPORT SwigfClassWrapper< Square > swigc_new_Square(double const *farg1) {
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), SwigfClassWrapper<Square>::uninitialized());
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), SwigfClassWrapper_uninitialized());
     }
   }
-  fresult.ptr = result;
+  fresult.ptr  = result;
   fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
   return fresult;
 }
 
 
-SWIGEXPORT double swigc_Square_area(SwigfClassWrapper< Square const > const *farg1) {
+SWIGEXPORT double swigc_Square_area(SwigfClassWrapper const *farg1) {
   double fresult ;
   Square *arg1 = (Square *) 0 ;
   double result;
   
-  arg1 = const_cast< Square* >(farg1->ptr);
+  arg1 = static_cast< Square* >(farg1->ptr);
   {
     try {
       result = (double)((Square const *)arg1)->area();
@@ -580,12 +579,12 @@ SWIGEXPORT double swigc_Square_area(SwigfClassWrapper< Square const > const *far
 }
 
 
-SWIGEXPORT double swigc_Square_perimeter(SwigfClassWrapper< Square const > const *farg1) {
+SWIGEXPORT double swigc_Square_perimeter(SwigfClassWrapper const *farg1) {
   double fresult ;
   Square *arg1 = (Square *) 0 ;
   double result;
   
-  arg1 = const_cast< Square* >(farg1->ptr);
+  arg1 = static_cast< Square* >(farg1->ptr);
   {
     try {
       result = (double)((Square const *)arg1)->perimeter();
@@ -600,10 +599,10 @@ SWIGEXPORT double swigc_Square_perimeter(SwigfClassWrapper< Square const > const
 }
 
 
-SWIGEXPORT void swigc_delete_Square(SwigfClassWrapper< Square > *farg1) {
+SWIGEXPORT void swigc_delete_Square(SwigfClassWrapper const *farg1) {
   Square *arg1 = (Square *) 0 ;
   
-  arg1 = farg1->ptr;
+  arg1 = static_cast< Square * >(farg1->ptr);
   {
     try {
       delete arg1;
@@ -617,8 +616,8 @@ SWIGEXPORT void swigc_delete_Square(SwigfClassWrapper< Square > *farg1) {
 }
 
 
-SWIGEXPORT SwigfClassWrapper< Sphere > swigc_new_Sphere(double const *farg1) {
-  SwigfClassWrapper< Sphere > fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_new_Sphere(double const *farg1) {
+  SwigfClassWrapper fresult ;
   double arg1 ;
   Sphere *result = 0 ;
   
@@ -629,21 +628,21 @@ SWIGEXPORT SwigfClassWrapper< Sphere > swigc_new_Sphere(double const *farg1) {
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), SwigfClassWrapper<Sphere>::uninitialized());
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), SwigfClassWrapper_uninitialized());
     }
   }
-  fresult.ptr = result;
+  fresult.ptr  = result;
   fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
   return fresult;
 }
 
 
-SWIGEXPORT double swigc_Sphere_volume(SwigfClassWrapper< Sphere const > const *farg1) {
+SWIGEXPORT double swigc_Sphere_volume(SwigfClassWrapper const *farg1) {
   double fresult ;
   Sphere *arg1 = (Sphere *) 0 ;
   double result;
   
-  arg1 = const_cast< Sphere* >(farg1->ptr);
+  arg1 = static_cast< Sphere* >(farg1->ptr);
   {
     try {
       result = (double)((Sphere const *)arg1)->volume();
@@ -658,10 +657,10 @@ SWIGEXPORT double swigc_Sphere_volume(SwigfClassWrapper< Sphere const > const *f
 }
 
 
-SWIGEXPORT void swigc_delete_Sphere(SwigfClassWrapper< Sphere > *farg1) {
+SWIGEXPORT void swigc_delete_Sphere(SwigfClassWrapper const *farg1) {
   Sphere *arg1 = (Sphere *) 0 ;
   
-  arg1 = farg1->ptr;
+  arg1 = static_cast< Sphere * >(farg1->ptr);
   {
     try {
       delete arg1;
@@ -675,12 +674,12 @@ SWIGEXPORT void swigc_delete_Sphere(SwigfClassWrapper< Sphere > *farg1) {
 }
 
 
-SWIGEXPORT double swigc_surface_to_volume(SwigfClassWrapper< Shape const > const *farg1) {
+SWIGEXPORT double swigc_surface_to_volume(SwigfClassWrapper const *farg1) {
   double fresult ;
   Shape *arg1 = 0 ;
   double result;
   
-  arg1 = const_cast< Shape* >(farg1->ptr);
+  arg1 = static_cast< Shape* >(farg1->ptr);
   {
     try {
       result = (double)surface_to_volume((Shape const &)*arg1);

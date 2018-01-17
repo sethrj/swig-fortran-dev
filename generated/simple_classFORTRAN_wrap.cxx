@@ -234,20 +234,19 @@ enum SwigfProxyFlag {
 
 
 
-template<class T>
 struct SwigfClassWrapper
 {
-    T*             ptr;
+    void*          ptr;
     SwigfProxyFlag flag;
-    // Static function to return an empty 
-    static SwigfClassWrapper<T> uninitialized()
-    {
-        SwigfClassWrapper<T> result;
-        result.ptr = NULL;
-        result.flag = SWIGF_UNINIT;
-        return result;
-    }
 };
+
+SwigfClassWrapper SwigfClassWrapper_uninitialized()
+{
+    SwigfClassWrapper result;
+    result.ptr  = NULL;
+    result.flag = SWIGF_UNINIT;
+    return result;
+}
 
 SWIGINTERN void SimpleClass_assign(SimpleClass *self,SimpleClass const &other){
     *self = other;
@@ -255,129 +254,129 @@ SWIGINTERN void SimpleClass_assign(SimpleClass *self,SimpleClass const &other){
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_print_pointer(int const *farg1, SwigfClassWrapper< SimpleClass > *farg2) {
+SWIGEXPORT void swigc_print_pointer(int const *farg1, SwigfClassWrapper const *farg2) {
   int arg1 ;
   SimpleClass *arg2 = (SimpleClass *) 0 ;
   
   arg1 = *farg1;
-  arg2 = farg2->ptr;
+  arg2 = static_cast< SimpleClass * >(farg2->ptr);
   print_pointer(arg1,arg2);
   
 }
 
 
-SWIGEXPORT SwigfClassWrapper< SimpleClass > swigc_new_SimpleClass__SWIG_0() {
-  SwigfClassWrapper< SimpleClass > fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_new_SimpleClass__SWIG_0() {
+  SwigfClassWrapper fresult ;
   SimpleClass *result = 0 ;
   
   result = (SimpleClass *)new SimpleClass();
-  fresult.ptr = result;
+  fresult.ptr  = result;
   fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
   return fresult;
 }
 
 
-SWIGEXPORT SwigfClassWrapper< SimpleClass > swigc_new_SimpleClass__SWIG_1(SwigfClassWrapper< SimpleClass const > const *farg1) {
-  SwigfClassWrapper< SimpleClass > fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_new_SimpleClass__SWIG_1(SwigfClassWrapper const *farg1) {
+  SwigfClassWrapper fresult ;
   SimpleClass *arg1 = 0 ;
   SimpleClass *result = 0 ;
   
-  arg1 = const_cast< SimpleClass* >(farg1->ptr);
+  arg1 = static_cast< SimpleClass* >(farg1->ptr);
   result = (SimpleClass *)new SimpleClass((SimpleClass const &)*arg1);
-  fresult.ptr = result;
+  fresult.ptr  = result;
   fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
   return fresult;
 }
 
 
-SWIGEXPORT SwigfClassWrapper< SimpleClass > swigc_SimpleClass_assign__(SwigfClassWrapper< SimpleClass > *farg1, SwigfClassWrapper< SimpleClass const > const *farg2) {
-  SwigfClassWrapper< SimpleClass > fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_SimpleClass_assign__(SwigfClassWrapper const *farg1, SwigfClassWrapper const *farg2) {
+  SwigfClassWrapper fresult ;
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   SimpleClass *arg2 = 0 ;
   SimpleClass *result = 0 ;
   
-  arg1 = farg1->ptr;
-  arg2 = const_cast< SimpleClass* >(farg2->ptr);
+  arg1 = static_cast< SimpleClass * >(farg1->ptr);
+  arg2 = static_cast< SimpleClass* >(farg2->ptr);
   result = (SimpleClass *) &(arg1)->operator =((SimpleClass const &)*arg2);
-  fresult.ptr = result;
+  fresult.ptr  = result;
   fresult.flag = (0 ? SWIGF_MOVING : SWIGF_REFERENCE);
   return fresult;
 }
 
 
-SWIGEXPORT SwigfClassWrapper< SimpleClass > swigc_new_SimpleClass__SWIG_2(double const *farg1) {
-  SwigfClassWrapper< SimpleClass > fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_new_SimpleClass__SWIG_2(double const *farg1) {
+  SwigfClassWrapper fresult ;
   double arg1 ;
   SimpleClass *result = 0 ;
   
   arg1 = *farg1;
   result = (SimpleClass *)new SimpleClass(arg1);
-  fresult.ptr = result;
+  fresult.ptr  = result;
   fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_delete_SimpleClass(SwigfClassWrapper< SimpleClass > *farg1) {
+SWIGEXPORT void swigc_delete_SimpleClass(SwigfClassWrapper const *farg1) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   
-  arg1 = farg1->ptr;
+  arg1 = static_cast< SimpleClass * >(farg1->ptr);
   delete arg1;
   
 }
 
 
-SWIGEXPORT void swigc_SimpleClass_set(SwigfClassWrapper< SimpleClass > *farg1, int const *farg2) {
+SWIGEXPORT void swigc_SimpleClass_set(SwigfClassWrapper const *farg1, int const *farg2) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   SimpleClass::storage_type arg2 ;
   
-  arg1 = farg1->ptr;
+  arg1 = static_cast< SimpleClass * >(farg1->ptr);
   arg2 = *farg2;
   (arg1)->set(arg2);
   
 }
 
 
-SWIGEXPORT void swigc_SimpleClass_double_it(SwigfClassWrapper< SimpleClass > *farg1) {
+SWIGEXPORT void swigc_SimpleClass_double_it(SwigfClassWrapper const *farg1) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   
-  arg1 = farg1->ptr;
+  arg1 = static_cast< SimpleClass * >(farg1->ptr);
   (arg1)->double_it();
   
 }
 
 
-SWIGEXPORT int swigc_SimpleClass_get(SwigfClassWrapper< SimpleClass const > const *farg1) {
+SWIGEXPORT int swigc_SimpleClass_get(SwigfClassWrapper const *farg1) {
   int fresult ;
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   SimpleClass::storage_type result;
   
-  arg1 = const_cast< SimpleClass* >(farg1->ptr);
+  arg1 = static_cast< SimpleClass* >(farg1->ptr);
   result = (SimpleClass::storage_type)((SimpleClass const *)arg1)->get();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_SimpleClass_id(SwigfClassWrapper< SimpleClass const > const *farg1) {
+SWIGEXPORT int swigc_SimpleClass_id(SwigfClassWrapper const *farg1) {
   int fresult ;
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   int result;
   
-  arg1 = const_cast< SimpleClass* >(farg1->ptr);
+  arg1 = static_cast< SimpleClass* >(farg1->ptr);
   result = (int)((SimpleClass const *)arg1)->id();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_SimpleClass_get_multiplied(SwigfClassWrapper< SimpleClass const > const *farg1, int const *farg2) {
+SWIGEXPORT int swigc_SimpleClass_get_multiplied(SwigfClassWrapper const *farg1, int const *farg2) {
   int fresult ;
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   SimpleClass::multiple_type arg2 ;
   SimpleClass::storage_type result;
   
-  arg1 = const_cast< SimpleClass* >(farg1->ptr);
+  arg1 = static_cast< SimpleClass* >(farg1->ptr);
   arg2 = *farg2;
   result = (SimpleClass::storage_type)((SimpleClass const *)arg1)->get_multiplied(arg2);
   fresult = result;
@@ -385,63 +384,63 @@ SWIGEXPORT int swigc_SimpleClass_get_multiplied(SwigfClassWrapper< SimpleClass c
 }
 
 
-SWIGEXPORT void swigc_SimpleClass_assign(SwigfClassWrapper< SimpleClass > *farg1, SwigfClassWrapper< SimpleClass const > const *farg2) {
+SWIGEXPORT void swigc_SimpleClass_assign(SwigfClassWrapper const *farg1, SwigfClassWrapper const *farg2) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   SimpleClass *arg2 = 0 ;
   
-  arg1 = farg1->ptr;
-  arg2 = const_cast< SimpleClass* >(farg2->ptr);
+  arg1 = static_cast< SimpleClass * >(farg1->ptr);
+  arg2 = static_cast< SimpleClass* >(farg2->ptr);
   SimpleClass_assign(arg1,(SimpleClass const &)*arg2);
   
 }
 
 
-SWIGEXPORT void swigc_SimpleClass_action__SWIG_1(SwigfClassWrapper< SimpleClass > *farg1, double *farg2) {
+SWIGEXPORT void swigc_SimpleClass_action__SWIG_1(SwigfClassWrapper const *farg1, double *farg2) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   double *arg2 = 0 ;
   
-  arg1 = farg1->ptr;
-  arg2 = farg2;
+  arg1 = static_cast< SimpleClass * >(farg1->ptr);
+  arg2 = reinterpret_cast< double * >(farg2);
   (arg1)->SWIGTEMPLATEDISAMBIGUATOR action< double >(*arg2);
   
 }
 
 
-SWIGEXPORT void swigc_SimpleClass_action__SWIG_2(SwigfClassWrapper< SimpleClass > *farg1, int *farg2) {
+SWIGEXPORT void swigc_SimpleClass_action__SWIG_2(SwigfClassWrapper const *farg1, int *farg2) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   int *arg2 = 0 ;
   
-  arg1 = farg1->ptr;
-  arg2 = farg2;
+  arg1 = static_cast< SimpleClass * >(farg1->ptr);
+  arg2 = reinterpret_cast< int * >(farg2);
   (arg1)->SWIGTEMPLATEDISAMBIGUATOR action< int >(*arg2);
   
 }
 
 
-SWIGEXPORT void swigc_print_value(SwigfClassWrapper< SimpleClass const > const *farg1) {
+SWIGEXPORT void swigc_print_value(SwigfClassWrapper const *farg1) {
   SimpleClass *arg1 = 0 ;
   
-  arg1 = const_cast< SimpleClass* >(farg1->ptr);
+  arg1 = static_cast< SimpleClass* >(farg1->ptr);
   print_value((SimpleClass const &)*arg1);
   
 }
 
 
-SWIGEXPORT SwigfClassWrapper< SimpleClass > swigc_emit_class(int const *farg1) {
-  SwigfClassWrapper< SimpleClass > fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_emit_class(int const *farg1) {
+  SwigfClassWrapper fresult ;
   SimpleClass::storage_type arg1 ;
   SC_Ptr result;
   
   arg1 = *farg1;
   result = (SC_Ptr)emit_class(arg1);
-  fresult.ptr = result;
+  fresult.ptr  = result;
   fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
   return fresult;
 }
 
 
-SWIGEXPORT SwigfClassWrapper< SimpleClass > swigc_make_class(int const *farg1) {
-  SwigfClassWrapper< SimpleClass > fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_make_class(int const *farg1) {
+  SwigfClassWrapper fresult ;
   SimpleClass::storage_type arg1 ;
   SimpleClass result;
   
@@ -453,21 +452,21 @@ SWIGEXPORT SwigfClassWrapper< SimpleClass > swigc_make_class(int const *farg1) {
 }
 
 
-SWIGEXPORT SwigfClassWrapper< SimpleClass const > swigc_get_class() {
-  SwigfClassWrapper< SimpleClass const > fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_get_class() {
+  SwigfClassWrapper fresult ;
   SimpleClass *result = 0 ;
   
   result = (SimpleClass *) &get_class();
-  fresult.ptr = result;
-  fresult.flag = (0 ? SWIGF_MOVING : SWIGF_REFERENCE);
+  fresult.ptr  = const_cast< SimpleClass* >(result);
+  fresult.flag = SWIGF_CONST_REFERENCE;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_set_class_by_copy(SwigfClassWrapper< SimpleClass const > const *farg1) {
+SWIGEXPORT void swigc_set_class_by_copy(SwigfClassWrapper const *farg1) {
   SimpleClass arg1 ;
   
-  arg1 = *farg1->ptr;
+  arg1 = *static_cast< SimpleClass * >(farg1->ptr);
   set_class_by_copy(arg1);
   
 }
@@ -475,10 +474,10 @@ SWIGEXPORT void swigc_set_class_by_copy(SwigfClassWrapper< SimpleClass const > c
 
 SWIGEXPORT void swigc_print_struct(BasicStruct const *farg1) {
   BasicStruct *arg1 = 0 ;
-  BasicStruct temp_val1 ;
+  BasicStruct *temp1 ;
   
-  temp_val1 = *const_cast< BasicStruct* >(farg1);
-  arg1 = &temp_val1;
+  temp1 = *farg1;
+  arg1   = &temp1;
   print_struct((BasicStruct const &)*arg1);
   
 }

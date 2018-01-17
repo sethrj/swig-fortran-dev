@@ -19,7 +19,7 @@
     },
     {
       "type": "markdown",
-      "data": "# Typemaps\n\nFailure to substitute `$*1_ltype` was that `1_ltype` was not a pointer"
+      "data": "# Typemaps\n\n- Failure to substitute `$*1_ltype` was that `1_ltype` was not a pointer.\n- Remove const and type safety on swigf wrapper for C compatibility \n- %apply to do crazy shit in unit tests is terrible.  "
     }
   ]
 }
