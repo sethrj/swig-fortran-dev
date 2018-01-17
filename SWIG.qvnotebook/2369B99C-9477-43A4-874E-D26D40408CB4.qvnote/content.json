@@ -16,6 +16,14 @@
     {
       "type": "markdown",
       "data": "Trying to use the `final` keyword fails in gcc 5; because it seems that even though there's a default set for `swigptr = C_NULL_PTR`, it starts out non-null. >:( "
+    },
+    {
+      "type": "markdown",
+      "data": "By overriding assignment and giving a special \"move\" value to objects being returned by functions, I think I can get this to work! :o\n\nThis could also perhaps be done by a global flag 'returning' rather than carry a useless flag on every variable.  Nope, this would be incompatble between modules."
+    },
+    {
+      "type": "markdown",
+      "data": "Can't return-by-reference for classes as Fortran pointers to proxy classes because the proxy classes haven't been instantiated. "
     }
   ]
 }

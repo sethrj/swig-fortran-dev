@@ -10,7 +10,7 @@ module algorithm
 
  ! PUBLIC METHODS AND TYPES
 
-type, public, bind(C) :: SwigfArrayWrapper
+type, bind(C) :: SwigfArrayWrapper
   type(C_PTR), public :: data
   integer(C_SIZE_T), public :: size
 end type
@@ -141,9 +141,11 @@ contains
 subroutine sort__SWIG_1(view)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT), dimension(:), target, intent(inout) :: view
+integer(C_INT), pointer :: farg1_view
 type(SwigfArrayWrapper) :: farg1 
 
-farg1%data = c_loc(view(1))
+farg1_view => view(1)
+farg1%data = c_loc(farg1_view)
 farg1%size = size(view)
 call swigc_sort__SWIG_1(farg1)
 end subroutine
@@ -151,9 +153,11 @@ end subroutine
 subroutine reverse__SWIG_1(view)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT), dimension(:), target, intent(inout) :: view
+integer(C_INT), pointer :: farg1_view
 type(SwigfArrayWrapper) :: farg1 
 
-farg1%data = c_loc(view(1))
+farg1_view => view(1)
+farg1%data = c_loc(farg1_view)
 farg1%size = size(view)
 call swigc_reverse__SWIG_1(farg1)
 end subroutine
@@ -163,12 +167,14 @@ result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT) :: swigf_result
 integer(C_INT), dimension(:), target, intent(inout) :: view
+integer(C_INT), pointer :: farg1_view
 integer(C_INT), intent(in) :: val
 integer(C_INT) :: fresult 
 type(SwigfArrayWrapper) :: farg1 
 integer(C_INT) :: farg2 
 
-farg1%data = c_loc(view(1))
+farg1_view => view(1)
+farg1%data = c_loc(farg1_view)
 farg1%size = size(view)
 farg2 = val
 fresult = swigc_find_sorted__SWIG_1(farg1, farg2)
@@ -180,10 +186,12 @@ result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT), dimension(:), pointer :: swigf_result
 integer(C_INT), dimension(:), target, intent(inout) :: view
+integer(C_INT), pointer :: farg1_view
 type(SwigfArrayWrapper) :: fresult 
 type(SwigfArrayWrapper) :: farg1 
 
-farg1%data = c_loc(view(1))
+farg1_view => view(1)
+farg1%data = c_loc(farg1_view)
 farg1%size = size(view)
 fresult = swigc_get_view__SWIG_1(farg1)
 
@@ -193,9 +201,11 @@ end function
 subroutine sort__SWIG_2(view)
 use, intrinsic :: ISO_C_BINDING
 real(C_FLOAT), dimension(:), target, intent(inout) :: view
+real(C_FLOAT), pointer :: farg1_view
 type(SwigfArrayWrapper) :: farg1 
 
-farg1%data = c_loc(view(1))
+farg1_view => view(1)
+farg1%data = c_loc(farg1_view)
 farg1%size = size(view)
 call swigc_sort__SWIG_2(farg1)
 end subroutine
@@ -203,9 +213,11 @@ end subroutine
 subroutine reverse__SWIG_2(view)
 use, intrinsic :: ISO_C_BINDING
 real(C_FLOAT), dimension(:), target, intent(inout) :: view
+real(C_FLOAT), pointer :: farg1_view
 type(SwigfArrayWrapper) :: farg1 
 
-farg1%data = c_loc(view(1))
+farg1_view => view(1)
+farg1%data = c_loc(farg1_view)
 farg1%size = size(view)
 call swigc_reverse__SWIG_2(farg1)
 end subroutine
@@ -215,12 +227,14 @@ result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT) :: swigf_result
 real(C_FLOAT), dimension(:), target, intent(inout) :: view
+real(C_FLOAT), pointer :: farg1_view
 real(C_FLOAT), intent(in) :: val
 integer(C_INT) :: fresult 
 type(SwigfArrayWrapper) :: farg1 
 real(C_FLOAT) :: farg2 
 
-farg1%data = c_loc(view(1))
+farg1_view => view(1)
+farg1%data = c_loc(farg1_view)
 farg1%size = size(view)
 farg2 = val
 fresult = swigc_find_sorted__SWIG_2(farg1, farg2)
@@ -232,10 +246,12 @@ result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 real(C_FLOAT), dimension(:), pointer :: swigf_result
 real(C_FLOAT), dimension(:), target, intent(inout) :: view
+real(C_FLOAT), pointer :: farg1_view
 type(SwigfArrayWrapper) :: fresult 
 type(SwigfArrayWrapper) :: farg1 
 
-farg1%data = c_loc(view(1))
+farg1_view => view(1)
+farg1%data = c_loc(farg1_view)
 farg1%size = size(view)
 fresult = swigc_get_view__SWIG_2(farg1)
 
@@ -245,9 +261,11 @@ end function
 subroutine sort__SWIG_3(view)
 use, intrinsic :: ISO_C_BINDING
 real(C_DOUBLE), dimension(:), target, intent(inout) :: view
+real(C_DOUBLE), pointer :: farg1_view
 type(SwigfArrayWrapper) :: farg1 
 
-farg1%data = c_loc(view(1))
+farg1_view => view(1)
+farg1%data = c_loc(farg1_view)
 farg1%size = size(view)
 call swigc_sort__SWIG_3(farg1)
 end subroutine
@@ -255,9 +273,11 @@ end subroutine
 subroutine reverse__SWIG_3(view)
 use, intrinsic :: ISO_C_BINDING
 real(C_DOUBLE), dimension(:), target, intent(inout) :: view
+real(C_DOUBLE), pointer :: farg1_view
 type(SwigfArrayWrapper) :: farg1 
 
-farg1%data = c_loc(view(1))
+farg1_view => view(1)
+farg1%data = c_loc(farg1_view)
 farg1%size = size(view)
 call swigc_reverse__SWIG_3(farg1)
 end subroutine
@@ -267,12 +287,14 @@ result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT) :: swigf_result
 real(C_DOUBLE), dimension(:), target, intent(inout) :: view
+real(C_DOUBLE), pointer :: farg1_view
 real(C_DOUBLE), intent(in) :: val
 integer(C_INT) :: fresult 
 type(SwigfArrayWrapper) :: farg1 
 real(C_DOUBLE) :: farg2 
 
-farg1%data = c_loc(view(1))
+farg1_view => view(1)
+farg1%data = c_loc(farg1_view)
 farg1%size = size(view)
 farg2 = val
 fresult = swigc_find_sorted__SWIG_3(farg1, farg2)
@@ -284,10 +306,12 @@ result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 real(C_DOUBLE), dimension(:), pointer :: swigf_result
 real(C_DOUBLE), dimension(:), target, intent(inout) :: view
+real(C_DOUBLE), pointer :: farg1_view
 type(SwigfArrayWrapper) :: fresult 
 type(SwigfArrayWrapper) :: farg1 
 
-farg1%data = c_loc(view(1))
+farg1_view => view(1)
+farg1%data = c_loc(farg1_view)
 farg1%size = size(view)
 fresult = swigc_get_view__SWIG_3(farg1)
 
@@ -295,4 +319,4 @@ call c_f_pointer(fresult%data, swigf_result, [fresult%size])
 end function
 
 
-end module algorithm
+end module

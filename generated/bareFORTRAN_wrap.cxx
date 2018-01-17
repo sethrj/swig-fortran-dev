@@ -209,14 +209,12 @@ template <typename T> T SwigValueInit() {
 #include <utility>
 
 
-namespace swig {
 template<class T>
 struct SwigfArrayWrapper
 {
     T* data;
     std::size_t size;
 };
-}
 
 #ifdef __cplusplus
 extern "C" {
@@ -253,7 +251,7 @@ SWIGEXPORT void swigc_get_something_ref(int const *farg1, double *farg2) {
   double *arg2 = 0 ;
   
   arg1 = *farg1;
-  arg2 = reinterpret_cast< double * >(farg2);
+  arg2 = farg2;
   get_something_ref(arg1,*arg2);
   
 }
@@ -264,7 +262,7 @@ SWIGEXPORT void swigc_get_something_ptr(int const *farg1, double *farg2) {
   double *arg2 = (double *) 0 ;
   
   arg1 = *farg1;
-  arg2 = reinterpret_cast< double * >(farg2);
+  arg2 = farg2;
   get_something_ptr(arg1,arg2);
   
 }
@@ -277,19 +275,19 @@ SWIGEXPORT double * swigc_get_something_rptr(int const *farg1) {
   
   arg1 = *farg1;
   result = (double *)get_something_rptr(arg1);
-  fresult = reinterpret_cast< double* >(result);
+  fresult = static_cast< double * >(result);
   return fresult;
 }
 
 
-SWIGEXPORT double * swigc_get_something_rcptr(int const *farg1) {
-  double * fresult ;
+SWIGEXPORT double const * swigc_get_something_rcptr(int const *farg1) {
+  double const * fresult ;
   int arg1 ;
   double *result = 0 ;
   
   arg1 = *farg1;
   result = (double *)get_something_rcptr(arg1);
-  fresult = const_cast< double* >(reinterpret_cast< const double* >(result));
+  fresult = result;
   return fresult;
 }
 
@@ -301,7 +299,7 @@ SWIGEXPORT double * swigc_get_something_rref(int const *farg1) {
   
   arg1 = *farg1;
   result = (double *) &get_something_rref(arg1);
-  fresult = reinterpret_cast< double* >(result);
+  fresult = static_cast< double * >(result);
   return fresult;
 }
 
@@ -318,7 +316,7 @@ SWIGEXPORT double swigc_get_something_rcref(int const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_print_array(swig::SwigfArrayWrapper< double const > *farg1) {
+SWIGEXPORT void swigc_print_array(SwigfArrayWrapper< double const > *farg1) {
   std::pair< double const *,std::size_t > arg1 ;
   
   arg1 = ::std::pair< const double*, std::size_t >();

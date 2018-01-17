@@ -16,6 +16,10 @@
     {
       "type": "markdown",
       "data": "# Debugging memory issues\n\nUncomment `DOH_DEBUG_MEMORY_POOLS` in `Source/DOH/memory.c` to guard against double-deletion. If the assertion fails, back up in the backtrace to see where (e.g. deleting a hash). You can use `call Swig_print_node(n)` in the debugger to print it."
+    },
+    {
+      "type": "markdown",
+      "data": "# Typemaps\n\nFailure to substitute `$*1_ltype` was that `1_ltype` was not a pointer"
     }
   ]
 }

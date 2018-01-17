@@ -3,43 +3,80 @@
 !
 ! Do not make changes to this file unless you know what you are doing--modify
 ! the SWIG interface file instead.
+
+! This code is injected immediately below the SWIG auto-generated comment
+
+! A simple example module
 module simple_class
  use, intrinsic :: ISO_C_BINDING
  implicit none
  private
 
  ! PUBLIC METHODS AND TYPES
+
+ enum, bind(c)
+  enumerator :: SwigfProxyFlag = -1
+  enumerator :: SWIGF_UNINIT = -1
+  enumerator :: SWIGF_OWNER = 0
+  enumerator :: SWIGF_MOVING = 1
+  enumerator :: SWIGF_REFERENCE = 2
+  enumerator :: SWIGF_CONST_REFERENCE = 3
+ end enum
+
+
+type, bind(C) :: SwigfClassWrapper
+  type(C_PTR), public :: ptr = C_NULL_PTR
+  integer(C_INT), public :: flag = SWIGF_UNINIT
+end type
+
  public :: print_pointer
  public :: BasicStruct
  public :: SimpleClass
  public :: print_value
+ public :: emit_class
  public :: make_class
  public :: get_class
  public :: set_class_by_copy
+ public :: print_struct
 
  ! TYPES
- type :: BasicStruct
-  ! These should be treated as PROTECTED data
-  type(C_PTR), public :: swigptr = C_NULL_PTR
- contains
-  procedure :: set_val => swigf_set_BasicStruct_val
-  procedure :: get_val => swigf_get_BasicStruct_val
-  procedure :: create => swigf_new_BasicStruct
-  procedure :: release => swigf_delete_BasicStruct
+! 
+! 
+! Simple public struct.
+! 
+! C++ includes: SimpleClass.hh 
+ type, bind(C) :: BasicStruct
+  integer(C_INT), public :: foo
+  real(C_DOUBLE), public :: bar
  end type
+! 
+! Simple test class.
+! 
+! C++ includes: SimpleClass.hh
+! 
  type :: SimpleClass
   ! These should be treated as PROTECTED data
-  type(C_PTR), public :: swigptr = C_NULL_PTR
+  type(SwigfClassWrapper), public :: swigdata
  contains
   procedure, private :: create__SWIG_0 => swigf_new_SimpleClass__SWIG_0
   procedure, private :: create__SWIG_1 => swigf_new_SimpleClass__SWIG_1
+  procedure :: assign__ => swigf_SimpleClass_assign__
   procedure, private :: create__SWIG_2 => swigf_new_SimpleClass__SWIG_2
   procedure :: release => swigf_delete_SimpleClass
   procedure :: set => swigf_SimpleClass_set
   procedure :: double_it => swigf_SimpleClass_double_it
   procedure :: get => swigf_SimpleClass_get
+  procedure :: id => swigf_SimpleClass_id
   procedure :: get_multiplied => swigf_SimpleClass_get_multiplied
+  procedure :: assign => swigf_SimpleClass_assign
+
+  procedure, private :: assign_simpleclass_impl
+  generic :: assignment(=) => assign_simpleclass_impl
+
+  procedure, private :: action__SWIG_1 => swigf_SimpleClass_action__SWIG_1
+  procedure, private :: action__SWIG_2 => swigf_SimpleClass_action__SWIG_2
   generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2
+  generic :: action => action__SWIG_1, action__SWIG_2
  end type
 
 
@@ -48,85 +85,84 @@ module simple_class
 subroutine swigc_print_pointer(farg1, farg2) &
 bind(C, name="swigc_print_pointer")
 use, intrinsic :: ISO_C_BINDING
+import :: SwigfClassWrapper
 integer(C_INT), intent(in) :: farg1
-type(C_PTR), value :: farg2
-end subroutine
-
-subroutine swigc_set_BasicStruct_val(farg1, farg2) &
-bind(C, name="swigc_set_BasicStruct_val")
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-integer(C_INT), intent(in) :: farg2
-end subroutine
-
-function swigc_get_BasicStruct_val(farg1) &
-bind(C, name="swigc_get_BasicStruct_val") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-integer(C_INT) :: fresult
-end function
-
-function swigc_new_BasicStruct() &
-bind(C, name="swigc_new_BasicStruct") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
-end function
-
-subroutine swigc_delete_BasicStruct(farg1) &
-bind(C, name="swigc_delete_BasicStruct")
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+type(SwigfClassWrapper) :: farg2
 end subroutine
 
 function swigc_new_SimpleClass__SWIG_0() &
 bind(C, name="swigc_new_SimpleClass__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: fresult
 end function
 
 function swigc_new_SimpleClass__SWIG_1(farg1) &
 bind(C, name="swigc_new_SimpleClass__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR) :: fresult
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(SwigfClassWrapper) :: fresult
+end function
+
+function swigc_SimpleClass_assign__(farg1, farg2) &
+bind(C, name="swigc_SimpleClass_assign__") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(SwigfClassWrapper) :: farg2
+type(SwigfClassWrapper) :: fresult
 end function
 
 function swigc_new_SimpleClass__SWIG_2(farg1) &
 bind(C, name="swigc_new_SimpleClass__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
+import :: SwigfClassWrapper
 real(C_DOUBLE), intent(in) :: farg1
-type(C_PTR) :: fresult
+type(SwigfClassWrapper) :: fresult
 end function
 
 subroutine swigc_delete_SimpleClass(farg1) &
 bind(C, name="swigc_delete_SimpleClass")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_SimpleClass_set(farg1, farg2) &
 bind(C, name="swigc_SimpleClass_set")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 integer(C_INT), intent(in) :: farg2
 end subroutine
 
 subroutine swigc_SimpleClass_double_it(farg1) &
 bind(C, name="swigc_SimpleClass_double_it")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 end subroutine
 
 function swigc_SimpleClass_get(farg1) &
 bind(C, name="swigc_SimpleClass_get") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+integer(C_INT) :: fresult
+end function
+
+function swigc_SimpleClass_id(farg1) &
+bind(C, name="swigc_SimpleClass_id") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
 
@@ -134,36 +170,81 @@ function swigc_SimpleClass_get_multiplied(farg1, farg2) &
 bind(C, name="swigc_SimpleClass_get_multiplied") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_INT) :: fresult
 end function
 
+subroutine swigc_SimpleClass_assign(farg1, farg2) &
+bind(C, name="swigc_SimpleClass_assign")
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(SwigfClassWrapper) :: farg2
+end subroutine
+
+subroutine swigc_SimpleClass_action__SWIG_1(farg1, farg2) &
+bind(C, name="swigc_SimpleClass_action__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+subroutine swigc_SimpleClass_action__SWIG_2(farg1, farg2) &
+bind(C, name="swigc_SimpleClass_action__SWIG_2")
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
 subroutine swigc_print_value(farg1) &
 bind(C, name="swigc_print_value")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 end subroutine
+
+function swigc_emit_class(farg1) &
+bind(C, name="swigc_emit_class") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfClassWrapper
+integer(C_INT), intent(in) :: farg1
+type(SwigfClassWrapper) :: fresult
+end function
 
 function swigc_make_class(farg1) &
 bind(C, name="swigc_make_class") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
+import :: SwigfClassWrapper
 integer(C_INT), intent(in) :: farg1
-type(C_PTR) :: fresult
+type(SwigfClassWrapper) :: fresult
 end function
 
 function swigc_get_class() &
 bind(C, name="swigc_get_class") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: fresult
 end function
 
 subroutine swigc_set_class_by_copy(farg1) &
 bind(C, name="swigc_set_class_by_copy")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+end subroutine
+
+subroutine swigc_print_struct(farg1) &
+bind(C, name="swigc_print_struct")
+use, intrinsic :: ISO_C_BINDING
+import :: BasicStruct
+type(BasicStruct) :: farg1
 end subroutine
 
  end interface
@@ -174,151 +255,164 @@ contains
 subroutine print_pointer(msg, ptr)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT), intent(in) :: msg
-type(C_PTR) :: ptr
+class(SimpleClass) :: ptr
 integer(C_INT) :: farg1 
-type(C_PTR) :: farg2 
+type(SwigfClassWrapper) :: farg2 
 
 farg1 = msg
-farg2 = ptr
+farg2 = ptr%swigdata
 call swigc_print_pointer(farg1, farg2)
 end subroutine
 
-subroutine swigf_set_BasicStruct_val(self, val)
-use, intrinsic :: ISO_C_BINDING
-class(BasicStruct) :: self
-integer(C_INT), intent(in) :: val
-type(C_PTR) :: farg1 
-integer(C_INT) :: farg2 
-
-farg1 = self%swigptr
-farg2 = val
-call swigc_set_BasicStruct_val(farg1, farg2)
-end subroutine
-
-function swigf_get_BasicStruct_val(self) &
-result(swigf_result)
-use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: swigf_result
-class(BasicStruct) :: self
-integer(C_INT) :: fresult 
-type(C_PTR) :: farg1 
-
-farg1 = self%swigptr
-fresult = swigc_get_BasicStruct_val(farg1)
-swigf_result = fresult
-end function
-
-subroutine swigf_new_BasicStruct(self)
-use, intrinsic :: ISO_C_BINDING
-class(BasicStruct) :: self
-type(C_PTR) :: fresult 
-
-if (c_associated(self%swigptr)) call self%release()
-fresult = swigc_new_BasicStruct()
-self%swigptr = fresult
-end subroutine
-
-subroutine swigf_delete_BasicStruct(self)
-use, intrinsic :: ISO_C_BINDING
-class(BasicStruct) :: self
-type(C_PTR) :: farg1 
-
-if (.not. c_associated(self%swigptr)) return
-farg1 = self%swigptr
-call swigc_delete_BasicStruct(farg1)
-self%swigptr = C_NULL_PTR
-end subroutine
-
+! SimpleClass::SimpleClass(double d)
+! 
+! Other constructor. 
 subroutine swigf_new_SimpleClass__SWIG_0(self)
 use, intrinsic :: ISO_C_BINDING
 class(SimpleClass) :: self
-type(C_PTR) :: fresult 
+type(SwigfClassWrapper) :: fresult 
 
-if (c_associated(self%swigptr)) call self%release()
+if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
 fresult = swigc_new_SimpleClass__SWIG_0()
-self%swigptr = fresult
+self%swigdata = fresult
 
-call print_pointer(0, self%swigptr)
+call print_pointer(0, self)
 end subroutine
 
+! SimpleClass::SimpleClass(double d)
+! 
+! Other constructor. 
 subroutine swigf_new_SimpleClass__SWIG_1(self, rhs)
 use, intrinsic :: ISO_C_BINDING
 class(SimpleClass) :: self
 class(SimpleClass) :: rhs
-type(C_PTR) :: fresult 
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: fresult 
+type(SwigfClassWrapper) :: farg1 
 
-if (c_associated(self%swigptr)) call self%release()
-farg1 = rhs%swigptr
+if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
+farg1 = rhs%swigdata
 fresult = swigc_new_SimpleClass__SWIG_1(farg1)
-self%swigptr = fresult
+self%swigdata = fresult
 
-call print_pointer(0, self%swigptr)
+call print_pointer(0, self)
 end subroutine
 
+function swigf_SimpleClass_assign__(self, rhs) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(SimpleClass) :: swigf_result
+class(SimpleClass) :: self
+class(SimpleClass) :: rhs
+type(SwigfClassWrapper) :: fresult 
+type(SwigfClassWrapper) :: farg1 
+type(SwigfClassWrapper) :: farg2 
+
+farg1 = self%swigdata
+farg2 = rhs%swigdata
+fresult = swigc_SimpleClass_assign__(farg1, farg2)
+swigf_result%swigdata = fresult
+end function
+
+! SimpleClass::SimpleClass(double d)
+! 
+! Other constructor. 
 subroutine swigf_new_SimpleClass__SWIG_2(self, d)
 use, intrinsic :: ISO_C_BINDING
 class(SimpleClass) :: self
 real(C_DOUBLE), intent(in) :: d
-type(C_PTR) :: fresult 
+type(SwigfClassWrapper) :: fresult 
 real(C_DOUBLE) :: farg1 
 
-if (c_associated(self%swigptr)) call self%release()
+if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
 farg1 = d
 fresult = swigc_new_SimpleClass__SWIG_2(farg1)
-self%swigptr = fresult
+self%swigdata = fresult
 
-call print_pointer(0, self%swigptr)
+call print_pointer(0, self)
 end subroutine
 
+! SimpleClass::~SimpleClass()
+! 
+! Destructor. 
 subroutine swigf_delete_SimpleClass(self)
 use, intrinsic :: ISO_C_BINDING
 class(SimpleClass) :: self
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
 
-call print_pointer(1, self%swigptr)
+call print_pointer(1, self)
 
-if (.not. c_associated(self%swigptr)) return
-farg1 = self%swigptr
+if (.not. (self%swigdata%flag == SWIGF_UNINIT)) return
+farg1 = self%swigdata
 call swigc_delete_SimpleClass(farg1)
-self%swigptr = C_NULL_PTR
+self%swigdata%flag = SWIGF_UNINIT
+self%swigdata%ptr  = C_NULL_PTR
 end subroutine
 
+! void
+! SimpleClass::set(storage_type val)
+! 
+! Set the value. 
 subroutine swigf_SimpleClass_set(self, val)
 use, intrinsic :: ISO_C_BINDING
 class(SimpleClass) :: self
 integer(C_INT), intent(in) :: val
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 integer(C_INT) :: farg2 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 farg2 = val
 call swigc_SimpleClass_set(farg1, farg2)
 end subroutine
 
+! 
+! void SimpleClass::double_it()
+! 
+! Multiply the value by 2.
+! 
 subroutine swigf_SimpleClass_double_it(self)
 use, intrinsic :: ISO_C_BINDING
 class(SimpleClass) :: self
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 call swigc_SimpleClass_double_it(farg1)
 end subroutine
 
+! storage_type
+! SimpleClass::get() const
+! 
+! Access the value. 
 function swigf_SimpleClass_get(self) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT) :: swigf_result
 class(SimpleClass) :: self
 integer(C_INT) :: fresult 
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 fresult = swigc_SimpleClass_get(farg1)
 swigf_result = fresult
 end function
 
+function swigf_SimpleClass_id(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(SimpleClass) :: self
+integer(C_INT) :: fresult 
+type(SwigfClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc_SimpleClass_id(farg1)
+swigf_result = fresult
+end function
+
+! storage_type
+! SimpleClass::get_multiplied(multiple_type multiple) const
+! 
+! Access the value, multiplied by some parameter. 
 function swigf_SimpleClass_get_multiplied(self, multiple) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
@@ -326,55 +420,150 @@ integer(C_INT) :: swigf_result
 class(SimpleClass) :: self
 integer(C_INT), intent(in) :: multiple
 integer(C_INT) :: fresult 
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 integer(C_INT) :: farg2 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 farg2 = multiple
 fresult = swigc_SimpleClass_get_multiplied(farg1, farg2)
 swigf_result = fresult
 end function
 
+subroutine swigf_SimpleClass_assign(self, other)
+use, intrinsic :: ISO_C_BINDING
+class(SimpleClass) :: self
+class(SimpleClass) :: other
+type(SwigfClassWrapper) :: farg1 
+type(SwigfClassWrapper) :: farg2 
+
+farg1 = self%swigdata
+farg2 = other%swigdata
+call swigc_SimpleClass_assign(farg1, farg2)
+end subroutine
+
+
+subroutine assign_simpleclass_impl(self, other)
+    use, intrinsic :: ISO_C_BINDING
+    class(SimpleClass), intent(inout) :: self
+    class(SimpleClass), intent(in) :: other
+    call print_pointer(2, other)
+    call print_pointer(3, self)
+    if (self%swigdata%flag == SWIGF_OWNER) then
+      call swigc_SimpleClass_assign(self%swigdata, other%swigdata)
+    else
+      call self%create(other)
+    endif
+end subroutine
+
+! void
+! SimpleClass::action(T &val)
+! 
+! templated function 
+subroutine swigf_SimpleClass_action__SWIG_1(self, val)
+use, intrinsic :: ISO_C_BINDING
+class(SimpleClass) :: self
+real(C_DOUBLE), target, intent(inout) :: val
+type(SwigfClassWrapper) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigdata
+farg2 = c_loc(val)
+call swigc_SimpleClass_action__SWIG_1(farg1, farg2)
+end subroutine
+
+! void
+! SimpleClass::action(T &val)
+! 
+! templated function 
+subroutine swigf_SimpleClass_action__SWIG_2(self, val)
+use, intrinsic :: ISO_C_BINDING
+class(SimpleClass) :: self
+integer(C_INT), target, intent(inout) :: val
+type(SwigfClassWrapper) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigdata
+farg2 = c_loc(val)
+call swigc_SimpleClass_action__SWIG_2(farg1, farg2)
+end subroutine
+
+! void print_value(const
+! SimpleClass &c)
+! 
+! Free function. 
 subroutine print_value(c)
 use, intrinsic :: ISO_C_BINDING
 class(SimpleClass) :: c
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = c%swigptr
+farg1 = c%swigdata
 call swigc_print_value(farg1)
 end subroutine
 
+function emit_class(val) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(SimpleClass) :: swigf_result
+integer(C_INT), intent(in) :: val
+type(SwigfClassWrapper) :: fresult 
+integer(C_INT) :: farg1 
+
+farg1 = val
+fresult = swigc_emit_class(farg1)
+swigf_result%swigdata = fresult
+end function
+
+! SimpleClass
+! make_class(SimpleClass::storage_type val)
+! 
+! Return by value should be converted to set-by-reference. 
 function make_class(val) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 type(SimpleClass) :: swigf_result
 integer(C_INT), intent(in) :: val
-type(C_PTR) :: fresult 
+type(SwigfClassWrapper) :: fresult 
 integer(C_INT) :: farg1 
 
 farg1 = val
 fresult = swigc_make_class(farg1)
-swigf_result%swigptr = fresult
+swigf_result%swigdata = fresult
 end function
 
+! const SimpleClass& get_class()
+! 
+! Return by reference. 
 function get_class() &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 type(SimpleClass) :: swigf_result
-type(C_PTR) :: fresult 
+type(SwigfClassWrapper) :: fresult 
 
 fresult = swigc_get_class()
-swigf_result%swigptr = fresult
+swigf_result%swigdata = fresult
 end function
 
+! void
+! set_class_by_copy(SimpleClass c)
+! 
+! Pass class as a parameter. 
 subroutine set_class_by_copy(c)
 use, intrinsic :: ISO_C_BINDING
 type(SimpleClass) :: c
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = c%swigptr
+farg1 = c%swigdata
 call swigc_set_class_by_copy(farg1)
 end subroutine
 
+subroutine print_struct(s)
+use, intrinsic :: ISO_C_BINDING
+type(BasicStruct), intent(in) :: s
+type(BasicStruct) :: farg1 
 
-end module simple_class
+farg1 = s
+call swigc_print_struct(farg1)
+end subroutine
+
+
+end module

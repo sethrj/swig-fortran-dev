@@ -194,7 +194,7 @@ template <typename T> T SwigValueInit() {
 
 #undef SWIG_exception_impl
 #define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
-    swig::fortran_store_exception(CODE, MSG); return NULLRETURN;
+    swigf_store_exception(CODE, MSG); return NULLRETURN;
 
 
 #define SWIGVERSION 0x040000 
@@ -210,7 +210,6 @@ template <typename T> T SwigValueInit() {
 
 extern "C" {
 extern int ierr;
-extern char serr[1024];
 }
 
 
@@ -220,42 +219,62 @@ extern char serr[1024];
 #include <algorithm>
 
 
-namespace swig
-{
 // Stored exception message
-std::string fortran_last_exception_msg;
+std::string swigf_last_exception_msg;
 
 // Call this function before any new action
-void fortran_check_unhandled_exception()
+void swigf_check_unhandled_exception()
 {
     if (::ierr != 0)
     {
         throw std::runtime_error(
                 "An unhandled exception occurred in $symname: "
-                + fortran_last_exception_msg);
+                + swigf_last_exception_msg);
     }
 }
 
 // Save an exception to the fortran error code and string
-void fortran_store_exception(int code, const char *msg)
+void swigf_store_exception(int code, const char *msg)
 {
     ::ierr = code;
 
     // Save the message to a std::string first
-    fortran_last_exception_msg = msg;
+    swigf_last_exception_msg = msg;
+}
 
-    std::size_t msg_size = std::min<std::size_t>(
-            fortran_last_exception_msg.size(),
-            1024);
 
-    // Copy to space-padded Fortran string
-    char* dst = serr;
-    dst = std::copy(fortran_last_exception_msg.begin(),
-                    fortran_last_exception_msg.begin() + msg_size,
-                    dst);
-    std::fill(dst, serr + 1024, ' ');
+
+// DEPRECATED: use swigf_check_unhandled_exception instead
+namespace swig
+{
+#ifdef __GNUC__
+__attribute__((deprecated))
+#endif
+inline void fortran_check_unhandled_exception()
+{
+    swigf_check_unhandled_exception();
 }
 } // end namespace swig
+
+
+typedef const std::string& Swig_Err_String;
+
+
+Swig_Err_String get_serr()
+{
+    return swigf_last_exception_msg;
+}
+
+
+template<class T>
+struct SwigfArrayWrapper
+{
+    T* data;
+    std::size_t size;
+};
+
+
+#include <utility>
 
 
 #include "except.hh"
@@ -263,12 +282,24 @@ void fortran_store_exception(int code, const char *msg)
 #ifdef __cplusplus
 extern "C" {
 #endif
+SWIGEXPORT SwigfArrayWrapper< char const > swigc_get_serr() {
+  SwigfArrayWrapper< char const > fresult ;
+  std::string *result = 0 ;
+  
+  result = (std::string *) &get_serr();
+  fresult.data = (result->empty() ? NULL : &(*result->begin()));
+  fresult.size = result->size();
+  
+  return fresult;
+}
+
+
 SWIGEXPORT void swigc_alpha(int const *farg1) {
   int arg1 ;
   
   arg1 = *farg1;
   {
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       alpha(arg1);
@@ -291,7 +322,7 @@ SWIGEXPORT int swigc_bravo() {
   int result;
   
   {
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       result = (int)bravo();
@@ -306,6 +337,31 @@ SWIGEXPORT int swigc_bravo() {
     }
   }
   fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT SwigfArrayWrapper< int > swigc_get_view() {
+  SwigfArrayWrapper< int > fresult ;
+  std::pair< int *,std::size_t > result;
+  
+  {
+    swigf_check_unhandled_exception();
+    try
+    {
+      result = get_view();
+    }
+    catch (const std::exception& e)
+    {
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), SwigfArrayWrapper< int >());
+    }
+    catch (const char* errstr)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, errstr, SwigfArrayWrapper< int >());
+    }
+  }
+  fresult.data = (&result)->first;
+  fresult.size = (&result)->second;
   return fresult;
 }
 

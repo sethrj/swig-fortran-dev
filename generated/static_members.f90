@@ -11,10 +11,26 @@ module static_members
  ! PUBLIC METHODS AND TYPES
  public :: BaseClass
 
+ enum, bind(c)
+  enumerator :: SwigfProxyFlag = -1
+  enumerator :: SWIGF_UNINIT = -1
+  enumerator :: SWIGF_OWNER = 0
+  enumerator :: SWIGF_MOVING = 1
+  enumerator :: SWIGF_REFERENCE = 2
+  enumerator :: SWIGF_CONST_REFERENCE = 3
+ end enum
+
+
+type, bind(C) :: SwigfClassWrapper
+  type(C_PTR), public :: ptr = C_NULL_PTR
+  integer(C_INT), public :: flag = SWIGF_UNINIT
+end type
+
+
  ! TYPES
  type :: BaseClass
   ! These should be treated as PROTECTED data
-  type(C_PTR), public :: swigptr = C_NULL_PTR
+  type(SwigfClassWrapper), public :: swigdata
  contains
   procedure, nopass :: set_i => swigf_set_BaseClass_i
   procedure, nopass :: get_i => swigf_get_BaseClass_i
@@ -51,13 +67,15 @@ function swigc_new_BaseClass() &
 bind(C, name="swigc_new_BaseClass") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: fresult
 end function
 
 subroutine swigc_delete_BaseClass(farg1) &
 bind(C, name="swigc_delete_BaseClass")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 end subroutine
 
  end interface
@@ -100,23 +118,24 @@ end function
 subroutine swigf_new_BaseClass(self)
 use, intrinsic :: ISO_C_BINDING
 class(BaseClass) :: self
-type(C_PTR) :: fresult 
+type(SwigfClassWrapper) :: fresult 
 
-if (c_associated(self%swigptr)) call self%release()
+if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
 fresult = swigc_new_BaseClass()
-self%swigptr = fresult
+self%swigdata = fresult
 end subroutine
 
 subroutine swigf_delete_BaseClass(self)
 use, intrinsic :: ISO_C_BINDING
 class(BaseClass) :: self
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-if (.not. c_associated(self%swigptr)) return
-farg1 = self%swigptr
+if (.not. (self%swigdata%flag == SWIGF_UNINIT)) return
+farg1 = self%swigdata
 call swigc_delete_BaseClass(farg1)
-self%swigptr = C_NULL_PTR
+self%swigdata%flag = SWIGF_UNINIT
+self%swigdata%ptr  = C_NULL_PTR
 end subroutine
 
 
-end module static_members
+end module

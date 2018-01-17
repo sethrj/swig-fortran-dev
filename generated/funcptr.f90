@@ -90,4 +90,4 @@ swigf_result = fresult
 end function
 
 
-end module funcptr
+end module

@@ -31,4 +31,4 @@ call swigc_throw_error()
 end subroutine
 
 
-end module downstream
+end module

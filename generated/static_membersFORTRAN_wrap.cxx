@@ -205,6 +205,33 @@ template <typename T> T SwigValueInit() {
 
 #include "static_members.hh"
 
+
+
+enum SwigfProxyFlag {
+    SWIGF_UNINIT = -1,
+    SWIGF_OWNER = 0,
+    SWIGF_MOVING = 1,
+    SWIGF_REFERENCE = 2,
+    SWIGF_CONST_REFERENCE = 3
+};
+
+
+
+template<class T>
+struct SwigfClassWrapper
+{
+    T*             ptr;
+    SwigfProxyFlag flag;
+    // Static function to return an empty 
+    static SwigfClassWrapper<T> uninitialized()
+    {
+        SwigfClassWrapper<T> result;
+        result.ptr = NULL;
+        result.flag = SWIGF_UNINIT;
+        return result;
+    }
+};
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -239,20 +266,21 @@ SWIGEXPORT double swigc_BaseClass_f(int const *farg1) {
 }
 
 
-SWIGEXPORT void * swigc_new_BaseClass() {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper< BaseClass > swigc_new_BaseClass() {
+  SwigfClassWrapper< BaseClass > fresult ;
   BaseClass *result = 0 ;
   
   result = (BaseClass *)new BaseClass();
-  fresult = result;
+  fresult.ptr = result;
+  fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_delete_BaseClass(void *farg1) {
+SWIGEXPORT void swigc_delete_BaseClass(SwigfClassWrapper< BaseClass > *farg1) {
   BaseClass *arg1 = (BaseClass *) 0 ;
   
-  arg1 = static_cast< BaseClass * >(farg1);
+  arg1 = farg1->ptr;
   delete arg1;
   
 }

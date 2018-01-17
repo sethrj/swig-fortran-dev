@@ -11,7 +11,23 @@ module stdvec
  ! PUBLIC METHODS AND TYPES
  public :: VecDbl
 
-type, public, bind(C) :: SwigfArrayWrapper
+ enum, bind(c)
+  enumerator :: SwigfProxyFlag = -1
+  enumerator :: SWIGF_UNINIT = -1
+  enumerator :: SWIGF_OWNER = 0
+  enumerator :: SWIGF_MOVING = 1
+  enumerator :: SWIGF_REFERENCE = 2
+  enumerator :: SWIGF_CONST_REFERENCE = 3
+ end enum
+
+
+type, bind(C) :: SwigfClassWrapper
+  type(C_PTR), public :: ptr = C_NULL_PTR
+  integer(C_INT), public :: flag = SWIGF_UNINIT
+end type
+
+
+type, bind(C) :: SwigfArrayWrapper
   type(C_PTR), public :: data
   integer(C_SIZE_T), public :: size
 end type
@@ -23,7 +39,7 @@ end type
  ! TYPES
  type :: VecDbl
   ! These should be treated as PROTECTED data
-  type(C_PTR), public :: swigptr = C_NULL_PTR
+  type(SwigfClassWrapper), public :: swigdata
  contains
   procedure, private :: create__SWIG_0 => swigf_new_VecDbl__SWIG_0
   procedure, private :: create__SWIG_1 => swigf_new_VecDbl__SWIG_1
@@ -54,31 +70,35 @@ function swigc_new_VecDbl__SWIG_0() &
 bind(C, name="swigc_new_VecDbl__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: fresult
 end function
 
 function swigc_new_VecDbl__SWIG_1(farg1) &
 bind(C, name="swigc_new_VecDbl__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
+import :: SwigfClassWrapper
 integer(C_INT), intent(in) :: farg1
-type(C_PTR) :: fresult
+type(SwigfClassWrapper) :: fresult
 end function
 
 function swigc_new_VecDbl__SWIG_2(farg1, farg2) &
 bind(C, name="swigc_new_VecDbl__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
+import :: SwigfClassWrapper
 integer(C_INT), intent(in) :: farg1
 real(C_DOUBLE), intent(in) :: farg2
-type(C_PTR) :: fresult
+type(SwigfClassWrapper) :: fresult
 end function
 
 function swigc_VecDbl_size(farg1) &
 bind(C, name="swigc_VecDbl_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
 
@@ -86,7 +106,8 @@ function swigc_VecDbl_capacity(farg1) &
 bind(C, name="swigc_VecDbl_capacity") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
 
@@ -94,34 +115,39 @@ function swigc_VecDbl_empty(farg1) &
 bind(C, name="swigc_VecDbl_empty") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 logical(C_BOOL) :: fresult
 end function
 
 subroutine swigc_VecDbl_clear(farg1) &
 bind(C, name="swigc_VecDbl_clear")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_VecDbl_reserve(farg1, farg2) &
 bind(C, name="swigc_VecDbl_reserve")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 integer(C_INT), intent(in) :: farg2
 end subroutine
 
 subroutine swigc_VecDbl_resize__SWIG_0(farg1, farg2) &
 bind(C, name="swigc_VecDbl_resize__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 integer(C_INT), intent(in) :: farg2
 end subroutine
 
 subroutine swigc_VecDbl_resize__SWIG_1(farg1, farg2, farg3) &
 bind(C, name="swigc_VecDbl_resize__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 integer(C_INT), intent(in) :: farg2
 real(C_DOUBLE), intent(in) :: farg3
 end subroutine
@@ -129,7 +155,8 @@ end subroutine
 subroutine swigc_VecDbl_push_back(farg1, farg2) &
 bind(C, name="swigc_VecDbl_push_back")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 real(C_DOUBLE), intent(in) :: farg2
 end subroutine
 
@@ -137,7 +164,8 @@ function swigc_VecDbl_front(farg1) &
 bind(C, name="swigc_VecDbl_front") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 real(C_DOUBLE) :: fresult
 end function
 
@@ -145,14 +173,16 @@ function swigc_VecDbl_back(farg1) &
 bind(C, name="swigc_VecDbl_back") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_VecDbl_set(farg1, farg2, farg3) &
 bind(C, name="swigc_VecDbl_set")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 integer(C_INT), intent(in) :: farg2
 real(C_DOUBLE), intent(in) :: farg3
 end subroutine
@@ -161,7 +191,8 @@ function swigc_VecDbl_get(farg1, farg2) &
 bind(C, name="swigc_VecDbl_get") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 integer(C_INT), intent(in) :: farg2
 real(C_DOUBLE) :: fresult
 end function
@@ -169,8 +200,9 @@ end function
 subroutine swigc_VecDbl_fill(farg1, farg2) &
 bind(C, name="swigc_VecDbl_fill")
 use, intrinsic :: ISO_C_BINDING
+import :: SwigfClassWrapper
 import :: SwigfArrayWrapper
-type(C_PTR), value :: farg1
+type(SwigfClassWrapper) :: farg1
 type(SwigfArrayWrapper) :: farg2
 end subroutine
 
@@ -179,14 +211,16 @@ bind(C, name="swigc_VecDbl_view") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 type(SwigfArrayWrapper) :: fresult
 end function
 
 subroutine swigc_delete_VecDbl(farg1) &
 bind(C, name="swigc_delete_VecDbl")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 end subroutine
 
 function swigc_make_viewdbl(farg1) &
@@ -194,7 +228,8 @@ bind(C, name="swigc_make_viewdbl") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 type(SwigfArrayWrapper) :: fresult
 end function
 
@@ -203,7 +238,8 @@ bind(C, name="swigc_make_const_viewdbl") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 type(SwigfArrayWrapper) :: fresult
 end function
 
@@ -222,24 +258,24 @@ contains
 subroutine swigf_new_VecDbl__SWIG_0(self)
 use, intrinsic :: ISO_C_BINDING
 class(VecDbl) :: self
-type(C_PTR) :: fresult 
+type(SwigfClassWrapper) :: fresult 
 
-if (c_associated(self%swigptr)) call self%release()
+if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
 fresult = swigc_new_VecDbl__SWIG_0()
-self%swigptr = fresult
+self%swigdata = fresult
 end subroutine
 
 subroutine swigf_new_VecDbl__SWIG_1(self, count)
 use, intrinsic :: ISO_C_BINDING
 class(VecDbl) :: self
 integer(C_INT), intent(in) :: count
-type(C_PTR) :: fresult 
+type(SwigfClassWrapper) :: fresult 
 integer(C_INT) :: farg1 
 
-if (c_associated(self%swigptr)) call self%release()
+if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
 farg1 = count
 fresult = swigc_new_VecDbl__SWIG_1(farg1)
-self%swigptr = fresult
+self%swigdata = fresult
 end subroutine
 
 subroutine swigf_new_VecDbl__SWIG_2(self, count, v)
@@ -247,15 +283,15 @@ use, intrinsic :: ISO_C_BINDING
 class(VecDbl) :: self
 integer(C_INT), intent(in) :: count
 real(C_DOUBLE), intent(in) :: v
-type(C_PTR) :: fresult 
+type(SwigfClassWrapper) :: fresult 
 integer(C_INT) :: farg1 
 real(C_DOUBLE) :: farg2 
 
-if (c_associated(self%swigptr)) call self%release()
+if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
 farg1 = count
 farg2 = v
 fresult = swigc_new_VecDbl__SWIG_2(farg1, farg2)
-self%swigptr = fresult
+self%swigdata = fresult
 end subroutine
 
 function swigf_VecDbl_size(self) &
@@ -264,9 +300,9 @@ use, intrinsic :: ISO_C_BINDING
 integer(C_INT) :: swigf_result
 class(VecDbl) :: self
 integer(C_INT) :: fresult 
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 fresult = swigc_VecDbl_size(farg1)
 swigf_result = fresult
 end function
@@ -277,9 +313,9 @@ use, intrinsic :: ISO_C_BINDING
 integer(C_INT) :: swigf_result
 class(VecDbl) :: self
 integer(C_INT) :: fresult 
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 fresult = swigc_VecDbl_capacity(farg1)
 swigf_result = fresult
 end function
@@ -290,9 +326,9 @@ use, intrinsic :: ISO_C_BINDING
 logical(C_BOOL) :: swigf_result
 class(VecDbl) :: self
 logical(C_BOOL) :: fresult 
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 fresult = swigc_VecDbl_empty(farg1)
 swigf_result = fresult
 end function
@@ -300,9 +336,9 @@ end function
 subroutine swigf_VecDbl_clear(self)
 use, intrinsic :: ISO_C_BINDING
 class(VecDbl) :: self
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 call swigc_VecDbl_clear(farg1)
 end subroutine
 
@@ -310,10 +346,10 @@ subroutine swigf_VecDbl_reserve(self, count)
 use, intrinsic :: ISO_C_BINDING
 class(VecDbl) :: self
 integer(C_INT), intent(in) :: count
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 integer(C_INT) :: farg2 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 farg2 = count
 call swigc_VecDbl_reserve(farg1, farg2)
 end subroutine
@@ -322,10 +358,10 @@ subroutine swigf_VecDbl_resize__SWIG_0(self, count)
 use, intrinsic :: ISO_C_BINDING
 class(VecDbl) :: self
 integer(C_INT), intent(in) :: count
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 integer(C_INT) :: farg2 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 farg2 = count
 call swigc_VecDbl_resize__SWIG_0(farg1, farg2)
 end subroutine
@@ -335,11 +371,11 @@ use, intrinsic :: ISO_C_BINDING
 class(VecDbl) :: self
 integer(C_INT), intent(in) :: count
 real(C_DOUBLE), intent(in) :: v
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 integer(C_INT) :: farg2 
 real(C_DOUBLE) :: farg3 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 farg2 = count
 farg3 = v
 call swigc_VecDbl_resize__SWIG_1(farg1, farg2, farg3)
@@ -349,10 +385,10 @@ subroutine swigf_VecDbl_push_back(self, v)
 use, intrinsic :: ISO_C_BINDING
 class(VecDbl) :: self
 real(C_DOUBLE), intent(in) :: v
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 real(C_DOUBLE) :: farg2 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 farg2 = v
 call swigc_VecDbl_push_back(farg1, farg2)
 end subroutine
@@ -363,9 +399,9 @@ use, intrinsic :: ISO_C_BINDING
 real(C_DOUBLE) :: swigf_result
 class(VecDbl) :: self
 real(C_DOUBLE) :: fresult 
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 fresult = swigc_VecDbl_front(farg1)
 swigf_result = fresult
 end function
@@ -376,9 +412,9 @@ use, intrinsic :: ISO_C_BINDING
 real(C_DOUBLE) :: swigf_result
 class(VecDbl) :: self
 real(C_DOUBLE) :: fresult 
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 fresult = swigc_VecDbl_back(farg1)
 swigf_result = fresult
 end function
@@ -388,11 +424,11 @@ use, intrinsic :: ISO_C_BINDING
 class(VecDbl) :: self
 integer(C_INT), intent(in) :: index
 real(C_DOUBLE), intent(in) :: v
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 integer(C_INT) :: farg2 
 real(C_DOUBLE) :: farg3 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 farg2 = index
 farg3 = v
 call swigc_VecDbl_set(farg1, farg2, farg3)
@@ -405,10 +441,10 @@ real(C_DOUBLE) :: swigf_result
 class(VecDbl) :: self
 integer(C_INT), intent(in) :: index
 real(C_DOUBLE) :: fresult 
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 integer(C_INT) :: farg2 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 farg2 = index
 fresult = swigc_VecDbl_get(farg1, farg2)
 swigf_result = fresult
@@ -418,11 +454,13 @@ subroutine swigf_VecDbl_fill(self, view)
 use, intrinsic :: ISO_C_BINDING
 class(VecDbl) :: self
 real(C_DOUBLE), dimension(:), target, intent(inout) :: view
-type(C_PTR) :: farg1 
+real(C_DOUBLE), pointer :: farg2_view
+type(SwigfClassWrapper) :: farg1 
 type(SwigfArrayWrapper) :: farg2 
 
-farg1 = self%swigptr
-farg2%data = c_loc(view(1))
+farg1 = self%swigdata
+farg2_view => view(1)
+farg2%data = c_loc(farg2_view)
 farg2%size = size(view)
 call swigc_VecDbl_fill(farg1, farg2)
 end subroutine
@@ -433,9 +471,9 @@ use, intrinsic :: ISO_C_BINDING
 real(C_DOUBLE), dimension(:), pointer :: swigf_result
 class(VecDbl) :: self
 type(SwigfArrayWrapper) :: fresult 
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 fresult = swigc_VecDbl_view(farg1)
 
 call c_f_pointer(fresult%data, swigf_result, [fresult%size])
@@ -444,12 +482,13 @@ end function
 subroutine swigf_delete_VecDbl(self)
 use, intrinsic :: ISO_C_BINDING
 class(VecDbl) :: self
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-if (.not. c_associated(self%swigptr)) return
-farg1 = self%swigptr
+if (.not. (self%swigdata%flag == SWIGF_UNINIT)) return
+farg1 = self%swigdata
 call swigc_delete_VecDbl(farg1)
-self%swigptr = C_NULL_PTR
+self%swigdata%flag = SWIGF_UNINIT
+self%swigdata%ptr  = C_NULL_PTR
 end subroutine
 
 function make_viewdbl(v) &
@@ -458,9 +497,9 @@ use, intrinsic :: ISO_C_BINDING
 real(C_DOUBLE), dimension(:), pointer :: swigf_result
 class(VecDbl) :: v
 type(SwigfArrayWrapper) :: fresult 
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = v%swigptr
+farg1 = v%swigdata
 fresult = swigc_make_viewdbl(farg1)
 
 call c_f_pointer(fresult%data, swigf_result, [fresult%size])
@@ -472,9 +511,9 @@ use, intrinsic :: ISO_C_BINDING
 real(C_DOUBLE), dimension(:), pointer :: swigf_result
 class(VecDbl) :: v
 type(SwigfArrayWrapper) :: fresult 
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = v%swigptr
+farg1 = v%swigdata
 fresult = swigc_make_const_viewdbl(farg1)
 
 call c_f_pointer(fresult%data, swigf_result, [fresult%size])
@@ -483,12 +522,14 @@ end function
 subroutine print_viewdbl(view)
 use, intrinsic :: ISO_C_BINDING
 real(C_DOUBLE), dimension(:), target, intent(inout) :: view
+real(C_DOUBLE), pointer :: farg1_view
 type(SwigfArrayWrapper) :: farg1 
 
-farg1%data = c_loc(view(1))
+farg1_view => view(1)
+farg1%data = c_loc(farg1_view)
 farg1%size = size(view)
 call swigc_print_viewdbl(farg1)
 end subroutine
 
 
-end module stdvec
+end module

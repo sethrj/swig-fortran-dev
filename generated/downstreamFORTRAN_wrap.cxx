@@ -194,7 +194,7 @@ template <typename T> T SwigValueInit() {
 
 #undef SWIG_exception_impl
 #define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
-    swig::fortran_store_exception(CODE, MSG); return NULLRETURN;
+    swigf_store_exception(CODE, MSG); return NULLRETURN;
 
 
 #define SWIGVERSION 0x040000 
@@ -208,11 +208,21 @@ template <typename T> T SwigValueInit() {
 #include <stdexcept>
 
 
+// Functions are defined in an imported module
+void swigf_check_unhandled_exception();
+void swigf_store_exception(int code, const char *msg);
+
+
+// DEPRECATED: use swigf_check_unhandled_exception instead
 namespace swig
 {
-// Functions are defined in an imported module
-void fortran_check_unhandled_exception();
-void fortran_store_exception(int code, const char *msg);
+#ifdef __GNUC__
+__attribute__((deprecated))
+#endif
+inline void fortran_check_unhandled_exception()
+{
+    swigf_check_unhandled_exception();
+}
 } // end namespace swig
 
 
@@ -226,7 +236,7 @@ extern "C" {
 #endif
 SWIGEXPORT void swigc_throw_error() {
   {
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       throw_error();

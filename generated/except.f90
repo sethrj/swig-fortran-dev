@@ -11,20 +11,33 @@ module except
  ! PUBLIC METHODS AND TYPES
 
  public :: ierr
- public :: serr
 
+
+type, bind(C) :: SwigfArrayWrapper
+  type(C_PTR), public :: data
+  integer(C_SIZE_T), public :: size
+end type
+
+ public :: get_serr
  public :: alpha
  public :: bravo
+ public :: get_view
 
  ! PARAMETERS
- integer(C_INT), parameter, public :: SWIG_FORTRAN_ERROR_STRLEN = 1024_C_INT
 
  integer(C_INT), bind(C) :: ierr = 0
- character(kind=C_CHAR, len=1024), bind(C) :: serr = ""
 
 
  ! WRAPPER DECLARATIONS
  interface
+function swigc_get_serr() &
+bind(C, name="swigc_get_serr") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
+type(SwigfArrayWrapper) :: fresult
+end function
+
 subroutine swigc_alpha(farg1) &
 bind(C, name="swigc_alpha")
 use, intrinsic :: ISO_C_BINDING
@@ -38,11 +51,44 @@ use, intrinsic :: ISO_C_BINDING
 integer(C_INT) :: fresult
 end function
 
+function swigc_get_view() &
+bind(C, name="swigc_get_view") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
+type(SwigfArrayWrapper) :: fresult
+end function
+
  end interface
 
 
 contains
  ! FORTRAN PROXY CODE
+
+subroutine swigf_chararray_to_string(wrap, string)
+  use, intrinsic :: ISO_C_BINDING
+  type(SwigfArrayWrapper), intent(IN) :: wrap 
+  character(kind=C_CHAR, len=:), allocatable, intent(OUT) :: string
+  character(kind=C_CHAR), dimension(:), pointer :: chars
+  integer(kind=C_SIZE_T) :: i
+  call c_f_pointer(wrap%data, chars, [wrap%size])
+  allocate(character(kind=C_CHAR, len=wrap%size) :: string)
+  do i=1, wrap%size
+    string(i:i) = chars(i)
+  enddo
+end subroutine
+
+function get_serr() &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+character(kind=C_CHAR, len=:), allocatable :: swigf_result
+type(SwigfArrayWrapper) :: fresult 
+
+fresult = swigc_get_serr()
+
+call swigf_chararray_to_string(fresult, swigf_result)
+end function
+
 subroutine alpha(val)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT), intent(in) :: val
@@ -62,5 +108,16 @@ fresult = swigc_bravo()
 swigf_result = fresult
 end function
 
+function get_view() &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT), dimension(:), pointer :: swigf_result
+type(SwigfArrayWrapper) :: fresult 
 
-end module except
+fresult = swigc_get_view()
+
+call c_f_pointer(fresult%data, swigf_result, [fresult%size])
+end function
+
+
+end module

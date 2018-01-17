@@ -18,7 +18,7 @@ module bare
  public :: get_something_rref
  public :: get_something_rcref
 
-type, public, bind(C) :: SwigfArrayWrapper
+type, bind(C) :: SwigfArrayWrapper
   type(C_PTR), public :: data
   integer(C_SIZE_T), public :: size
 end type
@@ -292,9 +292,11 @@ end function
 subroutine print_array(arr)
 use, intrinsic :: ISO_C_BINDING
 real(C_DOUBLE), dimension(:), target, intent(inout) :: arr
+real(C_DOUBLE), pointer :: farg1_view
 type(SwigfArrayWrapper) :: farg1 
 
-farg1%data = c_loc(arr(1))
+farg1_view => arr(1)
+farg1%data = c_loc(farg1_view)
 farg1%size = size(arr)
 call swigc_print_array(farg1)
 end subroutine
@@ -377,4 +379,4 @@ call swigc_print_cmyk(farg1)
 end subroutine
 
 
-end module bare
+end module

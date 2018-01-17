@@ -209,24 +209,49 @@ template <typename T> T SwigValueInit() {
 #include <utility>
 
 
-namespace swig {
+
+enum SwigfProxyFlag {
+    SWIGF_UNINIT = -1,
+    SWIGF_OWNER = 0,
+    SWIGF_MOVING = 1,
+    SWIGF_REFERENCE = 2,
+    SWIGF_CONST_REFERENCE = 3
+};
+
+
+
+template<class T>
+struct SwigfClassWrapper
+{
+    T*             ptr;
+    SwigfProxyFlag flag;
+    // Static function to return an empty 
+    static SwigfClassWrapper<T> uninitialized()
+    {
+        SwigfClassWrapper<T> result;
+        result.ptr = NULL;
+        result.flag = SWIGF_UNINIT;
+        return result;
+    }
+};
+
+
 template<class T>
 struct SwigfArrayWrapper
 {
     T* data;
     std::size_t size;
 };
-}
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_print_offbyone(void const *farg1) {
+SWIGEXPORT void swigc_print_offbyone(SwigfClassWrapper< ThinVec< int > const > const *farg1) {
   ThinVec< int > *arg1 = 0 ;
   ThinVec< int > tempvec1 ;
   
-  // Original typemap: convert void* to thinvec reference
-  arg1 = static_cast< ThinVec< int > * >(const_cast< void* >(farg1));
+  // Original typemap: convert const ThinVec<int>* to thinvec reference
+  arg1 = const_cast< ThinVec< int >* >(farg1->ptr);
   // Resize temporary vec
   tempvec1.resize(arg1->size());
   // Copy input vector incremented by one
@@ -244,18 +269,19 @@ SWIGEXPORT void swigc_print_offbyone(void const *farg1) {
 }
 
 
-SWIGEXPORT void * swigc_new_ThinVecDbl() {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper< ThinVec< double > > swigc_new_ThinVecDbl() {
+  SwigfClassWrapper< ThinVec< double > > fresult ;
   ThinVec< double > *result = 0 ;
   
   result = (ThinVec< double > *)new ThinVec< double >();
-  fresult = result;
+  fresult.ptr = result;
+  fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_new_ThinVecDbl_create_fill(int const *farg1, double const *farg2) {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper< ThinVec< double > > swigc_new_ThinVecDbl_create_fill(int const *farg1, double const *farg2) {
+  SwigfClassWrapper< ThinVec< double > > fresult ;
   ThinVec< double >::size_type arg1 ;
   ThinVec< double >::value_type arg2 ;
   ThinVec< double > *result = 0 ;
@@ -263,54 +289,56 @@ SWIGEXPORT void * swigc_new_ThinVecDbl_create_fill(int const *farg1, double cons
   arg1 = *farg1;
   arg2 = *farg2;
   result = (ThinVec< double > *)new ThinVec< double >(arg1,arg2);
-  fresult = result;
+  fresult.ptr = result;
+  fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_new_ThinVecDbl_create_count(int const *farg1) {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper< ThinVec< double > > swigc_new_ThinVecDbl_create_count(int const *farg1) {
+  SwigfClassWrapper< ThinVec< double > > fresult ;
   ThinVec< double >::size_type arg1 ;
   ThinVec< double > *result = 0 ;
   
   arg1 = *farg1;
   result = (ThinVec< double > *)new ThinVec< double >(arg1);
-  fresult = result;
+  fresult.ptr = result;
+  fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_ThinVecDbl_empty(void const *farg1) {
+SWIGEXPORT bool swigc_ThinVecDbl_empty(SwigfClassWrapper< ThinVec< double > const > const *farg1) {
   bool fresult ;
   ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
   bool result;
   
-  arg1 = static_cast< ThinVec< double > * >(const_cast< void* >(farg1));
+  arg1 = const_cast< ThinVec< double >* >(farg1->ptr);
   result = (bool)((ThinVec< double > const *)arg1)->empty();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_ThinVecDbl_size(void const *farg1) {
+SWIGEXPORT int swigc_ThinVecDbl_size(SwigfClassWrapper< ThinVec< double > const > const *farg1) {
   int fresult ;
   ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
   ThinVec< double >::size_type result;
   
-  arg1 = static_cast< ThinVec< double > * >(const_cast< void* >(farg1));
+  arg1 = const_cast< ThinVec< double >* >(farg1->ptr);
   result = (ThinVec< double >::size_type)((ThinVec< double > const *)arg1)->size();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT double swigc_ThinVecDbl_get(void const *farg1, int const *farg2) {
+SWIGEXPORT double swigc_ThinVecDbl_get(SwigfClassWrapper< ThinVec< double > const > const *farg1, int const *farg2) {
   double fresult ;
   ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
   ThinVec< double >::size_type arg2 ;
   ThinVec< double >::value_type *result = 0 ;
   
-  arg1 = static_cast< ThinVec< double > * >(const_cast< void* >(farg1));
+  arg1 = const_cast< ThinVec< double >* >(farg1->ptr);
   arg2 = *farg2;
   result = (ThinVec< double >::value_type *) &((ThinVec< double > const *)arg1)->get(arg2);
   fresult = *result;
@@ -318,25 +346,27 @@ SWIGEXPORT double swigc_ThinVecDbl_get(void const *farg1, int const *farg2) {
 }
 
 
-SWIGEXPORT void swigc_ThinVecDbl_set(void *farg1, int const *farg2, double const *farg3) {
+SWIGEXPORT void swigc_ThinVecDbl_set(SwigfClassWrapper< ThinVec< double > > *farg1, int const *farg2, double const *farg3) {
   ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
   ThinVec< double >::size_type arg2 ;
   ThinVec< double >::value_type *arg3 = 0 ;
+  ThinVec< double >::value_type temp_val3 ;
   
-  arg1 = static_cast< ThinVec< double > * >(farg1);
+  arg1 = farg1->ptr;
   arg2 = *farg2;
-  arg3 = reinterpret_cast< ThinVec< double >::value_type * >(const_cast< double* >(farg3));
+  temp_val3 = *const_cast< double* >(farg3);
+  arg3 = &temp_val3;
   (arg1)->set(arg2,(ThinVec< double >::value_type const &)*arg3);
   
 }
 
 
-SWIGEXPORT void swigc_ThinVecDbl_resize_fill(void *farg1, int const *farg2, double const *farg3) {
+SWIGEXPORT void swigc_ThinVecDbl_resize_fill(SwigfClassWrapper< ThinVec< double > > *farg1, int const *farg2, double const *farg3) {
   ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
   ThinVec< double >::size_type arg2 ;
   ThinVec< double >::value_type arg3 ;
   
-  arg1 = static_cast< ThinVec< double > * >(farg1);
+  arg1 = farg1->ptr;
   arg2 = *farg2;
   arg3 = *farg3;
   (arg1)->resize(arg2,arg3);
@@ -344,23 +374,23 @@ SWIGEXPORT void swigc_ThinVecDbl_resize_fill(void *farg1, int const *farg2, doub
 }
 
 
-SWIGEXPORT void swigc_ThinVecDbl_resize(void *farg1, int const *farg2) {
+SWIGEXPORT void swigc_ThinVecDbl_resize(SwigfClassWrapper< ThinVec< double > > *farg1, int const *farg2) {
   ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
   ThinVec< double >::size_type arg2 ;
   
-  arg1 = static_cast< ThinVec< double > * >(farg1);
+  arg1 = farg1->ptr;
   arg2 = *farg2;
   (arg1)->resize(arg2);
   
 }
 
 
-SWIGEXPORT void swigc_ThinVecDbl_assign_from(void *farg1, swig::SwigfArrayWrapper< double const > *farg2) {
+SWIGEXPORT void swigc_ThinVecDbl_assign_from(SwigfClassWrapper< ThinVec< double > > *farg1, SwigfArrayWrapper< double const > *farg2) {
   ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
   ThinVec< double >::const_view_type arg2 ;
   
   arg2 = ::std::pair< const double*, std::size_t >();
-  arg1 = static_cast< ThinVec< double > * >(farg1);
+  arg1 = farg1->ptr;
   (&arg2)->first  = farg2->data;
   (&arg2)->second = farg2->size;
   (arg1)->assign(arg2);
@@ -368,12 +398,12 @@ SWIGEXPORT void swigc_ThinVecDbl_assign_from(void *farg1, swig::SwigfArrayWrappe
 }
 
 
-SWIGEXPORT swig::SwigfArrayWrapper< double > swigc_ThinVecDbl_view(void *farg1) {
-  swig::SwigfArrayWrapper< double > fresult ;
+SWIGEXPORT SwigfArrayWrapper< double > swigc_ThinVecDbl_view(SwigfClassWrapper< ThinVec< double > > *farg1) {
+  SwigfArrayWrapper< double > fresult ;
   ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
   ThinVec< double >::view_type result;
   
-  arg1 = static_cast< ThinVec< double > * >(farg1);
+  arg1 = farg1->ptr;
   result = (arg1)->view();
   fresult.data = (&result)->first;
   fresult.size = (&result)->second;
@@ -381,27 +411,28 @@ SWIGEXPORT swig::SwigfArrayWrapper< double > swigc_ThinVecDbl_view(void *farg1) 
 }
 
 
-SWIGEXPORT void swigc_delete_ThinVecDbl(void *farg1) {
+SWIGEXPORT void swigc_delete_ThinVecDbl(SwigfClassWrapper< ThinVec< double > > *farg1) {
   ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
   
-  arg1 = static_cast< ThinVec< double > * >(farg1);
+  arg1 = farg1->ptr;
   delete arg1;
   
 }
 
 
-SWIGEXPORT void * swigc_new_ThinVecInt() {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper< ThinVec< int > > swigc_new_ThinVecInt() {
+  SwigfClassWrapper< ThinVec< int > > fresult ;
   ThinVec< int > *result = 0 ;
   
   result = (ThinVec< int > *)new ThinVec< int >();
-  fresult = result;
+  fresult.ptr = result;
+  fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_new_ThinVecInt_create_fill(int const *farg1, int const *farg2) {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper< ThinVec< int > > swigc_new_ThinVecInt_create_fill(int const *farg1, int const *farg2) {
+  SwigfClassWrapper< ThinVec< int > > fresult ;
   ThinVec< int >::size_type arg1 ;
   ThinVec< int >::value_type arg2 ;
   ThinVec< int > *result = 0 ;
@@ -409,54 +440,56 @@ SWIGEXPORT void * swigc_new_ThinVecInt_create_fill(int const *farg1, int const *
   arg1 = *farg1;
   arg2 = *farg2;
   result = (ThinVec< int > *)new ThinVec< int >(arg1,arg2);
-  fresult = result;
+  fresult.ptr = result;
+  fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_new_ThinVecInt_create_count(int const *farg1) {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper< ThinVec< int > > swigc_new_ThinVecInt_create_count(int const *farg1) {
+  SwigfClassWrapper< ThinVec< int > > fresult ;
   ThinVec< int >::size_type arg1 ;
   ThinVec< int > *result = 0 ;
   
   arg1 = *farg1;
   result = (ThinVec< int > *)new ThinVec< int >(arg1);
-  fresult = result;
+  fresult.ptr = result;
+  fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_ThinVecInt_empty(void const *farg1) {
+SWIGEXPORT bool swigc_ThinVecInt_empty(SwigfClassWrapper< ThinVec< int > const > const *farg1) {
   bool fresult ;
   ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
   bool result;
   
-  arg1 = static_cast< ThinVec< int > * >(const_cast< void* >(farg1));
+  arg1 = const_cast< ThinVec< int >* >(farg1->ptr);
   result = (bool)((ThinVec< int > const *)arg1)->empty();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_ThinVecInt_size(void const *farg1) {
+SWIGEXPORT int swigc_ThinVecInt_size(SwigfClassWrapper< ThinVec< int > const > const *farg1) {
   int fresult ;
   ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
   ThinVec< int >::size_type result;
   
-  arg1 = static_cast< ThinVec< int > * >(const_cast< void* >(farg1));
+  arg1 = const_cast< ThinVec< int >* >(farg1->ptr);
   result = (ThinVec< int >::size_type)((ThinVec< int > const *)arg1)->size();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_ThinVecInt_get(void const *farg1, int const *farg2) {
+SWIGEXPORT int swigc_ThinVecInt_get(SwigfClassWrapper< ThinVec< int > const > const *farg1, int const *farg2) {
   int fresult ;
   ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
   ThinVec< int >::size_type arg2 ;
   ThinVec< int >::value_type *result = 0 ;
   
-  arg1 = static_cast< ThinVec< int > * >(const_cast< void* >(farg1));
+  arg1 = const_cast< ThinVec< int >* >(farg1->ptr);
   arg2 = *farg2;
   result = (ThinVec< int >::value_type *) &((ThinVec< int > const *)arg1)->get(arg2);
   fresult = *result;
@@ -464,25 +497,27 @@ SWIGEXPORT int swigc_ThinVecInt_get(void const *farg1, int const *farg2) {
 }
 
 
-SWIGEXPORT void swigc_ThinVecInt_set(void *farg1, int const *farg2, int const *farg3) {
+SWIGEXPORT void swigc_ThinVecInt_set(SwigfClassWrapper< ThinVec< int > > *farg1, int const *farg2, int const *farg3) {
   ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
   ThinVec< int >::size_type arg2 ;
   ThinVec< int >::value_type *arg3 = 0 ;
+  ThinVec< int >::value_type temp_val3 ;
   
-  arg1 = static_cast< ThinVec< int > * >(farg1);
+  arg1 = farg1->ptr;
   arg2 = *farg2;
-  arg3 = reinterpret_cast< ThinVec< int >::value_type * >(const_cast< int* >(farg3));
+  temp_val3 = *const_cast< int* >(farg3);
+  arg3 = &temp_val3;
   (arg1)->set(arg2,(ThinVec< int >::value_type const &)*arg3);
   
 }
 
 
-SWIGEXPORT void swigc_ThinVecInt_resize_fill(void *farg1, int const *farg2, int const *farg3) {
+SWIGEXPORT void swigc_ThinVecInt_resize_fill(SwigfClassWrapper< ThinVec< int > > *farg1, int const *farg2, int const *farg3) {
   ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
   ThinVec< int >::size_type arg2 ;
   ThinVec< int >::value_type arg3 ;
   
-  arg1 = static_cast< ThinVec< int > * >(farg1);
+  arg1 = farg1->ptr;
   arg2 = *farg2;
   arg3 = *farg3;
   (arg1)->resize(arg2,arg3);
@@ -490,23 +525,23 @@ SWIGEXPORT void swigc_ThinVecInt_resize_fill(void *farg1, int const *farg2, int 
 }
 
 
-SWIGEXPORT void swigc_ThinVecInt_resize(void *farg1, int const *farg2) {
+SWIGEXPORT void swigc_ThinVecInt_resize(SwigfClassWrapper< ThinVec< int > > *farg1, int const *farg2) {
   ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
   ThinVec< int >::size_type arg2 ;
   
-  arg1 = static_cast< ThinVec< int > * >(farg1);
+  arg1 = farg1->ptr;
   arg2 = *farg2;
   (arg1)->resize(arg2);
   
 }
 
 
-SWIGEXPORT void swigc_ThinVecInt_assign_from(void *farg1, swig::SwigfArrayWrapper< int const > *farg2) {
+SWIGEXPORT void swigc_ThinVecInt_assign_from(SwigfClassWrapper< ThinVec< int > > *farg1, SwigfArrayWrapper< int const > *farg2) {
   ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
   ThinVec< int >::const_view_type arg2 ;
   
   arg2 = ::std::pair< const int*, std::size_t >();
-  arg1 = static_cast< ThinVec< int > * >(farg1);
+  arg1 = farg1->ptr;
   (&arg2)->first  = farg2->data;
   (&arg2)->second = farg2->size;
   (arg1)->assign(arg2);
@@ -514,12 +549,12 @@ SWIGEXPORT void swigc_ThinVecInt_assign_from(void *farg1, swig::SwigfArrayWrappe
 }
 
 
-SWIGEXPORT swig::SwigfArrayWrapper< int > swigc_ThinVecInt_view(void *farg1) {
-  swig::SwigfArrayWrapper< int > fresult ;
+SWIGEXPORT SwigfArrayWrapper< int > swigc_ThinVecInt_view(SwigfClassWrapper< ThinVec< int > > *farg1) {
+  SwigfArrayWrapper< int > fresult ;
   ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
   ThinVec< int >::view_type result;
   
-  arg1 = static_cast< ThinVec< int > * >(farg1);
+  arg1 = farg1->ptr;
   result = (arg1)->view();
   fresult.data = (&result)->first;
   fresult.size = (&result)->second;
@@ -527,28 +562,28 @@ SWIGEXPORT swig::SwigfArrayWrapper< int > swigc_ThinVecInt_view(void *farg1) {
 }
 
 
-SWIGEXPORT void swigc_delete_ThinVecInt(void *farg1) {
+SWIGEXPORT void swigc_delete_ThinVecInt(SwigfClassWrapper< ThinVec< int > > *farg1) {
   ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
   
-  arg1 = static_cast< ThinVec< int > * >(farg1);
+  arg1 = farg1->ptr;
   delete arg1;
   
 }
 
 
-SWIGEXPORT void swigc_print_vec__SWIG_1(void const *farg1) {
+SWIGEXPORT void swigc_print_vec__SWIG_1(SwigfClassWrapper< ThinVec< double > const > const *farg1) {
   ThinVec< double > *arg1 = 0 ;
   
-  arg1 = static_cast< ThinVec< double > * >(const_cast< void* >(farg1));
+  arg1 = const_cast< ThinVec< double >* >(farg1->ptr);
   print_vec< double >((ThinVec< double > const &)*arg1);
   
 }
 
 
-SWIGEXPORT void swigc_print_vec__SWIG_2(void const *farg1) {
+SWIGEXPORT void swigc_print_vec__SWIG_2(SwigfClassWrapper< ThinVec< int > const > const *farg1) {
   ThinVec< int > *arg1 = 0 ;
   
-  arg1 = static_cast< ThinVec< int > * >(const_cast< void* >(farg1));
+  arg1 = const_cast< ThinVec< int >* >(farg1->ptr);
   print_vec< int >((ThinVec< int > const &)*arg1);
   
 }
