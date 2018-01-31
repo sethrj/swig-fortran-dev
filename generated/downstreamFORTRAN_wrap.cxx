@@ -183,18 +183,22 @@ template <typename T> T SwigValueInit() {
 
 
 // Default exception handler
-#define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
-    throw std::logic_error(MSG); return NULLRETURN;
+#define SWIG_exception_impl(CODE, MSG, RETURNNULL) \
+    throw std::logic_error(MSG); RETURNNULL;
 
 
 /* Contract support */
-#define SWIG_contract_assert(NULLRETURN, EXPR, MSG) \
-    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, NULLRETURN); }
+#define SWIG_contract_assert(RETURNNULL, EXPR, MSG) \
+    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, RETURNNULL); }
 
 
 #undef SWIG_exception_impl
-#define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
-    swigf_store_exception(CODE, MSG); return NULLRETURN;
+#define SWIG_exception_impl(CODE, MSG, RETURNNULL) \
+    SWIG_store_exception(CODE, MSG); RETURNNULL;
+
+
+void SWIG_check_unhandled_exception();
+void SWIG_store_exception(int code, const char *msg);
 
 
 #define SWIGVERSION 0x040000 
@@ -208,22 +212,7 @@ template <typename T> T SwigValueInit() {
 #include <stdexcept>
 
 
-// Functions are defined in an imported module
-void swigf_check_unhandled_exception();
-void swigf_store_exception(int code, const char *msg);
-
-
-// DEPRECATED: use swigf_check_unhandled_exception instead
-namespace swig
-{
-#ifdef __GNUC__
-__attribute__((deprecated))
-#endif
-inline void fortran_check_unhandled_exception()
-{
-    swigf_check_unhandled_exception();
-}
-} // end namespace swig
+#include <utility>
 
 
 void throw_error()
@@ -236,18 +225,18 @@ extern "C" {
 #endif
 SWIGEXPORT void swigc_throw_error() {
   {
-    swigf_check_unhandled_exception();
+    SWIG_check_unhandled_exception();
     try
     {
       throw_error();
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (const char* errstr)
     {
-      SWIG_exception_impl(SWIG_UnknownError, errstr, );
+      SWIG_exception_impl(SWIG_UnknownError, errstr, return );
     }
   }
   

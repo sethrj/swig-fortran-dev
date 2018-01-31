@@ -183,13 +183,47 @@ template <typename T> T SwigValueInit() {
 
 
 // Default exception handler
-#define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
-    throw std::logic_error(MSG); return NULLRETURN;
+#define SWIG_exception_impl(CODE, MSG, RETURNNULL) \
+    throw std::logic_error(MSG); RETURNNULL;
 
 
 /* Contract support */
-#define SWIG_contract_assert(NULLRETURN, EXPR, MSG) \
-    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, NULLRETURN); }
+#define SWIG_contract_assert(RETURNNULL, EXPR, MSG) \
+    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, RETURNNULL); }
+
+
+#define SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
+    if ((SWIG_CLASS_WRAPPER).mem == SWIG_NULL) { \
+        SWIG_exception_impl(SWIG_TypeError, \
+            "Cannot pass null " TYPENAME " (class " FNAME ") " \
+            "to function (" FUNCNAME ")", RETURNNULL); \
+    }
+
+
+#define SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
+    if ((SWIG_CLASS_WRAPPER).mem == SWIG_CREF) { \
+        SWIG_exception_impl(SWIG_TypeError, \
+            "Cannot pass const " TYPENAME " (class " FNAME ") " \
+            "to a function (" FUNCNAME ") that requires a mutable reference", \
+            RETURNNULL); \
+    }
+
+
+#define SWIG_check_mutable_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
+    SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL); \
+    SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL);
+
+
+
+#if __cplusplus >= 201103L
+#define SWIG_assign(LEFTTYPE, LEFT, RIGHTTYPE, RIGHT, FLAGS) \
+    SWIG_assign_impl<LEFTTYPE , RIGHTTYPE, swig::assignment_flags<LEFTTYPE >() >( \
+            LEFT, RIGHT);
+#else
+#define SWIG_assign(LEFTTYPE, LEFT, RIGHTTYPE, RIGHT, FLAGS) \
+    SWIG_assign_impl<LEFTTYPE , RIGHTTYPE, FLAGS >(LEFT, RIGHT);
+#endif
+
 
 
 #define SWIGVERSION 0x040000 
@@ -211,7 +245,7 @@ using std::cout;
 using std::endl;
 
 
-void print_pointer(int msg, SimpleClass* ptr)
+void print_pointer(int msg, const SimpleClass* ptr)
 {
     cout << "F " << (msg == 0 ? "Constructed"
                    : msg == 1 ? "Releasing"
@@ -223,113 +257,347 @@ void print_pointer(int msg, SimpleClass* ptr)
 }
 
 
-
-enum SwigfProxyFlag {
-    SWIGF_UNINIT = -1,
-    SWIGF_OWNER = 0,
-    SWIGF_MOVING = 1,
-    SWIGF_REFERENCE = 2,
-    SWIGF_CONST_REFERENCE = 3
+enum SwigMemState {
+    SWIG_NULL = 0,
+    SWIG_OWN,
+    SWIG_MOVE,
+    SWIG_REF,
+    SWIG_CREF
 };
 
 
-
-struct SwigfClassWrapper
+struct SwigClassWrapper
 {
-    void*          ptr;
-    SwigfProxyFlag flag;
+    void* ptr;
+    SwigMemState mem;
 };
 
-SwigfClassWrapper SwigfClassWrapper_uninitialized()
+SWIGINTERN SwigClassWrapper SwigClassWrapper_uninitialized()
 {
-    SwigfClassWrapper result;
-    result.ptr  = NULL;
-    result.flag = SWIGF_UNINIT;
+    SwigClassWrapper result;
+    result.ptr = NULL;
+    result.mem = SWIG_NULL;
     return result;
 }
 
-SWIGINTERN void SimpleClass_assign(SimpleClass *self,SimpleClass const &other){
-    *self = other;
+SWIGINTERN SimpleClass *new_SimpleClass__SWIG_2(double a,double b){
+        return new SimpleClass(a + b);
 }
+
+#include <utility>
+
+
+namespace swig {
+
+enum AssignmentFlags {
+  IS_DESTR       = 0x01,
+  IS_COPY_CONSTR = 0x02,
+  IS_COPY_ASSIGN = 0x04,
+  IS_MOVE_CONSTR = 0x08,
+  IS_MOVE_ASSIGN = 0x10
+};
+
+// Define our own switching struct to support pre-c++11 builds
+template<bool Val>
+struct bool_constant {};
+typedef bool_constant<true>  true_type;
+typedef bool_constant<false> false_type;
+
+// Deletion
+template<class T>
+SWIGINTERN void destruct_impl(T* self, true_type) {
+  delete self;
+}
+template<class T>
+SWIGINTERN T* destruct_impl(T* , false_type) {
+  SWIG_exception_impl(SWIG_TypeError,
+                      "Invalid assignment: class type has no destructor",
+                      return NULL);
+}
+
+// Copy construction and assignment
+template<class T, class U>
+SWIGINTERN T* copy_construct_impl(const U* other, true_type) {
+  return new T(*other);
+}
+template<class T, class U>
+SWIGINTERN void copy_assign_impl(T* self, const U* other, true_type) {
+  *self = *other;
+}
+
+// Disabled construction and assignment
+template<class T, class U>
+SWIGINTERN T* copy_construct_impl(const U* , false_type) {
+  SWIG_exception_impl(SWIG_TypeError,
+                      "Invalid assignment: class type has no copy constructor",
+                      return NULL);
+}
+template<class T, class U>
+SWIGINTERN void copy_assign_impl(T* , const U* , false_type) {
+  SWIG_exception_impl(SWIG_TypeError,
+                      "Invalid assignment: class type has no copy assignment",
+                      return);
+}
+
+#if __cplusplus >= 201103L
+#include <utility>
+#include <type_traits>
+
+// Move construction and assignment
+template<class T, class U>
+SWIGINTERN T* move_construct_impl(U* other, true_type) {
+  return new T(std::move(*other));
+}
+template<class T, class U>
+SWIGINTERN void move_assign_impl(T* self, U* other, true_type) {
+  *self = std::move(*other);
+}
+
+// Disabled move construction and assignment
+template<class T, class U>
+SWIGINTERN T* move_construct_impl(U*, false_type) {
+  SWIG_exception_impl(SWIG_TypeError,
+                      "Invalid assignment: class type has no move constructor",
+                      return NULL);
+}
+template<class T, class U>
+SWIGINTERN void move_assign_impl(T*, U*, false_type) {
+  SWIG_exception_impl(SWIG_TypeError,
+                      "Invalid assignment: class type has no move assignment",
+                      return);
+}
+
+template<class T>
+constexpr int assignment_flags() {
+  return   (std::is_destructible<T>::value       ? IS_DESTR       : 0)
+         | (std::is_copy_constructible<T>::value ? IS_COPY_CONSTR : 0)
+         | (std::is_copy_assignable<T>::value    ? IS_COPY_ASSIGN : 0)
+         | (std::is_move_constructible<T>::value ? IS_MOVE_CONSTR : 0)
+         | (std::is_move_assignable<T>::value    ? IS_MOVE_ASSIGN : 0);
+}
+#endif
+
+template<class T, int Flags>
+struct AssignmentTraits
+{
+  static void destruct(T* self)
+  {
+    destruct_impl<T>(self, bool_constant<Flags & IS_DESTR>());
+  }
+
+  template<class U>
+  static T* copy_construct(const U* other)
+  {
+    return copy_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_COPY_CONSTR)>());
+  }
+
+  template<class U>
+  static void copy_assign(T* self, const U* other)
+  {
+    copy_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_COPY_ASSIGN)>());
+  }
+
+#if __cplusplus >= 201103L
+  template<class U>
+  static T* move_construct(U* other)
+  {
+    return move_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_MOVE_CONSTR)>());
+  }
+  template<class U>
+  static void move_assign(T* self, U* other)
+  {
+    move_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_MOVE_ASSIGN)>());
+  }
+#else
+  template<class U>
+  static T* move_construct(U* other)
+  {
+    return copy_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_COPY_CONSTR)>());
+  }
+  template<class U>
+  static void move_assign(T* self, U* other)
+  {
+    copy_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_COPY_ASSIGN)>());
+  }
+#endif
+};
+
+} // end namespace swig
+
+
+
+template<class T1, class T2, int AFlags>
+SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other) {
+  typedef swig::AssignmentTraits<T1, AFlags> Traits_t;
+  T1* pself  = static_cast<T1*>(self->ptr);
+  T2* pother = static_cast<T2*>(other->ptr);
+
+  switch (self->mem) {
+    case SWIG_NULL:
+      /* LHS is unassigned */
+      switch (other->mem) {
+        case SWIG_NULL: /* null op */ break;
+        case SWIG_MOVE: /* capture pointer from RHS */
+          self->ptr = other->ptr;
+          other->ptr = NULL;
+          self->mem = SWIG_OWN;
+          other->mem = SWIG_NULL;
+          break;
+        case SWIG_OWN: /* copy from RHS */
+          self->ptr = Traits_t::copy_construct(pother);
+          self->mem = SWIG_OWN;
+          break;
+        case SWIG_REF: /* pointer to RHS */
+        case SWIG_CREF:
+          self->ptr = other->ptr;
+          self->mem = other->mem;
+          break;
+      }
+      break;
+    case SWIG_OWN:
+      /* LHS owns memory */
+      switch (other->mem) {
+        case SWIG_NULL:
+          /* Delete LHS */
+          Traits_t::destruct(pself);
+          self->ptr = NULL;
+          self->mem = SWIG_NULL;
+          break;
+        case SWIG_MOVE:
+          /* Move RHS into LHS; delete RHS */
+          Traits_t::move_assign(pself, pother);
+          Traits_t::destruct(pother);
+          other->ptr = NULL;
+          other->mem = SWIG_NULL;
+          break;
+        case SWIG_OWN:
+        case SWIG_REF:
+        case SWIG_CREF:
+          /* Copy RHS to LHS */
+          Traits_t::copy_assign(pself, pother);
+          break;
+      }
+      break;
+    case SWIG_MOVE:
+      SWIG_exception_impl(SWIG_RuntimeError,
+        "Left-hand side of assignment should never be in a 'MOVE' state",
+        return);
+      break;
+    case SWIG_REF:
+      /* LHS is a reference */
+      switch (other->mem) {
+        case SWIG_NULL:
+          /* Remove LHS reference */
+          self->ptr = NULL;
+          self->mem = SWIG_NULL;
+          break;
+        case SWIG_MOVE:
+          /* Move RHS into LHS; delete RHS. The original ownership stays the
+           * same. */
+          Traits_t::move_assign(pself, pother);
+          Traits_t::destruct(pother);
+          other->ptr = NULL;
+          other->mem = SWIG_NULL;
+          break;
+        case SWIG_OWN:
+        case SWIG_REF:
+        case SWIG_CREF:
+          /* Copy RHS to LHS */
+          Traits_t::copy_assign(pself, pother);
+          break;
+      }
+    case SWIG_CREF:
+      switch (other->mem) {
+        case SWIG_NULL:
+          /* Remove LHS reference */
+          self->ptr = NULL;
+          self->mem = SWIG_NULL;
+        default:
+          SWIG_exception_impl(SWIG_RuntimeError,
+              "Cannot assign to a const reference", return);
+          break;
+      }
+  }
+}
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_print_pointer(int const *farg1, SwigfClassWrapper const *farg2) {
+SWIGEXPORT void swigc_print_pointer(int const *farg1, SwigClassWrapper const *farg2) {
   int arg1 ;
   SimpleClass *arg2 = (SimpleClass *) 0 ;
   
   arg1 = *farg1;
   arg2 = static_cast< SimpleClass * >(farg2->ptr);
-  print_pointer(arg1,arg2);
+  print_pointer(arg1,(SimpleClass const *)arg2);
   
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_new_SimpleClass__SWIG_0() {
-  SwigfClassWrapper fresult ;
+SWIGEXPORT SwigClassWrapper swigc_SimpleClass_EmitSimpleClass() {
+  SwigClassWrapper fresult ;
+  SimpleClass *result = 0 ;
+  
+  result = (SimpleClass *)SimpleClass::EmitSimpleClass();
+  fresult.ptr = result;
+  fresult.mem = (0 ? SWIG_MOVE : SWIG_REF);
+  return fresult;
+}
+
+
+SWIGEXPORT SwigClassWrapper swigc_new_SimpleClass__SWIG_0() {
+  SwigClassWrapper fresult ;
   SimpleClass *result = 0 ;
   
   result = (SimpleClass *)new SimpleClass();
-  fresult.ptr  = result;
-  fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
   return fresult;
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_new_SimpleClass__SWIG_1(SwigfClassWrapper const *farg1) {
-  SwigfClassWrapper fresult ;
+SWIGEXPORT SwigClassWrapper swigc_new_SimpleClass__SWIG_1(SwigClassWrapper const *farg1) {
+  SwigClassWrapper fresult ;
   SimpleClass *arg1 = 0 ;
   SimpleClass *result = 0 ;
   
-  arg1 = static_cast< SimpleClass* >(farg1->ptr);
-  result = (SimpleClass *)new SimpleClass((SimpleClass const &)*arg1);
-  fresult.ptr  = result;
-  fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
-  return fresult;
-}
-
-
-SWIGEXPORT SwigfClassWrapper swigc_SimpleClass_assign__(SwigfClassWrapper const *farg1, SwigfClassWrapper const *farg2) {
-  SwigfClassWrapper fresult ;
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
-  SimpleClass *arg2 = 0 ;
-  SimpleClass *result = 0 ;
-  
+  SWIG_check_nonnull(*farg1, "SimpleClass const &", "SimpleClass", "SimpleClass::SimpleClass(SimpleClass const &)", return SwigClassWrapper_uninitialized());
   arg1 = static_cast< SimpleClass * >(farg1->ptr);
-  arg2 = static_cast< SimpleClass* >(farg2->ptr);
-  result = (SimpleClass *) &(arg1)->operator =((SimpleClass const &)*arg2);
-  fresult.ptr  = result;
-  fresult.flag = (0 ? SWIGF_MOVING : SWIGF_REFERENCE);
+  result = (SimpleClass *)new SimpleClass((SimpleClass const &)*arg1);
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
   return fresult;
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_new_SimpleClass__SWIG_2(double const *farg1) {
-  SwigfClassWrapper fresult ;
+SWIGEXPORT SwigClassWrapper swigc_new_create_SimpleClass_dbl(double const *farg1) {
+  SwigClassWrapper fresult ;
   double arg1 ;
   SimpleClass *result = 0 ;
   
   arg1 = *farg1;
   result = (SimpleClass *)new SimpleClass(arg1);
-  fresult.ptr  = result;
-  fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_delete_SimpleClass(SwigfClassWrapper const *farg1) {
+SWIGEXPORT void swigc_delete_SimpleClass(SwigClassWrapper const *farg1) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   
+  SWIG_check_mutable_nonnull(*farg1, "SimpleClass *", "SimpleClass", "SimpleClass::~SimpleClass()", return );
   arg1 = static_cast< SimpleClass * >(farg1->ptr);
   delete arg1;
   
 }
 
 
-SWIGEXPORT void swigc_SimpleClass_set(SwigfClassWrapper const *farg1, int const *farg2) {
+SWIGEXPORT void swigc_SimpleClass_set(SwigClassWrapper const *farg1, int const *farg2) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   SimpleClass::storage_type arg2 ;
   
+  SWIG_check_mutable_nonnull(*farg1, "SimpleClass *", "SimpleClass", "SimpleClass::set(SimpleClass::storage_type)", return );
   arg1 = static_cast< SimpleClass * >(farg1->ptr);
   arg2 = *farg2;
   (arg1)->set(arg2);
@@ -337,46 +605,50 @@ SWIGEXPORT void swigc_SimpleClass_set(SwigfClassWrapper const *farg1, int const 
 }
 
 
-SWIGEXPORT void swigc_SimpleClass_double_it(SwigfClassWrapper const *farg1) {
+SWIGEXPORT void swigc_SimpleClass_double_it(SwigClassWrapper const *farg1) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   
+  SWIG_check_mutable_nonnull(*farg1, "SimpleClass *", "SimpleClass", "SimpleClass::double_it()", return );
   arg1 = static_cast< SimpleClass * >(farg1->ptr);
   (arg1)->double_it();
   
 }
 
 
-SWIGEXPORT int swigc_SimpleClass_get(SwigfClassWrapper const *farg1) {
+SWIGEXPORT int swigc_SimpleClass_get(SwigClassWrapper const *farg1) {
   int fresult ;
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   SimpleClass::storage_type result;
   
-  arg1 = static_cast< SimpleClass* >(farg1->ptr);
+  SWIG_check_nonnull(*farg1, "SimpleClass const *", "SimpleClass", "SimpleClass::get() const", return 0);
+  arg1 = static_cast< SimpleClass * >(farg1->ptr);
   result = (SimpleClass::storage_type)((SimpleClass const *)arg1)->get();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_SimpleClass_id(SwigfClassWrapper const *farg1) {
+SWIGEXPORT int swigc_SimpleClass_id(SwigClassWrapper const *farg1) {
   int fresult ;
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   int result;
   
-  arg1 = static_cast< SimpleClass* >(farg1->ptr);
+  SWIG_check_nonnull(*farg1, "SimpleClass const *", "SimpleClass", "SimpleClass::id() const", return 0);
+  arg1 = static_cast< SimpleClass * >(farg1->ptr);
   result = (int)((SimpleClass const *)arg1)->id();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_SimpleClass_get_multiplied(SwigfClassWrapper const *farg1, int const *farg2) {
+SWIGEXPORT int swigc_SimpleClass_get_multiplied(SwigClassWrapper const *farg1, int const *farg2) {
   int fresult ;
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   SimpleClass::multiple_type arg2 ;
   SimpleClass::storage_type result;
   
-  arg1 = static_cast< SimpleClass* >(farg1->ptr);
+  SWIG_check_nonnull(*farg1, "SimpleClass const *", "SimpleClass", "SimpleClass::get_multiplied(SimpleClass::multiple_type) const", return 0);
+  arg1 = static_cast< SimpleClass * >(farg1->ptr);
   arg2 = *farg2;
   result = (SimpleClass::storage_type)((SimpleClass const *)arg1)->get_multiplied(arg2);
   fresult = result;
@@ -384,21 +656,26 @@ SWIGEXPORT int swigc_SimpleClass_get_multiplied(SwigfClassWrapper const *farg1, 
 }
 
 
-SWIGEXPORT void swigc_SimpleClass_assign(SwigfClassWrapper const *farg1, SwigfClassWrapper const *farg2) {
-  SimpleClass *arg1 = (SimpleClass *) 0 ;
-  SimpleClass *arg2 = 0 ;
+SWIGEXPORT SwigClassWrapper swigc_new_SimpleClass__SWIG_2(double const *farg1, double const *farg2) {
+  SwigClassWrapper fresult ;
+  double arg1 ;
+  double arg2 ;
+  SimpleClass *result = 0 ;
   
-  arg1 = static_cast< SimpleClass * >(farg1->ptr);
-  arg2 = static_cast< SimpleClass* >(farg2->ptr);
-  SimpleClass_assign(arg1,(SimpleClass const &)*arg2);
-  
+  arg1 = *farg1;
+  arg2 = *farg2;
+  result = (SimpleClass *)new_SimpleClass__SWIG_2(arg1,arg2);
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
+  return fresult;
 }
 
 
-SWIGEXPORT void swigc_SimpleClass_action__SWIG_1(SwigfClassWrapper const *farg1, double *farg2) {
+SWIGEXPORT void swigc_SimpleClass_action__SWIG_1(SwigClassWrapper const *farg1, double *farg2) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   double *arg2 = 0 ;
   
+  SWIG_check_mutable_nonnull(*farg1, "SimpleClass *", "SimpleClass", "SimpleClass::action< double >(double &)", return );
   arg1 = static_cast< SimpleClass * >(farg1->ptr);
   arg2 = reinterpret_cast< double * >(farg2);
   (arg1)->SWIGTEMPLATEDISAMBIGUATOR action< double >(*arg2);
@@ -406,10 +683,11 @@ SWIGEXPORT void swigc_SimpleClass_action__SWIG_1(SwigfClassWrapper const *farg1,
 }
 
 
-SWIGEXPORT void swigc_SimpleClass_action__SWIG_2(SwigfClassWrapper const *farg1, int *farg2) {
+SWIGEXPORT void swigc_SimpleClass_action__SWIG_2(SwigClassWrapper const *farg1, int *farg2) {
   SimpleClass *arg1 = (SimpleClass *) 0 ;
   int *arg2 = 0 ;
   
+  SWIG_check_mutable_nonnull(*farg1, "SimpleClass *", "SimpleClass", "SimpleClass::action< int >(int &)", return );
   arg1 = static_cast< SimpleClass * >(farg1->ptr);
   arg2 = reinterpret_cast< int * >(farg2);
   (arg1)->SWIGTEMPLATEDISAMBIGUATOR action< int >(*arg2);
@@ -417,55 +695,65 @@ SWIGEXPORT void swigc_SimpleClass_action__SWIG_2(SwigfClassWrapper const *farg1,
 }
 
 
-SWIGEXPORT void swigc_print_value(SwigfClassWrapper const *farg1) {
+SWIGEXPORT void swigc_assignment_SimpleClass(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::SimpleClass swig_lhs_classtype;
+  SWIG_assign(swig_lhs_classtype, self,
+    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
+    0 | swig::IS_COPY_CONSTR | swig::IS_COPY_ASSIGN);
+}
+
+
+SWIGEXPORT void swigc_print_value(SwigClassWrapper const *farg1) {
   SimpleClass *arg1 = 0 ;
   
-  arg1 = static_cast< SimpleClass* >(farg1->ptr);
+  SWIG_check_nonnull(*farg1, "const_SC_Ref", "SimpleClass", "print_value(const_SC_Ref)", return );
+  arg1 = static_cast< SimpleClass * >(farg1->ptr);
   print_value((SimpleClass const &)*arg1);
   
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_emit_class(int const *farg1) {
-  SwigfClassWrapper fresult ;
+SWIGEXPORT SwigClassWrapper swigc_emit_class(int const *farg1) {
+  SwigClassWrapper fresult ;
   SimpleClass::storage_type arg1 ;
   SC_Ptr result;
   
   arg1 = *farg1;
   result = (SC_Ptr)emit_class(arg1);
-  fresult.ptr  = result;
-  fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
   return fresult;
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_make_class(int const *farg1) {
-  SwigfClassWrapper fresult ;
+SWIGEXPORT SwigClassWrapper swigc_make_class(int const *farg1) {
+  SwigClassWrapper fresult ;
   SimpleClass::storage_type arg1 ;
   SimpleClass result;
   
   arg1 = *farg1;
   result = make_class(arg1);
-  fresult.ptr  = (new SimpleClass(static_cast< const SimpleClass& >(result)));
-  fresult.flag = SWIGF_MOVING;
+  fresult.ptr = (new SimpleClass(static_cast< const SimpleClass& >(result)));
+  fresult.mem = SWIG_MOVE;
   return fresult;
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_get_class() {
-  SwigfClassWrapper fresult ;
+SWIGEXPORT SwigClassWrapper swigc_get_class() {
+  SwigClassWrapper fresult ;
   SimpleClass *result = 0 ;
   
   result = (SimpleClass *) &get_class();
-  fresult.ptr  = const_cast< SimpleClass* >(result);
-  fresult.flag = SWIGF_CONST_REFERENCE;
+  fresult.ptr = (void*)result;
+  fresult.mem = SWIG_CREF;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_set_class_by_copy(SwigfClassWrapper const *farg1) {
+SWIGEXPORT void swigc_set_class_by_copy(SwigClassWrapper const *farg1) {
   SimpleClass arg1 ;
   
+  SWIG_check_nonnull(*farg1, "SimpleClass", "SimpleClass", "set_class_by_copy(SimpleClass)", return );
   arg1 = *static_cast< SimpleClass * >(farg1->ptr);
   set_class_by_copy(arg1);
   
@@ -474,10 +762,8 @@ SWIGEXPORT void swigc_set_class_by_copy(SwigfClassWrapper const *farg1) {
 
 SWIGEXPORT void swigc_print_struct(BasicStruct const *farg1) {
   BasicStruct *arg1 = 0 ;
-  BasicStruct *temp1 ;
   
-  temp1 = *farg1;
-  arg1   = &temp1;
+  arg1 = reinterpret_cast< BasicStruct * >(const_cast< BasicStruct* >(farg1));
   print_struct((BasicStruct const &)*arg1);
   
 }

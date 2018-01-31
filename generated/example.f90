@@ -13,76 +13,93 @@ module example
  public :: ierr
 
 
-type, bind(C) :: SwigfArrayWrapper
-  type(C_PTR), public :: data
-  integer(C_SIZE_T), public :: size
+type, bind(C) :: SwigArrayWrapper
+  type(C_PTR), public :: data = C_NULL_PTR
+  integer(C_SIZE_T), public :: size = 0
 end type
 
  public :: get_serr
  public :: Shape
 
  enum, bind(c)
-  enumerator :: SwigfProxyFlag = -1
-  enumerator :: SWIGF_UNINIT = -1
-  enumerator :: SWIGF_OWNER = 0
-  enumerator :: SWIGF_MOVING = 1
-  enumerator :: SWIGF_REFERENCE = 2
-  enumerator :: SWIGF_CONST_REFERENCE = 3
+  enumerator :: SwigMemState = -1
+  enumerator :: SWIG_NULL = 0
+  enumerator :: SWIG_OWN
+  enumerator :: SWIG_MOVE
+  enumerator :: SWIG_REF
+  enumerator :: SWIG_CREF
  end enum
 
 
-type, bind(C) :: SwigfClassWrapper
+type, bind(C) :: SwigClassWrapper
   type(C_PTR), public :: ptr = C_NULL_PTR
-  integer(C_INT), public :: flag = SWIGF_UNINIT
+  integer(C_INT), public :: mem = SWIG_NULL
 end type
 
  public :: Circle
  public :: Square
  public :: Sphere
  public :: surface_to_volume
+ public :: create_Square
+ interface create_Square
+  module procedure new_Square
+ end interface
+ public :: create_Circle
+ interface create_Circle
+  module procedure new_Circle
+ end interface
+ public :: create_Sphere
+ interface create_Sphere
+  module procedure new_Sphere
+ end interface
 
  ! PARAMETERS
 
- integer(C_INT), bind(C) :: ierr = 0
+ integer(C_INT), bind(C) :: ierr
 
 
  ! TYPES
  type :: Shape
   ! These should be treated as PROTECTED data
-  type(SwigfClassWrapper), public :: swigdata
+  type(SwigClassWrapper), public :: swigdata
  contains
-  procedure, nopass :: set_nshapes => swigf_set_Shape_nshapes
-  procedure, nopass :: get_nshapes => swigf_get_Shape_nshapes
-  procedure :: set_x => swigf_set_Shape_x
-  procedure :: get_x => swigf_get_Shape_x
-  procedure :: set_y => swigf_set_Shape_y
-  procedure :: get_y => swigf_get_Shape_y
-  procedure :: release => swigf_delete_Shape
+  procedure, nopass :: set_nshapes => set_Shape_nshapes
+  procedure, nopass :: get_nshapes => get_Shape_nshapes
+  procedure :: set_x => set_Shape_x
+  procedure :: get_x => get_Shape_x
+  procedure :: set_y => set_Shape_y
+  procedure :: get_y => get_Shape_y
+  procedure :: release => delete_Shape
   procedure :: move => swigf_Shape_move
   procedure :: area => swigf_Shape_area
   procedure :: perimeter => swigf_Shape_perimeter
+  procedure, private :: swigf_assignment_Shape
+  generic :: assignment(=) => swigf_assignment_Shape
  end type
  type, extends(Shape) :: Circle
  contains
-  procedure :: create => swigf_new_Circle
   procedure :: area => swigf_Circle_area
   procedure :: perimeter => swigf_Circle_perimeter
-  procedure :: release => swigf_delete_Circle
+  procedure :: release => delete_Circle
+  procedure, private :: swigf_assignment_Circle
+  generic :: assignment(=) => swigf_assignment_Circle
  end type
  type, extends(Shape) :: Square
  contains
-  procedure :: create => swigf_new_Square
   procedure :: area => swigf_Square_area
   procedure :: perimeter => swigf_Square_perimeter
-  procedure :: release => swigf_delete_Square
+  procedure :: release => delete_Square
+  procedure, private :: swigf_assignment_Square
+  generic :: assignment(=) => swigf_assignment_Square
  end type
  type :: Sphere
   ! These should be treated as PROTECTED data
-  type(SwigfClassWrapper), public :: swigdata
+  type(SwigClassWrapper), public :: swigdata
  contains
-  procedure :: create => swigf_new_Sphere
   procedure :: volume => swigf_Sphere_volume
-  procedure :: release => swigf_delete_Sphere
+  procedure :: release => delete_Sphere
+  procedure, private :: swigf_assignment_Sphere
+  generic :: assignment(=) => swigf_assignment_Sphere
  end type
 
 
@@ -92,8 +109,8 @@ function swigc_get_serr() &
 bind(C, name="swigc_get_serr") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfArrayWrapper
-type(SwigfArrayWrapper) :: fresult
+import :: SwigArrayWrapper
+type(SwigArrayWrapper) :: fresult
 end function
 
 subroutine swigc_set_Shape_nshapes(farg1) &
@@ -112,8 +129,8 @@ end function
 subroutine swigc_set_Shape_x(farg1, farg2) &
 bind(C, name="swigc_set_Shape_x")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE), intent(in) :: farg2
 end subroutine
 
@@ -121,16 +138,16 @@ function swigc_get_Shape_x(farg1) &
 bind(C, name="swigc_get_Shape_x") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_set_Shape_y(farg1, farg2) &
 bind(C, name="swigc_set_Shape_y")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE), intent(in) :: farg2
 end subroutine
 
@@ -138,23 +155,23 @@ function swigc_get_Shape_y(farg1) &
 bind(C, name="swigc_get_Shape_y") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_delete_Shape(farg1) &
 bind(C, name="swigc_delete_Shape")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_Shape_move(farg1, farg2, farg3) &
 bind(C, name="swigc_Shape_move")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE), intent(in) :: farg2
 real(C_DOUBLE), intent(in) :: farg3
 end subroutine
@@ -163,8 +180,8 @@ function swigc_Shape_area(farg1) &
 bind(C, name="swigc_Shape_area") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE) :: fresult
 end function
 
@@ -172,26 +189,33 @@ function swigc_Shape_perimeter(farg1) &
 bind(C, name="swigc_Shape_perimeter") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE) :: fresult
 end function
 
+  subroutine swigc_assignment_Shape(self, other) &
+     bind(C, name="swigc_assignment_Shape")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
+  end subroutine
 function swigc_new_Circle(farg1) &
 bind(C, name="swigc_new_Circle") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
+import :: SwigClassWrapper
 real(C_DOUBLE), intent(in) :: farg1
-type(SwigfClassWrapper) :: fresult
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_Circle_area(farg1) &
 bind(C, name="swigc_Circle_area") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE) :: fresult
 end function
 
@@ -199,33 +223,40 @@ function swigc_Circle_perimeter(farg1) &
 bind(C, name="swigc_Circle_perimeter") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_delete_Circle(farg1) &
 bind(C, name="swigc_delete_Circle")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
+  subroutine swigc_assignment_Circle(self, other) &
+     bind(C, name="swigc_assignment_Circle")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
+  end subroutine
 function swigc_new_Square(farg1) &
 bind(C, name="swigc_new_Square") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
+import :: SwigClassWrapper
 real(C_DOUBLE), intent(in) :: farg1
-type(SwigfClassWrapper) :: fresult
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_Square_area(farg1) &
 bind(C, name="swigc_Square_area") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE) :: fresult
 end function
 
@@ -233,49 +264,63 @@ function swigc_Square_perimeter(farg1) &
 bind(C, name="swigc_Square_perimeter") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_delete_Square(farg1) &
 bind(C, name="swigc_delete_Square")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
+  subroutine swigc_assignment_Square(self, other) &
+     bind(C, name="swigc_assignment_Square")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
+  end subroutine
 function swigc_new_Sphere(farg1) &
 bind(C, name="swigc_new_Sphere") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
+import :: SwigClassWrapper
 real(C_DOUBLE), intent(in) :: farg1
-type(SwigfClassWrapper) :: fresult
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_Sphere_volume(farg1) &
 bind(C, name="swigc_Sphere_volume") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_delete_Sphere(farg1) &
 bind(C, name="swigc_delete_Sphere")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
+  subroutine swigc_assignment_Sphere(self, other) &
+     bind(C, name="swigc_assignment_Sphere")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
+  end subroutine
 function swigc_surface_to_volume(farg1) &
 bind(C, name="swigc_surface_to_volume") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE) :: fresult
 end function
 
@@ -285,9 +330,9 @@ end function
 contains
  ! FORTRAN PROXY CODE
 
-subroutine swigf_chararray_to_string(wrap, string)
+subroutine SWIG_chararray_to_string(wrap, string)
   use, intrinsic :: ISO_C_BINDING
-  type(SwigfArrayWrapper), intent(IN) :: wrap 
+  type(SwigArrayWrapper), intent(IN) :: wrap
   character(kind=C_CHAR, len=:), allocatable, intent(OUT) :: string
   character(kind=C_CHAR), dimension(:), pointer :: chars
   integer(kind=C_SIZE_T) :: i
@@ -299,17 +344,17 @@ subroutine swigf_chararray_to_string(wrap, string)
 end subroutine
 
 function get_serr() &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-character(kind=C_CHAR, len=:), allocatable :: swigf_result
-type(SwigfArrayWrapper) :: fresult 
+character(kind=C_CHAR, len=:), allocatable :: swig_result
+type(SwigArrayWrapper) :: fresult 
 
 fresult = swigc_get_serr()
 
-call swigf_chararray_to_string(fresult, swigf_result)
+call SWIG_chararray_to_string(fresult, swig_result)
 end function
 
-subroutine swigf_set_Shape_nshapes(value0)
+subroutine set_Shape_nshapes(value0)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT), intent(in) :: value0
 integer(C_INT) :: farg1 
@@ -318,21 +363,21 @@ farg1 = value0
 call swigc_set_Shape_nshapes(farg1)
 end subroutine
 
-function swigf_get_Shape_nshapes() &
-result(swigf_result)
+function get_Shape_nshapes() &
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: swigf_result
+integer(C_INT) :: swig_result
 integer(C_INT) :: fresult 
 
 fresult = swigc_get_Shape_nshapes()
-swigf_result = fresult
+swig_result = fresult
 end function
 
-subroutine swigf_set_Shape_x(self, x)
+subroutine set_Shape_x(self, x)
 use, intrinsic :: ISO_C_BINDING
-class(Shape) :: self
+class(Shape), intent(inout) :: self
 real(C_DOUBLE), intent(in) :: x
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 real(C_DOUBLE) :: farg2 
 
 farg1 = self%swigdata
@@ -340,24 +385,24 @@ farg2 = x
 call swigc_set_Shape_x(farg1, farg2)
 end subroutine
 
-function swigf_get_Shape_x(self) &
-result(swigf_result)
+function get_Shape_x(self) &
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: swigf_result
-class(Shape) :: self
+real(C_DOUBLE) :: swig_result
+class(Shape), intent(inout) :: self
 real(C_DOUBLE) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_get_Shape_x(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
-subroutine swigf_set_Shape_y(self, y)
+subroutine set_Shape_y(self, y)
 use, intrinsic :: ISO_C_BINDING
-class(Shape) :: self
+class(Shape), intent(inout) :: self
 real(C_DOUBLE), intent(in) :: y
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 real(C_DOUBLE) :: farg2 
 
 farg1 = self%swigdata
@@ -365,37 +410,38 @@ farg2 = y
 call swigc_set_Shape_y(farg1, farg2)
 end subroutine
 
-function swigf_get_Shape_y(self) &
-result(swigf_result)
+function get_Shape_y(self) &
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: swigf_result
-class(Shape) :: self
+real(C_DOUBLE) :: swig_result
+class(Shape), intent(inout) :: self
 real(C_DOUBLE) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_get_Shape_y(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
-subroutine swigf_delete_Shape(self)
+subroutine delete_Shape(self)
 use, intrinsic :: ISO_C_BINDING
-class(Shape) :: self
-type(SwigfClassWrapper) :: farg1 
+class(Shape), intent(inout) :: self
+type(SwigClassWrapper) :: farg1 
 
-if (.not. (self%swigdata%flag == SWIGF_UNINIT)) return
 farg1 = self%swigdata
+if (self%swigdata%mem == SWIG_OWN) then
 call swigc_delete_Shape(farg1)
-self%swigdata%flag = SWIGF_UNINIT
-self%swigdata%ptr  = C_NULL_PTR
+end if
+self%swigdata%ptr = C_NULL_PTR
+self%swigdata%mem = SWIG_NULL
 end subroutine
 
 subroutine swigf_Shape_move(self, dx, dy)
 use, intrinsic :: ISO_C_BINDING
-class(Shape) :: self
+class(Shape), intent(inout) :: self
 real(C_DOUBLE), intent(in) :: dx
 real(C_DOUBLE), intent(in) :: dy
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 real(C_DOUBLE) :: farg2 
 real(C_DOUBLE) :: farg3 
 
@@ -406,182 +452,209 @@ call swigc_Shape_move(farg1, farg2, farg3)
 end subroutine
 
 function swigf_Shape_area(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: swigf_result
-class(Shape) :: self
+real(C_DOUBLE) :: swig_result
+class(Shape), intent(in) :: self
 real(C_DOUBLE) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_Shape_area(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function swigf_Shape_perimeter(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: swigf_result
-class(Shape) :: self
+real(C_DOUBLE) :: swig_result
+class(Shape), intent(in) :: self
 real(C_DOUBLE) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_Shape_perimeter(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
-subroutine swigf_new_Circle(self, r)
+  subroutine swigf_assignment_Shape(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(Shape), intent(inout) :: self
+   type(Shape), intent(in) :: other
+   call swigc_assignment_Shape(self%swigdata, other%swigdata)
+  end subroutine
+function new_Circle(r) &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(Circle) :: self
+type(Circle) :: self
 real(C_DOUBLE), intent(in) :: r
-type(SwigfClassWrapper) :: fresult 
+type(SwigClassWrapper) :: fresult 
 real(C_DOUBLE) :: farg1 
 
-if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
 farg1 = r
 fresult = swigc_new_Circle(farg1)
 self%swigdata = fresult
-end subroutine
+end function
 
 function swigf_Circle_area(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: swigf_result
-class(Circle) :: self
+real(C_DOUBLE) :: swig_result
+class(Circle), intent(in) :: self
 real(C_DOUBLE) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_Circle_area(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function swigf_Circle_perimeter(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: swigf_result
-class(Circle) :: self
+real(C_DOUBLE) :: swig_result
+class(Circle), intent(in) :: self
 real(C_DOUBLE) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_Circle_perimeter(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
-subroutine swigf_delete_Circle(self)
+subroutine delete_Circle(self)
 use, intrinsic :: ISO_C_BINDING
-class(Circle) :: self
-type(SwigfClassWrapper) :: farg1 
+class(Circle), intent(inout) :: self
+type(SwigClassWrapper) :: farg1 
 
-if (.not. (self%swigdata%flag == SWIGF_UNINIT)) return
 farg1 = self%swigdata
+if (self%swigdata%mem == SWIG_OWN) then
 call swigc_delete_Circle(farg1)
-self%swigdata%flag = SWIGF_UNINIT
-self%swigdata%ptr  = C_NULL_PTR
+end if
+self%swigdata%ptr = C_NULL_PTR
+self%swigdata%mem = SWIG_NULL
 end subroutine
 
-subroutine swigf_new_Square(self, w)
+  subroutine swigf_assignment_Circle(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(Circle), intent(inout) :: self
+   type(Circle), intent(in) :: other
+   call swigc_assignment_Circle(self%swigdata, other%swigdata)
+  end subroutine
+function new_Square(w) &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(Square) :: self
+type(Square) :: self
 real(C_DOUBLE), intent(in) :: w
-type(SwigfClassWrapper) :: fresult 
+type(SwigClassWrapper) :: fresult 
 real(C_DOUBLE) :: farg1 
 
-if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
 farg1 = w
 fresult = swigc_new_Square(farg1)
 self%swigdata = fresult
-end subroutine
+end function
 
 function swigf_Square_area(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: swigf_result
-class(Square) :: self
+real(C_DOUBLE) :: swig_result
+class(Square), intent(in) :: self
 real(C_DOUBLE) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_Square_area(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function swigf_Square_perimeter(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: swigf_result
-class(Square) :: self
+real(C_DOUBLE) :: swig_result
+class(Square), intent(in) :: self
 real(C_DOUBLE) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_Square_perimeter(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
-subroutine swigf_delete_Square(self)
+subroutine delete_Square(self)
 use, intrinsic :: ISO_C_BINDING
-class(Square) :: self
-type(SwigfClassWrapper) :: farg1 
+class(Square), intent(inout) :: self
+type(SwigClassWrapper) :: farg1 
 
-if (.not. (self%swigdata%flag == SWIGF_UNINIT)) return
 farg1 = self%swigdata
+if (self%swigdata%mem == SWIG_OWN) then
 call swigc_delete_Square(farg1)
-self%swigdata%flag = SWIGF_UNINIT
-self%swigdata%ptr  = C_NULL_PTR
+end if
+self%swigdata%ptr = C_NULL_PTR
+self%swigdata%mem = SWIG_NULL
 end subroutine
 
-subroutine swigf_new_Sphere(self, r)
+  subroutine swigf_assignment_Square(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(Square), intent(inout) :: self
+   type(Square), intent(in) :: other
+   call swigc_assignment_Square(self%swigdata, other%swigdata)
+  end subroutine
+function new_Sphere(r) &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(Sphere) :: self
+type(Sphere) :: self
 real(C_DOUBLE), intent(in) :: r
-type(SwigfClassWrapper) :: fresult 
+type(SwigClassWrapper) :: fresult 
 real(C_DOUBLE) :: farg1 
 
-if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
 farg1 = r
 fresult = swigc_new_Sphere(farg1)
 self%swigdata = fresult
-end subroutine
+end function
 
 function swigf_Sphere_volume(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: swigf_result
-class(Sphere) :: self
+real(C_DOUBLE) :: swig_result
+class(Sphere), intent(in) :: self
 real(C_DOUBLE) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_Sphere_volume(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
-subroutine swigf_delete_Sphere(self)
+subroutine delete_Sphere(self)
 use, intrinsic :: ISO_C_BINDING
-class(Sphere) :: self
-type(SwigfClassWrapper) :: farg1 
+class(Sphere), intent(inout) :: self
+type(SwigClassWrapper) :: farg1 
 
-if (.not. (self%swigdata%flag == SWIGF_UNINIT)) return
 farg1 = self%swigdata
+if (self%swigdata%mem == SWIG_OWN) then
 call swigc_delete_Sphere(farg1)
-self%swigdata%flag = SWIGF_UNINIT
-self%swigdata%ptr  = C_NULL_PTR
+end if
+self%swigdata%ptr = C_NULL_PTR
+self%swigdata%mem = SWIG_NULL
 end subroutine
 
+  subroutine swigf_assignment_Sphere(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(Sphere), intent(inout) :: self
+   type(Sphere), intent(in) :: other
+   call swigc_assignment_Sphere(self%swigdata, other%swigdata)
+  end subroutine
 function surface_to_volume(s) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: swigf_result
-class(Shape) :: s
+real(C_DOUBLE) :: swig_result
+class(Shape), intent(in) :: s
 real(C_DOUBLE) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = s%swigdata
 fresult = swigc_surface_to_volume(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 

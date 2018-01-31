@@ -13,9 +13,9 @@ module except
  public :: ierr
 
 
-type, bind(C) :: SwigfArrayWrapper
-  type(C_PTR), public :: data
-  integer(C_SIZE_T), public :: size
+type, bind(C) :: SwigArrayWrapper
+  type(C_PTR), public :: data = C_NULL_PTR
+  integer(C_SIZE_T), public :: size = 0
 end type
 
  public :: get_serr
@@ -25,7 +25,7 @@ end type
 
  ! PARAMETERS
 
- integer(C_INT), bind(C) :: ierr = 0
+ integer(C_INT), bind(C) :: ierr
 
 
  ! WRAPPER DECLARATIONS
@@ -34,8 +34,8 @@ function swigc_get_serr() &
 bind(C, name="swigc_get_serr") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfArrayWrapper
-type(SwigfArrayWrapper) :: fresult
+import :: SwigArrayWrapper
+type(SwigArrayWrapper) :: fresult
 end function
 
 subroutine swigc_alpha(farg1) &
@@ -55,8 +55,8 @@ function swigc_get_view() &
 bind(C, name="swigc_get_view") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfArrayWrapper
-type(SwigfArrayWrapper) :: fresult
+import :: SwigArrayWrapper
+type(SwigArrayWrapper) :: fresult
 end function
 
  end interface
@@ -65,9 +65,9 @@ end function
 contains
  ! FORTRAN PROXY CODE
 
-subroutine swigf_chararray_to_string(wrap, string)
+subroutine SWIG_chararray_to_string(wrap, string)
   use, intrinsic :: ISO_C_BINDING
-  type(SwigfArrayWrapper), intent(IN) :: wrap 
+  type(SwigArrayWrapper), intent(IN) :: wrap
   character(kind=C_CHAR, len=:), allocatable, intent(OUT) :: string
   character(kind=C_CHAR), dimension(:), pointer :: chars
   integer(kind=C_SIZE_T) :: i
@@ -79,14 +79,14 @@ subroutine swigf_chararray_to_string(wrap, string)
 end subroutine
 
 function get_serr() &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-character(kind=C_CHAR, len=:), allocatable :: swigf_result
-type(SwigfArrayWrapper) :: fresult 
+character(kind=C_CHAR, len=:), allocatable :: swig_result
+type(SwigArrayWrapper) :: fresult 
 
 fresult = swigc_get_serr()
 
-call swigf_chararray_to_string(fresult, swigf_result)
+call SWIG_chararray_to_string(fresult, swig_result)
 end function
 
 subroutine alpha(val)
@@ -99,24 +99,24 @@ call swigc_alpha(farg1)
 end subroutine
 
 function bravo() &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: swigf_result
+integer(C_INT) :: swig_result
 integer(C_INT) :: fresult 
 
 fresult = swigc_bravo()
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function get_view() &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT), dimension(:), pointer :: swigf_result
-type(SwigfArrayWrapper) :: fresult 
+integer(C_INT), dimension(:), pointer :: swig_result
+type(SwigArrayWrapper) :: fresult 
 
 fresult = swigc_get_view()
 
-call c_f_pointer(fresult%data, swigf_result, [fresult%size])
+call c_f_pointer(fresult%data, swig_result, [fresult%size])
 end function
 
 

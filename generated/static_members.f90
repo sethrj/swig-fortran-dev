@@ -12,31 +12,36 @@ module static_members
  public :: BaseClass
 
  enum, bind(c)
-  enumerator :: SwigfProxyFlag = -1
-  enumerator :: SWIGF_UNINIT = -1
-  enumerator :: SWIGF_OWNER = 0
-  enumerator :: SWIGF_MOVING = 1
-  enumerator :: SWIGF_REFERENCE = 2
-  enumerator :: SWIGF_CONST_REFERENCE = 3
+  enumerator :: SwigMemState = -1
+  enumerator :: SWIG_NULL = 0
+  enumerator :: SWIG_OWN
+  enumerator :: SWIG_MOVE
+  enumerator :: SWIG_REF
+  enumerator :: SWIG_CREF
  end enum
 
 
-type, bind(C) :: SwigfClassWrapper
+type, bind(C) :: SwigClassWrapper
   type(C_PTR), public :: ptr = C_NULL_PTR
-  integer(C_INT), public :: flag = SWIGF_UNINIT
+  integer(C_INT), public :: mem = SWIG_NULL
 end type
 
+ public :: create_BaseClass
+ interface create_BaseClass
+  module procedure new_BaseClass
+ end interface
 
  ! TYPES
  type :: BaseClass
   ! These should be treated as PROTECTED data
-  type(SwigfClassWrapper), public :: swigdata
+  type(SwigClassWrapper), public :: swigdata
  contains
-  procedure, nopass :: set_i => swigf_set_BaseClass_i
-  procedure, nopass :: get_i => swigf_get_BaseClass_i
-  procedure, nopass :: f => swigf_BaseClass_f
-  procedure :: create => swigf_new_BaseClass
-  procedure :: release => swigf_delete_BaseClass
+  procedure, nopass :: set_i => set_BaseClass_i
+  procedure, nopass :: get_i => get_BaseClass_i
+  procedure, nopass :: f => BaseClass_f
+  procedure :: release => delete_BaseClass
+  procedure, private :: swigf_assignment_BaseClass
+  generic :: assignment(=) => swigf_assignment_BaseClass
  end type
 
 
@@ -67,23 +72,30 @@ function swigc_new_BaseClass() &
 bind(C, name="swigc_new_BaseClass") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: fresult
 end function
 
 subroutine swigc_delete_BaseClass(farg1) &
 bind(C, name="swigc_delete_BaseClass")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
+  subroutine swigc_assignment_BaseClass(self, other) &
+     bind(C, name="swigc_assignment_BaseClass")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
+  end subroutine
  end interface
 
 
 contains
  ! FORTRAN PROXY CODE
-subroutine swigf_set_BaseClass_i(value0)
+subroutine set_BaseClass_i(value0)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT), intent(in) :: value0
 integer(C_INT) :: farg1 
@@ -92,50 +104,57 @@ farg1 = value0
 call swigc_set_BaseClass_i(farg1)
 end subroutine
 
-function swigf_get_BaseClass_i() &
-result(swigf_result)
+function get_BaseClass_i() &
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: swigf_result
+integer(C_INT) :: swig_result
 integer(C_INT) :: fresult 
 
 fresult = swigc_get_BaseClass_i()
-swigf_result = fresult
+swig_result = fresult
 end function
 
-function swigf_BaseClass_f(x) &
-result(swigf_result)
+function BaseClass_f(x) &
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: swigf_result
+real(C_DOUBLE) :: swig_result
 integer(C_INT), intent(in) :: x
 real(C_DOUBLE) :: fresult 
 integer(C_INT) :: farg1 
 
 farg1 = x
 fresult = swigc_BaseClass_f(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
-subroutine swigf_new_BaseClass(self)
+function new_BaseClass() &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(BaseClass) :: self
-type(SwigfClassWrapper) :: fresult 
+type(BaseClass) :: self
+type(SwigClassWrapper) :: fresult 
 
-if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
 fresult = swigc_new_BaseClass()
 self%swigdata = fresult
-end subroutine
+end function
 
-subroutine swigf_delete_BaseClass(self)
+subroutine delete_BaseClass(self)
 use, intrinsic :: ISO_C_BINDING
-class(BaseClass) :: self
-type(SwigfClassWrapper) :: farg1 
+class(BaseClass), intent(inout) :: self
+type(SwigClassWrapper) :: farg1 
 
-if (.not. (self%swigdata%flag == SWIGF_UNINIT)) return
 farg1 = self%swigdata
+if (self%swigdata%mem == SWIG_OWN) then
 call swigc_delete_BaseClass(farg1)
-self%swigdata%flag = SWIGF_UNINIT
-self%swigdata%ptr  = C_NULL_PTR
+end if
+self%swigdata%ptr = C_NULL_PTR
+self%swigdata%mem = SWIG_NULL
 end subroutine
 
+  subroutine swigf_assignment_BaseClass(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(BaseClass), intent(inout) :: self
+   type(BaseClass), intent(in) :: other
+   call swigc_assignment_BaseClass(self%swigdata, other%swigdata)
+  end subroutine
 
 end module

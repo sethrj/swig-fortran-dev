@@ -12,18 +12,18 @@ module spdemo
  public :: Foo
 
  enum, bind(c)
-  enumerator :: SwigfProxyFlag = -1
-  enumerator :: SWIGF_UNINIT = -1
-  enumerator :: SWIGF_OWNER = 0
-  enumerator :: SWIGF_MOVING = 1
-  enumerator :: SWIGF_REFERENCE = 2
-  enumerator :: SWIGF_CONST_REFERENCE = 3
+  enumerator :: SwigMemState = -1
+  enumerator :: SWIG_NULL = 0
+  enumerator :: SWIG_OWN
+  enumerator :: SWIG_MOVE
+  enumerator :: SWIG_REF
+  enumerator :: SWIG_CREF
  end enum
 
 
-type, bind(C) :: SwigfClassWrapper
+type, bind(C) :: SwigClassWrapper
   type(C_PTR), public :: ptr = C_NULL_PTR
-  integer(C_INT), public :: flag = SWIGF_UNINIT
+  integer(C_INT), public :: mem = SWIG_NULL
 end type
 
  public :: use_count
@@ -32,18 +32,19 @@ end type
  public :: print_spc
  public :: print_crspc
  public :: print_cr
+ public :: create_Foo
+ interface create_Foo
+  module procedure new_Foo__SWIG_0, new_Foo__SWIG_1, new_Foo__SWIG_2
+ end interface
 
  ! TYPES
  type :: Foo
   ! These should be treated as PROTECTED data
-  type(SwigfClassWrapper), public :: swigdata
+  type(SwigClassWrapper), public :: swigdata
  contains
-  procedure :: set_d_val => swigf_set_Foo_d_val
-  procedure :: get_d_val => swigf_get_Foo_d_val
-  procedure, private :: create__SWIG_0 => swigf_new_Foo__SWIG_0
-  procedure, private :: create__SWIG_1 => swigf_new_Foo__SWIG_1
-  procedure, private :: create__SWIG_2 => swigf_new_Foo__SWIG_2
-  procedure :: release => swigf_delete_Foo
+  procedure :: set_d_val => set_Foo_d_val
+  procedure :: get_d_val => get_Foo_d_val
+  procedure :: release => delete_Foo
   procedure :: get => swigf_Foo_get
   procedure :: set => swigf_Foo_set
   procedure :: clone => swigf_Foo_clone
@@ -52,7 +53,8 @@ end type
   procedure :: ref => swigf_Foo_ref
   procedure :: mutable_ptr => swigf_Foo_mutable_ptr
   procedure :: ptr => swigf_Foo_ptr
-  generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2
+  procedure, private :: swigf_assignment_Foo
+  generic :: assignment(=) => swigf_assignment_Foo
  end type
 
 
@@ -61,8 +63,8 @@ end type
 subroutine swigc_set_Foo_d_val(farg1, farg2) &
 bind(C, name="swigc_set_Foo_d_val")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE), intent(in) :: farg2
 end subroutine
 
@@ -70,8 +72,8 @@ function swigc_get_Foo_d_val(farg1) &
 bind(C, name="swigc_get_Foo_d_val") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE) :: fresult
 end function
 
@@ -79,49 +81,49 @@ function swigc_new_Foo__SWIG_0() &
 bind(C, name="swigc_new_Foo__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_new_Foo__SWIG_1(farg1) &
 bind(C, name="swigc_new_Foo__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_new_Foo__SWIG_2(farg1) &
 bind(C, name="swigc_new_Foo__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
+import :: SwigClassWrapper
 real(C_DOUBLE), intent(in) :: farg1
-type(SwigfClassWrapper) :: fresult
+type(SwigClassWrapper) :: fresult
 end function
 
 subroutine swigc_delete_Foo(farg1) &
 bind(C, name="swigc_delete_Foo")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
 function swigc_Foo_get(farg1) &
 bind(C, name="swigc_Foo_get") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_Foo_set(farg1, farg2) &
 bind(C, name="swigc_Foo_set")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE), intent(in) :: farg2
 end subroutine
 
@@ -129,98 +131,105 @@ function swigc_Foo_clone(farg1) &
 bind(C, name="swigc_Foo_clone") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_Foo_clone_sp(farg1) &
 bind(C, name="swigc_Foo_clone_sp") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_Foo_mutable_ref(farg1) &
 bind(C, name="swigc_Foo_mutable_ref") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_Foo_ref(farg1) &
 bind(C, name="swigc_Foo_ref") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_Foo_mutable_ptr(farg1) &
 bind(C, name="swigc_Foo_mutable_ptr") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_Foo_ptr(farg1) &
 bind(C, name="swigc_Foo_ptr") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
 end function
 
+  subroutine swigc_assignment_Foo(self, other) &
+     bind(C, name="swigc_assignment_Foo")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
+  end subroutine
 function swigc_use_count(farg1) &
 bind(C, name="swigc_use_count") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
 
 subroutine swigc_print_crsp(farg1) &
 bind(C, name="swigc_print_crsp")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_print_sp(farg1) &
 bind(C, name="swigc_print_sp")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_print_spc(farg1) &
 bind(C, name="swigc_print_spc")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_print_crspc(farg1) &
 bind(C, name="swigc_print_crspc")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_print_cr(farg1) &
 bind(C, name="swigc_print_cr")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
  end interface
@@ -228,11 +237,11 @@ end subroutine
 
 contains
  ! FORTRAN PROXY CODE
-subroutine swigf_set_Foo_d_val(self, d_val)
+subroutine set_Foo_d_val(self, d_val)
 use, intrinsic :: ISO_C_BINDING
-class(Foo) :: self
+class(Foo), intent(inout) :: self
 real(C_DOUBLE), intent(in) :: d_val
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 real(C_DOUBLE) :: farg2 
 
 farg1 = self%swigdata
@@ -240,85 +249,86 @@ farg2 = d_val
 call swigc_set_Foo_d_val(farg1, farg2)
 end subroutine
 
-function swigf_get_Foo_d_val(self) &
-result(swigf_result)
+function get_Foo_d_val(self) &
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: swigf_result
-class(Foo) :: self
+real(C_DOUBLE) :: swig_result
+class(Foo), intent(inout) :: self
 real(C_DOUBLE) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_get_Foo_d_val(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
-subroutine swigf_new_Foo__SWIG_0(self)
+function new_Foo__SWIG_0() &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(Foo) :: self
-type(SwigfClassWrapper) :: fresult 
+type(Foo) :: self
+type(SwigClassWrapper) :: fresult 
 
-if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
 fresult = swigc_new_Foo__SWIG_0()
 self%swigdata = fresult
-end subroutine
+end function
 
-subroutine swigf_new_Foo__SWIG_1(self, other)
+function new_Foo__SWIG_1(other) &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(Foo) :: self
-class(Foo) :: other
-type(SwigfClassWrapper) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(Foo) :: self
+class(Foo), intent(in) :: other
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
 
-if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
 farg1 = other%swigdata
 fresult = swigc_new_Foo__SWIG_1(farg1)
 self%swigdata = fresult
-end subroutine
+end function
 
-subroutine swigf_new_Foo__SWIG_2(self, val)
+function new_Foo__SWIG_2(val) &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(Foo) :: self
+type(Foo) :: self
 real(C_DOUBLE), intent(in) :: val
-type(SwigfClassWrapper) :: fresult 
+type(SwigClassWrapper) :: fresult 
 real(C_DOUBLE) :: farg1 
 
-if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
 farg1 = val
 fresult = swigc_new_Foo__SWIG_2(farg1)
 self%swigdata = fresult
-end subroutine
+end function
 
-subroutine swigf_delete_Foo(self)
+subroutine delete_Foo(self)
 use, intrinsic :: ISO_C_BINDING
-class(Foo) :: self
-type(SwigfClassWrapper) :: farg1 
+class(Foo), intent(inout) :: self
+type(SwigClassWrapper) :: farg1 
 
-if (.not. (self%swigdata%flag == SWIGF_UNINIT)) return
 farg1 = self%swigdata
+if (self%swigdata%mem == SWIG_OWN) then
 call swigc_delete_Foo(farg1)
-self%swigdata%flag = SWIGF_UNINIT
-self%swigdata%ptr  = C_NULL_PTR
+end if
+self%swigdata%ptr = C_NULL_PTR
+self%swigdata%mem = SWIG_NULL
 end subroutine
 
 function swigf_Foo_get(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: swigf_result
-class(Foo) :: self
+real(C_DOUBLE) :: swig_result
+class(Foo), intent(in) :: self
 real(C_DOUBLE) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_Foo_get(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 subroutine swigf_Foo_set(self, v)
 use, intrinsic :: ISO_C_BINDING
-class(Foo) :: self
+class(Foo), intent(inout) :: self
 real(C_DOUBLE), intent(in) :: v
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 real(C_DOUBLE) :: farg2 
 
 farg1 = self%swigdata
@@ -327,100 +337,106 @@ call swigc_Foo_set(farg1, farg2)
 end subroutine
 
 function swigf_Foo_clone(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-type(Foo) :: swigf_result
-class(Foo) :: self
-type(SwigfClassWrapper) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(Foo) :: swig_result
+class(Foo), intent(in) :: self
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_Foo_clone(farg1)
-swigf_result%swigdata = fresult
+swig_result%swigdata = fresult
 end function
 
 function swigf_Foo_clone_sp(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-type(Foo) :: swigf_result
-class(Foo) :: self
-type(SwigfClassWrapper) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(Foo) :: swig_result
+class(Foo), intent(in) :: self
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_Foo_clone_sp(farg1)
-swigf_result%swigdata = fresult
+swig_result%swigdata = fresult
 end function
 
 function swigf_Foo_mutable_ref(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-type(Foo) :: swigf_result
-class(Foo) :: self
-type(SwigfClassWrapper) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(Foo) :: swig_result
+class(Foo), intent(inout) :: self
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_Foo_mutable_ref(farg1)
-swigf_result%swigdata = fresult
+swig_result%swigdata = fresult
 end function
 
 function swigf_Foo_ref(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-type(Foo) :: swigf_result
-class(Foo) :: self
-type(SwigfClassWrapper) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(Foo) :: swig_result
+class(Foo), intent(in) :: self
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_Foo_ref(farg1)
-swigf_result%swigdata = fresult
+swig_result%swigdata = fresult
 end function
 
 function swigf_Foo_mutable_ptr(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-type(Foo) :: swigf_result
-class(Foo) :: self
-type(SwigfClassWrapper) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(Foo) :: swig_result
+class(Foo), intent(inout) :: self
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_Foo_mutable_ptr(farg1)
-swigf_result%swigdata = fresult
+swig_result%swigdata = fresult
 end function
 
 function swigf_Foo_ptr(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-type(Foo) :: swigf_result
-class(Foo) :: self
-type(SwigfClassWrapper) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(Foo) :: swig_result
+class(Foo), intent(in) :: self
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_Foo_ptr(farg1)
-swigf_result%swigdata = fresult
+swig_result%swigdata = fresult
 end function
 
+  subroutine swigf_assignment_Foo(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(Foo), intent(inout) :: self
+   type(Foo), intent(in) :: other
+   call swigc_assignment_Foo(self%swigdata, other%swigdata)
+  end subroutine
 function use_count(f) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: swigf_result
+integer(C_INT) :: swig_result
 type(Foo) :: f
 integer(C_INT) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = f%swigdata
 fresult = swigc_use_count(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 subroutine print_crsp(f)
 use, intrinsic :: ISO_C_BINDING
 type(Foo) :: f
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = f%swigdata
 call swigc_print_crsp(farg1)
@@ -429,7 +445,7 @@ end subroutine
 subroutine print_sp(f)
 use, intrinsic :: ISO_C_BINDING
 type(Foo) :: f
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = f%swigdata
 call swigc_print_sp(farg1)
@@ -438,7 +454,7 @@ end subroutine
 subroutine print_spc(f)
 use, intrinsic :: ISO_C_BINDING
 type(Foo) :: f
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = f%swigdata
 call swigc_print_spc(farg1)
@@ -447,7 +463,7 @@ end subroutine
 subroutine print_crspc(f)
 use, intrinsic :: ISO_C_BINDING
 type(Foo) :: f
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = f%swigdata
 call swigc_print_crspc(farg1)
@@ -455,8 +471,8 @@ end subroutine
 
 subroutine print_cr(f)
 use, intrinsic :: ISO_C_BINDING
-class(Foo) :: f
-type(SwigfClassWrapper) :: farg1 
+class(Foo), intent(in) :: f
+type(SwigClassWrapper) :: farg1 
 
 farg1 = f%swigdata
 call swigc_print_cr(farg1)

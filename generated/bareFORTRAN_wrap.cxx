@@ -183,13 +183,13 @@ template <typename T> T SwigValueInit() {
 
 
 // Default exception handler
-#define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
-    throw std::logic_error(MSG); return NULLRETURN;
+#define SWIG_exception_impl(CODE, MSG, RETURNNULL) \
+    throw std::logic_error(MSG); RETURNNULL;
 
 
 /* Contract support */
-#define SWIG_contract_assert(NULLRETURN, EXPR, MSG) \
-    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, NULLRETURN); }
+#define SWIG_contract_assert(RETURNNULL, EXPR, MSG) \
+    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, RETURNNULL); }
 
 
 #define SWIGVERSION 0x040000 
@@ -209,12 +209,19 @@ template <typename T> T SwigValueInit() {
 #include <utility>
 
 
-template<class T>
-struct SwigfArrayWrapper
+struct SwigArrayWrapper
 {
-    T* data;
+    void* data;
     std::size_t size;
 };
+
+SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized()
+{
+    SwigArrayWrapper result;
+    result.data = NULL;
+    result.size = 0;
+    return result;
+}
 
 #ifdef __cplusplus
 extern "C" {
@@ -316,34 +323,45 @@ SWIGEXPORT double swigc_get_something_rcref(int const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_print_array(SwigfArrayWrapper< double const > *farg1) {
+SWIGEXPORT void swigc_print_array(SwigArrayWrapper *farg1) {
   std::pair< double const *,std::size_t > arg1 ;
   
-  arg1 = ::std::pair< const double*, std::size_t >();
-  (&arg1)->first  = farg1->data;
+  (&arg1)->first  = static_cast<const double*>(farg1->data);
   (&arg1)->second = farg1->size;
   print_array(arg1);
   
 }
 
 
-SWIGEXPORT SWIGEXTERN int const swigc_RgbEnum = -1;
+SWIGEXPORT int swigc_wrapped_negation(int const *farg1) {
+  int fresult ;
+  bool arg1 ;
+  bool result;
+  
+  arg1 = (*farg1 ? true : false);
+  result = (bool)wrapped_negation(arg1);
+  fresult = (result ? 1 : 0);
+  return fresult;
+}
 
-SWIGEXPORT SWIGEXTERN int const swigc_RED = RED;
 
-SWIGEXPORT SWIGEXTERN int const swigc_GREEN = GREEN;
+SWIGEXPORT SWIGEXTERN int const swigc_RgbEnum = static_cast< int >(-1);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BLUE = BLUE;
+SWIGEXPORT SWIGEXTERN int const swigc_RED = static_cast< int >(RED);
 
-SWIGEXPORT SWIGEXTERN int const swigc_CmykEnum = -1;
+SWIGEXPORT SWIGEXTERN int const swigc_GREEN = static_cast< int >(GREEN);
 
-SWIGEXPORT SWIGEXTERN int const swigc_CYAN = CYAN;
+SWIGEXPORT SWIGEXTERN int const swigc_BLUE = static_cast< int >(BLUE);
 
-SWIGEXPORT SWIGEXTERN int const swigc_MAGENTA = MAGENTA;
+SWIGEXPORT SWIGEXTERN int const swigc_CmykEnum = static_cast< int >(-1);
 
-SWIGEXPORT SWIGEXTERN int const swigc_YELLOW = YELLOW;
+SWIGEXPORT SWIGEXTERN int const swigc_CYAN = static_cast< int >(CYAN);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BLACK = BLACK;
+SWIGEXPORT SWIGEXTERN int const swigc_MAGENTA = static_cast< int >(MAGENTA);
+
+SWIGEXPORT SWIGEXTERN int const swigc_YELLOW = static_cast< int >(YELLOW);
+
+SWIGEXPORT SWIGEXTERN int const swigc_BLACK = static_cast< int >(BLACK);
 
 SWIGEXPORT int swigc_get_linked_const_int() {
   int fresult ;

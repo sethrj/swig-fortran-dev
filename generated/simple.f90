@@ -46,9 +46,9 @@ contains
 ! 
 ! Compute the greatest common divisor of positive integers 
 function gcd(x, y) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: swigf_result
+integer(C_INT) :: swig_result
 integer(C_INT), intent(in) :: x
 integer(C_INT), intent(in) :: y
 integer(C_INT) :: fresult 
@@ -58,7 +58,7 @@ integer(C_INT) :: farg2
 farg1 = x
 farg2 = y
 fresult = swigc_gcd(farg1, farg2)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 subroutine set_Foo(foo)
@@ -71,13 +71,13 @@ call swigc_set_Foo(farg1)
 end subroutine
 
 function get_Foo() &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: swigf_result
+real(C_DOUBLE) :: swig_result
 real(C_DOUBLE) :: fresult 
 
 fresult = swigc_get_Foo()
-swigf_result = fresult
+swig_result = fresult
 end function
 
 

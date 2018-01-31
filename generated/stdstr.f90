@@ -12,45 +12,50 @@ module stdstr
  public :: string
 
  enum, bind(c)
-  enumerator :: SwigfProxyFlag = -1
-  enumerator :: SWIGF_UNINIT = -1
-  enumerator :: SWIGF_OWNER = 0
-  enumerator :: SWIGF_MOVING = 1
-  enumerator :: SWIGF_REFERENCE = 2
-  enumerator :: SWIGF_CONST_REFERENCE = 3
+  enumerator :: SwigMemState = -1
+  enumerator :: SWIG_NULL = 0
+  enumerator :: SWIG_OWN
+  enumerator :: SWIG_MOVE
+  enumerator :: SWIG_REF
+  enumerator :: SWIG_CREF
  end enum
 
 
-type, bind(C) :: SwigfClassWrapper
+type, bind(C) :: SwigClassWrapper
   type(C_PTR), public :: ptr = C_NULL_PTR
-  integer(C_INT), public :: flag = SWIGF_UNINIT
+  integer(C_INT), public :: mem = SWIG_NULL
 end type
 
 
-type, bind(C) :: SwigfArrayWrapper
-  type(C_PTR), public :: data
-  integer(C_SIZE_T), public :: size
+type, bind(C) :: SwigArrayWrapper
+  type(C_PTR), public :: data = C_NULL_PTR
+  integer(C_SIZE_T), public :: size = 0
 end type
 
  public :: print_str
  public :: halve_str
+ public :: get_reversed_native_string
+ public :: create_string
+ interface create_string
+  module procedure new_string
+ end interface
 
  ! TYPES
  type :: string
   ! These should be treated as PROTECTED data
-  type(SwigfClassWrapper), public :: swigdata
+  type(SwigClassWrapper), public :: swigdata
  contains
-  procedure :: create => swigf_new_string
   procedure :: resize => swigf_string_resize
   procedure :: clear => swigf_string_clear
   procedure :: size => swigf_string_size
   procedure :: length => swigf_string_length
-  procedure :: set => swigf_string_set
-  procedure :: get => swigf_string_get
+  procedure :: str => swigf_string_str
   procedure :: assign_from => swigf_string_assign_from
   procedure :: view => swigf_string_view
   procedure :: copy_to => swigf_string_copy_to
-  procedure :: release => swigf_delete_string
+  procedure :: release => delete_string
+  procedure, private :: swigf_assignment_string
+  generic :: assignment(=) => swigf_assignment_string
  end type
 
 
@@ -60,31 +65,31 @@ function swigc_new_string() &
 bind(C, name="swigc_new_string") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: fresult
 end function
 
 subroutine swigc_string_resize(farg1, farg2) &
 bind(C, name="swigc_string_resize")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 end subroutine
 
 subroutine swigc_string_clear(farg1) &
 bind(C, name="swigc_string_clear")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
 function swigc_string_size(farg1) &
 bind(C, name="swigc_string_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG) :: fresult
 end function
 
@@ -92,99 +97,106 @@ function swigc_string_length(farg1) &
 bind(C, name="swigc_string_length") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG) :: fresult
 end function
 
-subroutine swigc_string_set(farg1, farg2, farg3) &
-bind(C, name="swigc_string_set")
-use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
-integer(C_LONG), intent(in) :: farg2
-integer(C_SIGNED_CHAR), intent(in) :: farg3
-end subroutine
-
-function swigc_string_get(farg1, farg2) &
-bind(C, name="swigc_string_get") &
+function swigc_string_str(farg1) &
+bind(C, name="swigc_string_str") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
-integer(C_LONG), intent(in) :: farg2
-integer(C_SIGNED_CHAR) :: fresult
+import :: SwigArrayWrapper
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: fresult
 end function
 
 subroutine swigc_string_assign_from(farg1, farg2) &
 bind(C, name="swigc_string_assign_from")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
 end subroutine
 
 function swigc_string_view(farg1) &
 bind(C, name="swigc_string_view") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfArrayWrapper
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: fresult
+import :: SwigArrayWrapper
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: fresult
 end function
 
 subroutine swigc_string_copy_to(farg1, farg2) &
 bind(C, name="swigc_string_copy_to")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
 end subroutine
 
 subroutine swigc_delete_string(farg1) &
 bind(C, name="swigc_delete_string")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
+  subroutine swigc_assignment_string(self, other) &
+     bind(C, name="swigc_assignment_string")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
+  end subroutine
 subroutine swigc_print_str(farg1) &
 bind(C, name="swigc_print_str")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_halve_str(farg1) &
 bind(C, name="swigc_halve_str")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
+
+function swigc_get_reversed_native_string(farg1) &
+bind(C, name="swigc_get_reversed_native_string") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigArrayWrapper
+type(SwigArrayWrapper) :: farg1
+type(SwigArrayWrapper) :: fresult
+end function
 
  end interface
 
 
 contains
  ! FORTRAN PROXY CODE
-subroutine swigf_new_string(self)
+function new_string() &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(string) :: self
-type(SwigfClassWrapper) :: fresult 
+type(string) :: self
+type(SwigClassWrapper) :: fresult 
 
-if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
 fresult = swigc_new_string()
 self%swigdata = fresult
-end subroutine
+end function
 
 subroutine swigf_string_resize(self, count)
 use, intrinsic :: ISO_C_BINDING
-class(string) :: self
+class(string), intent(inout) :: self
 integer(C_LONG), intent(in) :: count
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 
 farg1 = self%swigdata
@@ -194,76 +206,73 @@ end subroutine
 
 subroutine swigf_string_clear(self)
 use, intrinsic :: ISO_C_BINDING
-class(string) :: self
-type(SwigfClassWrapper) :: farg1 
+class(string), intent(inout) :: self
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 call swigc_string_clear(farg1)
 end subroutine
 
 function swigf_string_size(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: swigf_result
-class(string) :: self
+integer(C_LONG) :: swig_result
+class(string), intent(in) :: self
 integer(C_LONG) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_string_size(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function swigf_string_length(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: swigf_result
-class(string) :: self
+integer(C_LONG) :: swig_result
+class(string), intent(in) :: self
 integer(C_LONG) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_string_length(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
-subroutine swigf_string_set(self, pos, v)
-use, intrinsic :: ISO_C_BINDING
-class(string) :: self
-integer(C_LONG), intent(in) :: pos
-integer(C_SIGNED_CHAR), intent(in) :: v
-type(SwigfClassWrapper) :: farg1 
-integer(C_LONG) :: farg2 
-integer(C_SIGNED_CHAR) :: farg3 
 
-farg1 = self%swigdata
-farg2 = pos
-farg3 = v
-call swigc_string_set(farg1, farg2, farg3)
+subroutine SWIG_chararray_to_string(wrap, string)
+  use, intrinsic :: ISO_C_BINDING
+  type(SwigArrayWrapper), intent(IN) :: wrap
+  character(kind=C_CHAR, len=:), allocatable, intent(OUT) :: string
+  character(kind=C_CHAR), dimension(:), pointer :: chars
+  integer(kind=C_SIZE_T) :: i
+  call c_f_pointer(wrap%data, chars, [wrap%size])
+  allocate(character(kind=C_CHAR, len=wrap%size) :: string)
+  do i=1, wrap%size
+    string(i:i) = chars(i)
+  enddo
 end subroutine
 
-function swigf_string_get(self, pos) &
-result(swigf_result)
+function swigf_string_str(self) &
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_SIGNED_CHAR) :: swigf_result
-class(string) :: self
-integer(C_LONG), intent(in) :: pos
-integer(C_SIGNED_CHAR) :: fresult 
-type(SwigfClassWrapper) :: farg1 
-integer(C_LONG) :: farg2 
+character(kind=C_CHAR, len=:), allocatable :: swig_result
+class(string), intent(inout) :: self
+type(SwigArrayWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-farg2 = pos
-fresult = swigc_string_get(farg1, farg2)
-swigf_result = fresult
+fresult = swigc_string_str(farg1)
+
+call SWIG_chararray_to_string(fresult, swig_result)
 end function
 
 
-subroutine swigf_string_to_chararray(string, chars, wrap)
+subroutine swig_string_to_chararray(string, chars, wrap)
   use, intrinsic :: ISO_C_BINDING
   character(kind=C_CHAR, len=*), intent(IN) :: string
   character(kind=C_CHAR), dimension(:), target, allocatable, intent(OUT) :: chars
-  type(SwigfArrayWrapper), intent(OUT) :: wrap 
+  type(SwigArrayWrapper), intent(OUT) :: wrap
   integer(kind=C_SIZE_T) :: i
 
   allocate(character(kind=C_CHAR) :: chars(len(string)))
@@ -276,66 +285,87 @@ end subroutine
 
 subroutine swigf_string_assign_from(self, view)
 use, intrinsic :: ISO_C_BINDING
-class(string) :: self
+class(string), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: view
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(view, farg2_chars, farg2)
+call swig_string_to_chararray(view, farg2_chars, farg2)
 
 call swigc_string_assign_from(farg1, farg2)
 end subroutine
 
 function swigf_string_view(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-character(kind=C_CHAR), dimension(:), pointer :: swigf_result
-class(string) :: self
-type(SwigfArrayWrapper) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+character(kind=C_CHAR), dimension(:), pointer :: swig_result
+class(string), intent(inout) :: self
+type(SwigArrayWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_string_view(farg1)
 
-call c_f_pointer(fresult%data, swigf_result, [fresult%size])
+call c_f_pointer(fresult%data, swig_result, [fresult%size])
 end function
+
+
+subroutine SWIG_restore_chararray(chars, string)
+  use, intrinsic :: ISO_C_BINDING
+  character(kind=C_CHAR), dimension(:), intent(IN) :: chars
+  character(kind=C_CHAR, len=*), intent(OUT) :: string
+  integer(kind=C_SIZE_T) :: i
+  do i=1, len(string)
+    string(i:i) = chars(i)
+  enddo
+end subroutine
 
 subroutine swigf_string_copy_to(self, view)
 use, intrinsic :: ISO_C_BINDING
-class(string) :: self
+class(string), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: view
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(view, farg2_chars, farg2)
+call swig_string_to_chararray(view, farg2_chars, farg2)
 
 call swigc_string_copy_to(farg1, farg2)
+
+call SWIG_restore_chararray(farg2_chars, view)
+
 end subroutine
 
-subroutine swigf_delete_string(self)
+subroutine delete_string(self)
 use, intrinsic :: ISO_C_BINDING
-class(string) :: self
-type(SwigfClassWrapper) :: farg1 
+class(string), intent(inout) :: self
+type(SwigClassWrapper) :: farg1 
 
-if (.not. (self%swigdata%flag == SWIGF_UNINIT)) return
 farg1 = self%swigdata
+if (self%swigdata%mem == SWIG_OWN) then
 call swigc_delete_string(farg1)
-self%swigdata%flag = SWIGF_UNINIT
-self%swigdata%ptr  = C_NULL_PTR
+end if
+self%swigdata%ptr = C_NULL_PTR
+self%swigdata%mem = SWIG_NULL
 end subroutine
 
+  subroutine swigf_assignment_string(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(string), intent(inout) :: self
+   type(string), intent(in) :: other
+   call swigc_assignment_string(self%swigdata, other%swigdata)
+  end subroutine
 subroutine print_str(s)
 use, intrinsic :: ISO_C_BINDING
-class(string) :: s
-type(SwigfClassWrapper) :: farg1 
+class(string), intent(in) :: s
+type(SwigClassWrapper) :: farg1 
 
 farg1 = s%swigdata
 call swigc_print_str(farg1)
@@ -343,12 +373,30 @@ end subroutine
 
 subroutine halve_str(s)
 use, intrinsic :: ISO_C_BINDING
-class(string) :: s
-type(SwigfClassWrapper) :: farg1 
+class(string), intent(inout) :: s
+type(SwigClassWrapper) :: farg1 
 
 farg1 = s%swigdata
 call swigc_halve_str(farg1)
 end subroutine
+
+function get_reversed_native_string(input) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+character(kind=C_CHAR, len=:), allocatable :: swig_result
+character(kind=C_CHAR, len=*), target :: input
+
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
+type(SwigArrayWrapper) :: fresult 
+type(SwigArrayWrapper) :: farg1 
+
+
+call swig_string_to_chararray(input, farg1_chars, farg1)
+
+fresult = swigc_get_reversed_native_string(farg1)
+
+call SWIG_chararray_to_string(fresult, swig_result)
+end function
 
 
 end module

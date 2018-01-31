@@ -12,49 +12,57 @@ module inheritance
  public :: BaseClass
 
  enum, bind(c)
-  enumerator :: SwigfProxyFlag = -1
-  enumerator :: SWIGF_UNINIT = -1
-  enumerator :: SWIGF_OWNER = 0
-  enumerator :: SWIGF_MOVING = 1
-  enumerator :: SWIGF_REFERENCE = 2
-  enumerator :: SWIGF_CONST_REFERENCE = 3
+  enumerator :: SwigMemState = -1
+  enumerator :: SWIG_NULL = 0
+  enumerator :: SWIG_OWN
+  enumerator :: SWIG_MOVE
+  enumerator :: SWIG_REF
+  enumerator :: SWIG_CREF
  end enum
 
 
-type, bind(C) :: SwigfClassWrapper
+type, bind(C) :: SwigClassWrapper
   type(C_PTR), public :: ptr = C_NULL_PTR
-  integer(C_INT), public :: flag = SWIGF_UNINIT
+  integer(C_INT), public :: mem = SWIG_NULL
 end type
 
  public :: DerivedA
  public :: DerivedB
+ public :: create_DerivedA
+ interface create_DerivedA
+  module procedure new_DerivedA__SWIG_0, new_DerivedA__SWIG_1
+ end interface
+ public :: create_DerivedB
+ interface create_DerivedB
+  module procedure new_DerivedB__SWIG_0, new_DerivedB__SWIG_1
+ end interface
 
  ! TYPES
  type :: BaseClass
   ! These should be treated as PROTECTED data
-  type(SwigfClassWrapper), public :: swigdata
+  type(SwigClassWrapper), public :: swigdata
  contains
-  procedure :: release => swigf_delete_BaseClass
+  procedure :: release => delete_BaseClass
   procedure :: foo => swigf_BaseClass_foo
   procedure :: get_i => swigf_BaseClass_get_i
   procedure :: set_i => swigf_BaseClass_set_i
+  procedure, private :: swigf_assignment_BaseClass
+  generic :: assignment(=) => swigf_assignment_BaseClass
  end type
  type, extends(BaseClass) :: DerivedA
  contains
-  procedure, private :: create__SWIG_0 => swigf_new_DerivedA__SWIG_0
-  procedure, private :: create__SWIG_1 => swigf_new_DerivedA__SWIG_1
-  procedure :: release => swigf_delete_DerivedA
+  procedure :: release => delete_DerivedA
   procedure :: foo => swigf_DerivedA_foo
   procedure :: print => swigf_DerivedA_print
-  generic :: create => create__SWIG_0, create__SWIG_1
+  procedure, private :: swigf_assignment_DerivedA
+  generic :: assignment(=) => swigf_assignment_DerivedA
  end type
  type, extends(BaseClass) :: DerivedB
  contains
-  procedure, private :: create__SWIG_0 => swigf_new_DerivedB__SWIG_0
-  procedure, private :: create__SWIG_1 => swigf_new_DerivedB__SWIG_1
-  procedure :: release => swigf_delete_DerivedB
+  procedure :: release => delete_DerivedB
   procedure :: foo => swigf_DerivedB_foo
-  generic :: create => create__SWIG_0, create__SWIG_1
+  procedure, private :: swigf_assignment_DerivedB
+  generic :: assignment(=) => swigf_assignment_DerivedB
  end type
 
 
@@ -63,16 +71,16 @@ end type
 subroutine swigc_delete_BaseClass(farg1) &
 bind(C, name="swigc_delete_BaseClass")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
 function swigc_BaseClass_foo(farg1) &
 bind(C, name="swigc_BaseClass_foo") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_FLOAT) :: fresult
 end function
 
@@ -80,142 +88,164 @@ function swigc_BaseClass_get_i(farg1) &
 bind(C, name="swigc_BaseClass_get_i") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
 
 subroutine swigc_BaseClass_set_i(farg1, farg2) &
 bind(C, name="swigc_BaseClass_set_i")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_INT), intent(in) :: farg2
 end subroutine
 
+  subroutine swigc_assignment_BaseClass(self, other) &
+     bind(C, name="swigc_assignment_BaseClass")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
+  end subroutine
 function swigc_new_DerivedA__SWIG_0() &
 bind(C, name="swigc_new_DerivedA__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_new_DerivedA__SWIG_1(farg1, farg2) &
 bind(C, name="swigc_new_DerivedA__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
+import :: SwigClassWrapper
 integer(C_INT), intent(in) :: farg1
 real(C_FLOAT), intent(in) :: farg2
-type(SwigfClassWrapper) :: fresult
+type(SwigClassWrapper) :: fresult
 end function
 
 subroutine swigc_delete_DerivedA(farg1) &
 bind(C, name="swigc_delete_DerivedA")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
 function swigc_DerivedA_foo(farg1) &
 bind(C, name="swigc_DerivedA_foo") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_FLOAT) :: fresult
 end function
 
 subroutine swigc_DerivedA_print(farg1) &
 bind(C, name="swigc_DerivedA_print")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
+  subroutine swigc_assignment_DerivedA(self, other) &
+     bind(C, name="swigc_assignment_DerivedA")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
+  end subroutine
 function swigc_new_DerivedB__SWIG_0() &
 bind(C, name="swigc_new_DerivedB__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_new_DerivedB__SWIG_1(farg1, farg2) &
 bind(C, name="swigc_new_DerivedB__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
+import :: SwigClassWrapper
 integer(C_INT), intent(in) :: farg1
 integer(C_INT), intent(in) :: farg2
-type(SwigfClassWrapper) :: fresult
+type(SwigClassWrapper) :: fresult
 end function
 
 subroutine swigc_delete_DerivedB(farg1) &
 bind(C, name="swigc_delete_DerivedB")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
 function swigc_DerivedB_foo(farg1) &
 bind(C, name="swigc_DerivedB_foo") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_FLOAT) :: fresult
 end function
 
+  subroutine swigc_assignment_DerivedB(self, other) &
+     bind(C, name="swigc_assignment_DerivedB")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
+  end subroutine
  end interface
 
 
 contains
  ! FORTRAN PROXY CODE
-subroutine swigf_delete_BaseClass(self)
+subroutine delete_BaseClass(self)
 use, intrinsic :: ISO_C_BINDING
-class(BaseClass) :: self
-type(SwigfClassWrapper) :: farg1 
+class(BaseClass), intent(inout) :: self
+type(SwigClassWrapper) :: farg1 
 
-if (.not. (self%swigdata%flag == SWIGF_UNINIT)) return
 farg1 = self%swigdata
+if (self%swigdata%mem == SWIG_OWN) then
 call swigc_delete_BaseClass(farg1)
-self%swigdata%flag = SWIGF_UNINIT
-self%swigdata%ptr  = C_NULL_PTR
+end if
+self%swigdata%ptr = C_NULL_PTR
+self%swigdata%mem = SWIG_NULL
 end subroutine
 
 function swigf_BaseClass_foo(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_FLOAT) :: swigf_result
-class(BaseClass) :: self
+real(C_FLOAT) :: swig_result
+class(BaseClass), intent(in) :: self
 real(C_FLOAT) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_BaseClass_foo(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function swigf_BaseClass_get_i(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: swigf_result
-class(BaseClass) :: self
+integer(C_INT) :: swig_result
+class(BaseClass), intent(in) :: self
 integer(C_INT) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_BaseClass_get_i(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 subroutine swigf_BaseClass_set_i(self, i)
 use, intrinsic :: ISO_C_BINDING
-class(BaseClass) :: self
+class(BaseClass), intent(inout) :: self
 integer(C_INT), intent(in) :: i
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_INT) :: farg2 
 
 farg1 = self%swigdata
@@ -223,116 +253,136 @@ farg2 = i
 call swigc_BaseClass_set_i(farg1, farg2)
 end subroutine
 
-subroutine swigf_new_DerivedA__SWIG_0(self)
+  subroutine swigf_assignment_BaseClass(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(BaseClass), intent(inout) :: self
+   type(BaseClass), intent(in) :: other
+   call swigc_assignment_BaseClass(self%swigdata, other%swigdata)
+  end subroutine
+function new_DerivedA__SWIG_0() &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(DerivedA) :: self
-type(SwigfClassWrapper) :: fresult 
+type(DerivedA) :: self
+type(SwigClassWrapper) :: fresult 
 
-if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
 fresult = swigc_new_DerivedA__SWIG_0()
 self%swigdata = fresult
-end subroutine
+end function
 
-subroutine swigf_new_DerivedA__SWIG_1(self, i, f)
+function new_DerivedA__SWIG_1(i, f) &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(DerivedA) :: self
+type(DerivedA) :: self
 integer(C_INT), intent(in) :: i
 real(C_FLOAT), intent(in) :: f
-type(SwigfClassWrapper) :: fresult 
+type(SwigClassWrapper) :: fresult 
 integer(C_INT) :: farg1 
 real(C_FLOAT) :: farg2 
 
-if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
 farg1 = i
 farg2 = f
 fresult = swigc_new_DerivedA__SWIG_1(farg1, farg2)
 self%swigdata = fresult
-end subroutine
+end function
 
-subroutine swigf_delete_DerivedA(self)
+subroutine delete_DerivedA(self)
 use, intrinsic :: ISO_C_BINDING
-class(DerivedA) :: self
-type(SwigfClassWrapper) :: farg1 
+class(DerivedA), intent(inout) :: self
+type(SwigClassWrapper) :: farg1 
 
-if (.not. (self%swigdata%flag == SWIGF_UNINIT)) return
 farg1 = self%swigdata
+if (self%swigdata%mem == SWIG_OWN) then
 call swigc_delete_DerivedA(farg1)
-self%swigdata%flag = SWIGF_UNINIT
-self%swigdata%ptr  = C_NULL_PTR
+end if
+self%swigdata%ptr = C_NULL_PTR
+self%swigdata%mem = SWIG_NULL
 end subroutine
 
 function swigf_DerivedA_foo(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_FLOAT) :: swigf_result
-class(DerivedA) :: self
+real(C_FLOAT) :: swig_result
+class(DerivedA), intent(in) :: self
 real(C_FLOAT) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_DerivedA_foo(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 subroutine swigf_DerivedA_print(self)
 use, intrinsic :: ISO_C_BINDING
-class(DerivedA) :: self
-type(SwigfClassWrapper) :: farg1 
+class(DerivedA), intent(in) :: self
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 call swigc_DerivedA_print(farg1)
 end subroutine
 
-subroutine swigf_new_DerivedB__SWIG_0(self)
+  subroutine swigf_assignment_DerivedA(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(DerivedA), intent(inout) :: self
+   type(DerivedA), intent(in) :: other
+   call swigc_assignment_DerivedA(self%swigdata, other%swigdata)
+  end subroutine
+function new_DerivedB__SWIG_0() &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(DerivedB) :: self
-type(SwigfClassWrapper) :: fresult 
+type(DerivedB) :: self
+type(SwigClassWrapper) :: fresult 
 
-if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
 fresult = swigc_new_DerivedB__SWIG_0()
 self%swigdata = fresult
-end subroutine
+end function
 
-subroutine swigf_new_DerivedB__SWIG_1(self, i, i2)
+function new_DerivedB__SWIG_1(i, i2) &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(DerivedB) :: self
+type(DerivedB) :: self
 integer(C_INT), intent(in) :: i
 integer(C_INT), intent(in) :: i2
-type(SwigfClassWrapper) :: fresult 
+type(SwigClassWrapper) :: fresult 
 integer(C_INT) :: farg1 
 integer(C_INT) :: farg2 
 
-if (self%swigdata%flag == SWIGF_UNINIT) call self%release()
 farg1 = i
 farg2 = i2
 fresult = swigc_new_DerivedB__SWIG_1(farg1, farg2)
 self%swigdata = fresult
-end subroutine
+end function
 
-subroutine swigf_delete_DerivedB(self)
+subroutine delete_DerivedB(self)
 use, intrinsic :: ISO_C_BINDING
-class(DerivedB) :: self
-type(SwigfClassWrapper) :: farg1 
+class(DerivedB), intent(inout) :: self
+type(SwigClassWrapper) :: farg1 
 
-if (.not. (self%swigdata%flag == SWIGF_UNINIT)) return
 farg1 = self%swigdata
+if (self%swigdata%mem == SWIG_OWN) then
 call swigc_delete_DerivedB(farg1)
-self%swigdata%flag = SWIGF_UNINIT
-self%swigdata%ptr  = C_NULL_PTR
+end if
+self%swigdata%ptr = C_NULL_PTR
+self%swigdata%mem = SWIG_NULL
 end subroutine
 
 function swigf_DerivedB_foo(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_FLOAT) :: swigf_result
-class(DerivedB) :: self
+real(C_FLOAT) :: swig_result
+class(DerivedB), intent(in) :: self
 real(C_FLOAT) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_DerivedB_foo(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
+  subroutine swigf_assignment_DerivedB(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(DerivedB), intent(inout) :: self
+   type(DerivedB), intent(in) :: other
+   call swigc_assignment_DerivedB(self%swigdata, other%swigdata)
+  end subroutine
 
 end module

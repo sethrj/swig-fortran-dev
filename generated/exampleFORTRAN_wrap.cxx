@@ -183,18 +183,56 @@ template <typename T> T SwigValueInit() {
 
 
 // Default exception handler
-#define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
-    throw std::logic_error(MSG); return NULLRETURN;
+#define SWIG_exception_impl(CODE, MSG, RETURNNULL) \
+    throw std::logic_error(MSG); RETURNNULL;
 
 
 /* Contract support */
-#define SWIG_contract_assert(NULLRETURN, EXPR, MSG) \
-    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, NULLRETURN); }
+#define SWIG_contract_assert(RETURNNULL, EXPR, MSG) \
+    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, RETURNNULL); }
 
 
 #undef SWIG_exception_impl
-#define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
-    swigf_store_exception(CODE, MSG); return NULLRETURN;
+#define SWIG_exception_impl(CODE, MSG, RETURNNULL) \
+    SWIG_store_exception(CODE, MSG); RETURNNULL;
+
+
+void SWIG_check_unhandled_exception();
+void SWIG_store_exception(int code, const char *msg);
+
+
+#define SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
+    if ((SWIG_CLASS_WRAPPER).mem == SWIG_CREF) { \
+        SWIG_exception_impl(SWIG_TypeError, \
+            "Cannot pass const " TYPENAME " (class " FNAME ") " \
+            "to a function (" FUNCNAME ") that requires a mutable reference", \
+            RETURNNULL); \
+    }
+
+
+#define SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
+    if ((SWIG_CLASS_WRAPPER).mem == SWIG_NULL) { \
+        SWIG_exception_impl(SWIG_TypeError, \
+            "Cannot pass null " TYPENAME " (class " FNAME ") " \
+            "to function (" FUNCNAME ")", RETURNNULL); \
+    }
+
+
+#define SWIG_check_mutable_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
+    SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL); \
+    SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL);
+
+
+
+#if __cplusplus >= 201103L
+#define SWIG_assign(LEFTTYPE, LEFT, RIGHTTYPE, RIGHT, FLAGS) \
+    SWIG_assign_impl<LEFTTYPE , RIGHTTYPE, swig::assignment_flags<LEFTTYPE >() >( \
+            LEFT, RIGHT);
+#else
+#define SWIG_assign(LEFTTYPE, LEFT, RIGHTTYPE, RIGHT, FLAGS) \
+    SWIG_assign_impl<LEFTTYPE , RIGHTTYPE, FLAGS >(LEFT, RIGHT);
+#endif
+
 
 
 #define SWIGVERSION 0x040000 
@@ -211,105 +249,333 @@ template <typename T> T SwigValueInit() {
 #include "example.hh"
 
 
-extern "C" {
-extern int ierr;
-}
-
-
 #include <string>
 
 
 #include <algorithm>
 
 
+extern "C" {
+SWIGEXPORT int ierr = 0;
+}
+
 // Stored exception message
-std::string swigf_last_exception_msg;
+SWIGINTERN std::string swig_last_exception_msg;
 
 // Call this function before any new action
-void swigf_check_unhandled_exception()
+SWIGEXPORT void SWIG_check_unhandled_exception()
 {
     if (::ierr != 0)
     {
         throw std::runtime_error(
-                "An unhandled exception occurred in $symname: "
-                + swigf_last_exception_msg);
+                "An unhandled exception occurred in a previous call: "
+                + swig_last_exception_msg);
     }
 }
 
 // Save an exception to the fortran error code and string
-void swigf_store_exception(int code, const char *msg)
+SWIGEXPORT void SWIG_store_exception(int code, const char *msg)
 {
     ::ierr = code;
 
     // Save the message to a std::string first
-    swigf_last_exception_msg = msg;
+    swig_last_exception_msg = msg;
 }
 
 
 
-// DEPRECATED: use swigf_check_unhandled_exception instead
-namespace swig
+typedef std::string Swig_Err_String;
+
+
+const Swig_Err_String& get_serr()
 {
-#ifdef __GNUC__
-__attribute__((deprecated))
-#endif
-inline void fortran_check_unhandled_exception()
-{
-    swigf_check_unhandled_exception();
-}
-} // end namespace swig
-
-
-typedef const std::string& Swig_Err_String;
-
-
-Swig_Err_String get_serr()
-{
-    return swigf_last_exception_msg;
+    return swig_last_exception_msg;
 }
 
 
-template<class T>
-struct SwigfArrayWrapper
+struct SwigArrayWrapper
 {
-    T* data;
+    void* data;
     std::size_t size;
 };
 
-
-
-enum SwigfProxyFlag {
-    SWIGF_UNINIT = -1,
-    SWIGF_OWNER = 0,
-    SWIGF_MOVING = 1,
-    SWIGF_REFERENCE = 2,
-    SWIGF_CONST_REFERENCE = 3
-};
-
-
-
-struct SwigfClassWrapper
+SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized()
 {
-    void*          ptr;
-    SwigfProxyFlag flag;
-};
-
-SwigfClassWrapper SwigfClassWrapper_uninitialized()
-{
-    SwigfClassWrapper result;
-    result.ptr  = NULL;
-    result.flag = SWIGF_UNINIT;
+    SwigArrayWrapper result;
+    result.data = NULL;
+    result.size = 0;
     return result;
+}
+
+
+enum SwigMemState {
+    SWIG_NULL = 0,
+    SWIG_OWN,
+    SWIG_MOVE,
+    SWIG_REF,
+    SWIG_CREF
+};
+
+
+struct SwigClassWrapper
+{
+    void* ptr;
+    SwigMemState mem;
+};
+
+SWIGINTERN SwigClassWrapper SwigClassWrapper_uninitialized()
+{
+    SwigClassWrapper result;
+    result.ptr = NULL;
+    result.mem = SWIG_NULL;
+    return result;
+}
+
+
+#include <utility>
+
+
+namespace swig {
+
+enum AssignmentFlags {
+  IS_DESTR       = 0x01,
+  IS_COPY_CONSTR = 0x02,
+  IS_COPY_ASSIGN = 0x04,
+  IS_MOVE_CONSTR = 0x08,
+  IS_MOVE_ASSIGN = 0x10
+};
+
+// Define our own switching struct to support pre-c++11 builds
+template<bool Val>
+struct bool_constant {};
+typedef bool_constant<true>  true_type;
+typedef bool_constant<false> false_type;
+
+// Deletion
+template<class T>
+SWIGINTERN void destruct_impl(T* self, true_type) {
+  delete self;
+}
+template<class T>
+SWIGINTERN T* destruct_impl(T* , false_type) {
+  SWIG_exception_impl(SWIG_TypeError,
+                      "Invalid assignment: class type has no destructor",
+                      return NULL);
+}
+
+// Copy construction and assignment
+template<class T, class U>
+SWIGINTERN T* copy_construct_impl(const U* other, true_type) {
+  return new T(*other);
+}
+template<class T, class U>
+SWIGINTERN void copy_assign_impl(T* self, const U* other, true_type) {
+  *self = *other;
+}
+
+// Disabled construction and assignment
+template<class T, class U>
+SWIGINTERN T* copy_construct_impl(const U* , false_type) {
+  SWIG_exception_impl(SWIG_TypeError,
+                      "Invalid assignment: class type has no copy constructor",
+                      return NULL);
+}
+template<class T, class U>
+SWIGINTERN void copy_assign_impl(T* , const U* , false_type) {
+  SWIG_exception_impl(SWIG_TypeError,
+                      "Invalid assignment: class type has no copy assignment",
+                      return);
+}
+
+#if __cplusplus >= 201103L
+#include <utility>
+#include <type_traits>
+
+// Move construction and assignment
+template<class T, class U>
+SWIGINTERN T* move_construct_impl(U* other, true_type) {
+  return new T(std::move(*other));
+}
+template<class T, class U>
+SWIGINTERN void move_assign_impl(T* self, U* other, true_type) {
+  *self = std::move(*other);
+}
+
+// Disabled move construction and assignment
+template<class T, class U>
+SWIGINTERN T* move_construct_impl(U*, false_type) {
+  SWIG_exception_impl(SWIG_TypeError,
+                      "Invalid assignment: class type has no move constructor",
+                      return NULL);
+}
+template<class T, class U>
+SWIGINTERN void move_assign_impl(T*, U*, false_type) {
+  SWIG_exception_impl(SWIG_TypeError,
+                      "Invalid assignment: class type has no move assignment",
+                      return);
+}
+
+template<class T>
+constexpr int assignment_flags() {
+  return   (std::is_destructible<T>::value       ? IS_DESTR       : 0)
+         | (std::is_copy_constructible<T>::value ? IS_COPY_CONSTR : 0)
+         | (std::is_copy_assignable<T>::value    ? IS_COPY_ASSIGN : 0)
+         | (std::is_move_constructible<T>::value ? IS_MOVE_CONSTR : 0)
+         | (std::is_move_assignable<T>::value    ? IS_MOVE_ASSIGN : 0);
+}
+#endif
+
+template<class T, int Flags>
+struct AssignmentTraits
+{
+  static void destruct(T* self)
+  {
+    destruct_impl<T>(self, bool_constant<Flags & IS_DESTR>());
+  }
+
+  template<class U>
+  static T* copy_construct(const U* other)
+  {
+    return copy_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_COPY_CONSTR)>());
+  }
+
+  template<class U>
+  static void copy_assign(T* self, const U* other)
+  {
+    copy_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_COPY_ASSIGN)>());
+  }
+
+#if __cplusplus >= 201103L
+  template<class U>
+  static T* move_construct(U* other)
+  {
+    return move_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_MOVE_CONSTR)>());
+  }
+  template<class U>
+  static void move_assign(T* self, U* other)
+  {
+    move_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_MOVE_ASSIGN)>());
+  }
+#else
+  template<class U>
+  static T* move_construct(U* other)
+  {
+    return copy_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_COPY_CONSTR)>());
+  }
+  template<class U>
+  static void move_assign(T* self, U* other)
+  {
+    copy_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_COPY_ASSIGN)>());
+  }
+#endif
+};
+
+} // end namespace swig
+
+
+
+template<class T1, class T2, int AFlags>
+SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other) {
+  typedef swig::AssignmentTraits<T1, AFlags> Traits_t;
+  T1* pself  = static_cast<T1*>(self->ptr);
+  T2* pother = static_cast<T2*>(other->ptr);
+
+  switch (self->mem) {
+    case SWIG_NULL:
+      /* LHS is unassigned */
+      switch (other->mem) {
+        case SWIG_NULL: /* null op */ break;
+        case SWIG_MOVE: /* capture pointer from RHS */
+          self->ptr = other->ptr;
+          other->ptr = NULL;
+          self->mem = SWIG_OWN;
+          other->mem = SWIG_NULL;
+          break;
+        case SWIG_OWN: /* copy from RHS */
+          self->ptr = Traits_t::copy_construct(pother);
+          self->mem = SWIG_OWN;
+          break;
+        case SWIG_REF: /* pointer to RHS */
+        case SWIG_CREF:
+          self->ptr = other->ptr;
+          self->mem = other->mem;
+          break;
+      }
+      break;
+    case SWIG_OWN:
+      /* LHS owns memory */
+      switch (other->mem) {
+        case SWIG_NULL:
+          /* Delete LHS */
+          Traits_t::destruct(pself);
+          self->ptr = NULL;
+          self->mem = SWIG_NULL;
+          break;
+        case SWIG_MOVE:
+          /* Move RHS into LHS; delete RHS */
+          Traits_t::move_assign(pself, pother);
+          Traits_t::destruct(pother);
+          other->ptr = NULL;
+          other->mem = SWIG_NULL;
+          break;
+        case SWIG_OWN:
+        case SWIG_REF:
+        case SWIG_CREF:
+          /* Copy RHS to LHS */
+          Traits_t::copy_assign(pself, pother);
+          break;
+      }
+      break;
+    case SWIG_MOVE:
+      SWIG_exception_impl(SWIG_RuntimeError,
+        "Left-hand side of assignment should never be in a 'MOVE' state",
+        return);
+      break;
+    case SWIG_REF:
+      /* LHS is a reference */
+      switch (other->mem) {
+        case SWIG_NULL:
+          /* Remove LHS reference */
+          self->ptr = NULL;
+          self->mem = SWIG_NULL;
+          break;
+        case SWIG_MOVE:
+          /* Move RHS into LHS; delete RHS. The original ownership stays the
+           * same. */
+          Traits_t::move_assign(pself, pother);
+          Traits_t::destruct(pother);
+          other->ptr = NULL;
+          other->mem = SWIG_NULL;
+          break;
+        case SWIG_OWN:
+        case SWIG_REF:
+        case SWIG_CREF:
+          /* Copy RHS to LHS */
+          Traits_t::copy_assign(pself, pother);
+          break;
+      }
+    case SWIG_CREF:
+      switch (other->mem) {
+        case SWIG_NULL:
+          /* Remove LHS reference */
+          self->ptr = NULL;
+          self->mem = SWIG_NULL;
+        default:
+          SWIG_exception_impl(SWIG_RuntimeError,
+              "Cannot assign to a const reference", return);
+          break;
+      }
+  }
 }
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT SwigfArrayWrapper< char const > swigc_get_serr() {
-  SwigfArrayWrapper< char const > fresult ;
-  std::string *result = 0 ;
+SWIGEXPORT SwigArrayWrapper swigc_get_serr() {
+  SwigArrayWrapper fresult ;
+  Swig_Err_String *result = 0 ;
   
-  result = (std::string *) &get_serr();
+  result = (Swig_Err_String *) &get_serr();
   fresult.data = (result->empty() ? NULL : &(*result->begin()));
   fresult.size = result->size();
   
@@ -336,10 +602,11 @@ SWIGEXPORT int swigc_get_Shape_nshapes() {
 }
 
 
-SWIGEXPORT void swigc_set_Shape_x(SwigfClassWrapper const *farg1, double const *farg2) {
+SWIGEXPORT void swigc_set_Shape_x(SwigClassWrapper const *farg1, double const *farg2) {
   Shape *arg1 = (Shape *) 0 ;
   double arg2 ;
   
+  SWIG_check_mutable_nonnull(*farg1, "Shape *", "Shape", "Shape::x", return );
   arg1 = static_cast< Shape * >(farg1->ptr);
   arg2 = *farg2;
   if (arg1) (arg1)->x = arg2;
@@ -347,11 +614,12 @@ SWIGEXPORT void swigc_set_Shape_x(SwigfClassWrapper const *farg1, double const *
 }
 
 
-SWIGEXPORT double swigc_get_Shape_x(SwigfClassWrapper const *farg1) {
+SWIGEXPORT double swigc_get_Shape_x(SwigClassWrapper const *farg1) {
   double fresult ;
   Shape *arg1 = (Shape *) 0 ;
   double result;
   
+  SWIG_check_mutable_nonnull(*farg1, "Shape *", "Shape", "Shape::x", return 0);
   arg1 = static_cast< Shape * >(farg1->ptr);
   result = (double) ((arg1)->x);
   fresult = result;
@@ -359,10 +627,11 @@ SWIGEXPORT double swigc_get_Shape_x(SwigfClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_set_Shape_y(SwigfClassWrapper const *farg1, double const *farg2) {
+SWIGEXPORT void swigc_set_Shape_y(SwigClassWrapper const *farg1, double const *farg2) {
   Shape *arg1 = (Shape *) 0 ;
   double arg2 ;
   
+  SWIG_check_mutable_nonnull(*farg1, "Shape *", "Shape", "Shape::y", return );
   arg1 = static_cast< Shape * >(farg1->ptr);
   arg2 = *farg2;
   if (arg1) (arg1)->y = arg2;
@@ -370,11 +639,12 @@ SWIGEXPORT void swigc_set_Shape_y(SwigfClassWrapper const *farg1, double const *
 }
 
 
-SWIGEXPORT double swigc_get_Shape_y(SwigfClassWrapper const *farg1) {
+SWIGEXPORT double swigc_get_Shape_y(SwigClassWrapper const *farg1) {
   double fresult ;
   Shape *arg1 = (Shape *) 0 ;
   double result;
   
+  SWIG_check_mutable_nonnull(*farg1, "Shape *", "Shape", "Shape::y", return 0);
   arg1 = static_cast< Shape * >(farg1->ptr);
   result = (double) ((arg1)->y);
   fresult = result;
@@ -382,9 +652,10 @@ SWIGEXPORT double swigc_get_Shape_y(SwigfClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_delete_Shape(SwigfClassWrapper const *farg1) {
+SWIGEXPORT void swigc_delete_Shape(SwigClassWrapper const *farg1) {
   Shape *arg1 = (Shape *) 0 ;
   
+  SWIG_check_mutable_nonnull(*farg1, "Shape *", "Shape", "Shape::~Shape()", return );
   arg1 = static_cast< Shape * >(farg1->ptr);
   {
     try {
@@ -392,18 +663,19 @@ SWIGEXPORT void swigc_delete_Shape(SwigfClassWrapper const *farg1) {
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
   }
   
 }
 
 
-SWIGEXPORT void swigc_Shape_move(SwigfClassWrapper const *farg1, double const *farg2, double const *farg3) {
+SWIGEXPORT void swigc_Shape_move(SwigClassWrapper const *farg1, double const *farg2, double const *farg3) {
   Shape *arg1 = (Shape *) 0 ;
   double arg2 ;
   double arg3 ;
   
+  SWIG_check_mutable_nonnull(*farg1, "Shape *", "Shape", "Shape::move(double,double)", return );
   arg1 = static_cast< Shape * >(farg1->ptr);
   arg2 = *farg2;
   arg3 = *farg3;
@@ -413,26 +685,27 @@ SWIGEXPORT void swigc_Shape_move(SwigfClassWrapper const *farg1, double const *f
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
   }
   
 }
 
 
-SWIGEXPORT double swigc_Shape_area(SwigfClassWrapper const *farg1) {
+SWIGEXPORT double swigc_Shape_area(SwigClassWrapper const *farg1) {
   double fresult ;
   Shape *arg1 = (Shape *) 0 ;
   double result;
   
-  arg1 = static_cast< Shape* >(farg1->ptr);
+  SWIG_check_nonnull(*farg1, "Shape const *", "Shape", "Shape::area() const", return 0);
+  arg1 = static_cast< Shape * >(farg1->ptr);
   {
     try {
       result = (double)((Shape const *)arg1)->area();
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return 0);
     }
   }
   fresult = result;
@@ -440,19 +713,20 @@ SWIGEXPORT double swigc_Shape_area(SwigfClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT double swigc_Shape_perimeter(SwigfClassWrapper const *farg1) {
+SWIGEXPORT double swigc_Shape_perimeter(SwigClassWrapper const *farg1) {
   double fresult ;
   Shape *arg1 = (Shape *) 0 ;
   double result;
   
-  arg1 = static_cast< Shape* >(farg1->ptr);
+  SWIG_check_nonnull(*farg1, "Shape const *", "Shape", "Shape::perimeter() const", return 0);
+  arg1 = static_cast< Shape * >(farg1->ptr);
   {
     try {
       result = (double)((Shape const *)arg1)->perimeter();
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return 0);
     }
   }
   fresult = result;
@@ -460,8 +734,16 @@ SWIGEXPORT double swigc_Shape_perimeter(SwigfClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_new_Circle(double const *farg1) {
-  SwigfClassWrapper fresult ;
+SWIGEXPORT void swigc_assignment_Shape(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Shape swig_lhs_classtype;
+  SWIG_assign(swig_lhs_classtype, self,
+    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
+    0);
+}
+
+
+SWIGEXPORT SwigClassWrapper swigc_new_Circle(double const *farg1) {
+  SwigClassWrapper fresult ;
   double arg1 ;
   Circle *result = 0 ;
   
@@ -472,28 +754,29 @@ SWIGEXPORT SwigfClassWrapper swigc_new_Circle(double const *farg1) {
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), SwigfClassWrapper_uninitialized());
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
     }
   }
-  fresult.ptr  = result;
-  fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
   return fresult;
 }
 
 
-SWIGEXPORT double swigc_Circle_area(SwigfClassWrapper const *farg1) {
+SWIGEXPORT double swigc_Circle_area(SwigClassWrapper const *farg1) {
   double fresult ;
   Circle *arg1 = (Circle *) 0 ;
   double result;
   
-  arg1 = static_cast< Circle* >(farg1->ptr);
+  SWIG_check_nonnull(*farg1, "Circle const *", "Circle", "Circle::area() const", return 0);
+  arg1 = static_cast< Circle * >(farg1->ptr);
   {
     try {
       result = (double)((Circle const *)arg1)->area();
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return 0);
     }
   }
   fresult = result;
@@ -501,19 +784,20 @@ SWIGEXPORT double swigc_Circle_area(SwigfClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT double swigc_Circle_perimeter(SwigfClassWrapper const *farg1) {
+SWIGEXPORT double swigc_Circle_perimeter(SwigClassWrapper const *farg1) {
   double fresult ;
   Circle *arg1 = (Circle *) 0 ;
   double result;
   
-  arg1 = static_cast< Circle* >(farg1->ptr);
+  SWIG_check_nonnull(*farg1, "Circle const *", "Circle", "Circle::perimeter() const", return 0);
+  arg1 = static_cast< Circle * >(farg1->ptr);
   {
     try {
       result = (double)((Circle const *)arg1)->perimeter();
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return 0);
     }
   }
   fresult = result;
@@ -521,9 +805,10 @@ SWIGEXPORT double swigc_Circle_perimeter(SwigfClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_delete_Circle(SwigfClassWrapper const *farg1) {
+SWIGEXPORT void swigc_delete_Circle(SwigClassWrapper const *farg1) {
   Circle *arg1 = (Circle *) 0 ;
   
+  SWIG_check_mutable_nonnull(*farg1, "Circle *", "Circle", "Circle::~Circle()", return );
   arg1 = static_cast< Circle * >(farg1->ptr);
   {
     try {
@@ -531,15 +816,23 @@ SWIGEXPORT void swigc_delete_Circle(SwigfClassWrapper const *farg1) {
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
   }
   
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_new_Square(double const *farg1) {
-  SwigfClassWrapper fresult ;
+SWIGEXPORT void swigc_assignment_Circle(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Circle swig_lhs_classtype;
+  SWIG_assign(swig_lhs_classtype, self,
+    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
+    0 | swig::IS_COPY_CONSTR);
+}
+
+
+SWIGEXPORT SwigClassWrapper swigc_new_Square(double const *farg1) {
+  SwigClassWrapper fresult ;
   double arg1 ;
   Square *result = 0 ;
   
@@ -550,28 +843,29 @@ SWIGEXPORT SwigfClassWrapper swigc_new_Square(double const *farg1) {
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), SwigfClassWrapper_uninitialized());
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
     }
   }
-  fresult.ptr  = result;
-  fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
   return fresult;
 }
 
 
-SWIGEXPORT double swigc_Square_area(SwigfClassWrapper const *farg1) {
+SWIGEXPORT double swigc_Square_area(SwigClassWrapper const *farg1) {
   double fresult ;
   Square *arg1 = (Square *) 0 ;
   double result;
   
-  arg1 = static_cast< Square* >(farg1->ptr);
+  SWIG_check_nonnull(*farg1, "Square const *", "Square", "Square::area() const", return 0);
+  arg1 = static_cast< Square * >(farg1->ptr);
   {
     try {
       result = (double)((Square const *)arg1)->area();
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return 0);
     }
   }
   fresult = result;
@@ -579,19 +873,20 @@ SWIGEXPORT double swigc_Square_area(SwigfClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT double swigc_Square_perimeter(SwigfClassWrapper const *farg1) {
+SWIGEXPORT double swigc_Square_perimeter(SwigClassWrapper const *farg1) {
   double fresult ;
   Square *arg1 = (Square *) 0 ;
   double result;
   
-  arg1 = static_cast< Square* >(farg1->ptr);
+  SWIG_check_nonnull(*farg1, "Square const *", "Square", "Square::perimeter() const", return 0);
+  arg1 = static_cast< Square * >(farg1->ptr);
   {
     try {
       result = (double)((Square const *)arg1)->perimeter();
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return 0);
     }
   }
   fresult = result;
@@ -599,9 +894,10 @@ SWIGEXPORT double swigc_Square_perimeter(SwigfClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_delete_Square(SwigfClassWrapper const *farg1) {
+SWIGEXPORT void swigc_delete_Square(SwigClassWrapper const *farg1) {
   Square *arg1 = (Square *) 0 ;
   
+  SWIG_check_mutable_nonnull(*farg1, "Square *", "Square", "Square::~Square()", return );
   arg1 = static_cast< Square * >(farg1->ptr);
   {
     try {
@@ -609,15 +905,23 @@ SWIGEXPORT void swigc_delete_Square(SwigfClassWrapper const *farg1) {
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
   }
   
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_new_Sphere(double const *farg1) {
-  SwigfClassWrapper fresult ;
+SWIGEXPORT void swigc_assignment_Square(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Square swig_lhs_classtype;
+  SWIG_assign(swig_lhs_classtype, self,
+    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
+    0 | swig::IS_COPY_CONSTR);
+}
+
+
+SWIGEXPORT SwigClassWrapper swigc_new_Sphere(double const *farg1) {
+  SwigClassWrapper fresult ;
   double arg1 ;
   Sphere *result = 0 ;
   
@@ -628,28 +932,29 @@ SWIGEXPORT SwigfClassWrapper swigc_new_Sphere(double const *farg1) {
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), SwigfClassWrapper_uninitialized());
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
     }
   }
-  fresult.ptr  = result;
-  fresult.flag = (1 ? SWIGF_MOVING : SWIGF_REFERENCE);
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
   return fresult;
 }
 
 
-SWIGEXPORT double swigc_Sphere_volume(SwigfClassWrapper const *farg1) {
+SWIGEXPORT double swigc_Sphere_volume(SwigClassWrapper const *farg1) {
   double fresult ;
   Sphere *arg1 = (Sphere *) 0 ;
   double result;
   
-  arg1 = static_cast< Sphere* >(farg1->ptr);
+  SWIG_check_nonnull(*farg1, "Sphere const *", "Sphere", "Sphere::volume() const", return 0);
+  arg1 = static_cast< Sphere * >(farg1->ptr);
   {
     try {
       result = (double)((Sphere const *)arg1)->volume();
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return 0);
     }
   }
   fresult = result;
@@ -657,9 +962,10 @@ SWIGEXPORT double swigc_Sphere_volume(SwigfClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_delete_Sphere(SwigfClassWrapper const *farg1) {
+SWIGEXPORT void swigc_delete_Sphere(SwigClassWrapper const *farg1) {
   Sphere *arg1 = (Sphere *) 0 ;
   
+  SWIG_check_mutable_nonnull(*farg1, "Sphere *", "Sphere", "Sphere::~Sphere()", return );
   arg1 = static_cast< Sphere * >(farg1->ptr);
   {
     try {
@@ -667,26 +973,35 @@ SWIGEXPORT void swigc_delete_Sphere(SwigfClassWrapper const *farg1) {
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
   }
   
 }
 
 
-SWIGEXPORT double swigc_surface_to_volume(SwigfClassWrapper const *farg1) {
+SWIGEXPORT void swigc_assignment_Sphere(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Sphere swig_lhs_classtype;
+  SWIG_assign(swig_lhs_classtype, self,
+    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
+    0 | swig::IS_COPY_CONSTR);
+}
+
+
+SWIGEXPORT double swigc_surface_to_volume(SwigClassWrapper const *farg1) {
   double fresult ;
   Shape *arg1 = 0 ;
   double result;
   
-  arg1 = static_cast< Shape* >(farg1->ptr);
+  SWIG_check_nonnull(*farg1, "Shape const &", "Shape", "surface_to_volume(Shape const &)", return 0);
+  arg1 = static_cast< Shape * >(farg1->ptr);
   {
     try {
       result = (double)surface_to_volume((Shape const &)*arg1);
     }
     catch (const std::exception& e)
     {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return 0);
     }
   }
   fresult = result;
