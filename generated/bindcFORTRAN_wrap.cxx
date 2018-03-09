@@ -186,19 +186,7 @@ template <typename T> T SwigValueInit() {
  { throw std::logic_error("In " DECL ": " MSG); RETURNNULL; }
 
 
-namespace swig {
-
-enum AssignmentFlags {
-  IS_DESTR       = 0x01,
-  IS_COPY_CONSTR = 0x02,
-  IS_COPY_ASSIGN = 0x04,
-  IS_MOVE_CONSTR = 0x08,
-  IS_MOVE_ASSIGN = 0x10
-};
-
-template<class T, int Flags>
-struct assignment_flags;
-}
+#include <string.h>
 
 
 #include <stdexcept>
@@ -212,240 +200,91 @@ struct assignment_flags;
 #define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
 
 
-#include "bare.h"
+#include "bindc.h"
 
 
-#include <utility>
+#include <stdlib.h>
+#ifdef _MSC_VER
+# ifndef strtoull
+#  define strtoull _strtoui64
+# endif
+# ifndef strtoll
+#  define strtoll _strtoi64
+# endif
+#endif
 
 
-namespace swig {
-template<class T, class U, int Flags>
-struct assignment_flags<std::pair<const T, U>, Flags> {
-  enum { value = IS_DESTR | IS_COPY_CONSTR };
+struct SwigArrayWrapper {
+    void* data;
+    size_t size;
 };
-template<class T, class U, int Flags>
-struct assignment_flags<std::pair<T, const U>, Flags> {
-  enum { value = IS_DESTR | IS_COPY_CONSTR };
-};
+
+
+SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
+  SwigArrayWrapper result;
+  result.data = NULL;
+  result.size = 0;
+  return result;
 }
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT SWIGEXTERN int const swigc_octal_const = 0777;
-
-SWIGEXPORT SWIGEXTERN int const swigc_wrapped_const = 0xdeadbeef;
-
-SWIGEXPORT void swigc_set_something(int const *farg1, double const *farg2) {
-  int arg1 ;
-  double arg2 ;
+SWIGEXPORT void swigc_wrapped_print_point(Point const *farg1) {
+  Point *arg1 = (Point *) 0 ;
   
-  arg1 = *farg1;
-  arg2 = *farg2;
-  set_something(arg1,arg2);
+  arg1 = reinterpret_cast< Point * >(const_cast< Point* >(farg1));
+  wrapped_print_point((Point const *)arg1);
   
 }
 
 
-SWIGEXPORT double swigc_get_something(int const *farg1) {
-  double fresult ;
-  int arg1 ;
-  double result;
-  
-  arg1 = *farg1;
-  result = (double)get_something(arg1);
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_get_something_ref(int const *farg1, double *farg2) {
-  int arg1 ;
-  double *arg2 = 0 ;
-  
-  arg1 = *farg1;
-  arg2 = reinterpret_cast< double * >(farg2);
-  get_something_ref(arg1,*arg2);
-  
-}
-
-
-SWIGEXPORT void swigc_get_something_ptr(int const *farg1, double *farg2) {
-  int arg1 ;
-  double *arg2 = (double *) 0 ;
-  
-  arg1 = *farg1;
-  arg2 = reinterpret_cast< double * >(farg2);
-  get_something_ptr(arg1,arg2);
-  
-}
-
-
-SWIGEXPORT double * swigc_get_something_rptr(int const *farg1) {
-  double * fresult ;
-  int arg1 ;
-  double *result = 0 ;
-  
-  arg1 = *farg1;
-  result = (double *)get_something_rptr(arg1);
-  fresult = reinterpret_cast< double* >(result);
-  return fresult;
-}
-
-
-SWIGEXPORT double const * swigc_get_something_rcptr(int const *farg1) {
-  double const * fresult ;
-  int arg1 ;
-  double *result = 0 ;
-  
-  arg1 = *farg1;
-  result = (double *)get_something_rcptr(arg1);
-  fresult = const_cast< double* >(reinterpret_cast< const double* >(result));
-  return fresult;
-}
-
-
-SWIGEXPORT double * swigc_get_something_rref(int const *farg1) {
-  double * fresult ;
-  int arg1 ;
-  double *result = 0 ;
-  
-  arg1 = *farg1;
-  result = (double *) &get_something_rref(arg1);
-  fresult = reinterpret_cast< double* >(result);
-  return fresult;
-}
-
-
-SWIGEXPORT double swigc_get_something_rcref(int const *farg1) {
-  double fresult ;
-  int arg1 ;
-  double *result = 0 ;
-  
-  arg1 = *farg1;
-  result = (double *) &get_something_rcref(arg1);
-  fresult = *result;
-  return fresult;
-}
-
-
-SWIGEXPORT int swigc_cannot_overload(int const *farg1, int const *farg2) {
+SWIGEXPORT int swigc_wrapped_negation(int const *farg1) {
   int fresult ;
+  bool arg1 ;
+  bool result;
+  
+  arg1 = (*farg1 ? true : false);
+  result = (bool)wrapped_negation(arg1);
+  fresult = (result ? 1 : 0);
+  return fresult;
+}
+
+
+SWIGEXPORT SwigArrayWrapper swigc_get_existing_string(int const *farg1) {
+  SwigArrayWrapper fresult ;
   int arg1 ;
-  int arg2 ;
-  int result;
+  char *result = 0 ;
   
   arg1 = *farg1;
-  arg2 = *farg2;
-  result = (int)cannot_overload(arg1,arg2);
-  fresult = result;
+  result = (char *)get_existing_string(arg1);
+  fresult.size = strlen(reinterpret_cast< const char* >(result));
+  if (0) {
+    fresult.data = malloc(fresult.size);
+    memcpy(fresult.data, result, fresult.size);
+  } else {
+    fresult.data = const_cast< char * >(result);
+  }
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_can_overload__SWIG_0(int const *farg1) {
-  int fresult ;
-  int arg1 ;
-  int result;
+SWIGEXPORT SwigArrayWrapper swigc_concat(SwigArrayWrapper *farg1, SwigArrayWrapper *farg2) {
+  SwigArrayWrapper fresult ;
+  char *arg1 = (char *) 0 ;
+  char *arg2 = (char *) 0 ;
+  char *result = 0 ;
   
-  arg1 = *farg1;
-  result = (int)can_overload(arg1);
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT double swigc_can_overload__SWIG_1(double const *farg1) {
-  double fresult ;
-  double arg1 ;
-  double result;
-  
-  arg1 = *farg1;
-  result = (double)can_overload(arg1);
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT SWIGEXTERN int const swigc_RED = static_cast< int >(RED);
-
-SWIGEXPORT SWIGEXTERN int const swigc_GREEN = static_cast< int >(GREEN);
-
-SWIGEXPORT SWIGEXTERN int const swigc_BLUE = static_cast< int >(BLUE);
-
-SWIGEXPORT void swigc_print_rgb(int const *farg1) {
-  RgbEnum arg1 ;
-  
-  arg1 = static_cast< RgbEnum >(*farg1);
-  print_rgb(arg1);
-  
-}
-
-
-SWIGEXPORT void swigc_print_cmyk(int const *farg1) {
-  CmykEnum arg1 ;
-  
-  arg1 = static_cast< CmykEnum >(*farg1);
-  print_cmyk(arg1);
-  
-}
-
-
-SWIGEXPORT int swigc_get_linked_const_int() {
-  int fresult ;
-  int result;
-  
-  result = (int)(int)linked_const_int;
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT int swigc_get_simple_int() {
-  int fresult ;
-  int result;
-  
-  result = (int)(int)simple_int;
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT int swigc_get_weird_int() {
-  int fresult ;
-  int result;
-  
-  result = (int)(int)weird_int;
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT double swigc_get_approx_twopi() {
-  double fresult ;
-  double result;
-  
-  result = (double)(double)approx_twopi;
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_set_global_counter(int const *farg1) {
-  int arg1 ;
-  
-  arg1 = *farg1;
-  foo::global_counter = arg1;
-  
-}
-
-
-SWIGEXPORT int swigc_get_global_counter() {
-  int fresult ;
-  int result;
-  
-  result = (int)foo::global_counter;
-  fresult = result;
+  arg1 = reinterpret_cast< char * >(farg1->data);
+  arg2 = reinterpret_cast< char * >(farg2->data);
+  result = (char *)concat((char const *)arg1,(char const *)arg2);
+  fresult.size = strlen(reinterpret_cast< const char* >(result));
+  if (1) {
+    fresult.data = malloc(fresult.size);
+    memcpy(fresult.data, result, fresult.size);
+  } else {
+    fresult.data = const_cast< char * >(result);
+  }
   return fresult;
 }
 

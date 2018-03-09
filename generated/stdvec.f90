@@ -32,14 +32,12 @@ type, bind(C) :: SwigArrayWrapper
   integer(C_SIZE_T), public :: size = 0
 end type
 
+ public :: as_array_ptr
  public :: make_viewdbl
  public :: make_const_viewdbl
  public :: print_viewdbl
  public :: get_vecdbl
- public :: create_VecDbl
- interface create_VecDbl
-  module procedure new_VecDbl__SWIG_0, new_VecDbl__SWIG_1, new_VecDbl__SWIG_2
- end interface
+ public :: make_array
 
  ! TYPES
  type :: VecDbl
@@ -64,7 +62,12 @@ end type
   procedure, private :: swigf_assignment_VecDbl
   generic :: assignment(=) => swigf_assignment_VecDbl
   generic :: resize => resize__SWIG_0, resize__SWIG_1
- end type
+ end type VecDbl
+ interface VecDbl
+  procedure new_VecDbl__SWIG_0
+  procedure new_VecDbl__SWIG_1
+  procedure new_VecDbl__SWIG_2
+ end interface
 
 
  ! WRAPPER DECLARATIONS
@@ -233,6 +236,16 @@ end subroutine
    type(SwigClassWrapper), intent(inout) :: self
    type(SwigClassWrapper), intent(in) :: other
   end subroutine
+function swigc_as_array_ptr(farg1) &
+bind(C, name="swigc_as_array_ptr") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigArrayWrapper
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: fresult
+end function
+
 function swigc_make_viewdbl(farg1) &
 bind(C, name="swigc_make_viewdbl") &
 result(fresult)
@@ -269,6 +282,21 @@ import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: fresult
 end function
+
+function swigc_make_array() &
+bind(C, name="swigc_make_array") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigArrayWrapper
+type(SwigArrayWrapper) :: fresult
+end function
+
+
+subroutine SWIG_free(ptr) &
+  bind(C, name="free")
+ use, intrinsic :: ISO_C_BINDING
+ type(C_PTR), value :: ptr
+end subroutine
 
  end interface
 
@@ -486,7 +514,7 @@ end function
 subroutine swigf_VecDbl_fill(self, view)
 use, intrinsic :: ISO_C_BINDING
 class(VecDbl), intent(inout) :: self
-real(C_DOUBLE), dimension(:), target, intent(inout) :: view
+real(C_DOUBLE), dimension(:), target :: view
 real(C_DOUBLE), pointer :: farg2_view
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
@@ -508,7 +536,6 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = self%swigdata
 fresult = swigc_VecDbl_view(farg1)
-
 call c_f_pointer(fresult%data, swig_result, [fresult%size])
 end function
 
@@ -531,6 +558,19 @@ end subroutine
    type(VecDbl), intent(in) :: other
    call swigc_assignment_VecDbl(self%swigdata, other%swigdata)
   end subroutine
+function as_array_ptr(inp) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE), dimension(:), pointer :: swig_result
+class(VecDbl), intent(inout) :: inp
+type(SwigArrayWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = inp%swigdata
+fresult = swigc_as_array_ptr(farg1)
+call c_f_pointer(fresult%data, swig_result, [fresult%size])
+end function
+
 function make_viewdbl(v) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
@@ -541,7 +581,6 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = v%swigdata
 fresult = swigc_make_viewdbl(farg1)
-
 call c_f_pointer(fresult%data, swig_result, [fresult%size])
 end function
 
@@ -555,13 +594,12 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = v%swigdata
 fresult = swigc_make_const_viewdbl(farg1)
-
 call c_f_pointer(fresult%data, swig_result, [fresult%size])
 end function
 
 subroutine print_viewdbl(view)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE), dimension(:), target, intent(inout) :: view
+real(C_DOUBLE), dimension(:), target :: view
 real(C_DOUBLE), pointer :: farg1_view
 type(SwigArrayWrapper) :: farg1 
 
@@ -585,6 +623,20 @@ fresult = swigc_get_vecdbl(farg1)
 call c_f_pointer(fresult%data, fresult_view, [fresult%size])
 allocate(real(C_DOUBLE) :: swig_result(size(fresult_view)))
 swig_result = fresult_view
+end function
+
+function make_array() &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE), dimension(:), allocatable :: swig_result
+real(C_DOUBLE), pointer :: fresult_view(:)
+type(SwigArrayWrapper) :: fresult 
+
+fresult = swigc_make_array()
+call c_f_pointer(fresult%data, fresult_view, [fresult%size])
+allocate(real(C_DOUBLE) :: swig_result(size(fresult_view)))
+swig_result = fresult_view
+call SWIG_free(fresult%data)
 end function
 
 

@@ -97,6 +97,15 @@ template <typename T> T SwigValueInit() {
 # define SWIGINTERNINLINE SWIGINTERN SWIGINLINE
 #endif
 
+/* qualifier for exported *const* global data variables*/
+#ifndef SWIGEXTERN
+# ifdef __cplusplus
+#   define SWIGEXTERN extern
+# else
+#   define SWIGEXTERN
+# endif
+#endif
+
 /* exporting methods */
 #if defined(__GNUC__)
 #  if (__GNUC__ >= 4) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
@@ -155,15 +164,6 @@ template <typename T> T SwigValueInit() {
 # pragma warning disable 592
 #endif
 
-
-#ifndef SWIGEXTERN
-#ifdef __cplusplus
-#define SWIGEXTERN extern
-#else
-#define SWIGEXTERN
-#endif
-#endif
-
 /*  Errors in SWIG */
 #define  SWIG_UnknownError    	   -1
 #define  SWIG_IOError        	   -2
@@ -182,23 +182,22 @@ template <typename T> T SwigValueInit() {
 
 
 
-// Default exception handler
-#define SWIG_exception_impl(CODE, MSG, RETURNNULL) \
-    throw std::logic_error(MSG); RETURNNULL;
+#define SWIG_exception_impl(DECL, CODE, MSG, RETURNNULL) \
+ { throw std::logic_error("In " DECL ": " MSG); RETURNNULL; }
 
 
-/* Contract support */
-#define SWIG_contract_assert(RETURNNULL, EXPR, MSG) \
-    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, RETURNNULL); }
+extern "C" {
+void SWIG_check_unhandled_exception_impl(const char* decl);
+void SWIG_store_exception(const char* decl, int errcode, const char *msg);
+}
 
 
 #undef SWIG_exception_impl
-#define SWIG_exception_impl(CODE, MSG, RETURNNULL) \
-    SWIG_store_exception(CODE, MSG); RETURNNULL;
+#define SWIG_exception_impl(DECL, CODE, MSG, RETURNNULL) \
+    SWIG_store_exception(DECL, CODE, MSG); RETURNNULL;
 
 
-void SWIG_check_unhandled_exception();
-void SWIG_store_exception(int code, const char *msg);
+#include <stdexcept>
 
 
 #define SWIGVERSION 0x040000 
@@ -207,12 +206,6 @@ void SWIG_store_exception(int code, const char *msg);
 
 #define SWIG_as_voidptr(a) const_cast< void * >(static_cast< const void * >(a)) 
 #define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
-
-
-#include <stdexcept>
-
-
-#include <utility>
 
 
 void throw_error()
@@ -225,18 +218,12 @@ extern "C" {
 #endif
 SWIGEXPORT void swigc_throw_error() {
   {
-    SWIG_check_unhandled_exception();
-    try
-    {
+    SWIG_check_unhandled_exception_impl("throw_error()");;
+    try {
       throw_error();
     }
-    catch (const std::exception& e)
-    {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
-    }
-    catch (const char* errstr)
-    {
-      SWIG_exception_impl(SWIG_UnknownError, errstr, return );
+    catch (const std::exception& e) {
+      SWIG_exception_impl("throw_error()", SWIG_RuntimeError, e.what(), return );
     }
   }
   

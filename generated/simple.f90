@@ -42,9 +42,6 @@ end function
 
 contains
  ! FORTRAN PROXY CODE
-! int gcd(int x, int y)
-! 
-! Compute the greatest common divisor of positive integers 
 function gcd(x, y) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING

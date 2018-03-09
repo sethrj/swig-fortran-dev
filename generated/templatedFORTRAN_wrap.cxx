@@ -186,21 +186,6 @@ template <typename T> T SwigValueInit() {
  { throw std::logic_error("In " DECL ": " MSG); RETURNNULL; }
 
 
-namespace swig {
-
-enum AssignmentFlags {
-  IS_DESTR       = 0x01,
-  IS_COPY_CONSTR = 0x02,
-  IS_COPY_ASSIGN = 0x04,
-  IS_MOVE_CONSTR = 0x08,
-  IS_MOVE_ASSIGN = 0x10
-};
-
-template<class T, int Flags>
-struct assignment_flags;
-}
-
-
 #define SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
   if ((SWIG_CLASS_WRAPPER).mem == SWIG_NULL) { \
     SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
@@ -223,6 +208,21 @@ struct assignment_flags;
     SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL);
 
 
+namespace swig {
+
+enum AssignmentFlags {
+  IS_DESTR       = 0x01,
+  IS_COPY_CONSTR = 0x02,
+  IS_COPY_ASSIGN = 0x04,
+  IS_MOVE_CONSTR = 0x08,
+  IS_MOVE_ASSIGN = 0x10
+};
+
+template<class T, int Flags>
+struct assignment_flags;
+}
+
+
 #define SWIG_assign(LEFTTYPE, LEFT, RIGHTTYPE, RIGHT, FLAGS) \
     SWIG_assign_impl<LEFTTYPE , RIGHTTYPE, swig::assignment_flags<LEFTTYPE, FLAGS >::value >(LEFT, RIGHT);
 
@@ -238,22 +238,7 @@ struct assignment_flags;
 #define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
 
 
-#include "ThinVec.h"
-
-
-#include <utility>
-
-
-namespace swig {
-template<class T, class U, int Flags>
-struct assignment_flags<std::pair<const T, U>, Flags> {
-  enum { value = IS_DESTR | IS_COPY_CONSTR };
-};
-template<class T, class U, int Flags>
-struct assignment_flags<std::pair<T, const U>, Flags> {
-  enum { value = IS_DESTR | IS_COPY_CONSTR };
-};
-}
+#include "templated.h"
 
 
 enum SwigMemState {
@@ -279,29 +264,7 @@ SWIGINTERN SwigClassWrapper SwigClassWrapper_uninitialized() {
 }
 
 
-#include <stdlib.h>
-#ifdef _MSC_VER
-# ifndef strtoull
-#  define strtoull _strtoui64
-# endif
-# ifndef strtoll
-#  define strtoll _strtoi64
-# endif
-#endif
-
-
-struct SwigArrayWrapper {
-    void* data;
-    size_t size;
-};
-
-
-SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
-  SwigArrayWrapper result;
-  result.data = NULL;
-  result.size = 0;
-  return result;
-}
+#include <utility>
 
 
 namespace swig {
@@ -534,375 +497,110 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_print_offbyone(SwigClassWrapper const *farg1) {
-  ThinVec< int > *arg1 = 0 ;
-  ThinVec< int > tempvec1 ;
-  
-  // Original typemap: convert const ThinVec<int>* to thinvec reference
-  arg1 = static_cast< ThinVec< int > * >(farg1->ptr);
-  // Resize temporary vec
-  tempvec1.resize(arg1->size());
-  // Copy input vector incremented by one
-  ThinVec< int >::const_iterator src = arg1->begin();
-  for (ThinVec< int >::iterator dst = tempvec1.begin();
-    dst != tempvec1.end();
-    ++dst)
-  {
-    *dst = *src++ + 1;
-  }
-  // Make the input argument point to our temporary vector
-  arg1 = &tempvec1;
-  print_offbyone((ThinVec< int > const &)*arg1);
-  
-}
-
-
-SWIGEXPORT SwigClassWrapper swigc_new_ThinVecDbl__SWIG_0() {
+SWIGEXPORT SwigClassWrapper swigc_new_Thing_Int(int const *farg1) {
   SwigClassWrapper fresult ;
-  ThinVec< double > *result = 0 ;
-  
-  result = (ThinVec< double > *)new ThinVec< double >();
-  fresult.ptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
-  return fresult;
-}
-
-
-SWIGEXPORT SwigClassWrapper swigc_new_ThinVecDbl__SWIG_1(int const *farg1, double const *farg2) {
-  SwigClassWrapper fresult ;
-  ThinVec< double >::size_type arg1 ;
-  ThinVec< double >::value_type arg2 ;
-  ThinVec< double > *result = 0 ;
+  int arg1 ;
+  Thing< int > *result = 0 ;
   
   arg1 = *farg1;
-  arg2 = *farg2;
-  result = (ThinVec< double > *)new ThinVec< double >(arg1,arg2);
+  result = (Thing< int > *)new Thing< int >(arg1);
   fresult.ptr = result;
   fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
   return fresult;
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_ThinVecDbl__SWIG_2(int const *farg1) {
-  SwigClassWrapper fresult ;
-  ThinVec< double >::size_type arg1 ;
-  ThinVec< double > *result = 0 ;
-  
-  arg1 = *farg1;
-  result = (ThinVec< double > *)new ThinVec< double >(arg1);
-  fresult.ptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
-  return fresult;
-}
-
-
-SWIGEXPORT int swigc_ThinVecDbl_empty(SwigClassWrapper const *farg1) {
+SWIGEXPORT int swigc_Thing_Int_get(SwigClassWrapper const *farg1) {
   int fresult ;
-  ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
-  bool result;
+  Thing< int > *arg1 = (Thing< int > *) 0 ;
+  int result;
   
-  SWIG_check_nonnull(*farg1, "ThinVec< double > const *", "ThinVecDbl", "ThinVec< double >::empty() const", return 0);
-  arg1 = static_cast< ThinVec< double > * >(farg1->ptr);
-  result = (bool)((ThinVec< double > const *)arg1)->empty();
-  fresult = (result ? 1 : 0);
-  return fresult;
-}
-
-
-SWIGEXPORT int swigc_ThinVecDbl_size(SwigClassWrapper const *farg1) {
-  int fresult ;
-  ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
-  ThinVec< double >::size_type result;
-  
-  SWIG_check_nonnull(*farg1, "ThinVec< double > const *", "ThinVecDbl", "ThinVec< double >::size() const", return 0);
-  arg1 = static_cast< ThinVec< double > * >(farg1->ptr);
-  result = (ThinVec< double >::size_type)((ThinVec< double > const *)arg1)->size();
+  SWIG_check_nonnull(*farg1, "Thing< int > const *", "Thing_Int", "Thing< int >::get() const", return 0);
+  arg1 = static_cast< Thing< int > * >(farg1->ptr);
+  result = (int)((Thing< int > const *)arg1)->get();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT double swigc_ThinVecDbl_get(SwigClassWrapper const *farg1, int const *farg2) {
+SWIGEXPORT void swigc_delete_Thing_Int(SwigClassWrapper const *farg1) {
+  Thing< int > *arg1 = (Thing< int > *) 0 ;
+  
+  SWIG_check_mutable_nonnull(*farg1, "Thing< int > *", "Thing_Int", "Thing< int >::~Thing()", return );
+  arg1 = static_cast< Thing< int > * >(farg1->ptr);
+  delete arg1;
+  
+}
+
+
+SWIGEXPORT void swigc_assignment_Thing_Int(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Thing< int > swig_lhs_classtype;
+  SWIG_assign(swig_lhs_classtype, self,
+    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
+    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+}
+
+
+SWIGEXPORT SwigClassWrapper swigc_new_Thing_Dbl(double const *farg1) {
+  SwigClassWrapper fresult ;
+  double arg1 ;
+  Thing< double > *result = 0 ;
+  
+  arg1 = *farg1;
+  result = (Thing< double > *)new Thing< double >(arg1);
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
+  return fresult;
+}
+
+
+SWIGEXPORT double swigc_Thing_Dbl_get(SwigClassWrapper const *farg1) {
   double fresult ;
-  ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
-  ThinVec< double >::size_type arg2 ;
-  ThinVec< double >::value_type *result = 0 ;
+  Thing< double > *arg1 = (Thing< double > *) 0 ;
+  double result;
   
-  SWIG_check_nonnull(*farg1, "ThinVec< double > const *", "ThinVecDbl", "ThinVec< double >::get(ThinVec< double >::size_type) const", return 0);
-  arg1 = static_cast< ThinVec< double > * >(farg1->ptr);
-  arg2 = *farg2;
-  result = (ThinVec< double >::value_type *) &((ThinVec< double > const *)arg1)->get(arg2);
-  fresult = *result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_ThinVecDbl_set(SwigClassWrapper const *farg1, int const *farg2, double const *farg3) {
-  ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
-  ThinVec< double >::size_type arg2 ;
-  ThinVec< double >::value_type *arg3 = 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "ThinVec< double > *", "ThinVecDbl", "ThinVec< double >::set(ThinVec< double >::size_type,ThinVec< double >::value_type const &)", return );
-  arg1 = static_cast< ThinVec< double > * >(farg1->ptr);
-  arg2 = *farg2;
-  arg3 = reinterpret_cast< ThinVec< double >::value_type * >(const_cast< double* >(farg3));
-  (arg1)->set(arg2,(ThinVec< double >::value_type const &)*arg3);
-  
-}
-
-
-SWIGEXPORT void swigc_ThinVecDbl_resize__SWIG_0(SwigClassWrapper const *farg1, int const *farg2, double const *farg3) {
-  ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
-  ThinVec< double >::size_type arg2 ;
-  ThinVec< double >::value_type arg3 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "ThinVec< double > *", "ThinVecDbl", "ThinVec< double >::resize(ThinVec< double >::size_type,ThinVec< double >::value_type)", return );
-  arg1 = static_cast< ThinVec< double > * >(farg1->ptr);
-  arg2 = *farg2;
-  arg3 = *farg3;
-  (arg1)->resize(arg2,arg3);
-  
-}
-
-
-SWIGEXPORT void swigc_ThinVecDbl_resize__SWIG_1(SwigClassWrapper const *farg1, int const *farg2) {
-  ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
-  ThinVec< double >::size_type arg2 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "ThinVec< double > *", "ThinVecDbl", "ThinVec< double >::resize(ThinVec< double >::size_type)", return );
-  arg1 = static_cast< ThinVec< double > * >(farg1->ptr);
-  arg2 = *farg2;
-  (arg1)->resize(arg2);
-  
-}
-
-
-SWIGEXPORT void swigc_ThinVecDbl_assign(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
-  ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
-  ThinVec< double >::const_view_type arg2 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "ThinVec< double > *", "ThinVecDbl", "ThinVec< double >::assign(ThinVec< double >::const_view_type)", return );
-  arg1 = static_cast< ThinVec< double > * >(farg1->ptr);
-  (&arg2)->first  = static_cast<const double*>(farg2->data);
-  (&arg2)->second = farg2->size;
-  (arg1)->assign(arg2);
-  
-}
-
-
-SWIGEXPORT SwigArrayWrapper swigc_ThinVecDbl_view(SwigClassWrapper const *farg1) {
-  SwigArrayWrapper fresult ;
-  ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
-  ThinVec< double >::view_type result;
-  
-  SWIG_check_mutable_nonnull(*farg1, "ThinVec< double > *", "ThinVecDbl", "ThinVec< double >::view()", return SwigArrayWrapper_uninitialized());
-  arg1 = static_cast< ThinVec< double > * >(farg1->ptr);
-  result = (arg1)->view();
-  fresult.data = (&result)->first;
-  fresult.size = (&result)->second;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_delete_ThinVecDbl(SwigClassWrapper const *farg1) {
-  ThinVec< double > *arg1 = (ThinVec< double > *) 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "ThinVec< double > *", "ThinVecDbl", "ThinVec< double >::~ThinVec()", return );
-  arg1 = static_cast< ThinVec< double > * >(farg1->ptr);
-  delete arg1;
-  
-}
-
-
-SWIGEXPORT void swigc_assignment_ThinVecDbl(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef ::ThinVec< double > swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
-}
-
-
-SWIGEXPORT SwigClassWrapper swigc_new_ThinVecInt__SWIG_0() {
-  SwigClassWrapper fresult ;
-  ThinVec< int > *result = 0 ;
-  
-  result = (ThinVec< int > *)new ThinVec< int >();
-  fresult.ptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
-  return fresult;
-}
-
-
-SWIGEXPORT SwigClassWrapper swigc_new_ThinVecInt__SWIG_1(int const *farg1, int const *farg2) {
-  SwigClassWrapper fresult ;
-  ThinVec< int >::size_type arg1 ;
-  ThinVec< int >::value_type arg2 ;
-  ThinVec< int > *result = 0 ;
-  
-  arg1 = *farg1;
-  arg2 = *farg2;
-  result = (ThinVec< int > *)new ThinVec< int >(arg1,arg2);
-  fresult.ptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
-  return fresult;
-}
-
-
-SWIGEXPORT SwigClassWrapper swigc_new_ThinVecInt__SWIG_2(int const *farg1) {
-  SwigClassWrapper fresult ;
-  ThinVec< int >::size_type arg1 ;
-  ThinVec< int > *result = 0 ;
-  
-  arg1 = *farg1;
-  result = (ThinVec< int > *)new ThinVec< int >(arg1);
-  fresult.ptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
-  return fresult;
-}
-
-
-SWIGEXPORT int swigc_ThinVecInt_empty(SwigClassWrapper const *farg1) {
-  int fresult ;
-  ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
-  bool result;
-  
-  SWIG_check_nonnull(*farg1, "ThinVec< int > const *", "ThinVecInt", "ThinVec< int >::empty() const", return 0);
-  arg1 = static_cast< ThinVec< int > * >(farg1->ptr);
-  result = (bool)((ThinVec< int > const *)arg1)->empty();
-  fresult = (result ? 1 : 0);
-  return fresult;
-}
-
-
-SWIGEXPORT int swigc_ThinVecInt_size(SwigClassWrapper const *farg1) {
-  int fresult ;
-  ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
-  ThinVec< int >::size_type result;
-  
-  SWIG_check_nonnull(*farg1, "ThinVec< int > const *", "ThinVecInt", "ThinVec< int >::size() const", return 0);
-  arg1 = static_cast< ThinVec< int > * >(farg1->ptr);
-  result = (ThinVec< int >::size_type)((ThinVec< int > const *)arg1)->size();
+  SWIG_check_nonnull(*farg1, "Thing< double > const *", "Thing_Dbl", "Thing< double >::get() const", return 0);
+  arg1 = static_cast< Thing< double > * >(farg1->ptr);
+  result = (double)((Thing< double > const *)arg1)->get();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_ThinVecInt_get(SwigClassWrapper const *farg1, int const *farg2) {
-  int fresult ;
-  ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
-  ThinVec< int >::size_type arg2 ;
-  ThinVec< int >::value_type *result = 0 ;
+SWIGEXPORT void swigc_delete_Thing_Dbl(SwigClassWrapper const *farg1) {
+  Thing< double > *arg1 = (Thing< double > *) 0 ;
   
-  SWIG_check_nonnull(*farg1, "ThinVec< int > const *", "ThinVecInt", "ThinVec< int >::get(ThinVec< int >::size_type) const", return 0);
-  arg1 = static_cast< ThinVec< int > * >(farg1->ptr);
-  arg2 = *farg2;
-  result = (ThinVec< int >::value_type *) &((ThinVec< int > const *)arg1)->get(arg2);
-  fresult = *result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_ThinVecInt_set(SwigClassWrapper const *farg1, int const *farg2, int const *farg3) {
-  ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
-  ThinVec< int >::size_type arg2 ;
-  ThinVec< int >::value_type *arg3 = 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "ThinVec< int > *", "ThinVecInt", "ThinVec< int >::set(ThinVec< int >::size_type,ThinVec< int >::value_type const &)", return );
-  arg1 = static_cast< ThinVec< int > * >(farg1->ptr);
-  arg2 = *farg2;
-  arg3 = reinterpret_cast< ThinVec< int >::value_type * >(const_cast< int* >(farg3));
-  (arg1)->set(arg2,(ThinVec< int >::value_type const &)*arg3);
-  
-}
-
-
-SWIGEXPORT void swigc_ThinVecInt_resize__SWIG_0(SwigClassWrapper const *farg1, int const *farg2, int const *farg3) {
-  ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
-  ThinVec< int >::size_type arg2 ;
-  ThinVec< int >::value_type arg3 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "ThinVec< int > *", "ThinVecInt", "ThinVec< int >::resize(ThinVec< int >::size_type,ThinVec< int >::value_type)", return );
-  arg1 = static_cast< ThinVec< int > * >(farg1->ptr);
-  arg2 = *farg2;
-  arg3 = *farg3;
-  (arg1)->resize(arg2,arg3);
-  
-}
-
-
-SWIGEXPORT void swigc_ThinVecInt_resize__SWIG_1(SwigClassWrapper const *farg1, int const *farg2) {
-  ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
-  ThinVec< int >::size_type arg2 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "ThinVec< int > *", "ThinVecInt", "ThinVec< int >::resize(ThinVec< int >::size_type)", return );
-  arg1 = static_cast< ThinVec< int > * >(farg1->ptr);
-  arg2 = *farg2;
-  (arg1)->resize(arg2);
-  
-}
-
-
-SWIGEXPORT void swigc_ThinVecInt_assign(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
-  ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
-  ThinVec< int >::const_view_type arg2 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "ThinVec< int > *", "ThinVecInt", "ThinVec< int >::assign(ThinVec< int >::const_view_type)", return );
-  arg1 = static_cast< ThinVec< int > * >(farg1->ptr);
-  (&arg2)->first  = static_cast<const int*>(farg2->data);
-  (&arg2)->second = farg2->size;
-  (arg1)->assign(arg2);
-  
-}
-
-
-SWIGEXPORT SwigArrayWrapper swigc_ThinVecInt_view(SwigClassWrapper const *farg1) {
-  SwigArrayWrapper fresult ;
-  ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
-  ThinVec< int >::view_type result;
-  
-  SWIG_check_mutable_nonnull(*farg1, "ThinVec< int > *", "ThinVecInt", "ThinVec< int >::view()", return SwigArrayWrapper_uninitialized());
-  arg1 = static_cast< ThinVec< int > * >(farg1->ptr);
-  result = (arg1)->view();
-  fresult.data = (&result)->first;
-  fresult.size = (&result)->second;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_delete_ThinVecInt(SwigClassWrapper const *farg1) {
-  ThinVec< int > *arg1 = (ThinVec< int > *) 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "ThinVec< int > *", "ThinVecInt", "ThinVec< int >::~ThinVec()", return );
-  arg1 = static_cast< ThinVec< int > * >(farg1->ptr);
+  SWIG_check_mutable_nonnull(*farg1, "Thing< double > *", "Thing_Dbl", "Thing< double >::~Thing()", return );
+  arg1 = static_cast< Thing< double > * >(farg1->ptr);
   delete arg1;
   
 }
 
 
-SWIGEXPORT void swigc_assignment_ThinVecInt(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef ::ThinVec< int > swig_lhs_classtype;
+SWIGEXPORT void swigc_assignment_Thing_Dbl(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Thing< double > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
 }
 
 
-SWIGEXPORT void swigc_print_vec__SWIG_1(SwigClassWrapper const *farg1) {
-  ThinVec< double > *arg1 = 0 ;
+SWIGEXPORT void swigc_print_thing__SWIG_1(SwigClassWrapper const *farg1) {
+  Thing< int > *arg1 = 0 ;
   
-  SWIG_check_nonnull(*farg1, "ThinVec< double > const &", "ThinVecDbl", "print_vec< double >(ThinVec< double > const &)", return );
-  arg1 = static_cast< ThinVec< double > * >(farg1->ptr);
-  print_vec< double >((ThinVec< double > const &)*arg1);
+  SWIG_check_nonnull(*farg1, "Thing< int > const &", "Thing_Int", "print_thing< int >(Thing< int > const &)", return );
+  arg1 = static_cast< Thing< int > * >(farg1->ptr);
+  print_thing< int >((Thing< int > const &)*arg1);
   
 }
 
 
-SWIGEXPORT void swigc_print_vec__SWIG_2(SwigClassWrapper const *farg1) {
-  ThinVec< int > *arg1 = 0 ;
+SWIGEXPORT void swigc_print_thing__SWIG_2(SwigClassWrapper const *farg1) {
+  Thing< double > *arg1 = 0 ;
   
-  SWIG_check_nonnull(*farg1, "ThinVec< int > const &", "ThinVecInt", "print_vec< int >(ThinVec< int > const &)", return );
-  arg1 = static_cast< ThinVec< int > * >(farg1->ptr);
-  print_vec< int >((ThinVec< int > const &)*arg1);
+  SWIG_check_nonnull(*farg1, "Thing< double > const &", "Thing_Dbl", "print_thing< double >(Thing< double > const &)", return );
+  arg1 = static_cast< Thing< double > * >(farg1->ptr);
+  print_thing< double >((Thing< double > const &)*arg1);
   
 }
 

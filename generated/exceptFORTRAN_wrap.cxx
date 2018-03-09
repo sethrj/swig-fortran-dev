@@ -97,6 +97,15 @@ template <typename T> T SwigValueInit() {
 # define SWIGINTERNINLINE SWIGINTERN SWIGINLINE
 #endif
 
+/* qualifier for exported *const* global data variables*/
+#ifndef SWIGEXTERN
+# ifdef __cplusplus
+#   define SWIGEXTERN extern
+# else
+#   define SWIGEXTERN
+# endif
+#endif
+
 /* exporting methods */
 #if defined(__GNUC__)
 #  if (__GNUC__ >= 4) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
@@ -155,15 +164,6 @@ template <typename T> T SwigValueInit() {
 # pragma warning disable 592
 #endif
 
-
-#ifndef SWIGEXTERN
-#ifdef __cplusplus
-#define SWIGEXTERN extern
-#else
-#define SWIGEXTERN
-#endif
-#endif
-
 /*  Errors in SWIG */
 #define  SWIG_UnknownError    	   -1
 #define  SWIG_IOError        	   -2
@@ -182,23 +182,22 @@ template <typename T> T SwigValueInit() {
 
 
 
-// Default exception handler
-#define SWIG_exception_impl(CODE, MSG, RETURNNULL) \
-    throw std::logic_error(MSG); RETURNNULL;
+#define SWIG_exception_impl(DECL, CODE, MSG, RETURNNULL) \
+ { throw std::logic_error("In " DECL ": " MSG); RETURNNULL; }
 
 
-/* Contract support */
-#define SWIG_contract_assert(RETURNNULL, EXPR, MSG) \
-    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, RETURNNULL); }
+extern "C" {
+void SWIG_check_unhandled_exception_impl(const char* decl);
+void SWIG_store_exception(const char* decl, int errcode, const char *msg);
+}
 
 
 #undef SWIG_exception_impl
-#define SWIG_exception_impl(CODE, MSG, RETURNNULL) \
-    SWIG_store_exception(CODE, MSG); RETURNNULL;
+#define SWIG_exception_impl(DECL, CODE, MSG, RETURNNULL) \
+    SWIG_store_exception(DECL, CODE, MSG); RETURNNULL;
 
 
-void SWIG_check_unhandled_exception();
-void SWIG_store_exception(int code, const char *msg);
+#include <stdexcept>
 
 
 #define SWIGVERSION 0x040000 
@@ -209,157 +208,147 @@ void SWIG_store_exception(int code, const char *msg);
 #define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
 
 
-#include <stdexcept>
+#include <stdlib.h>
+#ifdef _MSC_VER
+# ifndef strtoull
+#  define strtoull _strtoui64
+# endif
+# ifndef strtoll
+#  define strtoll _strtoi64
+# endif
+#endif
+
+
+struct SwigArrayWrapper {
+    void* data;
+    size_t size;
+};
+
+
+SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
+  SwigArrayWrapper result;
+  result.data = NULL;
+  result.size = 0;
+  return result;
+}
 
 
 #include <string>
 
 
-#include <algorithm>
+#include <cctype>
 
-
-extern "C" {
-SWIGEXPORT int ierr = 0;
-}
 
 // Stored exception message
-SWIGINTERN std::string swig_last_exception_msg;
+SWIGINTERN std::string* swig_last_exception_msg = NULL;
+// Inlined error retrieval function
+SWIGINTERN const std::string& get_serr_test()
+{
+    if (!swig_last_exception_msg || swig_last_exception_msg->empty()) {
+        SWIG_store_exception("UNKNOWN", SWIG_RuntimeError,
+                             "no error string was present");
+
+    }
+    return *swig_last_exception_msg;
+}
+
+extern "C" {
+// Stored exception integer
+SWIGEXPORT int ierr_test = 0;
 
 // Call this function before any new action
-SWIGEXPORT void SWIG_check_unhandled_exception()
-{
-    if (::ierr != 0)
-    {
-        throw std::runtime_error(
-                "An unhandled exception occurred in a previous call: "
-                + swig_last_exception_msg);
-    }
+SWIGEXPORT void SWIG_check_unhandled_exception_impl(const char* decl) {
+  if (ierr_test != 0) {
+    // Construct message; calling the error string function ensures that
+    // the string is allocated if the user did something goofy like
+    // manually setting the integer. Since this function is not expected to
+    // be wrapped by a catch statement, it will probably terminate the
+    // program.
+    std::string msg("An unhandled exception occurred before a call to ");
+    msg += decl;
+    msg += "; ";
+    std::string prev_msg = get_serr_test();
+    prev_msg[0] = std::tolower(prev_msg[0]);
+    msg += prev_msg;
+    throw std::runtime_error(msg);
+  }
 }
 
 // Save an exception to the fortran error code and string
-SWIGEXPORT void SWIG_store_exception(int code, const char *msg)
-{
-    ::ierr = code;
+SWIGEXPORT void SWIG_store_exception(const char *decl,
+                                     int errcode,
+                                     const char *msg) {
+  ::ierr_test = errcode;
 
-    // Save the message to a std::string first
-    swig_last_exception_msg = msg;
+  if (!swig_last_exception_msg) {
+    swig_last_exception_msg = new std::string;
+  }
+  // Save the message to a std::string first
+  *swig_last_exception_msg = "In ";
+  *swig_last_exception_msg += decl;
+  *swig_last_exception_msg += ": ";
+  *swig_last_exception_msg += msg;
+}
 }
 
 
+#include <stdexcept>
+#include <iostream>
 
-typedef std::string Swig_Err_String;
 
-
-const Swig_Err_String& get_serr()
-{
-    return swig_last_exception_msg;
+void do_it(int i) {
+  if (i < 0)
+    throw std::logic_error("NOOOOO");
+  std::cout << "Yes! I got " << i
+    << std::endl;
 }
-
-
-struct SwigArrayWrapper
-{
-    void* data;
-    std::size_t size;
-};
-
-SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized()
-{
-    SwigArrayWrapper result;
-    result.data = NULL;
-    result.size = 0;
-    return result;
-}
-
-
-#include <utility>
-
-
-#include "except.hh"
+void do_it_again(int i) { do_it(i); }
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT SwigArrayWrapper swigc_get_serr() {
+SWIGEXPORT SwigArrayWrapper swigc_get_serr_test() {
   SwigArrayWrapper fresult ;
-  Swig_Err_String *result = 0 ;
+  std::string *result = 0 ;
   
-  result = (Swig_Err_String *) &get_serr();
+  result = (std::string *) &get_serr_test();
   fresult.data = (result->empty() ? NULL : &(*result->begin()));
   fresult.size = result->size();
-  
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_alpha(int const *farg1) {
+SWIGEXPORT void swigc_do_it(int const *farg1) {
   int arg1 ;
   
   arg1 = *farg1;
   {
-    SWIG_check_unhandled_exception();
-    try
-    {
-      alpha(arg1);
+    SWIG_check_unhandled_exception_impl("do_it(int)");;
+    try {
+      do_it(arg1);
     }
-    catch (const std::exception& e)
-    {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
-    }
-    catch (const char* errstr)
-    {
-      SWIG_exception_impl(SWIG_UnknownError, errstr, return );
+    catch (const std::exception& e) {
+      SWIG_exception_impl("do_it(int)", SWIG_RuntimeError, e.what(), return );
     }
   }
   
 }
 
 
-SWIGEXPORT int swigc_bravo() {
-  int fresult ;
-  int result;
+SWIGEXPORT void swigc_do_it_again(int const *farg1) {
+  int arg1 ;
   
+  arg1 = *farg1;
   {
-    SWIG_check_unhandled_exception();
-    try
-    {
-      result = (int)bravo();
+    SWIG_check_unhandled_exception_impl("do_it_again(int)");;
+    try {
+      do_it_again(arg1);
     }
-    catch (const std::exception& e)
-    {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return 0);
-    }
-    catch (const char* errstr)
-    {
-      SWIG_exception_impl(SWIG_UnknownError, errstr, return 0);
+    catch (const std::exception& e) {
+      SWIG_exception_impl("do_it_again(int)", SWIG_RuntimeError, e.what(), return );
     }
   }
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT SwigArrayWrapper swigc_get_view() {
-  SwigArrayWrapper fresult ;
-  std::pair< int *,std::size_t > result;
   
-  {
-    SWIG_check_unhandled_exception();
-    try
-    {
-      result = get_view();
-    }
-    catch (const std::exception& e)
-    {
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigArrayWrapper_uninitialized());
-    }
-    catch (const char* errstr)
-    {
-      SWIG_exception_impl(SWIG_UnknownError, errstr, return SwigArrayWrapper_uninitialized());
-    }
-  }
-  fresult.data = (&result)->first;
-  fresult.size = (&result)->second;
-  return fresult;
 }
 
 

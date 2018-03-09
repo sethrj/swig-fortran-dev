@@ -28,14 +28,6 @@ end type
 
  public :: DerivedA
  public :: DerivedB
- public :: create_DerivedA
- interface create_DerivedA
-  module procedure new_DerivedA__SWIG_0, new_DerivedA__SWIG_1
- end interface
- public :: create_DerivedB
- interface create_DerivedB
-  module procedure new_DerivedB__SWIG_0, new_DerivedB__SWIG_1
- end interface
 
  ! TYPES
  type :: BaseClass
@@ -48,7 +40,7 @@ end type
   procedure :: set_i => swigf_BaseClass_set_i
   procedure, private :: swigf_assignment_BaseClass
   generic :: assignment(=) => swigf_assignment_BaseClass
- end type
+ end type BaseClass
  type, extends(BaseClass) :: DerivedA
  contains
   procedure :: release => delete_DerivedA
@@ -56,14 +48,22 @@ end type
   procedure :: print => swigf_DerivedA_print
   procedure, private :: swigf_assignment_DerivedA
   generic :: assignment(=) => swigf_assignment_DerivedA
- end type
+ end type DerivedA
+ interface DerivedA
+  procedure new_DerivedA__SWIG_0
+  procedure new_DerivedA__SWIG_1
+ end interface
  type, extends(BaseClass) :: DerivedB
  contains
   procedure :: release => delete_DerivedB
   procedure :: foo => swigf_DerivedB_foo
   procedure, private :: swigf_assignment_DerivedB
   generic :: assignment(=) => swigf_assignment_DerivedB
- end type
+ end type DerivedB
+ interface DerivedB
+  procedure new_DerivedB__SWIG_0
+  procedure new_DerivedB__SWIG_1
+ end interface
 
 
  ! WRAPPER DECLARATIONS

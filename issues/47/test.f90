@@ -7,39 +7,37 @@
 !-----------------------------------------------------------------------------!
 
 module ptrtest
+  use, intrinsic :: ISO_C_BINDING
+  implicit none
+  public
+
+  type :: Foo
+    type(C_PTR) :: ptr = C_NULL_PTR
+  end type
+
+  type :: Bar
+    type(C_PTR) :: ptr = C_NULL_PTR
+  contains
+    final  :: final_Bar
+  end type
+
+contains
+  recursive subroutine final_Bar(self)
+    !PURE ELEMENTAL subroutine final_Bar(self)
+    !subroutine final_Bar(self)
     use, intrinsic :: ISO_C_BINDING
-    implicit none
-    public
-
-     type :: Foo
-      type(C_PTR) :: ptr = C_NULL_PTR
-     end type
-
-     type :: Bar
-      type(C_PTR) :: ptr = C_NULL_PTR
-     contains
-      final  :: final_Bar
-     end type
-
-   contains
-     recursive subroutine final_Bar(self)
-     !PURE ELEMENTAL subroutine final_Bar(self)
-     !subroutine final_Bar(self)
-      use, intrinsic :: ISO_C_BINDING
-      type(Bar), intent(inout) :: self
-      !write(*,"(a,Z16)") "Finally: 0x", self%ptr
-     end subroutine
+    type(Bar), intent(inout) :: self
+    write(*,"(a,Z16)") "Finally: 0x", self%ptr
+  end subroutine
 end module
 
 program main
-    use ISO_FORTRAN_ENV
-    implicit none
+  implicit none
 
-    call test_spcopy()
+  call test_spcopy()
 contains
 
-subroutine test_spcopy()
-    use ISO_FORTRAN_ENV
+  subroutine test_spcopy()
     use ptrtest, only : Foo, Bar
     use, intrinsic :: ISO_C_BINDING
     implicit none
@@ -54,7 +52,7 @@ subroutine test_spcopy()
     write(*,*) "Associated?", c_associated(b1%ptr)
     write(*,*) "Associated?", c_associated(b2%ptr)
     write(*,*) "Associated?", c_associated(b3%ptr)
-end subroutine
+  end subroutine
 
 end program
 

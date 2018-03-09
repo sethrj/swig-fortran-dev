@@ -1,0 +1,13 @@
+{
+  "title": "Inversion of control",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "Emulate member function pointers by having an [array of procedure pointers](https://stackoverflow.com/a/2521185/118160)?\n"
+    },
+    {
+      "type": "markdown",
+      "data": "```fortran\nshape_mod.f90:154:35:\n\n     call c_f_pointer(self%thisptr, thisptr)\n                                   1\nError: FPTR argument at (1) to C_F_POINTER shall not be polymorphic\n```\nwith\n```fortran\n  type Shape_ptr\n    class(Shape), pointer :: p => null()\n  end type\n\n  subroutine printShapePtr(self)\n    implicit none\n    class(Shape) :: self\n    class(Shape_ptr), pointer :: thisptr\n    call c_f_pointer(self%thisptr, thisptr)\n    call thisptr%p%print()\n  end subroutine\n```"
+    }
+  ]
+}

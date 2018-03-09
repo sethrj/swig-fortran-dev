@@ -17,24 +17,20 @@ module bare
  public :: get_something_rcptr
  public :: get_something_rref
  public :: get_something_rcref
-
-type, bind(C) :: SwigArrayWrapper
-  type(C_PTR), public :: data = C_NULL_PTR
-  integer(C_SIZE_T), public :: size = 0
-end type
-
- public :: print_array
- public :: print_sphere
- public :: bound_negation
- public :: wrapped_negation
+ public :: cannot_overload
+ public :: CmykEnum, CYAN, MAGENTA, YELLOW, BLACK
+ public :: print_rgb
+ public :: print_cmyk
  public :: get_linked_const_int
  public :: get_simple_int
  public :: get_weird_int
  public :: get_approx_twopi
  public :: set_global_counter
  public :: get_global_counter
- public :: print_rgb
- public :: print_cmyk
+ public :: can_overload
+ interface can_overload
+  module procedure can_overload__SWIG_0, can_overload__SWIG_1
+ end interface
 
  ! PARAMETERS
  integer(C_INT), parameter, public :: MY_SPECIAL_NUMBERS = 5_C_INT
@@ -43,24 +39,20 @@ end type
    bind(C, name="swigc_octal_const") :: octal_const
  integer(C_INT), protected, public, &
    bind(C, name="swigc_wrapped_const") :: wrapped_const
- integer(C_INT), protected, public, &
-   bind(C, name="swigc_RgbEnum") :: RgbEnum
+ integer(C_INT), parameter, public :: RgbEnum = -1_C_INT
  integer(C_INT), protected, public, &
    bind(C, name="swigc_RED") :: RED
  integer(C_INT), protected, public, &
    bind(C, name="swigc_GREEN") :: GREEN
  integer(C_INT), protected, public, &
    bind(C, name="swigc_BLUE") :: BLUE
- integer(C_INT), protected, public, &
-   bind(C, name="swigc_CmykEnum") :: CmykEnum
- integer(C_INT), protected, public, &
-   bind(C, name="swigc_CYAN") :: CYAN
- integer(C_INT), protected, public, &
-   bind(C, name="swigc_MAGENTA") :: MAGENTA
- integer(C_INT), protected, public, &
-   bind(C, name="swigc_YELLOW") :: YELLOW
- integer(C_INT), protected, public, &
-   bind(C, name="swigc_BLACK") :: BLACK
+ enum, bind(c)
+  enumerator :: CmykEnum = -1
+  enumerator :: CYAN = 0
+  enumerator :: MAGENTA = CYAN + 1
+  enumerator :: YELLOW = MAGENTA + 1
+  enumerator :: BLACK = -1
+ end enum
  real(C_DOUBLE), parameter, public :: approx_pi = 3.14160000001_C_DOUBLE
 
  ! WRAPPER DECLARATIONS
@@ -126,35 +118,42 @@ integer(C_INT), intent(in) :: farg1
 real(C_DOUBLE) :: fresult
 end function
 
-subroutine swigc_print_array(farg1) &
-bind(C, name="swigc_print_array")
-use, intrinsic :: ISO_C_BINDING
-import :: SwigArrayWrapper
-type(SwigArrayWrapper) :: farg1
-end subroutine
-
-subroutine print_sphere(origin, radius) &
-bind(C, name="print_sphere")
-use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE), dimension(3), intent(in) :: origin
-real(C_DOUBLE), intent(in) :: radius
-end subroutine
-
-function bound_negation(v) &
-bind(C, name="bound_negation") &
+function swigc_cannot_overload(farg1, farg2) &
+bind(C, name="swigc_cannot_overload") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL), value :: v
-logical(C_BOOL) :: fresult
+integer(C_INT), intent(in) :: farg1
+integer(C_INT), intent(in) :: farg2
+integer(C_INT) :: fresult
 end function
 
-function swigc_wrapped_negation(farg1) &
-bind(C, name="swigc_wrapped_negation") &
+function swigc_can_overload__SWIG_0(farg1) &
+bind(C, name="swigc_can_overload__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT), intent(in) :: farg1
 integer(C_INT) :: fresult
 end function
+
+function swigc_can_overload__SWIG_1(farg1) &
+bind(C, name="swigc_can_overload__SWIG_1") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE), intent(in) :: farg1
+real(C_DOUBLE) :: fresult
+end function
+
+subroutine swigc_print_rgb(farg1) &
+bind(C, name="swigc_print_rgb")
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT), intent(in) :: farg1
+end subroutine
+
+subroutine swigc_print_cmyk(farg1) &
+bind(C, name="swigc_print_cmyk")
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT), intent(in) :: farg1
+end subroutine
 
 function swigc_get_linked_const_int() &
 bind(C, name="swigc_get_linked_const_int") &
@@ -196,18 +195,6 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT) :: fresult
 end function
-
-subroutine swigc_print_rgb(farg1) &
-bind(C, name="swigc_print_rgb")
-use, intrinsic :: ISO_C_BINDING
-integer(C_INT), intent(in) :: farg1
-end subroutine
-
-subroutine swigc_print_cmyk(farg1) &
-bind(C, name="swigc_print_cmyk")
-use, intrinsic :: ISO_C_BINDING
-integer(C_INT), intent(in) :: farg1
-end subroutine
 
  end interface
 
@@ -315,56 +302,65 @@ fresult = swigc_get_something_rcref(farg1)
 swig_result = fresult
 end function
 
-subroutine print_array(arr)
-use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE), dimension(:), target, intent(inout) :: arr
-real(C_DOUBLE), pointer :: farg1_view
-type(SwigArrayWrapper) :: farg1 
-
-farg1_view => arr(1)
-farg1%data = c_loc(farg1_view)
-farg1%size = size(arr)
-call swigc_print_array(farg1)
-end subroutine
-
-
-function SWIG_logical_to_int(inp) &
-    result(out)
-  use, intrinsic :: ISO_C_BINDING
-  logical, intent(IN) :: inp
-  integer(kind=C_INT) :: out
-  if (inp .eqv. .true.) then
-    out = 1
-  else
-    out = 0
-  end if
-end function
-
-
-function SWIG_int_to_logical(inp) &
-    result(out)
-  use, intrinsic :: ISO_C_BINDING
-  integer(kind=C_INT), intent(IN) :: inp
-  logical :: out
-  if (inp /= 0) then
-    out = .true.
-  else
-    out = .false.
-  end if
-end function
-
-function wrapped_negation(v) &
+function cannot_overload(x, y) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical :: swig_result
-logical, intent(in) :: v
+integer(C_INT) :: swig_result
+integer(C_INT), intent(in) :: x
+integer(C_INT), intent(in) :: y
+integer(C_INT) :: fresult 
+integer(C_INT) :: farg1 
+integer(C_INT) :: farg2 
+
+farg1 = x
+farg2 = y
+fresult = swigc_cannot_overload(farg1, farg2)
+swig_result = fresult
+end function
+
+function can_overload__SWIG_0(x) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swig_result
+integer(C_INT), intent(in) :: x
 integer(C_INT) :: fresult 
 integer(C_INT) :: farg1 
 
-farg1 = SWIG_logical_to_int(v)
-fresult = swigc_wrapped_negation(farg1)
-swig_result = SWIG_int_to_logical(fresult)
+farg1 = x
+fresult = swigc_can_overload__SWIG_0(farg1)
+swig_result = fresult
 end function
+
+function can_overload__SWIG_1(x) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: swig_result
+real(C_DOUBLE), intent(in) :: x
+real(C_DOUBLE) :: fresult 
+real(C_DOUBLE) :: farg1 
+
+farg1 = x
+fresult = swigc_can_overload__SWIG_1(farg1)
+swig_result = fresult
+end function
+
+subroutine print_rgb(color)
+use, intrinsic :: ISO_C_BINDING
+integer(kind(RgbEnum)), intent(in) :: color
+integer(C_INT) :: farg1 
+
+farg1 = color
+call swigc_print_rgb(farg1)
+end subroutine
+
+subroutine print_cmyk(color)
+use, intrinsic :: ISO_C_BINDING
+integer(kind(CmykEnum)), intent(in) :: color
+integer(C_INT) :: farg1 
+
+farg1 = color
+call swigc_print_cmyk(farg1)
+end subroutine
 
 function get_linked_const_int() &
 result(swig_result)
@@ -424,24 +420,6 @@ integer(C_INT) :: fresult
 fresult = swigc_get_global_counter()
 swig_result = fresult
 end function
-
-subroutine print_rgb(color)
-use, intrinsic :: ISO_C_BINDING
-integer(kind(RgbEnum)), intent(in) :: color
-integer(C_INT) :: farg1 
-
-farg1 = color
-call swigc_print_rgb(farg1)
-end subroutine
-
-subroutine print_cmyk(color)
-use, intrinsic :: ISO_C_BINDING
-integer(kind(CmykEnum)), intent(in) :: color
-integer(C_INT) :: farg1 
-
-farg1 = color
-call swigc_print_cmyk(farg1)
-end subroutine
 
 
 end module

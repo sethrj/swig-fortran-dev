@@ -26,10 +26,6 @@ type, bind(C) :: SwigClassWrapper
   integer(C_INT), public :: mem = SWIG_NULL
 end type
 
- public :: create_BaseClass
- interface create_BaseClass
-  module procedure new_BaseClass
- end interface
 
  ! TYPES
  type :: BaseClass
@@ -42,7 +38,10 @@ end type
   procedure :: release => delete_BaseClass
   procedure, private :: swigf_assignment_BaseClass
   generic :: assignment(=) => swigf_assignment_BaseClass
- end type
+ end type BaseClass
+ interface BaseClass
+  procedure new_BaseClass
+ end interface
 
 
  ! WRAPPER DECLARATIONS

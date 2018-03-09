@@ -16,7 +16,7 @@ if [ -f CMakeCache.txt ]
 then
   make clean
 else
-  cmake -C $SOURCE/cmake/config.cmake $SOURCE
+  cmake -C $SOURCE/cmake/config.example.cmake $SOURCE
 fi
 make && \ctest -V || echo "Encountered errors!"
 cp */*.{f90,cxx} $GEN

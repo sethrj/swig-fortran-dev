@@ -97,6 +97,15 @@ template <typename T> T SwigValueInit() {
 # define SWIGINTERNINLINE SWIGINTERN SWIGINLINE
 #endif
 
+/* qualifier for exported *const* global data variables*/
+#ifndef SWIGEXTERN
+# ifdef __cplusplus
+#   define SWIGEXTERN extern
+# else
+#   define SWIGEXTERN
+# endif
+#endif
+
 /* exporting methods */
 #if defined(__GNUC__)
 #  if (__GNUC__ >= 4) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
@@ -155,15 +164,6 @@ template <typename T> T SwigValueInit() {
 # pragma warning disable 592
 #endif
 
-
-#ifndef SWIGEXTERN
-#ifdef __cplusplus
-#define SWIGEXTERN extern
-#else
-#define SWIGEXTERN
-#endif
-#endif
-
 /*  Errors in SWIG */
 #define  SWIG_UnknownError    	   -1
 #define  SWIG_IOError        	   -2
@@ -182,29 +182,38 @@ template <typename T> T SwigValueInit() {
 
 
 
-// Default exception handler
-#define SWIG_exception_impl(CODE, MSG, RETURNNULL) \
-    throw std::logic_error(MSG); RETURNNULL;
+#define SWIG_exception_impl(DECL, CODE, MSG, RETURNNULL) \
+ { throw std::logic_error("In " DECL ": " MSG); RETURNNULL; }
 
 
-/* Contract support */
-#define SWIG_contract_assert(RETURNNULL, EXPR, MSG) \
-    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, RETURNNULL); }
+namespace swig {
+
+enum AssignmentFlags {
+  IS_DESTR       = 0x01,
+  IS_COPY_CONSTR = 0x02,
+  IS_COPY_ASSIGN = 0x04,
+  IS_MOVE_CONSTR = 0x08,
+  IS_MOVE_ASSIGN = 0x10
+};
+
+template<class T, int Flags>
+struct assignment_flags;
+}
 
 
 #define SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
-    if ((SWIG_CLASS_WRAPPER).mem == SWIG_NULL) { \
-        SWIG_exception_impl(SWIG_TypeError, \
-            "Cannot pass null " TYPENAME " (class " FNAME ") " \
-            "to function (" FUNCNAME ")", RETURNNULL); \
-    }
+  if ((SWIG_CLASS_WRAPPER).mem == SWIG_NULL) { \
+    SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
+                        "Cannot pass null " TYPENAME " (class " FNAME ") " \
+                        "as a reference", RETURNNULL); \
+  }
 
 
 #define SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
     if ((SWIG_CLASS_WRAPPER).mem == SWIG_CREF) { \
-        SWIG_exception_impl(SWIG_TypeError, \
+        SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
             "Cannot pass const " TYPENAME " (class " FNAME ") " \
-            "to a function (" FUNCNAME ") that requires a mutable reference", \
+            "as a mutable reference", \
             RETURNNULL); \
     }
 
@@ -214,16 +223,14 @@ template <typename T> T SwigValueInit() {
     SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL);
 
 
-
-#if __cplusplus >= 201103L
 #define SWIG_assign(LEFTTYPE, LEFT, RIGHTTYPE, RIGHT, FLAGS) \
-    SWIG_assign_impl<LEFTTYPE , RIGHTTYPE, swig::assignment_flags<LEFTTYPE >() >( \
-            LEFT, RIGHT);
-#else
-#define SWIG_assign(LEFTTYPE, LEFT, RIGHTTYPE, RIGHT, FLAGS) \
-    SWIG_assign_impl<LEFTTYPE , RIGHTTYPE, FLAGS >(LEFT, RIGHT);
-#endif
+    SWIG_assign_impl<LEFTTYPE , RIGHTTYPE, swig::assignment_flags<LEFTTYPE, FLAGS >::value >(LEFT, RIGHT);
 
+
+#include <string.h>
+
+
+#include <stdexcept>
 
 
 #define SWIGVERSION 0x040000 
@@ -234,17 +241,26 @@ template <typename T> T SwigValueInit() {
 #define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
 
 
-#include <stdexcept>
-
-
 #include <utility>
-#include "stdvec.hh"
+#include "stdvec.h"
 
 
 #include <vector>
 
 
 #include <utility>
+
+
+namespace swig {
+template<class T, class U, int Flags>
+struct assignment_flags<std::pair<const T, U>, Flags> {
+  enum { value = IS_DESTR | IS_COPY_CONSTR };
+};
+template<class T, class U, int Flags>
+struct assignment_flags<std::pair<T, const U>, Flags> {
+  enum { value = IS_DESTR | IS_COPY_CONSTR };
+};
+}
 
 
 enum SwigMemState {
@@ -256,14 +272,13 @@ enum SwigMemState {
 };
 
 
-struct SwigClassWrapper
-{
+struct SwigClassWrapper {
     void* ptr;
     SwigMemState mem;
 };
 
-SWIGINTERN SwigClassWrapper SwigClassWrapper_uninitialized()
-{
+
+SWIGINTERN SwigClassWrapper SwigClassWrapper_uninitialized() {
     SwigClassWrapper result;
     result.ptr = NULL;
     result.mem = SWIG_NULL;
@@ -273,44 +288,46 @@ SWIGINTERN SwigClassWrapper SwigClassWrapper_uninitialized()
 SWIGINTERN void std_vector_Sl_double_Sg__set(std::vector< double > *self,std::vector< double >::size_type index,std::vector< double >::const_reference v){
         // TODO: check range
         (*self)[index] = v;
-    }
+      }
 SWIGINTERN std::vector< double >::value_type std_vector_Sl_double_Sg__get(std::vector< double > *self,std::vector< double >::size_type index){
         // TODO: check range
         return (*self)[index];
-    }
+      }
 
-struct SwigArrayWrapper
-{
+#include <stdlib.h>
+#ifdef _MSC_VER
+# ifndef strtoull
+#  define strtoull _strtoui64
+# endif
+# ifndef strtoll
+#  define strtoll _strtoi64
+# endif
+#endif
+
+
+struct SwigArrayWrapper {
     void* data;
-    std::size_t size;
+    size_t size;
 };
 
-SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized()
-{
-    SwigArrayWrapper result;
-    result.data = NULL;
-    result.size = 0;
-    return result;
+
+SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
+  SwigArrayWrapper result;
+  result.data = NULL;
+  result.size = 0;
+  return result;
 }
 
 SWIGINTERN void std_vector_Sl_double_Sg__fill(std::vector< double > *self,std::pair< double const *,std::size_t > view){
-        self->assign(view.first, view.first + view.second);
-    }
+    self->assign(view.first, view.first + view.second);
+  }
 SWIGINTERN std::pair< double *,std::size_t > std_vector_Sl_double_Sg__view(std::vector< double > *self){
-        if (self->empty())
-            return {nullptr, 0};
-        return {self->data(), self->size()};
-    }
+    if (self->empty())
+      return {nullptr, 0};
+    return {self->data(), self->size()};
+  }
 
 namespace swig {
-
-enum AssignmentFlags {
-  IS_DESTR       = 0x01,
-  IS_COPY_CONSTR = 0x02,
-  IS_COPY_ASSIGN = 0x04,
-  IS_MOVE_CONSTR = 0x08,
-  IS_MOVE_ASSIGN = 0x10
-};
 
 // Define our own switching struct to support pre-c++11 builds
 template<bool Val>
@@ -325,7 +342,7 @@ SWIGINTERN void destruct_impl(T* self, true_type) {
 }
 template<class T>
 SWIGINTERN T* destruct_impl(T* , false_type) {
-  SWIG_exception_impl(SWIG_TypeError,
+  SWIG_exception_impl("assignment", SWIG_TypeError,
                       "Invalid assignment: class type has no destructor",
                       return NULL);
 }
@@ -343,13 +360,13 @@ SWIGINTERN void copy_assign_impl(T* self, const U* other, true_type) {
 // Disabled construction and assignment
 template<class T, class U>
 SWIGINTERN T* copy_construct_impl(const U* , false_type) {
-  SWIG_exception_impl(SWIG_TypeError,
+  SWIG_exception_impl("assignment", SWIG_TypeError,
                       "Invalid assignment: class type has no copy constructor",
                       return NULL);
 }
 template<class T, class U>
 SWIGINTERN void copy_assign_impl(T* , const U* , false_type) {
-  SWIG_exception_impl(SWIG_TypeError,
+  SWIG_exception_impl("assignment", SWIG_TypeError,
                       "Invalid assignment: class type has no copy assignment",
                       return);
 }
@@ -371,74 +388,74 @@ SWIGINTERN void move_assign_impl(T* self, U* other, true_type) {
 // Disabled move construction and assignment
 template<class T, class U>
 SWIGINTERN T* move_construct_impl(U*, false_type) {
-  SWIG_exception_impl(SWIG_TypeError,
+  SWIG_exception_impl("assignment", SWIG_TypeError,
                       "Invalid assignment: class type has no move constructor",
                       return NULL);
 }
 template<class T, class U>
 SWIGINTERN void move_assign_impl(T*, U*, false_type) {
-  SWIG_exception_impl(SWIG_TypeError,
+  SWIG_exception_impl("assignment", SWIG_TypeError,
                       "Invalid assignment: class type has no move assignment",
                       return);
 }
 
-template<class T>
-constexpr int assignment_flags() {
-  return   (std::is_destructible<T>::value       ? IS_DESTR       : 0)
-         | (std::is_copy_constructible<T>::value ? IS_COPY_CONSTR : 0)
-         | (std::is_copy_assignable<T>::value    ? IS_COPY_ASSIGN : 0)
-         | (std::is_move_constructible<T>::value ? IS_MOVE_CONSTR : 0)
-         | (std::is_move_assignable<T>::value    ? IS_MOVE_ASSIGN : 0);
-}
+template<class T, int Flags>
+struct assignment_flags {
+  constexpr static int value =
+             (std::is_destructible<T>::value       ? IS_DESTR       : 0)
+           | (std::is_copy_constructible<T>::value ? IS_COPY_CONSTR : 0)
+           | (std::is_copy_assignable<T>::value    ? IS_COPY_ASSIGN : 0)
+           | (std::is_move_constructible<T>::value ? IS_MOVE_CONSTR : 0)
+           | (std::is_move_assignable<T>::value    ? IS_MOVE_ASSIGN : 0);
+};
+
+#else
+
+template<class T, int Flags>
+struct assignment_flags {
+  enum { value = Flags };
+};
+
 #endif
 
 template<class T, int Flags>
-struct AssignmentTraits
-{
-  static void destruct(T* self)
-  {
+struct AssignmentTraits {
+  static void destruct(T* self) {
     destruct_impl<T>(self, bool_constant<Flags & IS_DESTR>());
   }
 
   template<class U>
-  static T* copy_construct(const U* other)
-  {
+  static T* copy_construct(const U* other) {
     return copy_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_COPY_CONSTR)>());
   }
 
   template<class U>
-  static void copy_assign(T* self, const U* other)
-  {
+  static void copy_assign(T* self, const U* other) {
     copy_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_COPY_ASSIGN)>());
   }
 
 #if __cplusplus >= 201103L
   template<class U>
-  static T* move_construct(U* other)
-  {
+  static T* move_construct(U* other) {
     return move_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_MOVE_CONSTR)>());
   }
   template<class U>
-  static void move_assign(T* self, U* other)
-  {
+  static void move_assign(T* self, U* other) {
     move_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_MOVE_ASSIGN)>());
   }
 #else
   template<class U>
-  static T* move_construct(U* other)
-  {
+  static T* move_construct(U* other) {
     return copy_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_COPY_CONSTR)>());
   }
   template<class U>
-  static void move_assign(T* self, U* other)
-  {
+  static void move_assign(T* self, U* other) {
     copy_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_COPY_ASSIGN)>());
   }
 #endif
 };
 
 } // end namespace swig
-
 
 
 template<class T1, class T2, int AFlags>
@@ -494,7 +511,7 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
       }
       break;
     case SWIG_MOVE:
-      SWIG_exception_impl(SWIG_RuntimeError,
+      SWIG_exception_impl("assignment", SWIG_RuntimeError,
         "Left-hand side of assignment should never be in a 'MOVE' state",
         return);
       break;
@@ -521,6 +538,7 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
           Traits_t::copy_assign(pself, pother);
           break;
       }
+      break;
     case SWIG_CREF:
       switch (other->mem) {
         case SWIG_NULL:
@@ -528,12 +546,16 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
           self->ptr = NULL;
           self->mem = SWIG_NULL;
         default:
-          SWIG_exception_impl(SWIG_RuntimeError,
+          SWIG_exception_impl("assignment", SWIG_RuntimeError,
               "Cannot assign to a const reference", return);
           break;
       }
+      break;
   }
 }
+
+
+std::vector<double> make_array() { return {1,1,2,3,5}; }
 
 #ifdef __cplusplus
 extern "C" {
@@ -772,7 +794,23 @@ SWIGEXPORT void swigc_assignment_VecDbl(SwigClassWrapper * self, SwigClassWrappe
   typedef std::vector< double > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_COPY_CONSTR);
+    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+}
+
+
+SWIGEXPORT SwigArrayWrapper swigc_as_array_ptr(SwigClassWrapper const *farg1) {
+  SwigArrayWrapper fresult ;
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  
+  SWIG_check_mutable_nonnull(*farg1, "std::vector< double,std::allocator< double > > &", "VecDbl", "as_array_ptr(std::vector< double,std::allocator< double > > &)", return SwigArrayWrapper_uninitialized());
+  arg1 = static_cast< std::vector< double,std::allocator< double > > * >(farg1->ptr);
+  result = (std::vector< double,std::allocator< double > > *) &as_array_ptr(*arg1);
+  
+  fresult.data = result->empty() ? NULL : result->data();
+  fresult.size = result->size();
+  
+  return fresult;
 }
 
 
@@ -824,7 +862,22 @@ SWIGEXPORT SwigArrayWrapper swigc_get_vecdbl(SwigClassWrapper const *farg1) {
   result = (std::vector< double,std::allocator< double > > *) &get_vec< double >((std::vector< double,std::allocator< double > > const &)*arg1);
   fresult.data = (result->empty() ? NULL : &(*result->begin()));
   fresult.size = result->size();
+  return fresult;
+}
+
+
+SWIGEXPORT SwigArrayWrapper swigc_make_array() {
+  SwigArrayWrapper fresult ;
+  std::vector< double,std::allocator< double > > result;
   
+  result = make_array();
+  fresult.size = (&result)->size();
+  if (fresult.size > 0) {
+    fresult.data = malloc(fresult.size * sizeof(std::vector<double,std::allocator< double >>::value_type));
+    memcpy(fresult.data, &(result[0]), fresult.size * sizeof(std::vector<double,std::allocator< double >>::value_type));
+  } else {
+    fresult.data = NULL;
+  }
   return fresult;
 }
 

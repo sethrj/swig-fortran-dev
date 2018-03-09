@@ -1,0 +1,13 @@
+{
+  "title": "SWIG testing",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "# Running unit tests\n\nTo run fortran and build a list of failing tests:\n\n    cd Examples/test-suite/fortran\n    rm summary-cpp.txt\n    make -k check-cpp\n \nThe dumping of pass/failing tests into summary.txt was added in `2520171dc2ee16c0e099f577f0d3ec2a78376c05` . The failure list can be processed using `swig-failures/process-failures.ipynb` in this repo, then used to update `Examples/test-suite/fortran/Makefile.in`.\n\nTo run a single check:\n\n    make director_smartptr.cpptest"
+    },
+    {
+      "type": "markdown",
+      "data": "# Regenerating the `errors` test suite\n\nThere's a special test suite that checks the output of warning messages. Here's how to tweak it to \n\n```diff\ndiff --git a/Examples/test-suite/errors/Makefile.in b/Examples/test-suite/errors/Makefile.in\nindex cf7889a1d..758ba8189 100644\n--- a/Examples/test-suite/errors/Makefile.in\n+++ b/Examples/test-suite/errors/Makefile.in\n@@ -44,12 +44,12 @@ STRIP_SRCDIR = sed -e 's|\\\\|/|g' -e 's|^$(SRCDIR)||'\n %.cpptest:\n        echo \"$(ACTION)ing errors testcase $*\"\n        -$(SWIGINVOKE) -c++ -python -Wall -Fstandard $(SWIGOPT) $(SRCDIR)$*.i 2>&1 | $(TODOS) | $(STRIP_SRCDIR) > $*.$(ERROR_EXT)\n-   $(COMPILETOOL) diff -c $(SRCDIR)$*.stderr $*.$(ERROR_EXT)\n+ mv $*.$(ERROR_EXT) $(SRCDIR)$*.stderr\n\n %.ctest:\n        echo \"$(ACTION)ing errors testcase $*\"\n        -$(SWIGINVOKE) -python -Wall -Fstandard $(SWIGOPT) $(SRCDIR)$*.i 2>&1 | $(TODOS) | $(STRIP_SRCDIR) > $*.$(ERROR_EXT)\n-   $(COMPILETOOL) diff -c $(SRCDIR)$*.stderr $*.$(ERROR_EXT)\n+ mv $*.$(ERROR_EXT) $(SRCDIR)$*.stderr\n\n %.clean:\n        @exit \n```"
+    }
+  ]
+}

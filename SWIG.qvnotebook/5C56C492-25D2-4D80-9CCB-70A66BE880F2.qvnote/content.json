@@ -1,0 +1,13 @@
+{
+  "title": "CUDA integration",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "To do:\n- Add `-cuda` command line flag: changes extension of output file (probably necessary to compile with Thrust)"
+    },
+    {
+      "type": "markdown",
+      "data": "- [Calling Thrust from CUDA fortran](http://cudamusing.blogspot.com/2011/06/calling-thrust-from-cuda-fortran.html)\n- [OpenACC tutorial](https://www.olcf.ornl.gov/tutorials/openacc-vector-addition/)\n- [CUDA Fortran tutorial](https://www.olcf.ornl.gov/tutorials/cuda-fortran-vector-addition/)\n"
+    }
+  ]
+}

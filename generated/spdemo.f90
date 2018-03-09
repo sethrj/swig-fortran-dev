@@ -32,10 +32,6 @@ end type
  public :: print_spc
  public :: print_crspc
  public :: print_cr
- public :: create_Foo
- interface create_Foo
-  module procedure new_Foo__SWIG_0, new_Foo__SWIG_1, new_Foo__SWIG_2
- end interface
 
  ! TYPES
  type :: Foo
@@ -55,7 +51,12 @@ end type
   procedure :: ptr => swigf_Foo_ptr
   procedure, private :: swigf_assignment_Foo
   generic :: assignment(=) => swigf_assignment_Foo
- end type
+ end type Foo
+ interface Foo
+  procedure new_Foo__SWIG_0
+  procedure new_Foo__SWIG_1
+  procedure new_Foo__SWIG_2
+ end interface
 
 
  ! WRAPPER DECLARATIONS

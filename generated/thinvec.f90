@@ -34,14 +34,6 @@ type, bind(C) :: SwigArrayWrapper
 end type
 
  public :: ThinVecInt
- public :: create_ThinVecDbl
- interface create_ThinVecDbl
-  module procedure new_ThinVecDbl__SWIG_0, new_ThinVecDbl__SWIG_1, new_ThinVecDbl__SWIG_2
- end interface
- public :: create_ThinVecInt
- interface create_ThinVecInt
-  module procedure new_ThinVecInt__SWIG_0, new_ThinVecInt__SWIG_1, new_ThinVecInt__SWIG_2
- end interface
  public :: print_vec
  interface print_vec
   module procedure print_vec__SWIG_1, print_vec__SWIG_2
@@ -56,14 +48,20 @@ end type
   procedure :: size => swigf_ThinVecDbl_size
   procedure :: get => swigf_ThinVecDbl_get
   procedure :: set => swigf_ThinVecDbl_set
-  procedure :: resize_fill => swigf_ThinVecDbl_resize_fill
-  procedure :: resize => swigf_ThinVecDbl_resize
+  procedure, private :: resize__SWIG_0 => swigf_ThinVecDbl_resize__SWIG_0
+  procedure, private :: resize__SWIG_1 => swigf_ThinVecDbl_resize__SWIG_1
   procedure :: assign => swigf_ThinVecDbl_assign
   procedure :: view => swigf_ThinVecDbl_view
   procedure :: release => delete_ThinVecDbl
   procedure, private :: swigf_assignment_ThinVecDbl
   generic :: assignment(=) => swigf_assignment_ThinVecDbl
- end type
+  generic :: resize => resize__SWIG_0, resize__SWIG_1
+ end type ThinVecDbl
+ interface ThinVecDbl
+  procedure new_ThinVecDbl__SWIG_0
+  procedure new_ThinVecDbl__SWIG_1
+  procedure new_ThinVecDbl__SWIG_2
+ end interface
  type :: ThinVecInt
   ! These should be treated as PROTECTED data
   type(SwigClassWrapper), public :: swigdata
@@ -72,14 +70,20 @@ end type
   procedure :: size => swigf_ThinVecInt_size
   procedure :: get => swigf_ThinVecInt_get
   procedure :: set => swigf_ThinVecInt_set
-  procedure :: resize_fill => swigf_ThinVecInt_resize_fill
-  procedure :: resize => swigf_ThinVecInt_resize
+  procedure, private :: resize__SWIG_0 => swigf_ThinVecInt_resize__SWIG_0
+  procedure, private :: resize__SWIG_1 => swigf_ThinVecInt_resize__SWIG_1
   procedure :: assign => swigf_ThinVecInt_assign
   procedure :: view => swigf_ThinVecInt_view
   procedure :: release => delete_ThinVecInt
   procedure, private :: swigf_assignment_ThinVecInt
   generic :: assignment(=) => swigf_assignment_ThinVecInt
- end type
+  generic :: resize => resize__SWIG_0, resize__SWIG_1
+ end type ThinVecInt
+ interface ThinVecInt
+  procedure new_ThinVecInt__SWIG_0
+  procedure new_ThinVecInt__SWIG_1
+  procedure new_ThinVecInt__SWIG_2
+ end interface
 
 
  ! WRAPPER DECLARATIONS
@@ -155,8 +159,8 @@ integer(C_INT), intent(in) :: farg2
 real(C_DOUBLE), intent(in) :: farg3
 end subroutine
 
-subroutine swigc_ThinVecDbl_resize_fill(farg1, farg2, farg3) &
-bind(C, name="swigc_ThinVecDbl_resize_fill")
+subroutine swigc_ThinVecDbl_resize__SWIG_0(farg1, farg2, farg3) &
+bind(C, name="swigc_ThinVecDbl_resize__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
@@ -164,8 +168,8 @@ integer(C_INT), intent(in) :: farg2
 real(C_DOUBLE), intent(in) :: farg3
 end subroutine
 
-subroutine swigc_ThinVecDbl_resize(farg1, farg2) &
-bind(C, name="swigc_ThinVecDbl_resize")
+subroutine swigc_ThinVecDbl_resize__SWIG_1(farg1, farg2) &
+bind(C, name="swigc_ThinVecDbl_resize__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
@@ -269,8 +273,8 @@ integer(C_INT), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
 end subroutine
 
-subroutine swigc_ThinVecInt_resize_fill(farg1, farg2, farg3) &
-bind(C, name="swigc_ThinVecInt_resize_fill")
+subroutine swigc_ThinVecInt_resize__SWIG_0(farg1, farg2, farg3) &
+bind(C, name="swigc_ThinVecInt_resize__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
@@ -278,8 +282,8 @@ integer(C_INT), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
 end subroutine
 
-subroutine swigc_ThinVecInt_resize(farg1, farg2) &
-bind(C, name="swigc_ThinVecInt_resize")
+subroutine swigc_ThinVecInt_resize__SWIG_1(farg1, farg2) &
+bind(C, name="swigc_ThinVecInt_resize__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
@@ -456,7 +460,7 @@ farg3 = val
 call swigc_ThinVecDbl_set(farg1, farg2, farg3)
 end subroutine
 
-subroutine swigf_ThinVecDbl_resize_fill(self, newsize, fillval)
+subroutine swigf_ThinVecDbl_resize__SWIG_0(self, newsize, fillval)
 use, intrinsic :: ISO_C_BINDING
 class(ThinVecDbl), intent(inout) :: self
 integer(C_INT), intent(in) :: newsize
@@ -468,10 +472,10 @@ real(C_DOUBLE) :: farg3
 farg1 = self%swigdata
 farg2 = newsize
 farg3 = fillval
-call swigc_ThinVecDbl_resize_fill(farg1, farg2, farg3)
+call swigc_ThinVecDbl_resize__SWIG_0(farg1, farg2, farg3)
 end subroutine
 
-subroutine swigf_ThinVecDbl_resize(self, newsize)
+subroutine swigf_ThinVecDbl_resize__SWIG_1(self, newsize)
 use, intrinsic :: ISO_C_BINDING
 class(ThinVecDbl), intent(inout) :: self
 integer(C_INT), intent(in) :: newsize
@@ -480,13 +484,13 @@ integer(C_INT) :: farg2
 
 farg1 = self%swigdata
 farg2 = newsize
-call swigc_ThinVecDbl_resize(farg1, farg2)
+call swigc_ThinVecDbl_resize__SWIG_1(farg1, farg2)
 end subroutine
 
 subroutine swigf_ThinVecDbl_assign(self, arr)
 use, intrinsic :: ISO_C_BINDING
 class(ThinVecDbl), intent(inout) :: self
-real(C_DOUBLE), dimension(:), target, intent(inout) :: arr
+real(C_DOUBLE), dimension(:), target :: arr
 real(C_DOUBLE), pointer :: farg2_view
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
@@ -508,7 +512,6 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = self%swigdata
 fresult = swigc_ThinVecDbl_view(farg1)
-
 call c_f_pointer(fresult%data, swig_result, [fresult%size])
 end function
 
@@ -627,7 +630,7 @@ farg3 = val
 call swigc_ThinVecInt_set(farg1, farg2, farg3)
 end subroutine
 
-subroutine swigf_ThinVecInt_resize_fill(self, newsize, fillval)
+subroutine swigf_ThinVecInt_resize__SWIG_0(self, newsize, fillval)
 use, intrinsic :: ISO_C_BINDING
 class(ThinVecInt), intent(inout) :: self
 integer(C_INT), intent(in) :: newsize
@@ -639,10 +642,10 @@ integer(C_INT) :: farg3
 farg1 = self%swigdata
 farg2 = newsize
 farg3 = fillval
-call swigc_ThinVecInt_resize_fill(farg1, farg2, farg3)
+call swigc_ThinVecInt_resize__SWIG_0(farg1, farg2, farg3)
 end subroutine
 
-subroutine swigf_ThinVecInt_resize(self, newsize)
+subroutine swigf_ThinVecInt_resize__SWIG_1(self, newsize)
 use, intrinsic :: ISO_C_BINDING
 class(ThinVecInt), intent(inout) :: self
 integer(C_INT), intent(in) :: newsize
@@ -651,13 +654,13 @@ integer(C_INT) :: farg2
 
 farg1 = self%swigdata
 farg2 = newsize
-call swigc_ThinVecInt_resize(farg1, farg2)
+call swigc_ThinVecInt_resize__SWIG_1(farg1, farg2)
 end subroutine
 
 subroutine swigf_ThinVecInt_assign(self, arr)
 use, intrinsic :: ISO_C_BINDING
 class(ThinVecInt), intent(inout) :: self
-integer(C_INT), dimension(:), target, intent(inout) :: arr
+integer(C_INT), dimension(:), target :: arr
 integer(C_INT), pointer :: farg2_view
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
@@ -679,7 +682,6 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = self%swigdata
 fresult = swigc_ThinVecInt_view(farg1)
-
 call c_f_pointer(fresult%data, swig_result, [fresult%size])
 end function
 

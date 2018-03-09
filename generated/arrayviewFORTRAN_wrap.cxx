@@ -212,7 +212,7 @@ struct assignment_flags;
 #define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
 
 
-#include "bare.h"
+#include "arrayview.h"
 
 
 #include <utility>
@@ -229,224 +229,208 @@ struct assignment_flags<std::pair<T, const U>, Flags> {
 };
 }
 
+
+#include <stdlib.h>
+#ifdef _MSC_VER
+# ifndef strtoull
+#  define strtoull _strtoui64
+# endif
+# ifndef strtoll
+#  define strtoll _strtoi64
+# endif
+#endif
+
+
+struct SwigArrayWrapper {
+    void* data;
+    size_t size;
+};
+
+
+SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
+  SwigArrayWrapper result;
+  result.data = NULL;
+  result.size = 0;
+  return result;
+}
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT SWIGEXTERN int const swigc_octal_const = 0777;
-
-SWIGEXPORT SWIGEXTERN int const swigc_wrapped_const = 0xdeadbeef;
-
-SWIGEXPORT void swigc_set_something(int const *farg1, double const *farg2) {
-  int arg1 ;
-  double arg2 ;
+SWIGEXPORT void swigc_sort__SWIG_1(SwigArrayWrapper *farg1) {
+  std::pair< int *,std::size_t > arg1 ;
   
-  arg1 = *farg1;
-  arg2 = *farg2;
-  set_something(arg1,arg2);
+  (&arg1)->first  = static_cast<int*>(farg1->data);
+  (&arg1)->second = farg1->size;
+  sort< int >(arg1);
   
 }
 
 
-SWIGEXPORT double swigc_get_something(int const *farg1) {
-  double fresult ;
-  int arg1 ;
-  double result;
+SWIGEXPORT void swigc_reverse__SWIG_1(SwigArrayWrapper *farg1) {
+  std::pair< int *,std::size_t > arg1 ;
   
-  arg1 = *farg1;
-  result = (double)get_something(arg1);
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_get_something_ref(int const *farg1, double *farg2) {
-  int arg1 ;
-  double *arg2 = 0 ;
-  
-  arg1 = *farg1;
-  arg2 = reinterpret_cast< double * >(farg2);
-  get_something_ref(arg1,*arg2);
+  (&arg1)->first  = static_cast<int*>(farg1->data);
+  (&arg1)->second = farg1->size;
+  reverse< int >(arg1);
   
 }
 
 
-SWIGEXPORT void swigc_get_something_ptr(int const *farg1, double *farg2) {
-  int arg1 ;
-  double *arg2 = (double *) 0 ;
-  
-  arg1 = *farg1;
-  arg2 = reinterpret_cast< double * >(farg2);
-  get_something_ptr(arg1,arg2);
-  
-}
-
-
-SWIGEXPORT double * swigc_get_something_rptr(int const *farg1) {
-  double * fresult ;
-  int arg1 ;
-  double *result = 0 ;
-  
-  arg1 = *farg1;
-  result = (double *)get_something_rptr(arg1);
-  fresult = reinterpret_cast< double* >(result);
-  return fresult;
-}
-
-
-SWIGEXPORT double const * swigc_get_something_rcptr(int const *farg1) {
-  double const * fresult ;
-  int arg1 ;
-  double *result = 0 ;
-  
-  arg1 = *farg1;
-  result = (double *)get_something_rcptr(arg1);
-  fresult = const_cast< double* >(reinterpret_cast< const double* >(result));
-  return fresult;
-}
-
-
-SWIGEXPORT double * swigc_get_something_rref(int const *farg1) {
-  double * fresult ;
-  int arg1 ;
-  double *result = 0 ;
-  
-  arg1 = *farg1;
-  result = (double *) &get_something_rref(arg1);
-  fresult = reinterpret_cast< double* >(result);
-  return fresult;
-}
-
-
-SWIGEXPORT double swigc_get_something_rcref(int const *farg1) {
-  double fresult ;
-  int arg1 ;
-  double *result = 0 ;
-  
-  arg1 = *farg1;
-  result = (double *) &get_something_rcref(arg1);
-  fresult = *result;
-  return fresult;
-}
-
-
-SWIGEXPORT int swigc_cannot_overload(int const *farg1, int const *farg2) {
+SWIGEXPORT int swigc_find_sorted__SWIG_1(SwigArrayWrapper *farg1, int const *farg2) {
   int fresult ;
-  int arg1 ;
+  std::pair< int const *,std::size_t > arg1 ;
   int arg2 ;
   int result;
   
-  arg1 = *farg1;
+  (&arg1)->first  = static_cast<const int*>(farg1->data);
+  (&arg1)->second = farg1->size;
   arg2 = *farg2;
-  result = (int)cannot_overload(arg1,arg2);
+  result = (int)find_sorted< int >(arg1,arg2);
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_can_overload__SWIG_0(int const *farg1) {
+SWIGEXPORT SwigArrayWrapper swigc_get_view__SWIG_1(SwigArrayWrapper *farg1) {
+  SwigArrayWrapper fresult ;
+  std::pair< int *,std::size_t > arg1 ;
+  std::pair< int *,std::size_t > result;
+  
+  (&arg1)->first  = static_cast<int*>(farg1->data);
+  (&arg1)->second = farg1->size;
+  result = get_view< int >(arg1);
+  fresult.data = (&result)->first;
+  fresult.size = (&result)->second;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_print_array__SWIG_1(SwigArrayWrapper *farg1) {
+  std::pair< int const *,std::size_t > arg1 ;
+  
+  (&arg1)->first  = static_cast<const int*>(farg1->data);
+  (&arg1)->second = farg1->size;
+  print_array< int >(arg1);
+  
+}
+
+
+SWIGEXPORT void swigc_sort__SWIG_2(SwigArrayWrapper *farg1) {
+  std::pair< float *,std::size_t > arg1 ;
+  
+  (&arg1)->first  = static_cast<float*>(farg1->data);
+  (&arg1)->second = farg1->size;
+  sort< float >(arg1);
+  
+}
+
+
+SWIGEXPORT void swigc_reverse__SWIG_2(SwigArrayWrapper *farg1) {
+  std::pair< float *,std::size_t > arg1 ;
+  
+  (&arg1)->first  = static_cast<float*>(farg1->data);
+  (&arg1)->second = farg1->size;
+  reverse< float >(arg1);
+  
+}
+
+
+SWIGEXPORT int swigc_find_sorted__SWIG_2(SwigArrayWrapper *farg1, float const *farg2) {
   int fresult ;
-  int arg1 ;
+  std::pair< float const *,std::size_t > arg1 ;
+  float arg2 ;
   int result;
   
-  arg1 = *farg1;
-  result = (int)can_overload(arg1);
+  (&arg1)->first  = static_cast<const float*>(farg1->data);
+  (&arg1)->second = farg1->size;
+  arg2 = *farg2;
+  result = (int)find_sorted< float >(arg1,arg2);
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT double swigc_can_overload__SWIG_1(double const *farg1) {
-  double fresult ;
-  double arg1 ;
-  double result;
+SWIGEXPORT SwigArrayWrapper swigc_get_view__SWIG_2(SwigArrayWrapper *farg1) {
+  SwigArrayWrapper fresult ;
+  std::pair< float *,std::size_t > arg1 ;
+  std::pair< float *,std::size_t > result;
   
-  arg1 = *farg1;
-  result = (double)can_overload(arg1);
-  fresult = result;
+  (&arg1)->first  = static_cast<float*>(farg1->data);
+  (&arg1)->second = farg1->size;
+  result = get_view< float >(arg1);
+  fresult.data = (&result)->first;
+  fresult.size = (&result)->second;
   return fresult;
 }
 
 
-SWIGEXPORT SWIGEXTERN int const swigc_RED = static_cast< int >(RED);
-
-SWIGEXPORT SWIGEXTERN int const swigc_GREEN = static_cast< int >(GREEN);
-
-SWIGEXPORT SWIGEXTERN int const swigc_BLUE = static_cast< int >(BLUE);
-
-SWIGEXPORT void swigc_print_rgb(int const *farg1) {
-  RgbEnum arg1 ;
+SWIGEXPORT void swigc_print_array__SWIG_2(SwigArrayWrapper *farg1) {
+  std::pair< float const *,std::size_t > arg1 ;
   
-  arg1 = static_cast< RgbEnum >(*farg1);
-  print_rgb(arg1);
+  (&arg1)->first  = static_cast<const float*>(farg1->data);
+  (&arg1)->second = farg1->size;
+  print_array< float >(arg1);
   
 }
 
 
-SWIGEXPORT void swigc_print_cmyk(int const *farg1) {
-  CmykEnum arg1 ;
+SWIGEXPORT void swigc_sort__SWIG_3(SwigArrayWrapper *farg1) {
+  std::pair< double *,std::size_t > arg1 ;
   
-  arg1 = static_cast< CmykEnum >(*farg1);
-  print_cmyk(arg1);
+  (&arg1)->first  = static_cast<double*>(farg1->data);
+  (&arg1)->second = farg1->size;
+  sort< double >(arg1);
   
 }
 
 
-SWIGEXPORT int swigc_get_linked_const_int() {
+SWIGEXPORT void swigc_reverse__SWIG_3(SwigArrayWrapper *farg1) {
+  std::pair< double *,std::size_t > arg1 ;
+  
+  (&arg1)->first  = static_cast<double*>(farg1->data);
+  (&arg1)->second = farg1->size;
+  reverse< double >(arg1);
+  
+}
+
+
+SWIGEXPORT int swigc_find_sorted__SWIG_3(SwigArrayWrapper *farg1, double const *farg2) {
   int fresult ;
+  std::pair< double const *,std::size_t > arg1 ;
+  double arg2 ;
   int result;
   
-  result = (int)(int)linked_const_int;
+  (&arg1)->first  = static_cast<const double*>(farg1->data);
+  (&arg1)->second = farg1->size;
+  arg2 = *farg2;
+  result = (int)find_sorted< double >(arg1,arg2);
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_get_simple_int() {
-  int fresult ;
-  int result;
+SWIGEXPORT SwigArrayWrapper swigc_get_view__SWIG_3(SwigArrayWrapper *farg1) {
+  SwigArrayWrapper fresult ;
+  std::pair< double *,std::size_t > arg1 ;
+  std::pair< double *,std::size_t > result;
   
-  result = (int)(int)simple_int;
-  fresult = result;
+  (&arg1)->first  = static_cast<double*>(farg1->data);
+  (&arg1)->second = farg1->size;
+  result = get_view< double >(arg1);
+  fresult.data = (&result)->first;
+  fresult.size = (&result)->second;
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_get_weird_int() {
-  int fresult ;
-  int result;
+SWIGEXPORT void swigc_print_array__SWIG_3(SwigArrayWrapper *farg1) {
+  std::pair< double const *,std::size_t > arg1 ;
   
-  result = (int)(int)weird_int;
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT double swigc_get_approx_twopi() {
-  double fresult ;
-  double result;
+  (&arg1)->first  = static_cast<const double*>(farg1->data);
+  (&arg1)->second = farg1->size;
+  print_array< double >(arg1);
   
-  result = (double)(double)approx_twopi;
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_set_global_counter(int const *farg1) {
-  int arg1 ;
-  
-  arg1 = *farg1;
-  foo::global_counter = arg1;
-  
-}
-
-
-SWIGEXPORT int swigc_get_global_counter() {
-  int fresult ;
-  int result;
-  
-  result = (int)foo::global_counter;
-  fresult = result;
-  return fresult;
 }
 
 

@@ -23,13 +23,13 @@ module funcptr
 
  ! WRAPPER DECLARATIONS
  interface
-function do_op(a, b, op) &
-bind(C, name="do_op") &
+function swigc_do_op(farg1, farg2, farg3) &
+bind(C, name="swigc_do_op") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT), value :: a
-integer(C_INT), value :: b
-type(C_FUNPTR), value :: op
+integer(C_INT), intent(in) :: farg1
+integer(C_INT), intent(in) :: farg2
+type(C_FUNPTR), value :: farg3
 integer(C_INT) :: fresult
 end function
 
@@ -51,6 +51,25 @@ end function
 
 contains
  ! FORTRAN PROXY CODE
+function do_op(a, b, op) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swig_result
+integer(C_INT), intent(in) :: a
+integer(C_INT), intent(in) :: b
+type(C_FUNPTR), intent(in), value :: op
+integer(C_INT) :: fresult 
+integer(C_INT) :: farg1 
+integer(C_INT) :: farg2 
+type(C_FUNPTR) :: farg3 
+
+farg1 = a
+farg2 = b
+farg3 = op
+fresult = swigc_do_op(farg1, farg2, farg3)
+swig_result = fresult
+end function
+
 subroutine set_funcvar(funcvar)
 use, intrinsic :: ISO_C_BINDING
 type(C_FUNPTR), intent(in), value :: funcvar
