@@ -17,28 +17,11 @@ type, bind(C) :: SwigDevArrayWrapper
 end type
 
  public :: sort
- interface sort
-  module procedure sort__SWIG_0, sort__SWIG_1, sort__SWIG_2
- end interface
 
  ! WRAPPER DECLARATIONS
  interface
-subroutine swigc_sort__SWIG_0(farg1) &
-bind(C, name="_wrap_sort__SWIG_0")
-use, intrinsic :: ISO_C_BINDING
-import :: SwigDevArrayWrapper
-type(SwigDevArrayWrapper) :: farg1
-end subroutine
-
-subroutine swigc_sort__SWIG_1(farg1) &
-bind(C, name="_wrap_sort__SWIG_1")
-use, intrinsic :: ISO_C_BINDING
-import :: SwigDevArrayWrapper
-type(SwigDevArrayWrapper) :: farg1
-end subroutine
-
-subroutine swigc_sort__SWIG_2(farg1) &
-bind(C, name="_wrap_sort__SWIG_2")
+subroutine swigc_sort(farg1) &
+bind(C, name="_wrap_sort")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigDevArrayWrapper
 type(SwigDevArrayWrapper) :: farg1
@@ -49,34 +32,14 @@ end subroutine
 
 contains
  ! FORTRAN PROXY CODE
-subroutine sort__SWIG_0(data)
+subroutine sort(data)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT), dimension(:) :: data
 type(SwigDevArrayWrapper) :: farg1 
 
 farg1%data = acc_deviceptr(data)
 farg1%size = size(data)
-call swigc_sort__SWIG_0(farg1)
-end subroutine
-
-subroutine sort__SWIG_1(data)
-use, intrinsic :: ISO_C_BINDING
-real(C_FLOAT), dimension(:) :: data
-type(SwigDevArrayWrapper) :: farg1 
-
-farg1%data = acc_deviceptr(data)
-farg1%size = size(data)
-call swigc_sort__SWIG_1(farg1)
-end subroutine
-
-subroutine sort__SWIG_2(data)
-use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE), dimension(:) :: data
-type(SwigDevArrayWrapper) :: farg1 
-
-farg1%data = acc_deviceptr(data)
-farg1%size = size(data)
-call swigc_sort__SWIG_2(farg1)
+call swigc_sort(farg1)
 end subroutine
 
 

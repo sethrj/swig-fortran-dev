@@ -236,7 +236,7 @@ SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void _wrap_sort__SWIG_0(SwigArrayWrapper *farg1) {
+SWIGEXPORT void _wrap_sort(SwigArrayWrapper *farg1) {
   thrust::device_ptr< int > arg1 ;
   size_t arg2 ;
   
@@ -247,36 +247,6 @@ SWIGEXPORT void _wrap_sort__SWIG_0(SwigArrayWrapper *farg1) {
       "Array is not present on device", return ); \
   }
   swig_thrust_sort< int >(arg1,arg2);
-  
-}
-
-
-SWIGEXPORT void _wrap_sort__SWIG_1(SwigArrayWrapper *farg1) {
-  thrust::device_ptr< float > arg1 ;
-  size_t arg2 ;
-  
-  arg1 = thrust::device_ptr< float >(static_cast<float*>(farg1->data));
-  arg2 = farg1->size;
-  if (arg2 && !thrust::raw_pointer_cast(arg1)) {
-    SWIG_exception_impl("swig_thrust_sort< float >(thrust::device_ptr< float >,size_t)", SWIG_TypeError, \
-      "Array is not present on device", return ); \
-  }
-  swig_thrust_sort< float >(arg1,arg2);
-  
-}
-
-
-SWIGEXPORT void _wrap_sort__SWIG_2(SwigArrayWrapper *farg1) {
-  thrust::device_ptr< double > arg1 ;
-  size_t arg2 ;
-  
-  arg1 = thrust::device_ptr< double >(static_cast<double*>(farg1->data));
-  arg2 = farg1->size;
-  if (arg2 && !thrust::raw_pointer_cast(arg1)) {
-    SWIG_exception_impl("swig_thrust_sort< double >(thrust::device_ptr< double >,size_t)", SWIG_TypeError, \
-      "Array is not present on device", return ); \
-  }
-  swig_thrust_sort< double >(arg1,arg2);
   
 }
 

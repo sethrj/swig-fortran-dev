@@ -15,5 +15,7 @@ void swig_thrust_sort(thrust::device_ptr<T> DATA, size_t SIZE) {
 %}
 
 %template(sort) swig_thrust_sort<int>;
+#if 0
 %template(sort) swig_thrust_sort<float>;
 %template(sort) swig_thrust_sort<double>;
+#endif
