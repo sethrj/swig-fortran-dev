@@ -237,16 +237,16 @@ SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
 extern "C" {
 #endif
 SWIGEXPORT void _wrap_sort(SwigArrayWrapper *farg1) {
-  thrust::device_ptr< int > arg1 ;
+  thrust::device_ptr< float > arg1 ;
   size_t arg2 ;
   
-  arg1 = thrust::device_ptr< int >(static_cast<int*>(farg1->data));
+  arg1 = thrust::device_ptr< float >(static_cast<float*>(farg1->data));
   arg2 = farg1->size;
   if (arg2 && !thrust::raw_pointer_cast(arg1)) {
-    SWIG_exception_impl("swig_thrust_sort< int >(thrust::device_ptr< int >,size_t)", SWIG_TypeError, \
+    SWIG_exception_impl("swig_thrust_sort< float >(thrust::device_ptr< float >,size_t)", SWIG_TypeError, \
       "Array is not present on device", return ); \
   }
-  swig_thrust_sort< int >(arg1,arg2);
+  swig_thrust_sort< float >(arg1,arg2);
   
 }
 

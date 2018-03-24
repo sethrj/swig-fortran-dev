@@ -34,7 +34,7 @@ program test_thrustacc
 
   ! Mean should be 
   mean = sum(a)
-  mean /= n
+  mean = mean / real(n)
   write(*,*) failures, "failures; mean=", mean
 
 end program

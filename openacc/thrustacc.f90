@@ -34,7 +34,7 @@ contains
  ! FORTRAN PROXY CODE
 subroutine sort(data)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT), dimension(:) :: data
+real(C_FLOAT), dimension(:) :: data
 type(SwigDevArrayWrapper) :: farg1 
 
 farg1%data = acc_deviceptr(data)
