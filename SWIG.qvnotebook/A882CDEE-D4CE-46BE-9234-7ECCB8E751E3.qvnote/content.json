@@ -8,6 +8,10 @@
     {
       "type": "markdown",
       "data": "```fortran\nshape_mod.f90:154:35:\n\n     call c_f_pointer(self%thisptr, thisptr)\n                                   1\nError: FPTR argument at (1) to C_F_POINTER shall not be polymorphic\n```\nwith\n```fortran\n  type Shape_ptr\n    class(Shape), pointer :: p => null()\n  end type\n\n  subroutine printShapePtr(self)\n    implicit none\n    class(Shape) :: self\n    class(Shape_ptr), pointer :: thisptr\n    call c_f_pointer(self%thisptr, thisptr)\n    call thisptr%p%print()\n  end subroutine\n```"
+    },
+    {
+      "type": "markdown",
+      "data": "Null function pointer error when declaring\n```fortran\n! External pointer that must be set to our Fortran ISO C layer callback\ntype(C_FUNPTR), public, bind(C, name=\"swigc_fortran_cb\") :: fortran_cb\n\n! External const pointer to C++ director implementation function\ntype(C_FUNPTR), protected, public, bind(C, name=\"swigc_director_cb\") :: director_cb\n```\nin `runme.f90` instead of a separate module file."
     }
   ]
 }

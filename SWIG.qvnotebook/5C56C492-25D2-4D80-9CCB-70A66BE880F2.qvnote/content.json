@@ -7,7 +7,11 @@
     },
     {
       "type": "markdown",
-      "data": "- [Calling Thrust from CUDA fortran](http://cudamusing.blogspot.com/2011/06/calling-thrust-from-cuda-fortran.html)\n- [OpenACC tutorial](https://www.olcf.ornl.gov/tutorials/openacc-vector-addition/)\n- [CUDA Fortran tutorial](https://www.olcf.ornl.gov/tutorials/cuda-fortran-vector-addition/)\n"
+      "data": "- [Calling Thrust from CUDA fortran](http://cudamusing.blogspot.com/2011/06/calling-thrust-from-cuda-fortran.html)\n- [OpenACC tutorial](https://www.olcf.ornl.gov/tutorials/openacc-vector-addition/)\n- [CUDA Fortran tutorial](https://www.olcf.ornl.gov/tutorials/cuda-fortran-vector-addition/)\n- [OpenACC interoperability techniques](https://devblogs.nvidia.com/3-versatile-openacc-interoperability-techniques/)\n"
+    },
+    {
+      "type": "markdown",
+      "data": "Show data transfers with environment variable `PGI_ACC_NOTIFY=3`\n\nBind CUDA array data to an existing Fortran array with:\n```fortran\nsubroutine acc_map_data ( host, devptr, bytes ) \n```\n*bytes* is an integer which specifies the mapping length in bytes. The `C_SIZEOF` function is only instantiated in F2008. Perhaps we need to pass the host array pointer to C and do the modification there:\n```c\nacc_map_data(h_void *h, d_void *d, size_t len);\n```\n\nDeclare data that is already on device\n```fortran\n#pragma acc parallel loop present(v,x)\n```\n\nHere's an example that uses `present`:\n```fortran\nmodule vecaddmod\n implicit none\ncontains\n subroutine vecaddgpu( r, a, b, n )\n  real, dimension(:) :: r, a, b\n  integer :: n\n  integer :: i\n!$acc kernels loop present(r,a,b)\n  do i = 1, n\n   r(i) = a(i) + b(i)\n  enddo\n end subroutine\nend module\nprogram main\n use vecaddmod\n implicit none\n integer :: n, i, errs, argcount\n real, dimension(:), allocatable :: a, b, r, e\n character*10 :: arg1\n argcount = command_argument_count()\n n = 1000000  ! default value\n if( argcount >= 1 )then\n  call get_command_argument( 1, arg1 )\n  read( arg1, '(i)' ) n\n  if( n <= 0 ) n = 100000\n endif\n allocate( a(n), b(n), r(n), e(n) )\n do i = 1, n\na(i) = i\n  b(i) = 1000*i\n enddo\n ! compute on the GPU\n!$acc data copyin(a,b) copyout(r)\n   call vecaddgpu( r, a, b, n )\n!$acc end data\n ! compute on the host to compare\n do i = 1, n\n  e(i) = a(i) + b(i)\n enddo\n ! compare results\n errs = 0\n do i = 1, n\n  if( r(i) /= e(i) )then\n    errs = errs + 1\n  endif\n enddo\n print *, errs, ' errors found'\n if( errs ) call exit(errs)\nend program\n```"
     }
   ]
 }
