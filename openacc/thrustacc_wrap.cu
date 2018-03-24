@@ -183,7 +183,7 @@ template <typename T> T SwigValueInit() {
 
 
 #define SWIG_exception_impl(DECL, CODE, MSG, RETURNNULL) \
- { throw std::logic_error("In " DECL ": " MSG); RETURNNULL; }
+ { throw std::logic_error("In " DECL ": " MSG); }
 
 
 #include <stdexcept>
@@ -242,7 +242,7 @@ SWIGEXPORT void _wrap_sort__SWIG_0(SwigArrayWrapper *farg1) {
   
   arg1 = thrust::device_ptr< int >(static_cast<int*>(farg1->data));
   arg2 = farg1->size;
-  if (arg2 && !arg1) {
+  if (arg2 && !thrust::raw_pointer_cast(arg1)) {
     SWIG_exception_impl("swig_thrust_sort< int >(thrust::device_ptr< int >,size_t)", SWIG_TypeError, \
       "Array is not present on device", return ); \
   }
@@ -257,7 +257,7 @@ SWIGEXPORT void _wrap_sort__SWIG_1(SwigArrayWrapper *farg1) {
   
   arg1 = thrust::device_ptr< float >(static_cast<float*>(farg1->data));
   arg2 = farg1->size;
-  if (arg2 && !arg1) {
+  if (arg2 && !thrust::raw_pointer_cast(arg1)) {
     SWIG_exception_impl("swig_thrust_sort< float >(thrust::device_ptr< float >,size_t)", SWIG_TypeError, \
       "Array is not present on device", return ); \
   }
@@ -272,7 +272,7 @@ SWIGEXPORT void _wrap_sort__SWIG_2(SwigArrayWrapper *farg1) {
   
   arg1 = thrust::device_ptr< double >(static_cast<double*>(farg1->data));
   arg2 = farg1->size;
-  if (arg2 && !arg1) {
+  if (arg2 && !thrust::raw_pointer_cast(arg1)) {
     SWIG_exception_impl("swig_thrust_sort< double >(thrust::device_ptr< double >,size_t)", SWIG_TypeError, \
       "Array is not present on device", return ); \
   }
