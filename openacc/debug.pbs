@@ -1,0 +1,16 @@
+#!/bin/bash
+#PBS -A cli106ft
+#PBS -N swig-debug
+#PBS -j oe
+#PBS -l walltime=02:00,nodes=1
+#PBS -l feature=gpudefault
+#PBS -q debug
+
+module load cudatoolkit
+cd $MEMBERWORK/csc254/swig
+pwd
+date
+ls
+export PGI_ACC_NOTIFY=3
+aprun -n 1 ./test.exe 
+date

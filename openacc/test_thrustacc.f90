@@ -17,8 +17,9 @@ program test_thrustacc
   ! Generate N uniform numbers on [0,1)
   allocate(a(n))
   call RANDOM_NUMBER(a)
+  !write(0,*) a
 
-  !$acc data copyin(a) copyout(a)
+  !$acc data copy(a)
     !$acc kernels
       do i = 1,n
         a(i) = a(i) * 10
@@ -27,12 +28,14 @@ program test_thrustacc
     call sort(a)
   !$acc end data
 
+  !write(0,*) a
+
   ! Check data ordering on host
   do i = 1, n-1
     if (a(i) > a(i+1)) failures = failures + 1
   end do
 
-  ! Mean should be 
+  ! Mean should be 5
   mean = sum(a)
   mean = mean / real(n)
   write(*,*) failures, "failures; mean=", mean

@@ -1,0 +1,10 @@
+/lustre/atlas/scratch/s3j/csc254/swig
+Sat Mar 24 20:41:56 EDT 2018
+test.exe
+upload CUDA data  file=/autofs/nccs-svm1_home1/s3j/_code/swig-fortran-dev/openacc/test_thrustacc.f90 function=test_thrustacc line=22 device=0 threadid=1 variable=descriptor bytes=72
+upload CUDA data  file=/autofs/nccs-svm1_home1/s3j/_code/swig-fortran-dev/openacc/test_thrustacc.f90 function=test_thrustacc line=22 device=0 threadid=1 variable=a bytes=131072
+launch CUDA kernel  file=/autofs/nccs-svm1_home1/s3j/_code/swig-fortran-dev/openacc/test_thrustacc.f90 function=test_thrustacc line=24 device=0 threadid=1 num_gangs=256 num_workers=1 vector_length=128 grid=256 block=128
+download CUDA data  file=/autofs/nccs-svm1_home1/s3j/_code/swig-fortran-dev/openacc/test_thrustacc.f90 function=test_thrustacc line=29 device=0 threadid=1 variable=a bytes=131072
+            0 failures; mean=    5.007545    
+Application 17095191 resources: utime ~1s, stime ~1s, Rss ~187108, inblocks ~389, outblocks ~799
+Sat Mar 24 20:42:00 EDT 2018
